@@ -1,3 +1,9 @@
+2004-10-09  Yann Hodique  <Yann.Hodique@lifl.fr>
+
+	* dotemacs.el:
+	(kill-syntax-forward): new function form Alex Schröder
+	(kill-syntax-backward): new function form Alex Schröder
+
 2004-10-05  Yann Hodique  <Yann.Hodique@lifl.fr>
 
 	* dotemacs.el:

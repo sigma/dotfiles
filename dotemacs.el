@@ -1,5 +1,5 @@
 ;; -*- mode: emacs-lisp; mode: hi-lock; mode: page-break; auto-compile-lisp: nil; -*-
-;; $Id: dotemacs.el,v 1.58 2004/10/05 09:30:07 sigma Exp $
+;; $Id: dotemacs.el,v 1.59 2004/10/09 12:09:58 sigma Exp $
 
 ;; Hi-lock: (("^;;; \\(.*\\)" (1 'hi-black-hb t)))
 ;; Hi-lock: (("^ +;;; \\(.*\\)" (1 'hi-black-b t)))
@@ -623,6 +623,20 @@ there are more than 1% of such letters then turn French accent mode on."
                (with-temp-buffer
                  (where-is command t)
                  (buffer-string)))))))
+
+(defun kill-syntax-forward ()
+  "Kill characters with syntax at point."
+  (interactive)
+  (let ((beg (point)))
+    (skip-syntax-forward (string (char-syntax (char-after))))
+    (kill-region beg (point))))
+
+(defun kill-syntax-backward ()
+  "Kill characters with syntax at point."
+  (interactive)
+  (let ((beg (point)))
+    (skip-syntax-backward (string (char-syntax (char-before))))
+    (kill-region beg (point))))
 
 ;; Adaptative "exit" behavior
 (defun exit-no-gnuserv-or-frame ()
