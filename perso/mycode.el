@@ -588,6 +588,7 @@ it is automaticly created from the list specified in `project-autoinsert-alist'"
                                    brace-elseif-brace))
     ;; Association list of syntactic element symbols and indentation offsets.
     (c-offsets-alist            . ((arglist-close . c-lineup-arglist)
+                                   (arglist-cont-nonempty . 0)
                                    (substatement-open . 0)
                                    (case-label        . +)
                                    (block-open        . 0)
@@ -709,7 +710,7 @@ it is automaticly created from the list specified in `project-autoinsert-alist'"
   ;; other customizations
   (make-local-variable 'font-lock-defaults)
   (if (emacs-type-is-regular)
-    (setq font-lock-defaults '(c++-new-font-lock-keywords)))
+      (setq font-lock-defaults (list c++-new-font-lock-keywords)))
 
   ;; Allow c++-files only
   (make-local-variable 'buffer-include-regexp)
@@ -2643,61 +2644,61 @@ in normal, downcase and upcase letters, in BUFFER."
 ;; DONT'T MESS WITH IT
 (if (emacs-type-is-regular)
     (defconst c++-new-font-lock-keywords
-      '(
-	("\\<[0-9]+\\.[0-9]+\\>" (0 font-lock-floatnumber-face))
-	("^#[ 	]*error[ 	]+\\(.+\\)"
-	 (1 font-lock-warning-face prepend))
-	("^#[ 	]*\\(import\\|include\\)[ 	]*\\(<[^>\"\n]*>?\\)"
-	 (2 font-lock-string-face))
-	("^#[ 	]*define[ 	]+\\(\\sw+\\)("
-	 (1 font-lock-function-name-face))
-	("^#[ 	]*\\(elif\\|if\\)\\>"
-	 ("\\<\\(defined\\)\\>[ 	]*(?\\(\\sw+\\)?" nil nil
-	  (1 font-lock-builtin-face)
-	  (2 font-lock-variable-name-face nil t)))
-	("^#[ 	]*\\(\\sw+\\)\\>[ 	!]*\\(\\sw+\\)?"
-	 (1 font-lock-builtin-face)
-	 (2 font-lock-variable-name-face nil t))
-	("\\<\\(public\\|private\\|protected\\)\\>[ \t]+\\(\\<\\(signals\\|slots\\)\\>\\)[ \t]*:"
-	 (1 font-lock-type-face)
-	 (2 font-lock-type-face)
-	 )
-	("\\<\\(class\\|public\\|private\\|protected\\|typename\\|signals\\|slots\\)\\>[ 	]*\\(\\(\\sw+\\)\\>\\([ 	]*<\\([^>\n]+\\)[ 	*&]*>\\)?\\([ 	]*::[ 	*~]*\\(\\sw+\\)\\)*\\)?"
-	 (1 font-lock-type-face)
-	 (3
-	  (if
-	      (match-beginning 6)
-	      font-lock-type-face font-lock-function-name-face)
-	  nil t)
-	 (5 font-lock-function-name-face nil t)
-	 (7 font-lock-function-name-face nil t))
-	("^\\(\\sw+\\)\\>\\([ 	]*<\\([^>\n]+\\)[ 	*&]*>\\)?\\([ 	]*::[ 	*~]*\\(\\sw+\\)\\)*[ 	]*("
-	 (1
+      (list
+       '("\\<[0-9]+\\.[0-9]+\\>" (0 font-lock-floatnumber-face))
+       '("^#[ 	]*error[ 	]+\\(.+\\)"
+        (1 font-lock-warning-face prepend))
+       '("^#[ 	]*\\(import\\|include\\)[ 	]*\\(<[^>\"\n]*>?\\)"
+        (2 font-lock-string-face))
+       '("^#[ 	]*define[ 	]+\\(\\sw+\\)("
+        (1 font-lock-function-name-face))
+       '("^#[ 	]*\\(elif\\|if\\)\\>"
+        ("\\<\\(defined\\)\\>[ 	]*(?\\(\\sw+\\)?" nil nil
+         (1 font-lock-builtin-face)
+         (2 font-lock-variable-name-face nil t)))
+       '("^#[ 	]*\\(\\sw+\\)\\>[ 	!]*\\(\\sw+\\)?"
+        (1 font-lock-builtin-face)
+        (2 font-lock-variable-name-face nil t))
+       '("\\<\\(public\\|private\\|protected\\)\\>[ \t]+\\(\\<\\(signals\\|slots\\)\\>\\)[ \t]*:"
+        (1 font-lock-type-face)
+        (2 font-lock-type-face)
+        )
+       '("\\<\\(class\\|public\\|private\\|protected\\|typename\\|signals\\|slots\\)\\>[ 	]*\\(\\(\\sw+\\)\\>\\([ 	]*<\\([^>\n]+\\)[ 	*&]*>\\)?\\([ 	]*::[ 	*~]*\\(\\sw+\\)\\)*\\)?"
+        (1 font-lock-type-face)
+        (3
+         (if
+             (match-beginning 6)
+             font-lock-type-face font-lock-function-name-face)
+         nil t)
+        (5 font-lock-function-name-face nil t)
+        (7 font-lock-function-name-face nil t))
+       '("^\\(\\sw+\\)\\>\\([ 	]*<\\([^>\n]+\\)[ 	*&]*>\\)?\\([ 	]*::[ 	*~]*\\(\\sw+\\)\\)*[ 	]*("
+        (1
 	  (if
 	      (or
 	       (match-beginning 2)
 	       (match-beginning 4))
 	      font-lock-type-face font-lock-function-name-face))
-	 (3 font-lock-function-name-face nil t)
-	 (5 font-lock-function-name-face nil t))
-	("\\<\\(auto\\|bool\\|c\\(har\\|o\\(mplex\\|nst\\)\\)\\|double\\|e\\(num\\|x\\(p\\(licit\\|ort\\)\\|tern\\)\\)\\|f\\(loat\\|riend\\)\\|in\\(line\\|t\\)\\|long\\|mutable\\|namespace\\|register\\|s\\(hort\\|igned\\|t\\(atic\\|ruct\\)\\)\\|t\\(emplate\\|ypedef\\)\\|u\\(n\\(ion\\|signed\\)\\|sing\\)\\|v\\(irtual\\|o\\(id\\|latile\\)\\)\\|Q[A-Z][a-zA-Z_]*\\|Q[a-z][A-Z][a-zA-Z_]*\\|uint\\|ulong\\|string\\)\\>"
-	 (0 font-lock-type-face))
-	("\\<\\(operator\\)\\>[ 	]*\\(!=\\|%=\\|&[&=]\\|()\\|\\*=\\|\\+[+=]\\|-\\(>\\*\\|[=>-]\\)\\|/=\\|<\\(<=\\|[<=]\\)\\|==\\|>\\(>=\\|[=>]\\)\\|\\[\\]\\|\\^=\\||[=|]\\|[!%&*+,/<=>|~^-]\\)?"
-	 (1 font-lock-keyword-face)
-	 (2 font-lock-builtin-face nil t))
-	("\\<\\(case\\|goto\\)\\>[ 	]*\\(-?\\sw+\\)?"
-	 (1 font-lock-keyword-face)
-	 (2 font-lock-constant-face nil t))
-	(":"
+        (3 font-lock-function-name-face nil t)
+        (5 font-lock-function-name-face nil t))
+       '("\\<\\(auto\\|bool\\|c\\(har\\|o\\(mplex\\|nst\\)\\)\\|double\\|e\\(num\\|x\\(p\\(licit\\|ort\\)\\|tern\\)\\)\\|f\\(loat\\|riend\\)\\|in\\(line\\|t\\)\\|long\\|mutable\\|namespace\\|register\\|s\\(hort\\|igned\\|t\\(atic\\|ruct\\)\\)\\|t\\(emplate\\|ypedef\\)\\|u\\(n\\(ion\\|signed\\)\\|sing\\)\\|v\\(irtual\\|o\\(id\\|latile\\)\\)\\|Q[A-Z][a-zA-Z_]*\\|Q[a-z][A-Z][a-zA-Z_]*\\|uint\\|ulong\\|string\\)\\>"
+        (0 font-lock-type-face))
+       '("\\<\\(operator\\)\\>[ 	]*\\(!=\\|%=\\|&[&=]\\|()\\|\\*=\\|\\+[+=]\\|-\\(>\\*\\|[=>-]\\)\\|/=\\|<\\(<=\\|[<=]\\)\\|==\\|>\\(>=\\|[=>]\\)\\|\\[\\]\\|\\^=\\||[=|]\\|[!%&*+,/<=>|~^-]\\)?"
+        (1 font-lock-keyword-face)
+        (2 font-lock-builtin-face nil t))
+       '("\\<\\(case\\|goto\\)\\>[ 	]*\\(-?\\sw+\\)?"
+         (1 font-lock-keyword-face)
+         (2 font-lock-constant-face nil t))
+       '(":"
 	 ("^[ 	]*\\(\\sw+\\)[ 	]*:\\($\\|[^:]\\)"
 	  (beginning-of-line)
 	  (end-of-line)
 	  (1 font-lock-constant-face)))
-	("\\<\\(asm\\|break\\|c\\(atch\\|on\\(st_cast\\|tinue\\)\\)\\|d\\(elete\\|o\\|ynamic_cast\\)\\|else\\|for\\|if\\|new\\|re\\(interpret_cast\\|turn\\)\\|s\\(izeof\\|tatic_cast\\|witch\\)\\|t\\(h\\(is\\|row\\)\\|ry\\)\\|while\\)\\>"
+       '("\\<\\(asm\\|break\\|c\\(atch\\|on\\(st_cast\\|tinue\\)\\)\\|d\\(elete\\|o\\|ynamic_cast\\)\\|else\\|for\\|if\\|new\\|re\\(interpret_cast\\|turn\\)\\|s\\(izeof\\|tatic_cast\\|witch\\)\\|t\\(h\\(is\\|row\\)\\|ry\\)\\|while\\)\\>"
 	 (0 font-lock-keyword-face))
-	("\\<\\(false\\|true\\)\\>"
+       '("\\<\\(false\\|true\\)\\>"
 	 (0 font-lock-constant-face))
-	("\\<\\(auto\\|bool\\|c\\(har\\|o\\(mplex\\|nst\\)\\)\\|double\\|e\\(num\\|x\\(p\\(licit\\|ort\\)\\|tern\\)\\)\\|f\\(loat\\|riend\\)\\|in\\(line\\|t\\)\\|long\\|mutable\\|namespace\\|register\\|s\\(hort\\|igned\\|t\\(atic\\|ruct\\)\\)\\|t\\(emplate\\|ypedef\\)\\|u\\(n\\(ion\\|signed\\)\\|sing\\)\\|v\\(irtual\\|o\\(id\\|latile\\)\\)\\|JBF[a-zA-Z0-9_]*\\|eZ[a-zA-Z0-9_]*\\|Q[a-zA-Z_]*\\|uint\\|ulong\\|string\\)\\>\\([ 	]*<\\([^>\n]+\\)[ 	*&]*>\\)?\\([ 	]*::[ 	*~]*\\(\\sw+\\)\\)*\\([ 	*&]+\\(\\sw+\\)\\>\\([ 	]*<\\([^>\n]+\\)[ 	*&]*>\\)?\\([ 	]*::[ 	*~]*\\(\\sw+\\)\\)*\\)*"
+       '("\\<\\(auto\\|bool\\|c\\(har\\|o\\(mplex\\|nst\\)\\)\\|double\\|e\\(num\\|x\\(p\\(licit\\|ort\\)\\|tern\\)\\)\\|f\\(loat\\|riend\\)\\|in\\(line\\|t\\)\\|long\\|mutable\\|namespace\\|register\\|s\\(hort\\|igned\\|t\\(atic\\|ruct\\)\\)\\|t\\(emplate\\|ypedef\\)\\|u\\(n\\(ion\\|signed\\)\\|sing\\)\\|v\\(irtual\\|o\\(id\\|latile\\)\\)\\|JBF[a-zA-Z0-9_]*\\|eZ[a-zA-Z0-9_]*\\|Q[a-zA-Z_]*\\|uint\\|ulong\\|string\\)\\>\\([ 	]*<\\([^>\n]+\\)[ 	*&]*>\\)?\\([ 	]*::[ 	*~]*\\(\\sw+\\)\\)*\\([ 	*&]+\\(\\sw+\\)\\>\\([ 	]*<\\([^>\n]+\\)[ 	*&]*>\\)?\\([ 	]*::[ 	*~]*\\(\\sw+\\)\\)*\\)*"
 	 (font-lock-match-c-style-declaration-item-and-skip-to-next
 	  (goto-char
 	   (or
@@ -2720,7 +2721,7 @@ in normal, downcase and upcase letters, in BUFFER."
 	       (match-beginning 6)
 	       font-lock-function-name-face font-lock-variable-name-face)
 	   nil t)))
-	("\\(}\\)[ 	*]*\\sw"
+       '("\\(}\\)[ 	*]*\\sw"
 	 (font-lock-match-c-style-declaration-item-and-skip-to-next
 	  (goto-char
 	   (match-end 1))
@@ -2729,7 +2730,7 @@ in normal, downcase and upcase letters, in BUFFER."
 	   (if
 	       (match-beginning 6)
 	       font-lock-function-name-face font-lock-variable-name-face))))
-	("^\\(\\(\\sw+\\)\\>\\([ 	]*<\\([^>\n]+\\)[ 	*&]*>\\)?\\([ 	]*::[ 	*~]*\\(\\sw+\\)\\)*[ 	*&]*\\)+"
+       '("^\\(\\(\\sw+\\)\\>\\([ 	]*<\\([^>\n]+\\)[ 	*&]*>\\)?\\([ 	]*::[ 	*~]*\\(\\sw+\\)\\)*[ 	*&]*\\)+"
 	 (font-lock-match-c-style-declaration-item-and-skip-to-next
 	  (goto-char
 	   (match-beginning 1))
@@ -2750,15 +2751,15 @@ in normal, downcase and upcase letters, in BUFFER."
 	       (match-beginning 6)
 	       font-lock-function-name-face font-lock-variable-name-face)
 	   nil t)))
-	("[{}()<>=;:+\\*\\/\\[]\\|\\]\\|\\-" (0 font-lock-keys-face))
-	("\\<[0-9]+\\>" (0 font-lock-number-face))
-	("\\<0x[0-9a-fA-F]+\\>" (0 font-lock-hexnumber-face))
+	'("[{}()<>=;:+\\*\\/\\[]\\|\\]\\|\\-" (0 font-lock-keys-face))
+	'("\\<[0-9]+\\>" (0 font-lock-number-face))
+	'("\\<0x[0-9a-fA-F]+\\>" (0 font-lock-hexnumber-face))
 					;     ((concat "\\<"
 					; 	     (regexp-opt '("Q_OBJECT" "emit" "connect" "disconnect" "SIGNAL" "SLOT" "Q_EXPORT"))
 					; 	     "\\>" )
 					;      (0 font-lock-qt-face))
-	("\\<\\(Q_\\(EXPORT\\|OBJECT\\|PROPERTY\\)\\|S\\(IGNAL\\|LOT\\)\\|connect\\|disconnect\\|emit\\)\\>"
-	 (0 font-lock-qt-face))
+	'("\\<\\(Q_\\(EXPORT\\|OBJECT\\|PROPERTY\\)\\|S\\(IGNAL\\|LOT\\)\\|connect\\|disconnect\\|emit\\)\\>"
+          (0 font-lock-qt-face))
 	)))
 
 ; Auto-insert text when making new *.cpp, *.cc, *.h files.

@@ -179,5 +179,10 @@
   "Open another buffer in the new window"
   (set-window-buffer (next-window) (other-buffer)))
 
+(defun yank-rpop (arg)
+  (interactive "*p")
+  (yank-pop (- arg)))
+(global-set-key "\M-Y" 'yank-rpop)
+
 (provide 'patches)
 ;;; patches.el ends here

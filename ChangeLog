@@ -1,3 +1,23 @@
+2004-07-12  Yann Hodique  <Yann.Hodique@lifl.fr>
+
+	* perso/patches.el
+	(yank-rpop): go forward in kill ring for yanking (bound to M-Y)
+
+	* perso/mycode.el
+	(camille-c-style): change arg list continuation
+	(c++-new-font-lock-keywords): better description
+
+	* perso/h4x0r.el
+	(h4x0r-sometimes-replace): new way of writing r
+
+	* dotemacs.el:
+	(hi-lock-mode): disabled
+	(global-visible-mark-mode): disable
+	(htmlize-many-files-dired): add autoload
+
+	* dotemacs-cust.el
+	(custom-set-variables): prevent eshell to cycle completions
+
 2004-07-02  Yann Hodique  <Yann.Hodique@lifl.fr>
 
 	* perso/patches.el:

@@ -1,5 +1,5 @@
 ;; -*- mode: emacs-lisp; auto-compile-lisp: nil; -*-
-;; $Id: dotemacs.el,v 1.19 2004/06/30 15:29:40 sigma Exp $
+;; $Id: dotemacs.el,v 1.20 2004/07/12 06:18:40 sigma Exp $
 
 ;; Use this one instead of require to ignore errors
 (defun request (pack)
@@ -47,7 +47,7 @@
 (global-auto-revert-mode 1)
 
 ;; Enable dynamic highlighting
-(hi-lock-mode 1)
+;; (hi-lock-mode 1)
 
 ;; Throw out the mouse when typing
 (mouse-avoidance-mode 'exile)
@@ -60,8 +60,8 @@
       (desktop-load-default)
       (desktop-read)))
 
-(when (request 'visible-mark-mode)
-  (global-visible-mark-mode 1))
+;; (when (request 'visible-mark-mode)
+;;   (global-visible-mark-mode 1))
 
 ;; Save place by default
 (when (request 'saveplace)
@@ -698,22 +698,14 @@ there are more than 1% of such letters then turn French accent mode on."
 ;; Autoloads
 ;;
 (autoload 'expand-member-functions "member-functions" "Expand C++ member function declarations" t)
-(autoload 'mode-compile "mode-compile"
-  "Command to compile current buffer file based on the major mode" t)
-(autoload 'mode-compile-kill "mode-compile"
-  "Command to kill a compilation launched by `mode-compile'" t)
+(autoload 'mode-compile "mode-compile" "Command to compile current buffer file based on the major mode" t)
+(autoload 'mode-compile-kill "mode-compile" "Command to kill a compilation launched by `mode-compile'" t)
 ;; Rectangles operations
-(autoload 'rm-set-mark "rect-mark"
-  "Set mark for rectangle." t)
-(autoload 'rm-exchange-point-and-mark "rect-mark"
-  "Exchange point and mark for rectangle." t)
-(autoload 'rm-kill-region "rect-mark"
-      "Kill a rectangular region and save it in the kill ring." t)
-(autoload 'rm-kill-ring-save "rect-mark"
-  "Copy a rectangular region to the kill ring." t)
-(autoload 'gnuserv-start "gnuserv-compat"
-  "Allow this Emacs process to be a server for client processes."
-  t)
+(autoload 'rm-set-mark "rect-mark" "Set mark for rectangle." t)
+(autoload 'rm-exchange-point-and-mark "rect-mark" "Exchange point and mark for rectangle." t)
+(autoload 'rm-kill-region "rect-mark" "Kill a rectangular region and save it in the kill ring." t)
+(autoload 'rm-kill-ring-save "rect-mark" "Copy a rectangular region to the kill ring." t)
+(autoload 'gnuserv-start "gnuserv-compat" "Allow this Emacs process to be a server for client processes." t)
 (autoload 'speedbar-frame-mode "speedbar" "Popup a speedbar frame" t)
 (autoload 'speedbar-get-focus "speedbar" "Jump to speedbar frame" t)
 (autoload 'trivial-cite "tc" t t)
@@ -725,10 +717,9 @@ there are more than 1% of such letters then turn French accent mode on."
 (autoload 'htmlize-region "htmlize" "" t nil)
 (autoload 'htmlize-file "htmlize" "" t nil)
 (autoload 'htmlize-many-files "htmlize" "" t nil)
-(autoload 'make-regexp "make-regexp"
-  "Return a regexp to match a string item in STRINGS.")
-(autoload 'make-regexps "make-regexp"
-  "Return a regexp to REGEXPS.")
+(autoload 'htmlize-many-files-dired "htmlize" "" t nil)
+(autoload 'make-regexp "make-regexp" "Return a regexp to match a string item in STRINGS.")
+(autoload 'make-regexps "make-regexp" "Return a regexp to REGEXPS.")
 (autoload 'camelCase-mode "camelCase-mode" nil t)
 (autoload 'keytable "keytable" "Browse key bindings" t nil)
 (autoload 'turn-on-eldoc-mode "eldoc" "Activate eldoc" t nil)
