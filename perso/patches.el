@@ -126,7 +126,6 @@
 
 (setq backup-enable-predicate 'ecm-backup-enable-predicate)
 
-
 ;; Put autosaves files in a single directory too
 (setq auto-save-directory (expand-file-name "~/.autosaves/"))
 (require 'auto-save "auto-save.el" t)
@@ -181,7 +180,7 @@
 ;;                   (list 'face 'minibuffer-face)))))
 
 ;; Adapt open-line behavior when arg <= 0
-(defadvice open-line( around open-line-after (arg) act )
+(defadvice open-line( around open-line-around (arg) act )
   "Open new line(s) at end of line if arg is <= 0."
   (if (<= arg 0)
       (let ((var (if (equal arg 0) -1 arg)))
@@ -190,12 +189,19 @@
           (open-line (- var))))
     ad-do-it))
 
+(defadvice message (around message-around act)
+  "Don't let annoying messages popup while using the minibuffer"
+  (unless (minibuffer-window-active-p (minibuffer-window))
+      ad-do-it))
+
 (defun my-split-window-vertically ()
+  "Open another buffer in the new window"
   (interactive)
   (split-window-vertically)
   (set-window-buffer (next-window) (other-buffer)))
 
 (defun my-split-window-horizontally ()
+  "Open another buffer in the new window"
   (interactive)
   (split-window-horizontally)
   (set-window-buffer (next-window) (other-buffer)))
