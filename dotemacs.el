@@ -1,5 +1,5 @@
 ;; -*- mode: emacs-lisp; auto-compile-lisp: nil; -*-
-;; $Id: dotemacs.el,v 1.17 2004/06/21 16:07:01 sigma Exp $
+;; $Id: dotemacs.el,v 1.18 2004/06/30 15:18:45 sigma Exp $
 
 ;; Use this one instead of require to ignore errors
 (defun request (pack)
@@ -767,5 +767,5 @@ there are more than 1% of such letters then turn French accent mode on."
 (require 'moccur-edit)
 
 (require 'erc-config)
-
+;; (require 'mic-paren)
 (message ".emacs loaded")
