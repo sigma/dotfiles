@@ -1,5 +1,5 @@
 ;; -*- mode: emacs-lisp; auto-compile-lisp: nil; -*-
-;; $Id: dotemacs.el,v 1.13 2004/06/20 10:06:08 sigma Exp $
+;; $Id: dotemacs.el,v 1.14 2004/06/20 14:29:51 sigma Exp $
 
 ;; Use this one instead of require to ignore errors
 (defun request (pack)
@@ -196,10 +196,7 @@
 
 (add-hook 'change-log-mode-hook
           (lambda () (local-set-key (kbd "C-c C-c")
-                                    (lambda ()
-                                      (interactive)
-                                      (save-buffer)
-                                      (kill-this-buffer)))))
+                                    (lambda () (interactive) (save-buffer) (kill-this-buffer)))))
 
   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
   ;; Tramp : transparent remote editing
@@ -497,8 +494,17 @@ there are more than 1% of such letters then turn French accent mode on."
 ;; Utils/Functions
 ;;
 
+(defun find-file-guessing (arg)
+  "Call find-file with file at point if valid. With a universal argument, force call to find-file"
+  (interactive "P")
+  (let ((target (and (not arg) (request 'ffap) (ffap-guesser))))
+    (if target
+        (find-file target)
+      (call-interactively 'find-file))))
+
 ;; byte-compile current elisp buffer
 (defun byte-compile-elisp ()
+  "Byte compile the current buffer if possible"
   (if auto-compile-lisp
       (cond
        ((eq major-mode 'sawfish-mode)
@@ -670,7 +676,7 @@ there are more than 1% of such letters then turn French accent mode on."
 (global-set-key (kbd "H-c x") 'chmod-file)
 (global-set-key (kbd "H-c i") 'init)
 (global-set-key (kbd "H-c h") 'auto-insert)
-(global-set-key (kbd "H-x H-f") (lambda () (interactive) (require 'ffap) (find-file (ffap-guesser))))
+(global-set-key (kbd "C-x C-f") 'find-file-guessing)
 
 (define-key global-map (kbd "H-s") 'isearchb-activate)
 

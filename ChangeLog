@@ -1,5 +1,9 @@
 2004-06-20  Yann Hodique  <Yann.Hodique@lifl.fr>
 
+	* dotemacs.el
+	(find-file-guessing): new function to wrap find-file
+	(kbd): use find-file-guessing with C-x C-f, suppress H-x H-f
+
 	* emacs.d/emacs-d-vars.el:
 	initial checkin
 
@@ -47,7 +51,7 @@
 	* perso/visible-mark-mode.el:
 	new module, by forcer and hacked by me
 
-	* erc-config.el:
+	* perso/erc-config.el:
 	initial checkin
 
 	* dotemacs.el:
@@ -64,6 +68,6 @@
 
 2004-06-17  Yann Hodique  <Yann.Hodique@lifl.fr>
 
-	* patches.el
+	* perso/patches.el
 	(message): added advice to disable messages when using the minibuffer
 
