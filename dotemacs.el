@@ -1,5 +1,5 @@
 ;; -*- mode: emacs-lisp; mode: hi-lock; mode: page-break; auto-compile-lisp: nil; -*-
-;; $Id: dotemacs.el,v 1.55 2004/09/29 05:20:15 sigma Exp $
+;; $Id: dotemacs.el,v 1.56 2004/09/29 18:33:26 sigma Exp $
 
 ;; Hi-lock: (("^;;; \\(.*\\)" (1 'hi-black-hb t)))
 ;; Hi-lock: (("^ +;;; \\(.*\\)" (1 'hi-black-b t)))
@@ -137,8 +137,7 @@
 
 ;;; Muse
 
-(autoload 'muse-mode "muse-mode")
-(eval-after-load "muse-mode"
+(when (request 'muse-mode)
   (progn
     (request 'muse-html)
     (request 'muse-latex)
@@ -251,30 +250,14 @@
 ;; HTML fancy chapter tags
 (add-hook 'html-mode-hook (lambda () (request 'sb-html)))
 
-;;; MTorus : multiple buffer rings
+;;; Tabbar
 
-(when (request 'mtorus)
-  (progn
-    (mtorus-init)
-    (global-set-key '[(shift right)] 'mtorus-next-marker)
-    (global-set-key '[(shift left)]  'mtorus-prev-marker)
-    (global-set-key '[(shift up)]    'mtorus-next-ring)
-    (global-set-key '[(shift down)]  'mtorus-prev-ring)
-    ;; ring handling: f11
-    (global-set-key '[(f11)]
-                    'mtorus-new-ring)
-    (global-set-key '[(shift f11)]
-                    'mtorus-delete-ring)
-    (global-set-key '[(control f11)]
-                    'mtorus-notify)
-    ;; marker handling: f12
-    (global-set-key '[(f12)]
-                    'mtorus-new-marker)
-    (global-set-key '[(shift f12)]
-                    'mtorus-delete-current-marker)
-    (global-set-key '[(control f12)]
-                    'mtorus-update-current-marker)
-    ))
+(when (request 'tabbar)
+  (tabbar-mode)
+  (global-set-key '[(shift right)] 'tabbar-forward-tab)
+  (global-set-key '[(shift left)]  'tabbar-backward-tab)
+  (global-set-key '[(shift up)]    'tabbar-forward-group)
+  (global-set-key '[(shift down)]  'tabbar-backward-group))
 
 ;;; CEDET
 (setq semantic-load-turn-useful-things-on t)
@@ -549,6 +532,12 @@ there are more than 1% of such letters then turn French accent mode on."
                   (delete-char 1)
                   (execute-kbd-macro (car symb)))))
             '(("{" +) ("}" -)))))
+
+(defun yh/tabbar-inhibit-function ()
+  (or (window-dedicated-p (selected-window))
+      (member (buffer-name)
+              '("*Group*" "*Calendar*"))
+      (string-match "\\*Summary" (buffer-name))))
 
 (defun simplify-blank-lines ()
   "Delete extra blank lines"

@@ -6,9 +6,9 @@
 ;; Maintainer: David Ponce <david@dponce.com>
 ;; Created: 25 February 2003
 ;; Keywords: convenience
-;; Revision: $Id: tabbar.el,v 1.3 2004/06/15 16:27:57 sigma Exp $
+;; Revision: $Id: tabbar.el,v 1.4 2004/09/29 18:33:26 sigma Exp $
 
-(defconst tabbar-version "1.2")
+(defconst tabbar-version "1.3")
 
 ;; This file is not part of GNU Emacs.
 
@@ -30,7 +30,7 @@
 ;;; Commentary:
 ;;
 ;; This library provides a minor mode to display tabs in the header
-;; line.  It works only on GNU Emacs 21, when a mouse is available.
+;; line.  It works only on GNU Emacs 21.
 ;;
 ;; M-x `tabbar-mode' toggle the display of the tab bar, globally.
 ;;
@@ -295,6 +295,7 @@ TABSET is the tab set the tab belongs to."
 
 (defvar tabbar-current-tabset nil
   "The tab set currently displayed on the tab bar.")
+(make-variable-buffer-local 'tabbar-current-tabset)
 
 (defvar tabbar-last-selected-tab nil
   "The last selected tab.")
@@ -480,6 +481,14 @@ current cached copy."
 
 ;;; Buttons and separators
 ;;
+(defun tabbar-find-image (specs)
+  "Find an image, choosing one of a list of image specifications.
+SPECS is a list of image specifications.  See also `find-image'."
+  (when (display-images-p)
+    (condition-case nil
+        (find-image specs)
+      (error nil))))
+
 (defconst tabbar-separator-widget
   '(cons (string)
          (repeat :tag "Image"
@@ -497,9 +506,7 @@ The value (\"\") hide separators.")
 Initialize `VARIABLE-value' with the template element to use in header
 line, to display a separator on the tab bar."
   (let ((text (intern (format "%s-value" variable)))
-        (image (condition-case nil
-                   (find-image (cdr value))
-                 (error nil))))
+        (image (tabbar-find-image (cdr value))))
     (set text (propertize (if image " " (car value))
                           'face 'tabbar-separator-face
                           'display image))
@@ -552,13 +559,8 @@ string shown when the mouse is on the button."
         (disabled (intern (format "%s-disabled" variable)))
         (keymap   (intern (format "%s-keymap" variable)))
         (help     (intern (format "%s-help" variable)))
-        (image-en (condition-case nil
-                      (find-image (cdar value))
-                    (error nil)))
-        (image-di (condition-case nil
-                      (find-image (cddr value))
-                    (error nil)))
-        )
+        (image-en (tabbar-find-image (cdar value)))
+        (image-di (tabbar-find-image (cddr value))))
     (set enabled (propertize (if image-en " " (caar value))
                              'display image-en
                              'face 'tabbar-button-face
@@ -598,10 +600,12 @@ CALLBACK is passed the received mouse event."
 Call `tabbar-home-function'."
   (interactive "e")
   (when tabbar-home-function
-    (funcall tabbar-home-function event)
-    (force-mode-line-update)
-    (sit-for 0)
-    ))
+    (save-selected-window
+      (select-window (posn-window (event-start event)))
+      (funcall tabbar-home-function event)
+      (force-mode-line-update)
+      (sit-for 0)
+      )))
 
 (defun tabbar-home-button-help (window object position)
   "Return a help string or nil for none, for the home button.
@@ -661,10 +665,12 @@ See the variable `tabbar-button-widget' for details."
 Call `tabbar-scroll-left-function'."
   (interactive "e")
   (when tabbar-scroll-left-function
-    (funcall tabbar-scroll-left-function event)
-    (force-mode-line-update)
-    (sit-for 0)
-    ))
+    (save-selected-window
+      (select-window (posn-window (event-start event)))
+      (funcall tabbar-scroll-left-function event)
+      (force-mode-line-update)
+      (sit-for 0)
+      )))
 
 (defun tabbar-scroll-left-button-help (window object position)
   "Return a help string or nil for none, for the scroll left button.
@@ -722,10 +728,12 @@ See the variable `tabbar-button-widget' for details."
 Call `tabbar-scroll-right-function'."
   (interactive "e")
   (when tabbar-scroll-right-function
-    (funcall tabbar-scroll-right-function event)
-    (force-mode-line-update)
-    (sit-for 0)
-    ))
+    (save-selected-window
+      (select-window (posn-window (event-start event)))
+      (funcall tabbar-scroll-right-function event)
+      (force-mode-line-update)
+      (sit-for 0)
+      )))
 
 (defun tabbar-scroll-right-button-help (window object position)
   "Return a help string or nil for none, for the scroll right button.
@@ -1039,7 +1047,7 @@ Depend on the setting of the option `tabbar-cycling-scope'."
   "Select the previous visible tab."
   (interactive)
   (let ((tabbar-cycling-scope 'tabs))
-    (tabbar-cycle)))
+    (tabbar-cycle t)))
 
 ;;;###autoload
 (defun tabbar-forward-tab ()
@@ -1063,9 +1071,6 @@ With prefix argument ARG, turn on if positive, otherwise off.
 Returns non-nil if the new state is enabled."
   :global t
   :group 'tabbar
-  (unless (display-mouse-p)
-    (message "Sorry, tab bar don't work without a mouse")
-    (setq tabbar-mode nil))
   (if tabbar-mode
 ;;; ON
       (unless (eq header-line-format tabbar-header-line-format)
@@ -1261,6 +1266,7 @@ Return the the first group where the current buffer is."
 ;;
 (defvar tabbar-buffer-group-mode nil
   "Display tabs for group of buffers, when non-nil.")
+(make-variable-buffer-local 'tabbar-buffer-group-mode)
 
 (defun tabbar-buffer-tabs ()
   "Return the buffers to display on the tab bar, in a tab set."

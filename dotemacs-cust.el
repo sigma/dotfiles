@@ -5,7 +5,7 @@
   ;; If you edit it by hand, you could mess it up, so be careful.
   ;; Your init file should contain only one such instance.
   ;; If there is more than one, they won't work right.
- '(Info-additional-directory-list (quote ("/usr/share/info")))
+ '(Info-additional-directory-list (quote ("/usr/share/info" "~/info")))
  '(LaTeX-command-style (quote (("omega" "lambda") ("." "latex"))))
  '(LaTeX-section-label nil)
  '(LaTeX-verbatim-regexp "\\(verbatim\\*?\\|sigmalog\\)")
@@ -112,6 +112,7 @@
  '(show-paren-mode t nil (paren))
  '(speedbar-frame-parameters (quote ((width . 20) (border-width . 0) (menu-bar-lines . 0) (tool-bar-lines . 0) (unsplittable . t))))
  '(speedbar-use-images nil)
+ '(tabbar-inhibit-functions (quote (tabbar-default-inhibit-function yh/tabbar-inhibit-function)))
  '(tc-make-attribution (quote kai-tc-simple-attribution))
  '(tc-mouse-overlays t)
  '(template-auto-insert nil)
@@ -179,6 +180,7 @@
  '(region ((t (:background "slategrey"))))
  '(show-paren-match-face ((t (:background "black" :foreground "red" :weight bold))))
  '(show-paren-mismatch-face ((t (:background "magenta" :foreground "white" :weight bold))))
+ '(tabbar-default-face ((t (:inherit variable-pitch :background "gray72" :foreground "gray30" :height 0.8))))
  '(underline ((t (:foreground "seagreen3" :underline t))))
  '(w3-style-face-00001 ((t (:underline nil :weight normal :height 150))))
  '(w3-style-face-00002 ((t (:underline nil))))

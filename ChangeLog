@@ -1,7 +1,17 @@
 2004-09-29  Yann Hodique  <Yann.Hodique@lifl.fr>
 
+	* perso/tabbar.el:
+	update to 1.3 version
+
+	* dotemacs.el:
+	(muse): make it work (find better later)
+	(yh/tabbar-inhibit-function): new inhibition function for tabbar
+	replace mtorus by tabbar
+
 	* dotemacs-cust.el:
 	(custom-set-variables): set tramp-default-method-alist in a better way for ftp
+	(custom-set-variables): local info repository, more inhibition for tabbar
+	(custom-set-faces): change inactive tabbar face
 
 2004-09-26  Yann Hodique  <Yann.Hodique@lifl.fr>
 
