@@ -1,3 +1,7 @@
+2004-06-19  Yann Hodique  <Yann.Hodique@lifl.fr>
+
+	* erc-config.el: initial checkin
+
 2004-06-17  Yann Hodique  <Yann.Hodique@lifl.fr>
 
 	* patches.el (message): added advice to disable messages when using the minibuffer
