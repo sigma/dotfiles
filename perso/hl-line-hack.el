@@ -71,7 +71,7 @@
 \(Unless it's a minibuffer window.)"
   (when hl-line-hack-mode			; Could be made buffer-local.
     (unless (or (window-minibuffer-p (selected-window)) ; silly in minibuffer
-		(member (buffer-name (window-buffer (selected-window))) hl-line-hack-exceptions)) 
+		(member (buffer-name (window-buffer (selected-window))) hl-line-hack-exceptions))
       (unless hl-line-hack-overlay
 	(setq hl-line-hack-overlay (make-overlay 1 1)) ; to be moved
 	(overlay-put hl-line-hack-overlay 'face hl-line-hack-face))
@@ -102,7 +102,7 @@ Uses functions `hl-line-hack-unhighlight' and `hl-line-hack-highlight' on
 
 ;;;###autoload
 (easy-mmode-define-global-mode
- global-hl-line-hack-mode hl-line-hack-mode hl-line-hack-mode
+ global-hl-line-hack-mode hl-line-hack-mode (lambda () (hl-line-hack-mode 1))
  :group 'hl-line-hack)
 
 (provide 'hl-line-hack)

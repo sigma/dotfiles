@@ -51,6 +51,7 @@
  '(ecb-layout-name "sigma")
  '(ecb-layout-window-sizes (quote (("sigma" (0.1761904761904762 . 0.8589743589743589) (0.19523809523809524 . 0.2564102564102564) (0.10476190476190476 . 0.3076923076923077) (0.09047619047619047 . 0.3076923076923077) (0.19523809523809524 . 0.2948717948717949)) ("left9" (0.1419753086419753 . 0.8225806451612904)))))
  '(ecb-major-modes-deactivate (quote (hide-all-except-activated . "\\(Info\\|custom\\)-mode")))
+ '(ecb-options-version "2.27")
  '(ecb-other-window-behavior (quote only-edit))
  '(ecb-tip-of-the-day nil)
  '(enable-multibyte-characters t)

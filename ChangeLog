@@ -1,3 +1,8 @@
+2004-09-06  Yann Hodique  <Yann.Hodique@lifl.fr>
+
+	* perso/hl-line-hack.el:
+	(global-hl-line-hack-mode): do not toggle any more
+
 2004-08-30  Yann Hodique  <Yann.Hodique@lifl.fr>
 
 	* perso/timerfunctions.el:
