@@ -1,5 +1,5 @@
 ;; -*- mode: emacs-lisp; auto-compile-lisp: nil; -*-
-;; $Id: dotemacs.el,v 1.35 2004/08/02 15:49:41 sigma Exp $
+;; $Id: dotemacs.el,v 1.36 2004/08/04 17:13:00 sigma Exp $
 
 ;; Load site-specific stuff
 (if (file-exists-p (expand-file-name "~/.emacs-local"))
@@ -215,6 +215,7 @@
       (request 'lispy-font-lock)
       (request 'lispy-occur)
       (request 'lispy-session)
+      (request 'lispy-h4x0r)
 ;;       (request 'lispy-osd)
       ))
 
@@ -273,12 +274,6 @@
   ;;
 (setq semantic-load-turn-useful-things-on t)
 (request 'cedet)
-
-  ;;;;;;;;;;;;;;;
-  ;; Completion
-  ;;
-
-;(request 'completion)
 
   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
   ;; Doxymacs : great documentation system
@@ -523,7 +518,7 @@ there are more than 1% of such letters then turn French accent mode on."
   (interactive "P")
   (let ((target (and (not arg) (request 'ffap) (ffap-guesser))))
     (if target
-        (find-file target)
+        (ffap target)
       (call-interactively 'find-file))))
 
 ;; byte-compile current elisp buffer
@@ -756,6 +751,7 @@ there are more than 1% of such letters then turn French accent mode on."
 (autoload 'zap-following-char "zap-char" "" t nil)
 (autoload 'zap-from-char "zap-char" "" t nil)
 (autoload 'replace-recent-character "rrc" "" t nil)
+(autoload 'h4x0r-string "h4x0r" "" t nil)
 
 ;; (require 'planner-config)
 (request 'emacs-wiki-config)

@@ -1,3 +1,10 @@
+2004-08-04  Yann Hodique  <Yann.Hodique@lifl.fr>
+
+	* dotemacs.el
+	request new file: lispy-h4x0r
+	(find-file-guessing): bugfix, call ffap
+	(h4x0r-string): autoload this function
+
 2004-08-02  Yann Hodique  <Yann.Hodique@lifl.fr>
 
 	* dotemacs.el
