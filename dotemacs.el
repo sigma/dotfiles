@@ -1,5 +1,5 @@
 ;; -*- mode: emacs-lisp; mode: hi-lock; mode: page-break; auto-compile-lisp: nil; -*-
-;; $Id: dotemacs.el,v 1.42 2004/09/09 10:20:42 sigma Exp $
+;; $Id: dotemacs.el,v 1.43 2004/09/10 10:14:41 sigma Exp $
 
 ;; Hi-lock: (("^;;; \\(.*\\)" (1 'hi-black-hb t)))
 ;; Hi-lock: (("^ +;;; \\(.*\\)" (1 'hi-black-b t)))
@@ -364,8 +364,9 @@
 ;;       ;; DWIM with quotes
 ;       (add-hook 'LaTeX-mode-hook 'typopunct-mode)
       (defun my-LaTeX-hook ()
-;;         (when (request 'longlines)
-;;           (longlines-mode-on))
+        (when (request 'longlines)
+          (longlines-mode-on)
+          (refill-mode 1))
         ;; I like to have my own verbatim contructions well indented
         (setq font-lock-defaults
               '((font-latex-keywords font-latex-keywords-1 font-latex-keywords-2)

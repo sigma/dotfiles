@@ -1,5 +1,8 @@
 2004-09-10  Yann Hodique  <Yann.Hodique@lifl.fr>
 
+	* dotemacs.el
+	(longlines): re-enabled with refill-mode
+
 	* perso/patches.el:
 	(scroll-preserve-screen-position): set to t
 
