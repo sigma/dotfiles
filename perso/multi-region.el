@@ -2,12 +2,12 @@
 
 ;; This file is NOT part of Emacs.
 
-;; Copyright (C) 2004 Lawrence Mitchell <wence@gmx.li>
+;; Copyright (C) 2004, 2005 Lawrence Mitchell <wence@gmx.li>
 ;; Filename: multi-region.el
-;; Version: 1
+;; Version: 1.1
 ;; Author: Lawrence Mitchell <wence@gmx.li>
 ;; Created: 2004-04-15
-;; URL: http://www.vegetable.demon.co.uk/wence/multi-region.el
+;; URL: http://purl.org/NET/wence/multi-region.el
 
 ;; COPYRIGHT NOTICE
 
@@ -45,17 +45,20 @@
 ;; (define-key global-map (kbd "C-M-m") multi-region-map)
 
 ;;; History:
-;; Inspired by <URL: http://www.emacswiki.org/cgi-bin/wiki/
-;; EmacsIdeasApplyRegionFunctionOnMultipleRegions>
+;; Inspired by <URL:
+;; http://www.emacswiki.org/cgi-bin/wiki/ApplyFunctionOnMultipleRegions>
 
 ;;; Code:
+
+(when (featurep 'xemacs)
+  (require 'overlay))
 
 (defface multi-region-face
   '((((background light))
      (:background "lightblue"))
     (((background dark))
      (:background "darkblue"))
-    ((t (:background "lightblue"))))
+    (t (:background "lightblue")))
   "Face to highlight multi-regions.")
 
 (defvar multi-region-map
@@ -66,6 +69,9 @@
     (define-key map "x" 'multi-region-execute-command)
     map)
   "Keymap for multi-region commands.")
+
+(defvar multi-region-overlays nil)
+(make-variable-buffer-local 'multi-region-overlays)
 
 (defun multi-region-overlay-p (overlays)
   "Return non-nil if OVERLAYS contains a multi-region overlay.
@@ -87,11 +93,9 @@ The region between BEG and END is given a multi-region overlay."
       (overlay-put ov 'multi-region t)
       (overlay-put ov 'face 'multi-region-face)
       (push ov multi-region-overlays)))
-  (when transient-mark-mode
+  (when (and (boundp 'transient-mark-mode)
+             transient-mark-mode)
     (deactivate-mark)))
-
-(defvar multi-region-overlays nil)
-(make-variable-buffer-local 'multi-region-overlays)
 
 (defun multi-region-unmark-regions ()
   "Remove all multi-regions in the current buffer."
@@ -123,12 +127,21 @@ one."
     (let ((start (overlay-start ov))
           (end (overlay-end ov)))
       (save-excursion
-        (save-restriction
-          (narrow-to-region start end)
+        ;; Ensure that we only operate on the marked region.  The
+        ;; other alternative, to narrow to the marked region, looks
+        ;; ugly when performing commands like ispell-region, however,
+        ;; it's failsafe, whereas this version assumes that package
+        ;; authors respect transient-mark-mode.
+        (let ((transient-mark-mode t)
+              (zmacs-regions t))
           (push-mark start nil t)
           (goto-char end)
           (command-execute cmd)))))
-  (multi-region-remove-regions))
+  (when (fboundp 'deactivate-mark)
+    (deactivate-mark))
+  (when (fboundp 'zmacs-deactivate-region)
+    (zmacs-deactivate-region))
+  (multi-region-unmark-regions))
 
 (provide 'multi-region)
 
