@@ -28,6 +28,13 @@
 
 ;;; Code:
 
+;; Use this one instead of require to ignore errors
+(defun request (pack)
+  "Fail to require silently"
+  (condition-case nil
+    (require pack)
+  (error nil)))
+
 ;; make the y or n suffice for a yes or no question
 (fset 'yes-or-no-p 'y-or-n-p)
 
@@ -170,12 +177,21 @@
   (unless (minibuffer-window-active-p (minibuffer-window))
     ad-do-it))
 
-;; Don't duplicate the current buffer in a new window
-(defadvice split-window-vertically (after ad-split-window-vertically-other-buffer act)
-  "Open another buffer in the new window"
-  (set-window-buffer (next-window) (other-buffer)))
+;; Many thanks to utis (Oliver Scholz)
+(defmacro defmadvice (flist spec &rest body)
+  (let ((defs (mapcar
+               (lambda (f) `(defadvice ,f ,(append (list (car spec) (intern (format "%s-%s" (symbol-name f) (car spec)))) (cdr spec)) ,@body))
+               flist)))
+    `(progn ,@defs)))
 
-(defadvice split-window-horizontally (after ad-split-window-horizontally-other-buffer act)
+(defmadvice (dframe-handle-make-frame-visible dframe-handle-iconify-frame dframe-handle-delete-frame)
+  (around act)
+  "Inhibit message function"
+  (flet ((message (&rest args) nil))
+    ad-do-it))
+
+(defmadvice (split-window-vertically split-window-horizontally)
+  (after act)
   "Open another buffer in the new window"
   (set-window-buffer (next-window) (other-buffer)))
 

@@ -1,6 +1,13 @@
 2004-07-14  Yann Hodique  <Yann.Hodique@lifl.fr>
 
 	* dotemacs.el
+	(emacs-lisp-mode): added some keywords to emacs-lisp-mode
+
+	* perso/patches.el:
+	(request): moved here
+	(defmadvice): new macro for duplicating advices over multiple functions
+
+	* dotemacs.el
 	(request): replace obsoleted code
 
 2004-07-12  Yann Hodique  <Yann.Hodique@lifl.fr>

@@ -1,23 +1,16 @@
 ;; -*- mode: emacs-lisp; auto-compile-lisp: nil; -*-
-;; $Id: dotemacs.el,v 1.24 2004/07/14 08:17:42 sigma Exp $
-
-;; Use this one instead of require to ignore errors
-(defun request (pack)
-  "Fail to require silently"
-  (condition-case nil
-    (require pack)
-  (error nil)))
+;; $Id: dotemacs.el,v 1.25 2004/07/14 18:09:02 sigma Exp $
 
 ;; Load site-specific stuff
 (if (file-exists-p (expand-file-name "~/.emacs-local"))
     (load-file (expand-file-name "~/.emacs-local")))
 
+;; Fix various "bad" default behaviors
+(require 'patches)
+
 ;; My customizations are in a separate file
 (if (file-exists-p (expand-file-name "~/.emacs-cust"))
     (load-file (expand-file-name "~/.emacs-cust")))
-
-;; Fix various "bad" default behaviors
-(require 'patches)
 
 ;; Hacked scroll margin
 (set-scroll-margin 5 5 '("*eshell*" "*compile*"))
@@ -502,6 +495,10 @@ there are more than 1% of such letters then turn French accent mode on."
 (add-hook 'ielm-mode-hook 'turn-on-eldoc-mode)
 
 (define-key emacs-lisp-mode-map (kbd "C-c C-c") 'emacs-lisp-byte-compile)
+(font-lock-add-keywords 'emacs-lisp-mode
+                        '(("(\\(request\\|add-hook\\|remove-hook\\|autoload\\|defmadvice\\)\\>[ 	']*\\(\\sw+\\)?"
+                           (1 font-lock-keyword-face)
+                           (2 font-lock-constant-face nil t))))
 
 (request 'mycompletion)
 (request 'page-break)
