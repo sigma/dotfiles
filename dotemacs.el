@@ -1,5 +1,5 @@
 ;; -*- mode: emacs-lisp; auto-compile-lisp: nil; -*-
-;; Time-stamp: <19/06/2004 18:32:33 Yann Hodique>
+;; Time-stamp: <19/06/2004 18:35:38 Yann Hodique>
 
 ;; Use this one instead of require to ignore errors
 (defun request (pack)
@@ -159,7 +159,6 @@
 
 (defun ediff-add-changelog  (&optional key)
   (interactive)
-  (setq changelog-restore-buffer (current-buffer))
   (with-current-buffer
       (ediff-get-buffer
        (ediff-char-to-buftype (or key last-command-char)))
