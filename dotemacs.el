@@ -1,5 +1,5 @@
 ;; -*- mode: emacs-lisp; auto-compile-lisp: nil; -*-
-;; $Id: dotemacs.el,v 1.23 2004/07/12 19:31:26 sigma Exp $
+;; $Id: dotemacs.el,v 1.24 2004/07/14 08:17:42 sigma Exp $
 
 ;; Use this one instead of require to ignore errors
 (defun request (pack)
@@ -61,7 +61,7 @@
 
 (when (request 'desktop)
     (progn
-      (desktop-load-default)
+      (desktop-save-mode 1)
       (desktop-read)))
 
 ;; (when (request 'visible-mark-mode)
