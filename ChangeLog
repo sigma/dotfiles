@@ -1,3 +1,9 @@
+2005-01-24  Yann Hodique  <Yann.Hodique@lifl.fr>
+
+	* perso/mycode.el:
+	(my-c-mode-common-hook): add M-RET to continue a comment, make Qt accesse valid
+	redefine c-guess-basic-syntax to honor Qt-related changes
+
 2005-01-23  Yann Hodique  <Yann.Hodique@lifl.fr>
 
 	* perso/patches.el:
