@@ -1,3 +1,8 @@
+2004-06-23  Yann Hodique  <Yann.Hodique@lifl.fr>
+
+	* perso/dabbrev-hover.el:
+	initial checkin
+
 2004-06-21  Yann Hodique  <Yann.Hodique@lifl.fr>
 
 	* dotemacs.el
