@@ -111,6 +111,8 @@
  '(show-paren-mode t nil (paren))
  '(speedbar-frame-parameters (quote ((width . 20) (border-width . 0) (menu-bar-lines . 0) (tool-bar-lines . 0) (unsplittable . t))))
  '(speedbar-use-images nil)
+ '(tc-make-attribution (quote kai-tc-simple-attribution))
+ '(tc-mouse-overlays t)
  '(template-auto-insert nil)
  '(tempo-insert-region nil)
  '(tempo-interactive t)

@@ -1,5 +1,5 @@
 ;; -*- mode: emacs-lisp; mode: hi-lock; mode: page-break; auto-compile-lisp: nil; -*-
-;; $Id: dotemacs.el,v 1.37 2004/08/28 16:12:38 sigma Exp $
+;; $Id: dotemacs.el,v 1.38 2004/09/06 17:36:43 sigma Exp $
 
 ;; Hi-lock: (("^;;; \\(.*\\)" (1 'hi-black-hb t)))
 ;; Hi-lock: (("^ +;;; \\(.*\\)" (1 'hi-black-b t)))
@@ -206,6 +206,8 @@
       (request 'lispy-session)
       (request 'lispy-h4x0r)
       (request 'lispy-osd)
+      (request 'lispy-autoreconnect)
+      (request 'lispy-limit)
       ))
 
   ;;; Eshell : Emacs shell

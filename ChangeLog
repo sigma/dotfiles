@@ -1,5 +1,14 @@
 2004-09-06  Yann Hodique  <Yann.Hodique@lifl.fr>
 
+	* perso/tc.el:
+	(tc-max-lines): move declaration to prevent warning
+
+	* dotemacs.el:
+	(require): more lispy extension
+
+	* dotemacs-cust.el:
+	(custom-set-variables): trivial-cite settings
+
 	* perso/hl-line-hack.el:
 	(global-hl-line-hack-mode): do not toggle any more
 
@@ -10,19 +19,19 @@
 
 2004-08-28  Yann Hodique  <Yann.Hodique@lifl.fr>
 
-	* perso/xterm-extras.el
+	* perso/xterm-extras.el:
 	(xterm-extra-extra-keys): make DEL key work better
 
-	* perso/tempo-lisp.el
+	* perso/tempo-lisp.el:
 	renaming
 
-	* perso/tempo-c++.el
+	* perso/tempo-c++.el:
 	renaming
 
 	* perso/project.el:
 	initial checkin
 
-	* perso/pod.el
+	* perso/pod.el:
 	(pod-subseq): make it work
 
 	* perso/patches.el:
@@ -32,20 +41,20 @@
 	(facep): re-enabled face generation for minibuffer if needed
 	(yh/completion-setup-function):
 
-	* perso/mycompletion.el
+	* perso/mycompletion.el:
 	renaming
 
-	* perso/idledo.el
+	* perso/idledo.el:
 	initial checkin
 
-	* perso/mycode.el
+	* perso/mycode.el:
 	more requirements, some reordering
 	(c-mode-common-hook): refactoring
 
 	* perso/dircolors.el:
 	remove useless code
 
-	* emacs.d/emacs-d-vars.el
+	* emacs.d/emacs-d-vars.el:
 	remove lots of unused variables
 
 	* dotgnus.el:
@@ -58,32 +67,32 @@
 	new section: lisp languages
 	(find-file-guessing): don't open file automatically
 
-	* dotemacs-cust.el
+	* dotemacs-cust.el:
 	(custom-set-variables): remove useless settings
 	(facep): add a test to inhibit useless face definition
 	(custom-set-faces): more settings
 
 2004-08-10  Yann Hodique  <Yann.Hodique@lifl.fr>
 
-	* dotgnus.el
+	* dotgnus.el:
 	(tc): fix missing requirements
 
 2004-08-04  Yann Hodique  <Yann.Hodique@lifl.fr>
 
-	* dotemacs.el
+	* dotemacs.el:
 	request new file: lispy-h4x0r
 	(find-file-guessing): bugfix, call ffap
 	(h4x0r-string): autoload this function
 
 2004-08-02  Yann Hodique  <Yann.Hodique@lifl.fr>
 
-	* dotemacs.el
+	* dotemacs.el:
 	(simplify-blank-lines): advice was a bad idea
 	switched again to standard keybindings
 
 2004-07-29  Yann Hodique  <Yann.Hodique@lifl.fr>
 
-	* dotemacs.el
+	* dotemacs.el:
 	(highlight-changes-enable-hook): prevent buffer to be marked as modified when removing highlighting
 	pmwiki configuration
 
@@ -98,14 +107,14 @@
 
 2004-07-28  Yann Hodique  <Yann.Hodique@lifl.fr>
 
-	* dotemacs.el
+	* dotemacs.el:
 	(emacs-lisp-mode): more highlighting
 	more autoloads
 
 	* perso/rrc.el:
 	initial checkin
 
-	* dotemacs.el
+	* dotemacs.el:
 	suppress useless bindings
 
 2004-07-27  Yann Hodique  <Yann.Hodique@lifl.fr>
@@ -116,12 +125,12 @@
 	* dotemacs.el:
 	move keys from mycode.el
 
-	* perso/tempo-c++.el
+	* perso/tempo-c++.el:
 	("c-include"): fix template basis
 	("c-ifdef"): fix template basis
 	("c-ifndef"): fix template basis
 
-	* perso/patches.el
+	* perso/patches.el:
 	(add-mhook): add same hook to multiple modes
 
 	* perso/page-break.el:
@@ -130,11 +139,11 @@
 	* perso/mycompletion.el:
 	(gpl-header): move here, where it is needed
 
-	* emacs.d/emacs-d-vars.el
+	* emacs.d/emacs-d-vars.el:
 	suppress useless code
 	(provide): allow require
 
-	* dotemacs.el
+	* dotemacs.el:
 	(emacs-d-vars): use request instead of load-file
 	(request): remove useless #
 	disable delete-trailing-whitespace
@@ -142,7 +151,7 @@
 
 2004-07-23  Yann Hodique  <Yann.Hodique@lifl.fr>
 
-	* perso/patches.el
+	* perso/patches.el:
 	(backup-directory-alist): autosaves settings are better here for quick use.
 
 	* dotemacs-cust.el:
@@ -159,17 +168,17 @@
 	* perso/pod.el:
 	initial checkin
 
-	* perso/patches.el
+	* perso/patches.el:
 	(match-paren): renamed after emacswiki
 
 2004-07-19  Yann Hodique  <Yann.Hodique@lifl.fr>
 
-	* dotgnus.el
+	* dotgnus.el:
 	(nnir): use it :)
 
 	* dotemacs.el: use gnus as default mailer
 
-	* dotemacs-cust.el
+	* dotemacs-cust.el:
 	(custom-set-variables): don't ask before saving eshell history, set preview-latex options
 
 	* perso/patches.el:
@@ -177,15 +186,15 @@
 	(defmadvice): customize advice name
 	reimplement buffer switching fix with defmadvice
 
-	* dotemacs-cust.el
+	* dotemacs-cust.el:
 	(custom-set-variables): customized backup directory
 
 2004-07-15  Yann Hodique  <Yann.Hodique@lifl.fr>
 
-	* dotemacs.el
+	* dotemacs.el:
 	(request): remove paragraph justification
 
-	* dotemacs-cust.el
+	* dotemacs-cust.el:
 	(custom-set-variables): excluded tramp files from recentf, save in ~/.emacs-recentf
 
 	* perso/xterm-extras.el:
@@ -194,19 +203,19 @@
 	* perso/mycode.el:
 	fixed mess in this file (cvs bug?)
 
-	* dotemacs.el
+	* dotemacs.el:
 	(hi-lock-mode): reactivate
 
 2004-07-14  Yann Hodique  <Yann.Hodique@lifl.fr>
 
-	* dotemacs.el
+	* dotemacs.el:
 	(emacs-lisp-mode): added some keywords to emacs-lisp-mode
 
 	* perso/patches.el:
 	(request): moved here
 	(defmadvice): new macro for duplicating advices over multiple functions
 
-	* dotemacs.el
+	* dotemacs.el:
 	(request): replace obsoleted code
 
 2004-07-12  Yann Hodique  <Yann.Hodique@lifl.fr>
@@ -214,21 +223,21 @@
 	* perso/mycode.el:
 	general cleanup
 
-	* dotemacs.el
+	* dotemacs.el:
 	(make-double-command): use (declare) in macro
 	(my-home): new command, bound to C-Home
 	(my-end): new command, bound to C-End
 	(emacs-lisp-mode-map): bind C-c C-c to emacs-lisp-byte-compile
 	general cleanup
 
-	* perso/patches.el
+	* perso/patches.el:
 	(yank-rpop): go forward in kill ring for yanking (bound to M-Y)
 
-	* perso/mycode.el
+	* perso/mycode.el:
 	(camille-c-style): change arg list continuation
 	(c++-new-font-lock-keywords): better description
 
-	* perso/h4x0r.el
+	* perso/h4x0r.el:
 	(h4x0r-sometimes-replace): new way of writing r
 
 	* dotemacs.el:
@@ -236,7 +245,7 @@
 	(global-visible-mark-mode): disable
 	(htmlize-many-files-dired): add autoload
 
-	* dotemacs-cust.el
+	* dotemacs-cust.el:
 	(custom-set-variables): prevent eshell to cycle completions
 
 2004-07-02  Yann Hodique  <Yann.Hodique@lifl.fr>
@@ -244,15 +253,15 @@
 	* perso/patches.el:
 	activate every disabled command
 
-	* perso/margin.el
+	* perso/margin.el:
 	initial checkin
 
 2004-06-30  Yann Hodique  <Yann.Hodique@lifl.fr>
 
-	* dotgnus.el
+	* dotgnus.el:
 	(fortune-program): set to /usr/games/fortune
 
-	* perso/patches.el
+	* perso/patches.el:
 	(erase-buffer): re-enabled command
 
 2004-06-23  Yann Hodique  <Yann.Hodique@lifl.fr>
@@ -262,14 +271,14 @@
 
 2004-06-21  Yann Hodique  <Yann.Hodique@lifl.fr>
 
-	* dotemacs.el
+	* dotemacs.el:
 	(request): 'saveplace has to be explicitely loaded
 	(c-mode-common-hook): fixed some bug when using conflict resolution on c++
 
-	* dotemacs-cust.el
+	* dotemacs-cust.el:
 	(custom): set limit to 100 saved places
 
-	* dotemacs.el
+	* dotemacs.el:
 	(request): load saveplace
 
 	* perso/undo-browse.el:
@@ -280,10 +289,10 @@
 	* perso/mycode.el:
 	useless code suppression
 
-	* perso/visible-mark-mode.el
+	* perso/visible-mark-mode.el:
 	(visible-mark-move-overlay): fixed function when visible-mark-overlay is null
 
-	* dotemacs.el
+	* dotemacs.el:
 	(find-file-guessing): new function to wrap find-file
 	(kbd): use find-file-guessing with C-x C-f, suppress H-x H-f
 	(ediff-keymap-setup-hook): solved conflict in keybindings
@@ -307,11 +316,11 @@
 	(header-source): make it able to find files in other standard directories
 	(c++-mode-hook): call expand-member-functions with complete filenames
 
-	* perso/member-functions.el
+	* perso/member-functions.el:
 	(expand-member-functions): make it work with absolute path files
 	fixed indentation :)
 
-	* perso/patches.el
+	* perso/patches.el:
 	(split-window-vertically): replaced by advice
 	(split-window-horizontally): replaced by advice
 	added some documentation
@@ -320,7 +329,7 @@
 	* dotemacs.el:
 	save place by default
 
-	* perso/visible-mark-mode.el
+	* perso/visible-mark-mode.el:
 	(visible-mark-move-overlay): fixed nullMarkerException ;)
 	(global-visible-mark-mode-exclude-alist): new list of exceptions for global mode
 	(visible-mark-mode-maybe): new check for global mode
@@ -328,7 +337,7 @@
 
 2004-06-19  Yann Hodique  <Yann.Hodique@lifl.fr>
 
-	* dotemacs.el
+	* dotemacs.el:
 	(request): use global-visible-mark-mode
 	(add-change-log-entry): advice add-change-log-entry to use custom ChangeLog
 
@@ -352,6 +361,6 @@
 
 2004-06-17  Yann Hodique  <Yann.Hodique@lifl.fr>
 
-	* perso/patches.el
+	* perso/patches.el:
 	(message): added advice to disable messages when using the minibuffer
 
