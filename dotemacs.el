@@ -89,6 +89,8 @@
 ;; ignore case for finding files
 (setq read-file-name-completion-ignore-case t)
 
+(windmove-default-keybindings 'alt)
+
 
 ;;; Charsets & languages
 
@@ -152,6 +154,10 @@
             ;; Set dired-x buffer-local variables here.  For example:
             (dired-omit-mode 1)
             ))
+
+(eval-after-load "icomplete" '(progn (require 'icomplete+)))
+(when (request 'icomplete) (icomplete-mode 1))
+(when (request 'iswitchb) (iswitchb-mode 1))
 
 
 ;;; Packages configuration
@@ -696,6 +702,11 @@ there are more than 1% of such letters then turn French accent mode on."
       (progn
         (ecb-winman-winring-enable-support)
         (winring-initialize)))))
+
+(defun ecb-vc-dir-managed-by-SVN (directory)
+ "Return 'SVN if DIRECTORY is managed by SVN. nil if not."
+ (and (file-exists-p (concat directory "/.svn/"))
+      'SVN))
 
 (request 'server)
 (defun root-portal ()

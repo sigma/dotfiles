@@ -71,7 +71,7 @@
 ;; 		 "Transitions\\|Description\\)\\>")
 ;; 	 'font-lock-type-face)
 ;;    '("\\<\\([0-9]+\\)[ \t]*:" 1 font-lock-variable-name-face)
-)))
+   ))
   "Additional expressions to highlight in Bst mode.")
 (put 'bst-mode 'font-lock-defaults '(bst-font-lock-keywords nil t))
 

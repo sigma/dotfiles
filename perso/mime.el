@@ -114,12 +114,12 @@
 ;;
 ;; This is a conventional plain text.  It should be translated into
 ;; text/plain.
-;; 
+;;
 ;;--[[text/plain]]
 ;; This is also a plain text.  But, it is explicitly specified as is.
 ;;
 ;;--[[text/plain; charset=ISO-2022-JP]]
-;; これは charset を ISO-2022-JP に指定した日本語の plain テキストです.
+;; これは charset を ISO-2022-JP に指定した日本語の plain テキストです.
 ;;
 ;;--[[text/richtext]]
 ;; <center>This is a richtext.</center>
@@ -131,7 +131,7 @@
 ;; LCD Archive Entry:
 ;; mime|Masanobu UMEDA|umerin@mse.kyutech.ac.jp|
 ;; Simple MIME Composer|
-;; $Date: 2004/06/15 16:02:05 $|$Revision: 1.1 $|~/misc/mime.el.Z|
+;; $Date$|$Revision: 1.1 $|~/misc/mime.el.Z|
 
 ;;; Code:
 
@@ -142,7 +142,7 @@
 (defvar mime-prefix "\C-c\C-x"
   "*Keymap prefix for MIME commands.")
 
-(defvar mime-signature-file "~/.signature.rtf"
+(defvar mime-signature-file "~/.signature.rtf"
   "*Signature file to be included as a part of a multipart message.")
 
 (defvar mime-ignore-preceding-spaces nil
@@ -456,8 +456,8 @@ TABs at the beginning of the line are not a part of the message:
 	This is also a plain text.  But, it is explicitly specified as
 	is.
 	--[[text/plain; charset=ISO-2022-JP]]
-	これは charset を ISO-2022-JP に指定した日本語の plain テキス
-	トです.
+	これは charset を ISO-2022-JP に指定した日本語の plain テキス
+	トです.
 	--[[text/richtext]]
 	<center>This is a richtext.</center>
 	--[[image/gif][base64]]^M...image encoded in base64 here...
@@ -486,7 +486,7 @@ User customizable variables (not documented all of them):
 
  mime-header-charset-chooser
     Specifies a function to identify charset and encoding of a text in
-    a give region of header fields.  The value is a form of (CHARSET . 
+    a give region of header fields.  The value is a form of (CHARSET .
     ENCODING), where ENCODING is either 'B' or 'Q'.  Nil means no
     encoding is necessary.
 
@@ -879,7 +879,7 @@ Optional argument ENCODING specifies an encoding method such as base64."
 	    (forward-line -1)
 	    (end-of-line))
 	(goto-char (point-max)))
-      ;; Then search for the beginning. 
+      ;; Then search for the beginning.
       (re-search-backward mime-tag-regexp nil t)
       (beginning-of-line)
       (or (looking-at mime-tag-regexp)
@@ -1367,7 +1367,7 @@ while if FLAG is `\\^M' (control-M) the text is hidden."
       (while (not (eobp))
 	(setq start (point))
 	;; Set initial code.
-	(setq last-encoding this-encoding) 
+	(setq last-encoding this-encoding)
 	(setq this-encoding
 	      (funcall mime-header-charset-chooser
 		       start

@@ -56,6 +56,7 @@
  '(ecb-options-version "2.27")
  '(ecb-other-window-behavior (quote only-edit))
  '(ecb-tip-of-the-day nil)
+ '(ecb-vc-supported-backends (quote ((ecb-vc-dir-managed-by-CVS . vc-state) (ecb-vc-dir-managed-by-RCS . vc-state) (ecb-vc-dir-managed-by-SCCS . vc-state) (ecb-vc-dir-managed-by-SVN . vc-state))))
  '(enable-multibyte-characters t)
  '(eshell-ask-to-save-history (quote always))
  '(eshell-cmpl-cycle-completions nil)
