@@ -1,5 +1,5 @@
 ;; -*- mode: emacs-lisp; auto-compile-lisp: nil; -*-
-;; $Id: dotemacs.el,v 1.14 2004/06/20 14:29:51 sigma Exp $
+;; $Id: dotemacs.el,v 1.15 2004/06/20 16:29:42 sigma Exp $
 
 ;; Use this one instead of require to ignore errors
 (defun request (pack)
@@ -187,8 +187,9 @@
     (add-change-log-entry-other-window)))
 
 (add-hook 'ediff-keymap-setup-hook (lambda ()
-                                     (define-key ediff-mode-map "Ca" 'ediff-add-changelog)
-                                     (define-key ediff-mode-map "Cb" 'ediff-add-changelog)))
+                                     (define-key ediff-mode-map ".a" 'ediff-add-changelog)
+                                     (define-key ediff-mode-map ".b" 'ediff-add-changelog)
+                                     (define-key ediff-mode-map ".c" 'ediff-add-changelog)))
 
   ;;;;;;;;;;;;;;
   ;; Changelog
