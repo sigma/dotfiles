@@ -1,5 +1,5 @@
 ;; -*- mode: emacs-lisp; auto-compile-lisp: nil; -*-
-;; $Id: dotemacs.el,v 1.28 2004/07/19 07:46:09 sigma Exp $
+;; $Id: dotemacs.el,v 1.29 2004/07/20 15:21:33 sigma Exp $
 
 ;; Load site-specific stuff
 (if (file-exists-p (expand-file-name "~/.emacs-local"))
@@ -18,7 +18,7 @@
       scroll-conservatively 15)
 
 ;; Save minibuffer history between sessions
-(request 'save-history)
+(require 'save-history)
 
 ;; Date in mode line
 (display-time)
@@ -211,14 +211,14 @@
   ;; Mtp : client for telnet-based chat server
   ;;
 
-(require 'lispy)
-
-(require 'lispy-commands)
-(require 'lispy-history)
-(require 'lispy-font-lock)
-(require 'lispy-occur)
-(require 'lispy-session)
-(require 'lispy-osd)
+(if (require 'lispy)
+    (progn
+      (request 'lispy-commands)
+      (request 'lispy-history)
+      (request 'lispy-font-lock)
+      (request 'lispy-occur)
+      (request 'lispy-session)
+      (request 'lispy-osd)))
 
   ;;;;;;;;;;;;;;;;;;;;;;;;;
   ;; Eshell : Emacs shell
@@ -274,7 +274,7 @@
   ;; CEDET
   ;;
 (setq semantic-load-turn-useful-things-on t)
-(require 'cedet)
+(request 'cedet)
 
   ;;;;;;;;;;;;;;;
   ;; Completion
@@ -538,9 +538,8 @@ there are more than 1% of such letters then turn French accent mode on."
 ;; apply chmod over the current file (usually a+x for scripts)
 (defun chmod-file ()
   (interactive)
-  (require 'dired)
-  (call-process dired-chmod-program nil nil nil (read-from-minibuffer "Mode: " "a+x") (buffer-file-name))
-  )
+  (when (require 'dired)
+    (call-process dired-chmod-program nil nil nil (read-from-minibuffer "Mode: " "a+x") (buffer-file-name))))
 
 ;; convert a buffer from dos ^M end of lines to unix end of lines
 (defun dos2unix ()
@@ -639,14 +638,12 @@ there are more than 1% of such letters then turn French accent mode on."
 (defun init ()
   (interactive)
   (make-main-frame)
-;  (gnuserv-start)
-                                        ;  (code-init "Code")
-  (require 'winring)
-  (ecb-activate)
-  (ecb-winman-winring-enable-support)
-  (winring-initialize)
-                                        ;  (select-frame main-frame)
-  )
+  (let ((act (request 'winring)))
+    (ecb-activate)
+    (when act
+      (progn
+        (ecb-winman-winring-enable-support)
+        (winring-initialize)))))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;
@@ -741,35 +738,35 @@ there are more than 1% of such letters then turn French accent mode on."
 (autoload 'ecb-activate "ecb" "Emacs Code Browser" t nil)
 
 ;; (require 'planner-config)
-(require 'emacs-wiki-config)
+(request 'emacs-wiki-config)
 
-(when (string= "xterm" (getenv "TERM"))
-  (require 'xterm-extras)
+(when (and (string= "xterm" (getenv "TERM")) (request 'xterm-extras))
   (xterm-extra-keys))
 
-(require 'multi-region)
-(define-key global-map (kbd "C-M-m") multi-region-map)
+(when (request 'multi-region)
+  (define-key global-map (kbd "C-M-m") multi-region-map))
 
-(require 'zap-char)
-(global-set-key [(hyper z)]               'zap-upto-char)
-(global-set-key [(hyper meta z)]          'zap-to-char)
-(global-set-key [(shift hyper z)]         'zap-following-char)
-(global-set-key [(shift hyper meta z)]    'zap-from-char)
+(when (request 'zap-char)
+  (progn
+    (global-set-key [(hyper z)]               'zap-upto-char)
+    (global-set-key [(hyper meta z)]          'zap-to-char)
+    (global-set-key [(shift hyper z)]         'zap-following-char)
+    (global-set-key [(shift hyper meta z)]    'zap-from-char)))
 
-(require 'elscreen)
+(request 'elscreen)
 ;(require 'url)
 ;(require 'w3)
 
 (request 'w3m-load)
 
-(require 'longlines)
-(require 'cparen)
+(request 'longlines)
+(request 'cparen)
 (cparen-activate)
 
-(require 'color-moccur)
-(require 'moccur-edit)
+(request 'color-moccur)
+(request 'moccur-edit)
 
-(require 'erc-config)
+(request 'erc-config)
 
 ;;;;;;;;;;;;;;;;;
 ;; Experimental
