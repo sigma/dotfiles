@@ -541,7 +541,7 @@ This function does not do any hidden buffer changes."
       (beginning-of-line)
       (c-save-buffer-state
 	  ((indent-point (point))
-	   (case-fold-search nil)
+;	   (case-fold-search nil)
 	   (paren-state (c-parse-state))
 	   literal containing-sexp char-before-ip char-after-ip lim
 	   c-syntactic-context placeholder c-in-literal-cache step-type
