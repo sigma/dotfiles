@@ -7,6 +7,9 @@
 
 (require 'planner)
 (planner-install-extra-task-keybindings)
+
+(define-key planner-mode-map "\C-c\C-t\C-e" 'planner-edit-task-description)
+
 ;;(require 'planner-accomplishments)
 (require 'planner-cyclic)
 (require 'planner-experimental)

@@ -1,5 +1,17 @@
 2004-09-20  Yann Hodique  <Yann.Hodique@lifl.fr>
 
+	* perso/planner-config.el:
+	new binding for editing the task description
+
+	* dotemacs.el
+	(color-eldoc): use it for better eldoc help
+
+	* dotemacs-cust.el:
+	(custom-set-variables): don't popup me
+
+	* perso/color-eldoc.el:
+	initial checkin
+
 	* dotgnus.el:
 	(bbdb/send-hook): use it
 
