@@ -1,8 +1,11 @@
 2004-06-19  Yann Hodique  <Yann.Hodique@lifl.fr>
 
-	* erc-config.el: initial checkin
+	* dotemacs.el (request): use global-visible-mark-mode
+	(add-change-log-entry): advice add-change-log-entry to use custom ChangeLog
 
-2004-06-19  Yann Hodique  <Yann.Hodique@lifl.fr>
+	* perso/visible-mark-mode.el: new module, by forcer and hacked by me
+
+	* erc-config.el: initial checkin
 
 	* dotemacs.el:
 	(ediff): added ediff configuration

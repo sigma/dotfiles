@@ -1,5 +1,5 @@
 ;; -*- mode: emacs-lisp; auto-compile-lisp: nil; -*-
-;; Time-stamp: <19/06/2004 19:00:33 Yann Hodique>
+;; Time-stamp: <19/06/2004 19:51:57 Yann Hodique>
 
 ;; Use this one instead of require to ignore errors
 (defun request (pack)
@@ -59,6 +59,9 @@
     (progn
       (desktop-load-default)
       (desktop-read)))
+
+(when (request 'visible-mark-mode)
+  (global-visible-mark-mode 1))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Charsets & languages
@@ -168,13 +171,17 @@
           (t nil))
     ))
 
+(defadvice add-change-log-entry (around ad-add-change-log-entry act)
+  "Override default ChangeLog file according to project directory"
+  (let ((change-log-default-name (yh-project-changelog-file)))
+    ad-do-it))
+
 (defun ediff-add-changelog  (&optional key)
   (interactive)
   (with-current-buffer
       (ediff-get-buffer
        (ediff-char-to-buftype (or key last-command-char)))
-    (let ((change-log-default-name (yh-project-changelog-file)))
-      (add-change-log-entry-other-window))))
+    (add-change-log-entry-other-window)))
 
 (add-hook 'ediff-keymap-setup-hook (lambda ()
                                      (define-key ediff-mode-map "Ca" 'ediff-add-changelog)
