@@ -1,5 +1,5 @@
 ;; -*- mode: emacs-lisp; auto-compile-lisp: nil; -*-
-;; $Id: dotemacs.el,v 1.30 2004/07/27 09:11:52 sigma Exp $
+;; $Id: dotemacs.el,v 1.31 2004/07/27 17:40:59 sigma Exp $
 
 ;; Load site-specific stuff
 (if (file-exists-p (expand-file-name "~/.emacs-local"))
@@ -678,6 +678,11 @@ there are more than 1% of such letters then turn French accent mode on."
 (global-set-key [(hyper meta z)]          'zap-to-char)
 (global-set-key [(shift hyper z)]         'zap-following-char)
 (global-set-key [(shift hyper meta z)]    'zap-from-char)
+
+;; Project related keys
+(global-set-key [(meta up)] 'beginning-of-defun)
+(global-set-key [(meta down)] 'end-of-defun)
+(global-set-key [(control f1)] 'toggle-source-header)
 
 ;;;;;;;;;;;;;;
 ;; Autoloads
