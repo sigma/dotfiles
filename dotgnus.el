@@ -781,5 +781,5 @@ Must be called from the `gnus-select-group-hook'."
 (autoload 'trivial-cite "tc" t t)
 
 ;; (server-start)
-(calendar)
+;(calendar)
 (find-file (concat planner-directory "/" planner-default-page))

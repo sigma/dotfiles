@@ -1,4 +1,17 @@
-2005-04-02  Yann Hodique  <Yann.Hodique@lifl.fr>
+2005-04-05  Yann Hodique  <Yann.Hodique@lifl.fr>
+
+	* perso/patches.el: use generic-x for common configuration files
+
+	* dotemacs.el:
+	(minimal): new config file for vc-related operations
+	(auto-mode-alist): add .djava (dynamic java) extension to java-mode
+
+	* dotemacs-cust.el:
+	(custom-set-variables): added some ecb settings
+
+	* config/vc-config.el: initial checkin
+
+2005-02-14  Yann Hodique  <Yann.Hodique@lifl.fr>
 
 	* config/latex-config.el: new environments for slides
 	(my-LaTeX-hook): externalize this hook

@@ -174,7 +174,8 @@
   (request 'project-config)
   (request 'completion-config)
   (request 'crontab-config)
-  (request 'flashcard-config))
+  (request 'flashcard-config)
+  (request 'vc-config))
 
 ;; mail only
 (when-configuration 'mail
@@ -334,11 +335,6 @@
       (progn
         (ecb-winman-winring-enable-support)
         (winring-initialize)))))
-
-(defun ecb-vc-dir-managed-by-SVN (directory)
- "Return 'SVN if DIRECTORY is managed by SVN. nil if not."
- (and (file-exists-p (concat directory "/.svn/"))
-      'SVN))
 
 (request 'server)
 (defun root-portal ()
@@ -668,6 +664,7 @@ Returns nil if no differences found, 't otherwise."
   (add-hook 'sgml-mode-hook 'go-bind-markup-menu-to-mouse3))
 
 (add-to-list 'auto-mode-alist '("\\.[hi]\\'" . c++-mode))
+(add-to-list 'auto-mode-alist '("\\.djava\\'" . java-mode))
 (add-to-list 'auto-mode-alist '("\\.pro\\'" . makefile-mode))
 (add-to-list 'auto-mode-alist '("SCons\\(cript\\|truct\\)\\'" . python-mode))
 

@@ -308,5 +308,8 @@ activate-mark-hook"
 (setq uniquify-buffer-name-style 'forward
       uniquify-strip-common-suffix nil)
 
+;; Provide modes for common config files
+(require 'generic-x)
+
 (provide 'patches)
 ;;; patches.el ends here
