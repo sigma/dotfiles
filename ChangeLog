@@ -1,5 +1,12 @@
 2004-07-28  Yann Hodique  <Yann.Hodique@lifl.fr>
 
+	* dotemacs.el 
+	(emacs-lisp-mode): more highlighting
+	more autoloads 
+
+	* perso/rrc.el: 
+	initial checkin
+
 	* dotemacs.el
 	suppress useless bindings
 

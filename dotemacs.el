@@ -1,5 +1,5 @@
 ;; -*- mode: emacs-lisp; auto-compile-lisp: nil; -*-
-;; $Id: dotemacs.el,v 1.32 2004/07/28 00:22:13 sigma Exp $
+;; $Id: dotemacs.el,v 1.33 2004/07/28 16:53:14 sigma Exp $
 
 ;; Load site-specific stuff
 (if (file-exists-p (expand-file-name "~/.emacs-local"))
@@ -491,9 +491,11 @@ there are more than 1% of such letters then turn French accent mode on."
 
 (define-key emacs-lisp-mode-map (kbd "C-c C-c") 'emacs-lisp-byte-compile)
 (font-lock-add-keywords 'emacs-lisp-mode
-                        '(("(\\(request\\|add-hook\\|remove-hook\\|autoload\\|defmadvice\\)\\>[ 	']*\\(\\sw+\\)?"
+                        '((
+                           "\\(a\\(dd-\\(hook\\|mhook\\)\\|utoload\\)\\|defmadvice\\|\\(set\\(q\\)?\\)\\|re\\(move-hook\\|quest\\)\\)\\>[ 	']*\\(\\sw+\\)?"
+                           ;;"(\\(request\\|add-hook\\|remove-hook\\|autoload\\|defmadvice\\)\\>[ 	']*\\(\\sw+\\)?"
                            (1 font-lock-keyword-face)
-                           (2 font-lock-constant-face nil t))))
+                           (7 font-lock-constant-face nil t))))
 
 (request 'mycompletion)
 
@@ -682,6 +684,8 @@ there are more than 1% of such letters then turn French accent mode on."
 ;; Project related keys
 (global-set-key [(control f1)] 'toggle-source-header)
 
+(global-set-key [(hyper ?r)]  'replace-recent-character)
+
 ;;;;;;;;;;;;;;
 ;; Autoloads
 ;;
@@ -736,6 +740,7 @@ there are more than 1% of such letters then turn French accent mode on."
 (autoload 'zap-to-char "zap-char" "" t nil)
 (autoload 'zap-following-char "zap-char" "" t nil)
 (autoload 'zap-from-char "zap-char" "" t nil)
+(autoload 'replace-recent-character "rrc" "" t nil)
 
 ;; (require 'planner-config)
 (request 'emacs-wiki-config)
