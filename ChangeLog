@@ -1,5 +1,14 @@
 2004-06-20  Yann Hodique  <Yann.Hodique@lifl.fr>
 
+	* emacs.d/emacs-d-vars.el:
+	initial checkin
+
+	* emacs.d/emacs-d-classes.el:
+	initial checkin
+
+	* dotemacs-cust.el:
+	initial checkin
+
 	* dotgnus.el:
 	use cvs Id.
 
