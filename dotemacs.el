@@ -1,5 +1,5 @@
 ;; -*- mode: emacs-lisp; auto-compile-lisp: nil; -*-
-;; Time-stamp: <20/06/2004 09:09:32 Yann Hodique>
+;; $Id: dotemacs.el,v 1.13 2004/06/20 10:06:08 sigma Exp $
 
 ;; Use this one instead of require to ignore errors
 (defun request (pack)

@@ -1,5 +1,11 @@
 2004-06-20  Yann Hodique  <Yann.Hodique@lifl.fr>
 
+	* dotgnus.el:
+	use cvs Id.
+
+	* dotemacs.el:
+	use cvs Id.
+
 	* perso/mycode.el
 	(header-source): make it able to find files in other standard directories
 	(c++-mode-hook): call expand-member-functions with complete filenames
