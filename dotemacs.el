@@ -1,5 +1,5 @@
 ;; -*- mode: emacs-lisp; mode: hi-lock; mode: page-break; auto-compile-lisp: nil; -*-
-;; $Id: dotemacs.el,v 1.61 2004/10/27 09:23:12 sigma Exp $
+;; $Id: dotemacs.el,v 1.62 2004/10/27 10:03:18 sigma Exp $
 
 ;; Hi-lock: (("^;;; \\(.*\\)" (1 'hi-black-hb t)))
 ;; Hi-lock: (("^ +;;; \\(.*\\)" (1 'hi-black-b t)))
@@ -741,7 +741,6 @@ there are more than 1% of such letters then turn French accent mode on."
                                 (if (null arg)
                                     (kill-this-buffer)
                                   (mapcar (lambda (buf) (kill-buffer buf)) (buffer-list)))))
-(global-set-key [(f4)] 'speedbar-get-focus)
 (global-set-key (kbd "C-c m") (lambda () (interactive) (gnus 2)))
 (global-set-key (kbd "C-c x") 'chmod-file)
 (global-set-key (kbd "C-c i") 'init)
@@ -774,6 +773,11 @@ there are more than 1% of such letters then turn French accent mode on."
 ;; use multiple selections
 (when (request 'multi-region)
   (global-set-key (kbd "<H-return>") multi-region-map))
+
+;; cvs keys
+(global-set-key (kbd "<f12>") 'cvs-examine)
+(global-set-key (kbd "<C-f12>") 'cvs-status)
+(global-set-key (kbd "<M-f12>") 'cvs-udpate)
 
 
 ;;; Autoloads
