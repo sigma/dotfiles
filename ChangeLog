@@ -3,6 +3,7 @@
 	* dotemacs.el:
 	(doxymacs): workaround doxymacs-font-lock bug
 	(my-LaTeX-hook): longlines is annoying as is, fix it later
+	use muse if available
 
 	* dotemacs-cust.el:
 	(font-lock-keys-face): fix default foreground

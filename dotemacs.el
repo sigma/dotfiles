@@ -1,5 +1,5 @@
 ;; -*- mode: emacs-lisp; mode: hi-lock; mode: page-break; auto-compile-lisp: nil; -*-
-;; $Id: dotemacs.el,v 1.40 2004/09/08 10:21:46 sigma Exp $
+;; $Id: dotemacs.el,v 1.41 2004/09/08 10:24:48 sigma Exp $
 
 ;; Hi-lock: (("^;;; \\(.*\\)" (1 'hi-black-hb t)))
 ;; Hi-lock: (("^ +;;; \\(.*\\)" (1 'hi-black-b t)))
@@ -125,6 +125,14 @@
 
 (when (request 'calendar)
   (setq european-calendar-style t))
+
+  ;;; Muse
+
+(when (request 'muse-mode)
+  (request 'muse-html)
+  (request 'muse-latex)
+  (request 'muse-texinfo)
+  (request 'muse-docbook))
 
   ;;; Changelog
 
