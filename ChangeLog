@@ -3,6 +3,7 @@
 	* dotgnus.el:
 	more window configuration
 	launch calendar and planner at startup
+	more reftex stuff
 
 	* dotemacs.el
 	(planner-config): re-enabled

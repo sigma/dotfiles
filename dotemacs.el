@@ -1,5 +1,5 @@
 ;; -*- mode: emacs-lisp; mode: hi-lock; mode: page-break; auto-compile-lisp: nil; -*-
-;; $Id: dotemacs.el,v 1.48 2004/09/16 08:04:33 sigma Exp $
+;; $Id: dotemacs.el,v 1.49 2004/09/16 08:38:22 sigma Exp $
 
 ;; Hi-lock: (("^;;; \\(.*\\)" (1 'hi-black-hb t)))
 ;; Hi-lock: (("^ +;;; \\(.*\\)" (1 'hi-black-b t)))
@@ -348,58 +348,62 @@
 (eval-after-load "latex"
   '(add-to-list 'LaTeX-style-list '("prosper")))
 
-(when
-    (request 'tex-site)
-    (progn
-      (setq-default TeX-master t)
-      ;; reftex helps managing references, toc, ...
-      (add-hook 'LaTeX-mode-hook 'reftex-mode)
-      ;; show/hide parts of your document
-      (add-hook 'LaTeX-mode-hook 'outline-minor-mode)
-      ;; preview-latex is great
-      (when (request 'preview)
-          (add-hook 'LaTeX-mode-hook 'LaTeX-preview-setup))
-      ;; point my typos
-      (add-hook 'LaTeX-mode-hook 'flyspell-mode)
-      ;; Most people don't want that... I do
-      ;; highlight *any* change, color rotation
-      (add-hook 'LaTeX-mode-hook 'highlight-changes-mode)
-;;       ;; DWIM with quotes
-;       (add-hook 'LaTeX-mode-hook 'typopunct-mode)
-      (defun my-LaTeX-hook ()
-        (when (request 'longlines)
-          (longlines-mode-on)
-          (refill-mode 1))
-        ;; I like to have my own verbatim contructions well indented
-        (setq font-lock-defaults
-              '((font-latex-keywords font-latex-keywords-1 font-latex-keywords-2)
-                nil nil
-                ((40 . ".")
-                 (41 . ".")
-                 (36 . "\""))
-                nil
-                (font-lock-comment-start-regexp . "%")
-                (font-lock-mark-block-function . mark-paragraph)
-                (font-lock-syntactic-keywords
-                 ("^\\\\begin *{verbatim\\*?}\\(.?\\).*\\(\n\\)"
-                  (1 "<")
-                  (2 "|"))
-                 ("\\(\n\\)\\\\end *{verbatim\\*?}\\(.?\\)"
-                  (1 "|")
-                  (2 "<"))
-                 ("^\\\\begin *{sigmalog\\*?}\\(.?\\).*\\(\n\\)"
-                  (1 "<")
-                  (2 "|"))
-                 ("\\(\n\\)\\\\end *{sigmalog\\*?}\\(.?\\)"
-                  (1 "|")
-                  (2 "<"))
-                 ("\\\\verb\\*?\\([^a-z@]\\).*?\\(\\1\\)"
-                  (1 "\"")
-                  (2 "\""))))
-              ))
+(setq reftex-plug-into-AUCTeX t)
+(setq reftex-enable-partial-scans t)
+(setq reftex-save-parse-info t)
+(setq reftex-use-multiple-selection-buffers t)
 
-      (add-hook 'LaTeX-mode-hook 'my-LaTeX-hook)
-      ))
+(when (request 'tex-site)
+  (progn
+    (setq-default TeX-master t)
+    ;; reftex helps managing references, toc, ...
+    (add-hook 'LaTeX-mode-hook 'reftex-mode)
+    ;; show/hide parts of your document
+    (add-hook 'LaTeX-mode-hook 'outline-minor-mode)
+    ;; preview-latex is great
+    (when (request 'preview)
+      (add-hook 'LaTeX-mode-hook 'LaTeX-preview-setup))
+    ;; point my typos
+    (add-hook 'LaTeX-mode-hook 'flyspell-mode)
+    ;; Most people don't want that... I do
+    ;; highlight *any* change, color rotation
+    (add-hook 'LaTeX-mode-hook 'highlight-changes-mode)
+    ;;       ;; DWIM with quotes
+                                        ;       (add-hook 'LaTeX-mode-hook 'typopunct-mode)
+    (defun my-LaTeX-hook ()
+      (when (request 'longlines)
+        (longlines-mode-on)
+        (refill-mode 1))
+      ;; I like to have my own verbatim contructions well indented
+      (setq font-lock-defaults
+            '((font-latex-keywords font-latex-keywords-1 font-latex-keywords-2)
+              nil nil
+              ((40 . ".")
+               (41 . ".")
+               (36 . "\""))
+              nil
+              (font-lock-comment-start-regexp . "%")
+              (font-lock-mark-block-function . mark-paragraph)
+              (font-lock-syntactic-keywords
+               ("^\\\\begin *{verbatim\\*?}\\(.?\\).*\\(\n\\)"
+                (1 "<")
+                (2 "|"))
+               ("\\(\n\\)\\\\end *{verbatim\\*?}\\(.?\\)"
+                (1 "|")
+                (2 "<"))
+               ("^\\\\begin *{sigmalog\\*?}\\(.?\\).*\\(\n\\)"
+                (1 "<")
+                (2 "|"))
+               ("\\(\n\\)\\\\end *{sigmalog\\*?}\\(.?\\)"
+                (1 "|")
+                (2 "<"))
+               ("\\\\verb\\*?\\([^a-z@]\\).*?\\(\\1\\)"
+                (1 "\"")
+                (2 "\""))))
+            ))
+
+    (add-hook 'LaTeX-mode-hook 'my-LaTeX-hook)
+    ))
 
   ;;; Parenthesis
 
@@ -733,59 +737,59 @@ there are more than 1% of such letters then turn French accent mode on."
 
 
 ;;; Autoloads
+(autoload 'boxquote-boxquote "boxquote" "" t nil)
+(autoload 'boxquote-buffer "boxquote" "" t nil)
+(autoload 'boxquote-defun "boxquote" "" t nil)
+(autoload 'boxquote-describe-function "boxquote" "" t nil)
+(autoload 'boxquote-describe-key "boxquote" "" t nil)
+(autoload 'boxquote-describe-variable "boxquote" "" t nil)
+(autoload 'boxquote-fill-paragraph "boxquote" "" t nil)
+(autoload 'boxquote-insert-file "boxquote" "" t nil)
+(autoload 'boxquote-kill "boxquote" "" t nil)
+(autoload 'boxquote-kill-ring-save "boxquote" "" t nil)
+(autoload 'boxquote-narrow-to-boxquote "boxquote" "" t nil)
+(autoload 'boxquote-narrow-to-boxquote-content "boxquote" "" t nil)
+(autoload 'boxquote-paragraph "boxquote" "" t nil)
+(autoload 'boxquote-region "boxquote" "" t nil)
+(autoload 'boxquote-shell-command "boxquote" "" t nil)
+(autoload 'boxquote-text "boxquote" "" t nil)
+(autoload 'boxquote-title "boxquote" "" t nil)
+(autoload 'boxquote-unbox "boxquote" "" t nil)
+(autoload 'boxquote-unbox-region "boxquote" "" t nil)
+(autoload 'boxquote-yank "boxquote" "" t nil)
+(autoload 'camelCase-mode "camelCase-mode" nil t)
+(autoload 'ecb-activate "ecb" "Emacs Code Browser" t nil)
 (autoload 'expand-member-functions "member-functions" "Expand C++ member function declarations" t)
+(autoload 'gnuserv-start "gnuserv-compat" "Allow this Emacs process to be a server for client processes." t)
+(autoload 'h4x0r-string "h4x0r" "" t nil)
+(autoload 'htmlize-buffer "htmlize" "Provide an html page from the current buffer" t nil)
+(autoload 'htmlize-file "htmlize" "Provide an html page from the current file" t nil)
+(autoload 'htmlize-many-files "htmlize" "Provide an html page from files" t nil)
+(autoload 'htmlize-many-files-dired "htmlize" "Provide an html page from files marked in dired" t nil)
+(autoload 'htmlize-region "htmlize" "Provide an html page from the current region" t nil)
+(autoload 'isearchb-activate "isearchb" "Activate isearchb" t nil)
+(autoload 'keytable "keytable" "Browse key bindings" t nil)
+(autoload 'make-regexp "make-regexp" "Return a regexp to match a string item in STRINGS.")
+(autoload 'make-regexps "make-regexp" "Return a regexp to REGEXPS.")
+(autoload 'map-lines "map-lines" "Map COMMAND over lines matching REGEX." t)
 (autoload 'mode-compile "mode-compile" "Command to compile current buffer file based on the major mode" t)
 (autoload 'mode-compile-kill "mode-compile" "Command to kill a compilation launched by `mode-compile'" t)
-(autoload 'rm-set-mark "rect-mark" "Set mark for rectangle." t)
+(autoload 'page-break-mode "page-break" "Visible page markers" t nil)
+(autoload 'replace-recent-character "rrc" "" t nil)
 (autoload 'rm-exchange-point-and-mark "rect-mark" "Exchange point and mark for rectangle." t)
 (autoload 'rm-kill-region "rect-mark" "Kill a rectangular region and save it in the kill ring." t)
 (autoload 'rm-kill-ring-save "rect-mark" "Copy a rectangular region to the kill ring." t)
-(autoload 'gnuserv-start "gnuserv-compat" "Allow this Emacs process to be a server for client processes." t)
+(autoload 'rm-set-mark "rect-mark" "Set mark for rectangle." t)
+(autoload 'sawfish-mode "sawfish" "sawfish-mode" t)
 (autoload 'speedbar-frame-mode "speedbar" "Popup a speedbar frame" t)
 (autoload 'speedbar-get-focus "speedbar" "Jump to speedbar frame" t)
 (autoload 'teyjus "teyjus" "Run an inferior Teyjus process." t)
 (autoload 'teyjus-edit-mode "teyjus" "Syntax Highlighting, etc. for Lambda Prolog" t)
-(autoload 'sawfish-mode "sawfish" "sawfish-mode" t)
-(autoload 'map-lines "map-lines" "Map COMMAND over lines matching REGEX." t)
-(autoload 'htmlize-buffer "htmlize" "Provide an html page from the current buffer" t nil)
-(autoload 'htmlize-region "htmlize" "Provide an html page from the current region" t nil)
-(autoload 'htmlize-file "htmlize" "Provide an html page from the current file" t nil)
-(autoload 'htmlize-many-files "htmlize" "Provide an html page from files" t nil)
-(autoload 'htmlize-many-files-dired "htmlize" "Provide an html page from files marked in dired" t nil)
-(autoload 'make-regexp "make-regexp" "Return a regexp to match a string item in STRINGS.")
-(autoload 'make-regexps "make-regexp" "Return a regexp to REGEXPS.")
-(autoload 'camelCase-mode "camelCase-mode" nil t)
-(autoload 'keytable "keytable" "Browse key bindings" t nil)
 (autoload 'turn-on-eldoc-mode "eldoc" "Activate eldoc" t nil)
-(autoload 'isearchb-activate "isearchb" "Activate isearchb" t nil)
-(autoload 'ecb-activate "ecb" "Emacs Code Browser" t nil)
-(autoload 'page-break-mode "page-break" "Visible page markers" t nil)
-(autoload 'boxquote-title "boxquote" "" t nil)
-(autoload 'boxquote-region "boxquote" "" t nil)
-(autoload 'boxquote-buffer "boxquote" "" t nil)
-(autoload 'boxquote-insert-file "boxquote" "" t nil)
-(autoload 'boxquote-kill-ring-save "boxquote" "" t nil)
-(autoload 'boxquote-yank "boxquote" "" t nil)
-(autoload 'boxquote-defun "boxquote" "" t nil)
-(autoload 'boxquote-paragraph "boxquote" "" t nil)
-(autoload 'boxquote-boxquote "boxquote" "" t nil)
-(autoload 'boxquote-describe-function "boxquote" "" t nil)
-(autoload 'boxquote-describe-variable "boxquote" "" t nil)
-(autoload 'boxquote-describe-key "boxquote" "" t nil)
-(autoload 'boxquote-shell-command "boxquote" "" t nil)
-(autoload 'boxquote-text "boxquote" "" t nil)
-(autoload 'boxquote-narrow-to-boxquote "boxquote" "" t nil)
-(autoload 'boxquote-narrow-to-boxquote-content "boxquote" "" t nil)
-(autoload 'boxquote-kill "boxquote" "" t nil)
-(autoload 'boxquote-fill-paragraph "boxquote" "" t nil)
-(autoload 'boxquote-unbox-region "boxquote" "" t nil)
-(autoload 'boxquote-unbox "boxquote" "" t nil)
-(autoload 'zap-upto-char "zap-char" "" t nil)
-(autoload 'zap-to-char "zap-char" "" t nil)
 (autoload 'zap-following-char "zap-char" "" t nil)
 (autoload 'zap-from-char "zap-char" "" t nil)
-(autoload 'replace-recent-character "rrc" "" t nil)
-(autoload 'h4x0r-string "h4x0r" "" t nil)
+(autoload 'zap-to-char "zap-char" "" t nil)
+(autoload 'zap-upto-char "zap-char" "" t nil)
 
 (require 'planner-config)
 (require 'emacs-wiki-config)
