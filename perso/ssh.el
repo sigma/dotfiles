@@ -7,7 +7,7 @@
 ;; Keywords: unix, comm
 ;; Created: 1996-07-03
 
-;; $Id: ssh.el,v 1.2 2004/06/15 16:02:05 sigma Exp $
+;; $Id: ssh.el,v 1.3 2004/06/15 16:27:57 sigma Exp $
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by

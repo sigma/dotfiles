@@ -1,6 +1,6 @@
 ;;; sawfish.el --- Sawfish mode.
-;; Copyright 1999,2000,2001,2002 by Dave Pearson <davep@davep.org>
-;; $Revision: 1.2 $
+;; Copyright 1999,2000,2001,2002,2003 by Dave Pearson <davep@davep.org>
+;; $Revision: 1.3 $
 
 ;; sawfish.el is free software distributed under the terms of the GNU
 ;; General Public Licence, version 2. For details see the file COPYING.
@@ -78,11 +78,11 @@
   ;; Keep everyone quiet.
   (defvar sawfish-mode-map)
   (defvar sawfish-mode-menu)
-  
+
   ;; Things to keep XEmacs quiet.
   (unless (boundp 'font-lock-defaults-alist)
     (defvar font-lock-defaults-alist))
-  
+
   ;; Things to keep GNU Emacs quiet.
   (unless (boundp 'delete-menu-item)
     (defun delete-menu-item (path)
@@ -116,11 +116,6 @@ window manager."
 
 (defcustom sawfish-exec-parameter "-e"
   "*Parameter for `sawfish-client' that tells it to eval a form and exit."
-  :type  'string
-  :group 'sawfish)
-
-(defcustom sawfish-compile-parameter "--batch -l compiler -f compile-batch"
-  "*Parameter for `sawfish-client' that tells it to batch compilation."
   :type  'string
   :group 'sawfish)
 
@@ -188,14 +183,14 @@ This is a list of lists. Each entry in the list is of the format:
   :group 'sawfish)
 
 (defcustom sawfish-extra-keyword-list
-  '("add-frame-style" "call-after-load" "call-after-property-changed" 
+  '("add-frame-style" "call-after-load" "call-after-property-changed"
     "call-after-state-changed" "custom-set-property")
   "List of extra keywords for Sawfish used in highlighting.
 Highlight these expressions with `font-lock-keyword-face'."
   :group 'sawfish
   :type '(repeat (string :tag "Keyword: ")))
 
-(defcustom sawfish-warning-keyword-list 
+(defcustom sawfish-warning-keyword-list
   '("fixme" "FIXME" "Fixme" "fix me" "Fix me" "!!!" "Grrr" "Bummer")
   "List of keywords for Sawfish used in highlighting.
 Highlight these expressions with `font-lock-warning-face' even if
@@ -251,7 +246,7 @@ already fontified."
 
 (defconst sawfish-defines-regexp
     (concat "(\\("
-            (regexp-opt 
+            (regexp-opt
              ;; A cute way to obtain the list below would be:
              ;; (sawfish-code (mapcar symbol-name (apropos "^define")))
              ;;
@@ -259,7 +254,7 @@ already fontified."
              ;; define in your running instance of sawfish. It would also
              ;; mean that you'd have to have sawfish running at the time
              ;; that this constant is defined.
-             (list 
+             (list
               "define" "define-command-args" "define-command-to-screen"
               "define-custom-deserializer" "define-custom-serializer"
               "define-custom-setter" "define-datum-printer"
@@ -279,8 +274,8 @@ already fontified."
 
 (defconst sawfish-additional-keywords
     (append lisp-font-lock-keywords-2
-            (list 
-             ;; highlight define-* 
+            (list
+             ;; highlight define-*
              (list
               sawfish-defines-regexp
               '(1 font-lock-keyword-face)
@@ -288,14 +283,14 @@ already fontified."
                 font-lock-variable-name-face nil t))
              ;; extra keywords
              (if sawfish-extra-keyword-list
-                 (list (concat "\\<" 
-                               `,(regexp-opt sawfish-extra-keyword-list) 
+                 (list (concat "\\<"
+                               `,(regexp-opt sawfish-extra-keyword-list)
                                "\\>")
                        '(0 font-lock-keyword-face)))
              ;; highlight warnings
              (if sawfish-warning-keyword-list
-                 (list (concat "\\<" 
-                               `,(regexp-opt sawfish-warning-keyword-list) 
+                 (list (concat "\\<"
+                               `,(regexp-opt sawfish-warning-keyword-list)
                                "\\>")
                        '(0 font-lock-warning-face prepend)))))
   "Some additonal keywords to highlight in `sawfish-mode'.")
@@ -314,7 +309,7 @@ Special commands:
   ;; need to drag those settings down to us in different ways (hmm)....
   (if (and (boundp 'running-xemacs) (symbol-value 'running-xemacs))
       ;; XEmacs appears to do something like this...
-      (put 'sawfish-mode 'font-lock-defaults 
+      (put 'sawfish-mode 'font-lock-defaults
            (get 'emacs-lisp-mode 'font-lock-defaults))
     ;; ...with GNU Emacs we need to pull it from `font-lock-defaults-alist'.
     (unless font-lock-defaults
@@ -324,8 +319,8 @@ Special commands:
       ;; only once
       (unless (memq 'sawfish-additional-keywords (car font-lock-defaults))
         (setq font-lock-defaults (copy-alist font-lock-defaults))
-        (setcar font-lock-defaults 
-                (append (car font-lock-defaults) 
+        (setcar font-lock-defaults
+                (append (car font-lock-defaults)
                         '(sawfish-additional-keywords))))))
   ;; Menu stuff.
   (if (and (boundp 'running-xemacs) (symbol-value 'running-xemacs))
@@ -643,7 +638,7 @@ variable `sawfish-info-files'."
 (defun sawfish-describe-variable (variable)
   "Display the doc-string for VARIABLE."
   (interactive (list (sawfish-describe-ask-variable)))
-  (sawfish-load-helpers)  
+  (sawfish-load-helpers)
   (sawfish-describe-show variable t))
 
 (defun sawfish-find-info-entry (info-file node symbol)
@@ -819,7 +814,7 @@ returned."
                                              (and sawfish-apropos-searches-info-files
                                                   (sawfish-remove-info-one-liner-intro
                                                    (sawfish-search-and-grab-info
-                                                    (sawfish-info-index-function 
+                                                    (sawfish-info-index-function
                                                      (sawfish-apropos-variable-p sym))
                                                     (sawfish-apropos-symbol sym))))))
           "\n"))
@@ -897,7 +892,7 @@ returned."
   (unless (comint-check-proc "*sawfish-client*")
     (set-buffer (make-comint "sawfish-client" sawfish-client nil sawfish-interactive-parameter))
     (sawfish-console-mode))
-  (setq inferior-lisp-buffer "*sawfish-client*")
+  (set (make-local-variable 'inferior-lisp-buffer) "*sawfish-client*")
   (pop-to-buffer "*sawfish-client*"))
 
 (defun sawfish-interaction-mode ()
@@ -962,7 +957,7 @@ returned."
   (if (and (boundp 'running-xemacs) (symbol-value 'running-xemacs))
       (funcall (symbol-function 'region-exists-p))
     (symbol-value 'mark-active)))
-  
+
 (easy-menu-define sawfish-mode-menu sawfish-mode-map "sawfish commands"
   '("Sawfish"
     ["Indent Line"                     lisp-indent-line          t]
@@ -1004,7 +999,7 @@ returned."
       ;; Restore the emacs-lisp-mode keymap.
       (setq emacs-lisp-mode-map (copy-keymap old-emacs-lisp-mode-map)))
     (setq sawfish-gnu-emacs-menu-kludged t)))
-  
+
 (provide 'sawfish)
 
 ;;; sawfish.el ends here

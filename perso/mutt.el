@@ -2,7 +2,7 @@
 ;; Copyright 1998 Eric Kidd
 
 ;; Author: Eric Kidd <eric.kidd@pobox.com>
-;; Version: $Revision: 1.2 $
+;; Version: $Revision: 1.3 $
 
 ;; This is free software distributed under the GPL, yadda, yadda, yadda.
 ;; It has no warranty. See the GNU General Public License for more
@@ -39,7 +39,7 @@
 ;;; Revision History
 ;;;
 ;;; $Log: mutt.el,v $
-;;; Revision 1.2  2004/06/15 16:02:05  sigma
+;;; Revision 1.3  2004/06/15 16:27:57  sigma
 ;;; global update
 ;;;
 ;;; Revision 1.4  1998/04/11 00:05:46  emk

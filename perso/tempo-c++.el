@@ -41,30 +41,30 @@
 ;;; Preprocessor Templates (appended to c-tempo-tags)
 
 (yh-tempo-define-template "c-include"
-                          "#i"
+                          "# i"
                           'c-tempo-keys-alist
                           '("#include <" r ".h>" > n)
-                          "#include"
+                          "include"
                           "Insert a #include <> statement"
                           'c-tempo-tags)
 
 (yh-tempo-define-template "c-ifdef"
-                          "#f"
+                          "# f"
                           'c-tempo-keys-alist
                           '("#ifdef " (p "ifdef-clause: " clause) > n> p n
                             "#else /* !(" (s clause) ") */" n> p n
                             "#endif /* " (s clause)" */" n>)
-                          "#ifdef"
+                          "ifdef"
                           "Insert a #ifdef #else #endif statement"
                           'c-tempo-tags)
 
 (yh-tempo-define-template "c-ifndef"
-                          "#n"
+                          "# n"
                           'c-tempo-keys-alist
                           '("#ifndef " (p "ifndef-clause: " clause) > n
                             "#define " (s clause) n> n ~ n n
                             "#endif /* " (s clause)" */" n>)
-                          "#ifndef"
+                          "ifndef"
                           "Insert a #ifndef #define #endif statement"
                           'c-tempo-tags)
 
@@ -201,13 +201,11 @@
                           'c++-tempo-tags)
 
 (add-hook 'c-mode-hook (lambda ()
-                         (modify-syntax-entry ?# "w")
-                         (tempo-use-tag-list 'c-tempo-tags)
-                         (tempo-use-tag-list 'c++-tempo-tags)
-                         (yh-tempo-build-local-map c-tempo-keys-alist)))
+			  (tempo-use-tag-list 'c-tempo-tags)
+                          (tempo-use-tag-list 'c++-tempo-tags)
+			  (yh-tempo-build-local-map c-tempo-keys-alist)))
 
 (add-hook 'c++-mode-hook (lambda ()
-                           (modify-syntax-entry ?# "w")
                            (tempo-use-tag-list 'c-tempo-tags)
                            (tempo-use-tag-list 'c++-tempo-tags)
                            (yh-tempo-build-local-map c-tempo-keys-alist)))

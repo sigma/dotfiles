@@ -1,5 +1,5 @@
 ;;; @(#) gnus-alias.el -- an alternative to gnus-posting-styles
-;;; @(#) $Id: gnus-alias.el,v 1.2 2004/06/15 16:02:05 sigma Exp $
+;;; @(#) $Id: gnus-alias.el,v 1.3 2004/06/15 16:27:57 sigma Exp $
 
 ;; This file is not part of Emacs
 
@@ -580,7 +580,7 @@ See also `gnus-alias-debug-buffer-name'."
 ;;; ***** version related routines
 ;;; **************************************************************************
 (defconst gnus-alias-version
-  "$Revision: 1.2 $"
+  "$Revision: 1.3 $"
   "Version number for 'gnus-alias' package.")
 
 ;; ---------------------------------------------------------------------------

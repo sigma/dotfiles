@@ -1,5 +1,5 @@
 ;; -*- mode: emacs-lisp; auto-compile-lisp: nil; -*-
-;; Time-stamp: <15/06/2004 17:43:53 Yann Hodique>
+;; Time-stamp: <15/06/2004 18:24:47 Yann Hodique>
 
 ;; Use this one instead of require to ignore errors
 (defun request (pack)
@@ -623,6 +623,15 @@ there are more than 1% of such letters then turn French accent mode on."
 ;(require 'url)
 ;(require 'w3)
 
-(require 'w3m-load)
+(request 'w3m-load)
+
+(require 'longlines)
+(require 'cparen)
+(cparen-activate)
+
+(require 'color-moccur)
+(require 'moccur-edit)
+
+(add-to-list 'ispell-dictionary-alist '("latin" "[A-Za-z]" "[^A-Za-z]" "[']" nil nil "~tex" iso-8859-1))
 
 (message ".emacs loaded")

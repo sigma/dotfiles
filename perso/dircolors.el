@@ -21,7 +21,7 @@
 ;; Filename: dircolors.el
 ;; Author: Padioleau Yoann <padiolea@irisa.fr>
 ;; Version: 1.0
- 
+
 ;;; Goal
 ; try to colorize the buffers of emacs as ls --color do in a terminal
 ;  so if you try C-x b TAB or C-x C-f, you will see directory in blue
@@ -31,11 +31,11 @@
 ;;; Usage
 ; Add the following lines to ~/.emacs or an equivalent
 ;         (require 'dircolors)
-; you can customize this module by : 
-;   - changing the colors of some faces for example with 
+; you can customize this module by :
+;   - changing the colors of some faces for example with
 ;          (set-face-foreground 'dircolors-face-asm "blue")
-;   - adding some faces/extension for example with 
-;          (make-face 'myface-modula) 
+;   - adding some faces/extension for example with
+;          (make-face 'myface-modula)
 ;          (set-face-foreground 'myface-modula "yellow")
 ;          (setq dircolors-extension (cons '(("mod" "md3") myface-modula) dircolors-extension)
 ;   - make dircolors working for other emacs buffer
@@ -82,7 +82,7 @@
 	     ))
 
 (defvar dircolors-extension
-       '((("txt" "doc" "tex" "texi" "man" 
+       '((("txt" "doc" "tex" "texi" "man"
 	   (r "README") (r "readme")
 	   )                                dircolors-face)
 	 (("htm" "html" "html\\.gz" "htm\\.gz")
@@ -98,21 +98,21 @@
 	 (("bak" "BAK" (r "\\.save"))       dircolors-face-backup)
 	 (((r "akefile"))                   dircolors-face-make)
 	 (("db")                            dircolors-face-paddb)
-	 (("ml" 
-	   "hs" "lhs" 
-	   "scm" "sc" 
+	 (("ml"
+	   "hs" "lhs"
+	   "scm" "sc"
 	   "p" "pas"
 	   "c" "cpp" "c++" "cc"
 	   "pm" "pl" "m"
 	   "bet"
 	   )                                dircolors-face-lang)
 	 ((	   "el" "emacs")            dircolors-face-emacs)
-	 (("mli" 
+	 (("mli"
 	   "h" "hpp" "hh"
 	   )                               dircolors-face-lang-interface)
-	 (("ly" "mly" "mll" 
-	   "l" "y" 
-	   "l++" "y++" 
+	 (("ly" "mly" "mll"
+	   "l" "y"
+	   "l++" "y++"
 	   "ll" "yy")                       dircolors-face-yacc)
 	 (("class" "o" )                    dircolors-face-objet)
 	 (("asm" "s" "S" )                  dircolors-face-asm)
@@ -130,13 +130,13 @@
 (setq dircolors-font-lock-keywords
       (append
 	'(
-	  ("\\w*/" . 'dircolors-face-dir); why this ` and 'tricks ??  
+	  ("\\w*/" . 'dircolors-face-dir); why this ` and 'tricks ??
 	  )
-	(map-apply 
-	 (lam (lext face) 
-	      (cons (join-string 
-		     (mapcar 
-		      (lam (e) (if (stringp e) 
+	(map-apply
+	 (lam (lext face)
+	      (cons (join-string
+		     (mapcar
+		      (lam (e) (if (stringp e)
 ;				   (concat "\\w\\(\\w\\|[_-]\\)*+\\." e "\\>")
 				   (concat "\\w*\\." e "\\>")
 				 (concat "\\w*" (cadr e) "\\w*\\>") ;regexp '(r "reg")
@@ -155,13 +155,12 @@
 	  t ; KEYWORDS-ONLY, dont want fontification of comment/strings ?
 	  nil ; CASE-FOLD
 					; SYNTAX-ALIST, say that _ is a word constituent
-	  ((?_ . "w") (?- . "w") (?+ . "w") (?. . "w"))  
+	  ((?_ . "w") (?- . "w") (?+ . "w") (?. . "w"))
 	  ))
   (font-lock-mode 1))
 
 (add-hook 'completion-list-mode-hook 'dircolors)
 (add-hook 'buffer-menu-mode-hook     'dircolors)
-
 (provide 'dircolors)
 
 

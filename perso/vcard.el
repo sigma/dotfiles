@@ -7,7 +7,7 @@
 ;; Keywords: vcard, mail, news
 ;; Created: 1997-09-27
 
-;; $Id: vcard.el,v 1.2 2004/06/15 16:02:04 sigma Exp $
+;; $Id: vcard.el,v 1.3 2004/06/15 16:27:57 sigma Exp $
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
