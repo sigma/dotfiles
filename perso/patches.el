@@ -37,18 +37,23 @@
 
 ;; Map a condition/action on a list
 (defun mapcond (test result list &optional default)
-  (or (let ((ex t))
+  "Map a TEST function over LIST and return the application of
+  the RESULT function over the first positive answer. If DEFAULT
+  is not nil, then in case of on success, this value is returned"
+  (or (let ((ex t)
+            (res nil))
         (while (and ex list)
           (if (funcall test (car list))
               (progn
-                (setq ex nil)
-                (funcall result (car list)))
-            (setq list (cdr list)))))
+                (setq ex nil
+                      res (funcall result (car list))))
+            (setq list (cdr list))))
+        res)
       default))
 
 (defmacro make-double-command (name args doc-string interactive
                                       first-form second-form)
-  "define a new command from 2 behaviors"
+  "Define a new command from 2 behaviors"
   (declare (indent 2))
   (let ((int-form (if (not interactive)
                       '(interactive)
@@ -64,6 +69,7 @@
 
 ;; Many thanks to utis (Oliver Scholz)
 (defmacro defmadvice (flist spec &rest body)
+  "Write the same advice for several functions."
   (let ((defs (mapcar
                (lambda (f) `(defadvice ,f ,(append (list (car spec) (intern (format "ad-%s-%s-%s"
                                                                                     (symbol-name f)
@@ -71,11 +77,13 @@
                                                                                     (car spec)))) (cddr spec))
                               ,@body)) flist))) `(progn ,@defs)))
 
-;; add the same function to multiple hooks
-(defun add-mhook (mlist func) (dolist (m mlist) (add-hook m func)))
+(defun add-mhook (mlist func)
+  "Add the same function to multiple hooks"
+  (dolist (m mlist) (add-hook m func)))
 
-;; clear a hook
-(defun clear-hook (hook) (set hook nil))
+(defun clear-hook (hook)
+  "Clear a hook"
+  (set hook nil))
 
 ;; suppress annoying messages from speedbar package
 (defmadvice (dframe-handle-make-frame-visible dframe-handle-iconify-frame dframe-handle-delete-frame)
@@ -289,6 +297,7 @@ activate-mark-hook"
 (ad-activate 'exchange-point-and-mark)
 (add-hook 'activate-mark-hook 'pg-show-mark)
 
+;; Use better names than plop<1> and plop<2> for files with same name
 (require 'uniquify)
 (setq uniquify-buffer-name-style 'forward
       uniquify-strip-common-suffix nil)

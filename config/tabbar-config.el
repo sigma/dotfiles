@@ -35,6 +35,11 @@
   (global-set-key '[(shift up)]    'tabbar-forward-group)
   (global-set-key '[(shift down)]  'tabbar-backward-group))
 
+(defun yh/tabbar-inhibit-function ()
+  (or (window-dedicated-p (selected-window))
+      (member (buffer-name)
+              '("*Group*" "*Calendar*"))
+      (string-match "\\*Summary" (buffer-name))))
 
 (provide 'tabbar-config)
 ;;; tabbar-config.el ends here

@@ -1,3 +1,21 @@
+2005-01-23  Yann Hodique  <Yann.Hodique@lifl.fr>
+
+	* perso/patches.el:
+	(mapcond): fixed some bugs
+	more documentation strings
+
+	* dotemacs.el:
+	suppressed special frame for compilation buffers
+	more documentation strings
+	dwim-compile utilities
+	(kbd): use kbd for keybindings
+
+	* dotemacs-cust.el:
+	(custom-set-variables): more reftex settings
+
+	* config/tabbar-config.el:
+	(yh/tabbar-inhibit-function): moved here from dotemacs.el
+
 2005-01-19  Yann Hodique  <Yann.Hodique@lifl.fr>
 
 	* perso/multi-region.el:

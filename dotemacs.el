@@ -49,7 +49,7 @@
 (add-hook 'indented-text-mode-hook 'turn-on-auto-fill)
 
 ;; We don't want to insert newlines when reaching end of buffer
-;; and we want to kill the whole line when doing a Ctrl-k
+;; and we want to kill the whole line when doing a C-k
 (setq next-line-add-newlines nil
       kill-whole-line t
       kill-read-only-ok t)
@@ -93,10 +93,6 @@
 (windmove-default-keybindings 'alt)
 
 (request 'autoloads)
-
-(setq special-display-buffer-names
-      (nconc '("*Backtrace*" "*VC-log*" "*compilation*" "*grep*")
-  	     special-display-buffer-names))
 
 
 ;;; Charsets & languages
@@ -218,12 +214,6 @@
                   (execute-kbd-macro (car symb)))))
             '(("{" +) ("}" -)))))
 
-(defun yh/tabbar-inhibit-function ()
-  (or (window-dedicated-p (selected-window))
-      (member (buffer-name)
-              '("*Group*" "*Calendar*"))
-      (string-match "\\*Summary" (buffer-name))))
-
 (defun simplify-blank-lines ()
   "Delete extra blank lines"
   (interactive)
@@ -323,6 +313,7 @@
 
 ;; Adaptative "exit" behavior
 (defun exit-no-gnuserv-or-frame ()
+  "If in a gnuserv-edit session, close it. If in a secondary frame, close it. Else, die"
   (interactive)
   (cond ((and (boundp 'gnuserv-minor-mode) gnuserv-minor-mode) (gnuserv-edit))
 	((or (not main-frame) (eq (selected-frame) main-frame)) (save-buffers-kill-emacs))
@@ -330,6 +321,7 @@
 
 ;; make active frame the main one
 (defun make-main-frame ()
+  "Make the current frame the primary one"
   (interactive)
   (setq main-frame (selected-frame)))
 
@@ -350,6 +342,7 @@
 
 (request 'server)
 (defun root-portal ()
+  "Function to populate background"
   (interactive)
   ;; frame settings
   (xterm-mouse-mode 1)
@@ -379,18 +372,43 @@
 (make-main-frame)
 
 (defun my-occur ()
-      "Switch to *Occur* buffer, or run `occur'."
-      (interactive)
-      (if (get-buffer "*Moccur*")
-          (switch-to-buffer "*Moccur*")
-        (call-interactively 'moccur)))
+  "Switch to *Occur* buffer, or run `moccur'."
+  (interactive)
+  (if (get-buffer "*Moccur*")
+      (switch-to-buffer "*Moccur*")
+    (call-interactively 'moccur)))
+
+;; Do what I mean when I compile
+;; ie chose the right compilation command
+(defvar dwim-compile-alist '(("^\\(?:GNU\\)?[Mm]akefile$" . "make")
+                             ("\\.pro$" . "qmake")
+                             ("^SConstruct$" . "scons"))
+  "Association list between filename patterns and building method")
+
+(defun dwim-compile-check (motif)
+  "Test a regexp against every file in the current directory. Tries to be smart about what \"current directory\" is."
+  (let* ((filename (buffer-file-name (current-buffer)))
+         (dir (if filename
+                  (file-name-directory filename)
+                default-directory))
+         (l (directory-files dir)))
+    (mapcond (lambda (f) (string-match motif f))
+             'identity
+             l)))
+
+;; Use previous function to adapt compile-command value
+(setq compile-command '(or (mapcond (lambda (e) (dwim-compile-check (car e))) 'cdr dwim-compile-alist)
+                           "make"))
+
+;; I hate to mix different compilations contexts (see make -C.. for example...)
+(make-variable-buffer-local 'compile-history)
 
 
 ;;; Global key bindings
 
-(global-set-key (kbd "M-DEL") 'kill-syntax-backward)
+(global-set-key (kbd "<C-backspace>") 'kill-syntax-backward)
 
-(global-set-key [(f3)] 'ecb-toggle-compile-window)
+(global-set-key (kbd "<f3>") 'ecb-toggle-compile-window)
 ;; Depending on your keyboard you may want another one binding
 (global-set-key (kbd "C-x ~") 'previous-error)
 (global-set-key (kbd "C-c s") 'eshell)
@@ -399,22 +417,22 @@
 (global-set-key (kbd "C-c g") 'goto-line)
 (global-set-key (kbd "C-c o") 'my-occur)
 
-(global-set-key [\C-tab] 'other-window)
+(global-set-key (kbd "<C-tab>") 'other-window)
 
 ;; These were traditional bindings, why did they change??
-(global-set-key [home] 'beginning-of-buffer)
-(global-set-key [end] 'end-of-buffer)
+(global-set-key (kbd "<home>") 'beginning-of-buffer)
+(global-set-key (kbd "<end>") 'end-of-buffer)
 
 ;; "intelligent" home and end
-(global-set-key [\C-home] 'my-home)
-(global-set-key [\C-end] 'my-end)
+(global-set-key (kbd "<C-home>") 'my-home)
+(global-set-key (kbd "<C-end>") 'my-end)
 
 ;; mouse scrolling
 (unless (featurep 'mwheel)
-  (global-set-key [mouse-4] 'scroll-down)
-  (global-set-key [mouse-5] 'scroll-up)
-  (global-set-key [\C-mouse-4] 'scroll-down-one-line)
-  (global-set-key [\C-mouse-5] 'scroll-up-one-line))
+  (global-set-key (kbd "<mouse-4>") 'scroll-down)
+  (global-set-key (kbd "<mouse-5>") 'scroll-up)
+  (global-set-key (kbd "<C-mouse-4>") 'scroll-down-one-line)
+  (global-set-key (kbd "<C-mouse-5>") 'scroll-up-one-line))
 
 ;; rectangle bindings. don't mix with registers! :)
 (global-set-key (kbd "C-x r C-SPC") 'rm-set-mark)
@@ -437,15 +455,11 @@
 
 (define-key global-map (kbd "H-s") 'isearchb-activate)
 
-(define-key-after (lookup-key global-map [menu-bar tools])
-  [speedbar] '("Speedbar" . speedbar-frame-mode) [calendar])
-
-(global-set-key [(f5)]
-                (function
-                 (lambda () (interactive)
-                   (if (and (boundp 'ecb-minor-mode) ecb-minor-mode)
-                       (ecb-deactivate)
-                     (ecb-activate)))))
+(global-set-key (kbd "<f5>")
+                (lambda () (interactive)
+                  (if (and (boundp 'ecb-minor-mode) ecb-minor-mode)
+                      (ecb-deactivate)
+                    (ecb-activate))))
 
 (global-set-key (kbd "H-z") 'zap-upto-char)
 (global-set-key (kbd "H-M-z") 'zap-to-char)
@@ -464,9 +478,8 @@
 
 ;; versioning keys
 (request 'psvn-hacked)
-(global-set-key (kbd "<f12>") 'cvs-examine)
-(global-set-key (kbd "<C-f12>") 'cvs-status)
-(global-set-key (kbd "<M-f12>") 'cvs-update)
+(global-set-key (kbd "<M-f12>") 'svn-status)
+(global-set-key (kbd "<C-f12>") 'cvs-update)
 
 ;; xterm settings
 (when (and (string= "xterm" (getenv "TERM"))
