@@ -1,5 +1,5 @@
 ;; -*- mode: emacs-lisp; auto-compile-lisp: nil; -*-
-;; $Id: dotgnus.el,v 1.6 2004/07/19 07:46:09 sigma Exp $
+;; $Id: dotgnus.el,v 1.7 2004/08/10 15:50:38 sigma Exp $
 
 (require 'nnir)
 
@@ -712,3 +712,4 @@ Must be called from the `gnus-select-group-hook'."
 (require 'nntodo)
 
 (require 'moy-bbdb)
+(require 'tc)
