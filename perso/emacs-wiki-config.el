@@ -69,7 +69,7 @@
 (defvar sacha/emacs-wiki-use-absolute-url-flag nil
   "Non-nil means publish absolute URLs.")
 
-(require 'w3m)
+;; (require 'w3m)
 
 ;;(defadvice emacs-wiki-link-url (aaround sacha activate)
 ;;  "Return relative links if possible."

@@ -1,5 +1,5 @@
 ;; -*- mode: emacs-lisp; mode: hi-lock; mode: page-break; auto-compile-lisp: nil; -*-
-;; $Id: dotemacs.el,v 1.53 2004/09/26 19:59:10 sigma Exp $
+;; $Id: dotemacs.el,v 1.54 2004/09/26 20:08:55 sigma Exp $
 
 ;; Hi-lock: (("^;;; \\(.*\\)" (1 'hi-black-hb t)))
 ;; Hi-lock: (("^ +;;; \\(.*\\)" (1 'hi-black-b t)))
@@ -13,6 +13,8 @@
 
 ;; Fix various "bad" default behaviors
 (require 'patches)
+
+(request 'visual)
 
 ;; My customizations are in a separate file
 (if (file-exists-p (expand-file-name "~/.emacs-cust"))
@@ -32,10 +34,13 @@
 ;; Set window title according to buffer name
 (setq frame-title-format '("emacs: %f"))
 
-;; Turn on time stamping
-(setq time-stamp-active t)
-;; Sets new format for the time stamp, also used with the creation tag.
-(setq time-stamp-format "%02d/%02m/%:y %02H:%02M:%02S %U")
+(when (request 'time-stamp)
+  ;; Turn on time stamping
+  (setq time-stamp-active t)
+  ;; Sets new format for the time stamp, also used with the creation tag.
+  (setq time-stamp-format "%02d/%02m/%:y %02H:%02M:%02S %U")
+
+  (add-hook 'before-save-hook 'time-stamp))
 
 ;; Default mode
 (setq default-major-mode 'indented-text-mode)
@@ -60,9 +65,9 @@
 (request 'emacs-type)
 
 (when (request 'desktop)
-    (progn
-      (desktop-save-mode 1)
-      (desktop-read)))
+  (progn
+    (desktop-save-mode 1)
+    (desktop-read)))
 
 ;; (when (request 'visible-mark-mode)
 ;;   (global-visible-mark-mode 1))
@@ -98,9 +103,9 @@
 (setq-default ctl-arrow 'latin-9)
 
 (when (request 'ucs-tables)
-    (progn
-      (unify-8859-on-encoding-mode 1)
-      (unify-8859-on-decoding-mode 1)))
+  (progn
+    (unify-8859-on-encoding-mode 1)
+    (unify-8859-on-decoding-mode 1)))
 
 (defun sk-insert-euro (&optional arg) "Insert Euro ISO 8859-15."
   (interactive "*P")
@@ -112,7 +117,7 @@
 
 (defun sk-insert-oe (&optional arg) "Insert oe"
   (interactive "*P")
-    (insert (make-char 'latin-iso8859-15 #xBD)))
+  (insert (make-char 'latin-iso8859-15 #xBD)))
 
 (global-set-key (kbd "H-o H-e") 'sk-insert-oe)
 
@@ -125,12 +130,12 @@
 
 ;;; Packages configuration
 
-  ;;; Calendar
+;;; Calendar
 
 (when (request 'calendar)
   (setq european-calendar-style t))
 
-  ;;; Muse
+;;; Muse
 
 (autoload 'muse-mode "muse-mode")
 (eval-after-load "muse-mode"
@@ -140,7 +145,7 @@
     (request 'muse-texinfo)
     (request 'muse-docbook)))
 
-  ;;; Changelog
+;;; Changelog
 
 (when (request 'project)
   (defun yh/project-changelog-file ()
@@ -160,7 +165,7 @@
           (lambda () (local-set-key (kbd "C-c C-c")
                                     (lambda () (interactive) (save-buffer) (kill-this-buffer)))))
 
-  ;;; Ediff
+;;; Ediff
 
 (setq ediff-window-setup-function 'ediff-setup-windows-plain)
 (setq ediff-split-window-function 'split-window-horizontally)
@@ -183,7 +188,7 @@
     ediff."
   (setq my-ediff-bwin-config (current-window-configuration))
   (set-register my-ediff-bwin-reg
-                  (list my-ediff-bwin-config (point-marker))))
+                (list my-ediff-bwin-config (point-marker))))
 
 (defun my-ediff-ash ()
   "Function to be called after buffers and window setup for ediff."
@@ -212,15 +217,15 @@
                                      (define-key ediff-mode-map ".b" 'ediff-add-changelog)
                                      (define-key ediff-mode-map ".c" 'ediff-add-changelog)))
 
-  ;;; Tramp : transparent remote editing
+;;; Tramp : transparent remote editing
 
 (when (request 'tramp)
   (setq tramp-default-method "ssh"))
 
 
-  ;;; Lispy : client for telnet-based chat server
+;;; Lispy : client for telnet-based chat server
 
-(if (require 'lispy)
+(if (request 'lispy)
     (progn
       (request 'lispy-commands)
       (request 'lispy-history)
@@ -233,11 +238,11 @@
       (request 'lispy-limit)
       ))
 
-  ;;; Eshell : Emacs shell
+;;; Eshell : Emacs shell
 
 (add-hook 'eshell-post-command-hook 'eshell-show-maximum-output)
 
-  ;;; Speed bar : usefull for displaying various informations
+;;; Speed bar : usefull for displaying various informations
 
 (request 'speedbar)
 ;; Texinfo fancy chapter tags
@@ -246,68 +251,49 @@
 ;; HTML fancy chapter tags
 (add-hook 'html-mode-hook (lambda () (request 'sb-html)))
 
-;; For any verison of emacs on a linux RPM based system:
-(autoload 'rpm "sb-rpm" "Rpm package listing in speedbar.")
-
-;; w3 link listings
-(autoload 'w3-speedbar-buttons "sb-w3" "s3 specific speedbar button generator.")
-
-  ;;; MTorus : multiple buffer rings
+;;; MTorus : multiple buffer rings
 
 (when (request 'mtorus)
-    (progn
-      (mtorus-init)
-      (global-set-key '[(shift right)] 'mtorus-next-marker)
-      (global-set-key '[(shift left)]  'mtorus-prev-marker)
-      (global-set-key '[(shift up)]    'mtorus-next-ring)
-      (global-set-key '[(shift down)]  'mtorus-prev-ring)
-      ;; ring handling: f11
-      (global-set-key '[(f11)]
-                      'mtorus-new-ring)
-      (global-set-key '[(shift f11)]
-                      'mtorus-delete-ring)
-      (global-set-key '[(control f11)]
-                      'mtorus-notify)
-      ;; marker handling: f12
-      (global-set-key '[(f12)]
-                      'mtorus-new-marker)
-      (global-set-key '[(shift f12)]
-                      'mtorus-delete-current-marker)
-      (global-set-key '[(control f12)]
-                      'mtorus-update-current-marker)
-      ))
+  (progn
+    (mtorus-init)
+    (global-set-key '[(shift right)] 'mtorus-next-marker)
+    (global-set-key '[(shift left)]  'mtorus-prev-marker)
+    (global-set-key '[(shift up)]    'mtorus-next-ring)
+    (global-set-key '[(shift down)]  'mtorus-prev-ring)
+    ;; ring handling: f11
+    (global-set-key '[(f11)]
+                    'mtorus-new-ring)
+    (global-set-key '[(shift f11)]
+                    'mtorus-delete-ring)
+    (global-set-key '[(control f11)]
+                    'mtorus-notify)
+    ;; marker handling: f12
+    (global-set-key '[(f12)]
+                    'mtorus-new-marker)
+    (global-set-key '[(shift f12)]
+                    'mtorus-delete-current-marker)
+    (global-set-key '[(control f12)]
+                    'mtorus-update-current-marker)
+    ))
 
-  ;;; CEDET
+;;; CEDET
 (setq semantic-load-turn-useful-things-on t)
 (request 'cedet)
 
-  ;;; Doxymacs : great documentation system
+;;; Doxymacs : great documentation system
 
-(when (request 'doxymacs)
-  (progn
-    (setq doxymacs-relative-path "Doc/html"
-          doxymacs-use-external-xml-parser t)
-    (add-hook 'c-mode-common-hook 'doxymacs-mode)
-    (defun my-doxymacs-font-lock-hook ()
-      (if (or (eq major-mode 'c-mode) (eq major-mode 'c++-mode))
-          (font-lock-add-keywords nil doxymacs-doxygen-keywords)
-        ))
-    (add-hook 'font-lock-mode-hook 'my-doxymacs-font-lock-hook)
+(add-hook 'c-mode-common-hook 'doxymacs-mode)
+(eval-after-load "doxymacs"
+  '(progn
+     (setq doxymacs-relative-path "Doc/html"
+           doxymacs-use-external-xml-parser t)
+     (defun my-doxymacs-font-lock-hook ()
+       (if (or (eq major-mode 'c-mode) (eq major-mode 'c++-mode))
+           (font-lock-add-keywords nil doxymacs-doxygen-keywords)
+         ))
+     (add-hook 'font-lock-mode-hook 'my-doxymacs-font-lock-hook)))
 
-    ;; hack of doxymacs : determines where documentation is from location of current_buffer
-    (defun mydox ()
-      (interactive)
-      (custom-set-variables '(doxymacs-doxygen-root
-                              (concat "file://"
-                                      (if (string= (substring default-directory 0 2) home-directory)
-                                          (concat home-directory (substring default-directory 1))
-                                        default-directory)
-                                      doxymacs-relative-path)))
-      (doxymacs-rescan-tags))
-    (define-key doxymacs-mode-map "\C-cdr" 'mydox)
-    ))
-
-  ;;; Sawfish : the ultimate window manager
+;;; Sawfish : the ultimate window manager
 
 ;; Open sawfish-realted files with the proper mode
 (setq auto-mode-alist (append '(("\\.sawfishrc$"  . sawfish-mode)
@@ -317,27 +303,27 @@
 ;; TODO: investigate why this code is not loaded from sawfish.el
 (eval-after-load "sawfish"
   '(font-lock-add-keywords 'sawfish-mode
-                        (list
-                         ;; highlight define-*
-                         (list
-                          sawfish-defines-regexp
-                          '(1 font-lock-keyword-face)
-                          `(,(regexp-opt-depth sawfish-defines-regexp)
-                            font-lock-variable-name-face nil t))
-                         ;; extra keywords
-                         (if sawfish-extra-keyword-list
-                             (list (concat "\\<"
-                                           `,(regexp-opt sawfish-extra-keyword-list)
-                                           "\\>")
-                                   '(0 font-lock-keyword-face)))
-                         ;; highlight warnings
-                         (if sawfish-warning-keyword-list
-                             (list (concat "\\<"
-                                           `,(regexp-opt sawfish-warning-keyword-list)
-                                           "\\>")
-                                   '(0 font-lock-warning-face prepend))))))
+                           (list
+                            ;; highlight define-*
+                            (list
+                             sawfish-defines-regexp
+                             '(1 font-lock-keyword-face)
+                             `(,(regexp-opt-depth sawfish-defines-regexp)
+                               font-lock-variable-name-face nil t))
+                            ;; extra keywords
+                            (if sawfish-extra-keyword-list
+                                (list (concat "\\<"
+                                              `,(regexp-opt sawfish-extra-keyword-list)
+                                              "\\>")
+                                      '(0 font-lock-keyword-face)))
+                            ;; highlight warnings
+                            (if sawfish-warning-keyword-list
+                                (list (concat "\\<"
+                                              `,(regexp-opt sawfish-warning-keyword-list)
+                                              "\\>")
+                                      '(0 font-lock-warning-face prepend))))))
 
-  ;;; Highlight-changes
+;;; Highlight-changes
 (add-hook 'highlight-changes-enable-hook (lambda ()
                                            (local-set-key "\C-c+" 'highlight-changes-next-change)
                                            (local-set-key "\C-c-" 'highlight-changes-previous-change)
@@ -346,7 +332,7 @@
                                                                                                      (restore-buffer-modified-p mod))))
                                            (local-set-key "\C-c_" 'highlight-changes-rotate-faces)))
 
-  ;;; LaTeX
+;;; LaTeX
 
 ;; (request 'typopunct)
 ;; (typopunct-change-language 'francais t)
@@ -401,18 +387,17 @@
                 (2 "<"))
                ("\\\\verb\\*?\\([^a-z@]\\).*?\\(\\1\\)"
                 (1 "\"")
-                (2 "\""))))
-            ))
+                (2 "\""))))))
 
     (add-hook 'LaTeX-mode-hook 'my-LaTeX-hook)
     ))
 
-  ;;; Parenthesis
+;;; Parenthesis
 
 ;; Use mic-paren in replacement of standard paren.el
 (when (and (or (string-match "XEmacs\\|Lucid" emacs-version) window-system)
            (request 'mic-paren))
-  (paren-activate)     ; activating
+  (paren-activate)                      ; activating
   (add-hook 'c-mode-common-hook
             (function (lambda ()
                         (paren-toggle-open-paren-context 1))))
@@ -426,37 +411,37 @@
 (when (request 'cparen)
   (cparen-activate))
 
-  ;;; Moccur
+;;; Moccur
 
 ;; use colored and editable moccur
 (when (request 'color-moccur)
   (request 'moccur-edit))
 
-  ;;; Fracc : french accent mode
+;;; Fracc : french accent mode
 
 (when (request 'fracc)
-    (progn
-      (defun install-french-accent-mode-if-needed ()
-        "Install French accent mode if the buffer seems to contain French text.
+  (progn
+    (defun install-french-accent-mode-if-needed ()
+      "Install French accent mode if the buffer seems to contain French text.
 The guess is made by computing the proportion of letters with accents. If
 there are more than 1% of such letters then turn French accent mode on."
-        (save-excursion
-          (goto-char (point-min))
-          (let ((n 0)(size (- (point-max) (point-min))))
-            (while (re-search-forward "\\\\['^`][eauo]" (point-max) t)
-              (setq n (+ n 1)) )
-            (while (re-search-forward "[יטאשחךכ]" (point-max) t)
-              (setq n (+ n 1)) )
-            (message "diacritic/normal ratio = %d/%d" n size)
-            (cond ((> (* n 100) size)
-             (fracc-mode fracc-8bits-tex-encoding) ) ) ) ) )
-      ;; and install it
-      (add-hook 'tex-mode-hook 'install-french-accent-mode-if-needed)
-      (add-hook 'LaTeX-mode-hook 'install-french-accent-mode-if-needed)
-      (add-hook 'text-mode-hook 'install-french-accent-mode-if-needed)
-      ))
+      (save-excursion
+        (goto-char (point-min))
+        (let ((n 0)(size (- (point-max) (point-min))))
+          (while (re-search-forward "\\\\['^`][eauo]" (point-max) t)
+            (setq n (+ n 1)) )
+          (while (re-search-forward "[יטאשחךכ]" (point-max) t)
+            (setq n (+ n 1)) )
+          (message "diacritic/normal ratio = %d/%d" n size)
+          (cond ((> (* n 100) size)
+                 (fracc-mode fracc-8bits-tex-encoding) ) ) ) ) )
+    ;; and install it
+    (add-hook 'tex-mode-hook 'install-french-accent-mode-if-needed)
+    (add-hook 'LaTeX-mode-hook 'install-french-accent-mode-if-needed)
+    (add-hook 'text-mode-hook 'install-french-accent-mode-if-needed)
+    ))
 
-  ;;; pmwiki
+;;; pmwiki
 
 ;; TODO: more features!!!
 (defun mywiki-open (name)
@@ -469,7 +454,7 @@ there are more than 1% of such letters then turn French accent mode on."
                      (pmwiki-loc 'base mywiki-sandbox-uri)))
     (message "pmwiki-mode not found")))
 
-  ;;; Lisp
+;;; Lisp
 
 (request 'color-eldoc)
 (add-hook 'emacs-lisp-mode-hook 'turn-on-eldoc-mode)
@@ -485,22 +470,21 @@ there are more than 1% of such letters then turn French accent mode on."
                           ))
 
 (add-hook 'c-mode-common-hook
-  (lambda ()
-    (when (request 'guile-c)
-      (define-key c-mode-map "\C-c\C-g\C-p" 'guile-c-insert-define)
-      (define-key c-mode-map "\C-c\C-g\C-e" 'guile-c-edit-docstring)
-      (define-key c-mode-map "\C-c\C-g\C-d" 'guile-c-deprecate-region)
-      )))
+          (lambda ()
+            (when (request 'guile-c)
+              (define-key c-mode-map "\C-c\C-g\C-p" 'guile-c-insert-define)
+              (define-key c-mode-map "\C-c\C-g\C-e" 'guile-c-edit-docstring)
+              (define-key c-mode-map "\C-c\C-g\C-d" 'guile-c-deprecate-region)
+              )))
 
-(when (request 'guile-scheme)
-  (font-lock-add-keywords 'guile-scheme-mode
-                          `((,(concat "\\<" (regexp-opt '("defun" "defvar" "defmacro" "defmacro*") t)
-                                      "\\>[ 	']*\\(\\sw+\\)?")
-                             (1 font-lock-keyword-face)
-                             (2 font-lock-constant-face nil t))
-                            )))
+(font-lock-add-keywords 'guile-scheme-mode
+                        `((,(concat "\\<" (regexp-opt '("defun" "defvar" "defmacro" "defmacro*") t)
+                                    "\\>[ 	']*\\(\\sw+\\)?")
+                           (1 font-lock-keyword-face)
+                           (2 font-lock-constant-face nil t))
+                          ))
 
-  ;;; C/C++/PHP
+;;; C/C++/PHP
 
 ;; see inside for more details...
 (request 'mycode)
@@ -513,16 +497,11 @@ there are more than 1% of such letters then turn French accent mode on."
                                                (lambda (s) (c-set-style (or (yh/project-get s 'style) "personal")))
                                                (yh/project-list)))))))
 
-  ;;; Completion
+;;; Completion
 
 (request 'mycompletion)
 
-  ;;; CSS
-(when (request 'css-mode)
-  (setq auto-mode-alist
-        (cons '("\\.css\\'" . css-mode) auto-mode-alist)))
-
-  ;;; Crontab
+;;; Crontab
 (when (request 'crontab-mode)
   (setq auto-mode-alist
         (cons '("crontab\\'" . crontab-mode) auto-mode-alist)))
@@ -617,8 +596,8 @@ there are more than 1% of such letters then turn French accent mode on."
   "Print the ascii table. Based on a defun by Alex Schroeder <asc@bsiag.com>"
   (interactive)  (switch-to-buffer "*ASCII*")  (erase-buffer)
   (insert (format "ASCII characters up to number %d.\n" 254))  (let ((i 0))
-    (while (< i 254)      (setq i (+ i 1))
-      (insert (format "%4d %c\n" i i))))  (beginning-of-buffer))
+                                                                 (while (< i 254)      (setq i (+ i 1))
+                                                                        (insert (format "%4d %c\n" i i))))  (beginning-of-buffer))
 
 (defun yank-and-forward-line ()
   (interactive)
@@ -716,14 +695,14 @@ there are more than 1% of such letters then turn French accent mode on."
 (define-key global-map (kbd "H-s") 'isearchb-activate)
 
 (define-key-after (lookup-key global-map [menu-bar tools])
-      [speedbar] '("Speedbar" . speedbar-frame-mode) [calendar])
+  [speedbar] '("Speedbar" . speedbar-frame-mode) [calendar])
 
 (global-set-key [(f5)]
-  (function
-   (lambda () (interactive)
-     (if (and (boundp 'ecb-minor-mode) ecb-minor-mode)
-	 (ecb-deactivate)
-       (ecb-activate)))))
+                (function
+                 (lambda () (interactive)
+                   (if (and (boundp 'ecb-minor-mode) ecb-minor-mode)
+                       (ecb-deactivate)
+                     (ecb-activate)))))
 
 (global-set-key (kbd "H-z") 'zap-upto-char)
 (global-set-key (kbd "H-M-z") 'zap-to-char)
@@ -738,7 +717,7 @@ there are more than 1% of such letters then turn French accent mode on."
 
 ;; use multiple selections
 (when (request 'multi-region)
- (global-set-key (kbd "<H-return>") multi-region-map))
+  (global-set-key (kbd "<H-return>") multi-region-map))
 
 
 ;;; Autoloads
@@ -763,9 +742,12 @@ there are more than 1% of such letters then turn French accent mode on."
 (autoload 'boxquote-unbox-region "boxquote" "" t nil)
 (autoload 'boxquote-yank "boxquote" "" t nil)
 (autoload 'camelCase-mode "camelCase-mode" nil t)
+(autoload 'css-mode "css-mode")
+(autoload 'doxymacs-mode "doxymacs")
 (autoload 'ecb-activate "ecb" "Emacs Code Browser" t nil)
 (autoload 'expand-member-functions "member-functions" "Expand C++ member function declarations" t)
 (autoload 'gnuserv-start "gnuserv-compat" "Allow this Emacs process to be a server for client processes." t)
+(autoload 'guile-scheme-mode "guile-scheme")
 (autoload 'h4x0r-string "h4x0r" "" t nil)
 (autoload 'htmlize-buffer "htmlize" "Provide an html page from the current buffer" t nil)
 (autoload 'htmlize-file "htmlize" "Provide an html page from the current file" t nil)
@@ -785,20 +767,18 @@ there are more than 1% of such letters then turn French accent mode on."
 (autoload 'rm-kill-region "rect-mark" "Kill a rectangular region and save it in the kill ring." t)
 (autoload 'rm-kill-ring-save "rect-mark" "Copy a rectangular region to the kill ring." t)
 (autoload 'rm-set-mark "rect-mark" "Set mark for rectangle." t)
+(autoload 'rpm "sb-rpm" "Rpm package listing in speedbar.")
 (autoload 'sawfish-mode "sawfish" "sawfish-mode" t)
 (autoload 'speedbar-frame-mode "speedbar" "Popup a speedbar frame" t)
 (autoload 'speedbar-get-focus "speedbar" "Jump to speedbar frame" t)
 (autoload 'teyjus "teyjus" "Run an inferior Teyjus process." t)
 (autoload 'teyjus-edit-mode "teyjus" "Syntax Highlighting, etc. for Lambda Prolog" t)
 (autoload 'turn-on-eldoc-mode "eldoc" "Activate eldoc" t nil)
+(autoload 'w3-speedbar-buttons "sb-w3" "s3 specific speedbar button generator.")
 (autoload 'zap-following-char "zap-char" "" t nil)
 (autoload 'zap-from-char "zap-char" "" t nil)
 (autoload 'zap-to-char "zap-char" "" t nil)
 (autoload 'zap-upto-char "zap-char" "" t nil)
-
-(require 'planner-config)
-(require 'emacs-wiki-config)
-(require 'remember-config)
 
 (when (and (string= "xterm" (getenv "TERM")) (request 'xterm-extras))
   (xterm-extra-keys))
@@ -807,61 +787,62 @@ there are more than 1% of such letters then turn French accent mode on."
 
 (request 'w3m-load)
 
-;(request 'erc-config)
+;; (request 'erc-config)
+(request 'emacs-wiki-config)
+;; (request 'remember-config)
+(request 'planner-config)
 
 
 ;;; Experimental
 
 ;; (setq sgml-warn-about-undefined-entities nil)
 
-;; ;;************************************************************
-;; ;; configure HTML editing
-;; ;;************************************************************
-;; ;;
-;; (require 'php-mode)
-;; ;;
-;; ;; configure css-mode
-;; (autoload 'css-mode "css-mode")
-;; (add-to-list 'auto-mode-alist '("\\.css\\'" . css-mode))
-;; (setq cssm-indent-function #'cssm-c-style-indenter)
-;; (setq cssm-indent-level '2)
-;; ;;
-;; (add-hook 'php-mode-user-hook 'turn-on-font-lock)
-;; ;;
-;; (require 'mmm-mode)
-;; (setq mmm-global-mode 'maybe)
-;; ;;
-;; ;; set up an mmm group for fancy html editing
-;; (mmm-add-group
-;;  'fancy-html
-;;  '(
-;;    (html-php-tagged
-;;     :submode php-mode
-;;     :face mmm-code-submode-face
-;;     :front "<[?]php"
-;;     :back "[?]>")
-;;    (html-css-attribute
-;;     :submode css-mode
-;;     :face mmm-declaration-submode-face
-;;     :front "style=\""
-;;     :back "\"")))
-;; ;;
-;; ;; What files to invoke the new html-mode for?
-;; (add-to-list 'auto-mode-alist '("\\.inc\\'" . html-mode))
-;; (add-to-list 'auto-mode-alist '("\\.phtml\\'" . html-mode))
-;; (add-to-list 'auto-mode-alist '("\\.php[34]?\\'" . html-mode))
-;; (add-to-list 'auto-mode-alist '("\\.[sj]?html?\\'" . html-mode))
-;; (add-to-list 'auto-mode-alist '("\\.jsp\\'" . html-mode))
-;; ;;
-;; ;; What features should be turned on in this html-mode?
-;; (add-to-list 'mmm-mode-ext-classes-alist '(html-mode nil html-js))
-;; (add-to-list 'mmm-mode-ext-classes-alist '(html-mode nil embedded-css))
-;; (add-to-list 'mmm-mode-ext-classes-alist '(html-mode nil fancy-html))
-;; ;;
-;; ;; Not exactly related to editing HTML: enable editing help with mouse-3 in all sgml files
-;; (defun go-bind-markup-menu-to-mouse3 ()
-;;   (define-key sgml-mode-map [(down-mouse-3)] 'sgml-tags-menu))
-;; ;;
-;; (add-hook 'sgml-mode-hook 'go-bind-markup-menu-to-mouse3)
+;;************************************************************
+;; configure HTML editing
+;;************************************************************
+;;
+(request 'php-mode)
+;;
+(add-to-list 'auto-mode-alist '("\\.css\\'" . css-mode))
+(setq cssm-indent-function #'cssm-c-style-indenter)
+(setq cssm-indent-level '2)
+;;
+(add-hook 'php-mode-user-hook 'turn-on-font-lock)
+
+(when (request 'mmm-mode)
+  (setq mmm-global-mode 'maybe)
+  ;;
+  ;; set up an mmm group for fancy html editing
+  (mmm-add-group
+   'fancy-html
+   '(
+     (html-php-tagged
+      :submode php-mode
+      :face mmm-code-submode-face
+      :front "<[?]php"
+      :back "^[ \t]*[?]>")
+     (html-css-attribute
+      :submode css-mode
+      :face mmm-declaration-submode-face
+      :front "style=\""
+      :back "\"")))
+  ;;
+  ;; What files to invoke the new html-mode for?
+  (add-to-list 'auto-mode-alist '("\\.inc\\'" . html-mode))
+  (add-to-list 'auto-mode-alist '("\\.phtml\\'" . html-mode))
+  (add-to-list 'auto-mode-alist '("\\.php[34]?\\'" . html-mode))
+  (add-to-list 'auto-mode-alist '("\\.[sj]?html?\\'" . html-mode))
+  (add-to-list 'auto-mode-alist '("\\.jsp\\'" . html-mode))
+  ;;
+  ;; What features should be turned on in this html-mode?
+  (add-to-list 'mmm-mode-ext-classes-alist '(html-mode nil html-js))
+  (add-to-list 'mmm-mode-ext-classes-alist '(html-mode nil embedded-css))
+  (add-to-list 'mmm-mode-ext-classes-alist '(html-mode nil fancy-html))
+  ;;
+  ;; Not exactly related to editing HTML: enable editing help with mouse-3 in all sgml files
+  (defun go-bind-markup-menu-to-mouse3 ()
+    (define-key sgml-mode-map [(down-mouse-3)] 'sgml-tags-menu))
+  ;;
+  (add-hook 'sgml-mode-hook 'go-bind-markup-menu-to-mouse3))
 
 (message ".emacs loaded")

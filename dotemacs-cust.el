@@ -37,7 +37,7 @@
  '(desktop-save-mode nil nil (desktop))
  '(display-time-24hr-format t)
  '(display-time-day-and-date t)
- '(doxymacs-doxygen-style "Qt")
+ '(doxymacs-doxygen-style "JavaDoc")
  '(doxymacs-doxygen-tags "DOXYTAGS")
  '(ecb-auto-activate nil)
  '(ecb-compilation-buffer-names (quote (("*Calculator*") ("*vc*") ("*vc-diff*") ("*Backtrace*") ("*shell*") ("*eshell*") ("*compilation*") ("*bsh*") ("*grep*") ("*Compile-Log*"))))
@@ -126,72 +126,6 @@
  '(visible-bell t)
  '(which-function-mode nil nil (which-func)))
 
-;;;;;;;;;;;;
-;; Visuals
-;;
-
-;; New faces
-(defvar font-lock-number-face 'font-lock-number-face)
-(defvar font-lock-hexnumber-face 'font-lock-hexnumber-face)
-(defvar font-lock-floatnumber-face 'font-lock-floatnumber-face)
-(defvar font-lock-keys-face 'font-lock-keys-face)
-(defvar font-lock-qt-face 'font-lock-qt-face)
-
-(defface font-lock-number-face
-  '(
-    (((class grayscale) (background light)) (:foreground "LightGray" :bold t))
-    (((class grayscale) (background dark)) (:foreground "DimGray" :bold t))
-    (((class color) (background light)) (:background "hotpink"))
-    (((class color) (background dark)) (:foreground "yellow3" :background "hotpink"))
-    (t (:italic t)))
-  "blah"
-  :group 'font-lock-highlighting-faces)
-
-(defface font-lock-hexnumber-face
-  '(
-    (((class grayscale) (background light)) (:foreground "LightGray" :bold t))
-    (((class grayscale) (background dark)) (:foreground "DimGray" :bold t))
-    (((class color) (background light)) (:background "darkblue"))
-    (((class color) (background dark)) (:foreground "black" :background "darkblue"))
-    (t (:italic t)))
-  "blah"
-  :group 'font-lock-highlighting-faces)
-
-(defface font-lock-floatnumber-face
-  '(
-    (((class grayscale) (background light)) (:foreground "LightGray" :bold t))
-    (((class grayscale) (background dark)) (:foreground "DimGray" :bold t))
-    (((class color) (background light)) (:background "darkgreen"))
-    (((class color) (background dark)) (:foreground "black" :background "darkgreen"))
-    (t (:italic t)))
-  "blah"
-  :group 'font-lock-highlighting-faces)
-
-(defface font-lock-keys-face
-  '(
-    (((class grayscale) (background light)) (:foreground "LightGray" :bold t))
-    (((class grayscale) (background dark)) (:foreground "DimGray" :bold t))
-    (((class color) (background light)) (:background "yellow"))
-    (((class color) (background dark)) (:foreground "yellow"))
-    (t (:italic t)))
-  "blah"
-  :group 'font-lock-highlighting-faces)
-
-(defface font-lock-qt-face
-  '(
-    (((class grayscale) (background light)) (:foreground "LightGray" :bold t))
-    (((class grayscale) (background dark)) (:foreground "DimGray" :bold t))
-    (((class color) (background light)) (:background "brown"))
-    (((class color) (background dark)) (:foreground "green" :background "brown"))
-    (t (:italic t)))
-  "blah"
-  :group 'font-lock-highlighting-faces)
-
-(unless (facep 'minibuffer-prompt)
-  (defvar minibuffer-face 'minibuffer-face)
-  (defface minibuffer-face '((t (:bold t :foreground "LightBlue")))
-    "Face used to color the minibuffer."))
-
 (custom-set-faces
   ;; custom-set-faces was added by Custom.
   ;; If you edit it by hand, you could mess it up, so be careful.
@@ -238,6 +172,8 @@
  '(menu ((((type x-toolkit)) (:background "lightgrey" :foreground "black" :box (:line-width 1 :style released-button)))))
  '(message-header-name-face ((((class color) (background dark)) (:foreground "green3"))))
  '(message-header-other-face ((((class color) (background dark)) (:foreground "#dd0000"))))
+ '(mmm-code-submode-face ((t (:background "darkgreen"))))
+ '(mmm-default-submode-face ((t (:background "black"))))
  '(mode-line ((t (:background "lightgrey" :foreground "black" :box (:line-width 1 :style released-button)))))
  '(region ((t (:background "slategrey"))))
  '(show-paren-match-face ((t (:background "black" :foreground "red" :weight bold))))
@@ -250,28 +186,3 @@
  '(w3-style-face-00005 ((t (:underline nil :height 150))))
  '(w3-style-face-00007 ((t (:underline nil :height 150))))
  '(w3-style-face-00008 ((t (:underline nil :weight normal :height 150)))))
-
-(setq font-lock-support-mode 'lazy-lock-mode)
-(setq lazy-lock-stealth-time    1
-      lazy-lock-stealth-verbose nil)
-
-(request 'dircolors)
-
-;; Frame appearence
-(set-default-font "fixed")
-(when (eq window-system 'x)
-    (setq default-frame-alist
-          (append default-frame-alist
-                  '((tool-bar-lines . 0)
-                    (menu-bar-lines . 0)
-                    (width . 100)
-                    (height . 50)
-                    (foreground-color . "wheat")
-                    (background-color . "darkslategray")
-                    (cursor-color . "yellow")
-                    (font . "fixed")
-                    ))))
-
-(if (> emacs-major-version 20) (custom-set-variables '(tool-bar-mode nil nil (tool-bar))))
-(if (> emacs-major-version 20) (set-scroll-bar-mode nil))
-(menu-bar-mode -1)

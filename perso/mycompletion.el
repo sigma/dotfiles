@@ -270,8 +270,8 @@ never prompted."
 (require 'tempo-lisp)
 (require 'tempo-latex)
 
-(require 'template)
-(template-initialize)
+;; (require 'template)
+;; (template-initialize)
 
 (provide 'mycompletion)
 ;;; mycompletion.el ends here

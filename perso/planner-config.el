@@ -3,7 +3,7 @@
 
 ;;;_+ Loading
 
-(setq planner-diary-use-schedule nil)
+;; (setq planner-diary-use-schedule nil)
 
 (require 'planner)
 (planner-install-extra-task-keybindings)
@@ -11,23 +11,26 @@
 (define-key planner-mode-map "\C-c\C-t\C-e" 'planner-edit-task-description)
 
 ;;(require 'planner-accomplishments)
-(require 'planner-cyclic)
-(require 'planner-experimental)
-(require 'planner-bbdb)
-(require 'planner-notes-index)
-(require 'planner-gnus)
-(planner-gnus-insinuate)
+;; (require 'planner-cyclic)
+;; (require 'planner-experimental)
+(eval-after-load "bbdb"
+  '(require 'planner-bbdb))
+;; (require 'planner-notes-index)
+(eval-after-load "gnus"
+  '(progn
+     (require 'planner-gnus)
+     (planner-gnus-insinuate)))
 ;; (require 'planner-erc)
 ;; (require 'planner-lisp)
 (require 'planner-id)
 ;; (require 'planner-notes)
-(require 'planner-rss)
+;; (require 'planner-rss)
 ;; (require 'planner-schedule)
 ;; (require 'planner-timeclock)
 ;; (require 'planner-w3m)
 
 (planner-insinuate-calendar)
-(require 'remember-config)
+;; (require 'remember-config)
 
 (emacs-wiki-configure-highlighting 'emacs-wiki-highlight-markup
                                    (delete '("=[^\t =]" ?= emacs-wiki-highlight-verbatim)
@@ -78,131 +81,131 @@
 ;;; Compatibility, purely for old pages I'm too lazy to change.
 ;;; planner-diary is so much cooler.
 
-(defun sacha/planner-get-diary-entries (date)
-  "For DATE (yyyy.mm.dd), return a list of diary entries as a string."
-  (require 'diary-lib)
-  (when (string-match planner-date-regexp date)
-    (let* ((diary-display-hook 'ignore)
-           (entries (list-diary-entries
-                     (list (string-to-number (match-string 2 date)) ; month
-                           (string-to-number (match-string 3 date)) ; day
-                           (string-to-number (match-string 1 date))) ; year
-                     1))) ; Get entries for one day
-      (if entries
-          (mapconcat (lambda (item) (nth 1 item)) entries "\n")
-        nil))))
+;; (defun sacha/planner-get-diary-entries (date)
+;;   "For DATE (yyyy.mm.dd), return a list of diary entries as a string."
+;;   (require 'diary-lib)
+;;   (when (string-match planner-date-regexp date)
+;;     (let* ((diary-display-hook 'ignore)
+;;            (entries (list-diary-entries
+;;                      (list (string-to-number (match-string 2 date)) ; month
+;;                            (string-to-number (match-string 3 date)) ; day
+;;                            (string-to-number (match-string 1 date))) ; year
+;;                      1))) ; Get entries for one day
+;;       (if entries
+;;           (mapconcat (lambda (item) (nth 1 item)) entries "\n")
+;;         nil))))
 
-(fset 'planner-get-diary-entries 'sacha/planner-get-diary-entries)
+;; (fset 'planner-get-diary-entries 'sacha/planner-get-diary-entries)
 
 ;;; Here we use planner-diary.
-(require 'planner-diary)
-(setq planner-diary-string "* ~/.diary schedule")
-(setq planner-diary-use-diary t)
-;;(planner-diary-insinuate)
-(defadvice plan (after sacha activate)
-  "Call `planner-diary-insert-diary'."
-  (planner-diary-insert-diary))
+;; (require 'planner-diary)
+;; (setq planner-diary-string "* ~/.diary schedule")
+;; (setq planner-diary-use-diary t)
+;; ;;(planner-diary-insinuate)
+;; (defadvice plan (after sacha activate)
+;;   "Call `planner-diary-insert-diary'."
+;;   (planner-diary-insert-diary))
 
-(defun sacha/planner-diary-schedule-task (start end)
-  "Add a diary entry for the current task from START to END."
-  (interactive "MStart: \nMEnd: ")
-  (save-window-excursion
-    (save-excursion
-      (save-restriction
-        (let* ((info (planner-current-task-info))
-               (original (planner-task-description info))
-               description)
-          ;; TODO: Mark the task as scheduled for a particular time
-          (setq description
-                (cond
-                 ((string-match "\\s-+{{Schedule:\\([^}]+\\)}}" original)
-                  (replace-match (concat start "-" end) t t original 1))
-                 ((string-match "\\(\\s-*\\)$" original)
-                  (replace-match (concat " {{Schedule:" start "-" end "}}")
-                                 t t original 1))))
-          (save-window-excursion
-            (when (planner-task-link info)
-              (planner-jump-to-linked-task)
-              (let ((info (planner-current-task-info)))
-                (setcar (cdr (cdr (cdr (cdr info))))
-                        description)
-                (delete-region (line-beginning-position)
-                               (min (point-max)
-                                    (1+ (line-end-position))))
-                (insert (planner-format-task info) "\n"))))
-          (setcar (cdr (cdr (cdr (cdr info))))
-                  description)
-          (delete-region (line-beginning-position)
-                         (min (point-max)
-                              (1+ (line-end-position))))
-          (insert (planner-format-task info) "\n")
-          ;; Add the diary entry
-          (sacha/planner-diary-add-entry
-           (planner-task-date info)
-           (concat start " | " end " | " original)))))))
+;; (defun sacha/planner-diary-schedule-task (start end)
+;;   "Add a diary entry for the current task from START to END."
+;;   (interactive "MStart: \nMEnd: ")
+;;   (save-window-excursion
+;;     (save-excursion
+;;       (save-restriction
+;;         (let* ((info (planner-current-task-info))
+;;                (original (planner-task-description info))
+;;                description)
+;;           ;; TODO: Mark the task as scheduled for a particular time
+;;           (setq description
+;;                 (cond
+;;                  ((string-match "\\s-+{{Schedule:\\([^}]+\\)}}" original)
+;;                   (replace-match (concat start "-" end) t t original 1))
+;;                  ((string-match "\\(\\s-*\\)$" original)
+;;                   (replace-match (concat " {{Schedule:" start "-" end "}}")
+;;                                  t t original 1))))
+;;           (save-window-excursion
+;;             (when (planner-task-link info)
+;;               (planner-jump-to-linked-task)
+;;               (let ((info (planner-current-task-info)))
+;;                 (setcar (cdr (cdr (cdr (cdr info))))
+;;                         description)
+;;                 (delete-region (line-beginning-position)
+;;                                (min (point-max)
+;;                                     (1+ (line-end-position))))
+;;                 (insert (planner-format-task info) "\n"))))
+;;           (setcar (cdr (cdr (cdr (cdr info))))
+;;                   description)
+;;           (delete-region (line-beginning-position)
+;;                          (min (point-max)
+;;                               (1+ (line-end-position))))
+;;           (insert (planner-format-task info) "\n")
+;;           ;; Add the diary entry
+;;           (sacha/planner-diary-add-entry
+;;            (planner-task-date info)
+;;            (concat start " | " end " | " original)))))))
 
-(defun sacha/planner-diary-add-entry (date text &optional annotation)
-  "Prompt for a diary entry to add to `diary-file'."
-  (interactive
-   (list
-    (if (or current-prefix-arg
-            (not (string-match planner-date-regexp (planner-page-name))))
-        (planner-read-date)
-      (planner-page-name))
-    (read-string
-     "Diary entry: ")))
-  (save-excursion
-    (save-window-excursion
-      (make-diary-entry
-       (concat
-        (let ((cal-date (planner-filename-to-calendar-date date)))
-          (calendar-date-string cal-date t t))
-        " " text
-        (or annotation
-            (let ((annotation (run-hook-with-args-until-success
-                               'planner-annotation-functions)))
-              (if annotation
-                  (concat " " annotation)
-                "")))))
-      (planner-goto date)
-      (planner-diary-insert-diary-maybe))))
+;; (defun sacha/planner-diary-add-entry (date text &optional annotation)
+;;   "Prompt for a diary entry to add to `diary-file'."
+;;   (interactive
+;;    (list
+;;     (if (or current-prefix-arg
+;;             (not (string-match planner-date-regexp (planner-page-name))))
+;;         (planner-read-date)
+;;       (planner-page-name))
+;;     (read-string
+;;      "Diary entry: ")))
+;;   (save-excursion
+;;     (save-window-excursion
+;;       (make-diary-entry
+;;        (concat
+;;         (let ((cal-date (planner-filename-to-calendar-date date)))
+;;           (calendar-date-string cal-date t t))
+;;         " " text
+;;         (or annotation
+;;             (let ((annotation (run-hook-with-args-until-success
+;;                                'planner-annotation-functions)))
+;;               (if annotation
+;;                   (concat " " annotation)
+;;                 "")))))
+;;       (planner-goto date)
+;;       (planner-diary-insert-diary-maybe))))
 
-(defun sacha/planner-diary-unschedule-entry ()
-  "Unschedule the current entry."
-  (interactive)
-  (goto-char (line-beginning-position))
-  (let ((id
-         (if (re-search-forward "{{Tasks:\\([^}]+\\)}}" (line-end-position) t)
-             (match-string 0)
-           nil)))
-    (sacha/planner-diary-delete-entry)
-    (when id
-      (planner-seek-to-first "Tasks")
-      (re-search-forward id nil t))))
+;; (defun sacha/planner-diary-unschedule-entry ()
+;;   "Unschedule the current entry."
+;;   (interactive)
+;;   (goto-char (line-beginning-position))
+;;   (let ((id
+;;          (if (re-search-forward "{{Tasks:\\([^}]+\\)}}" (line-end-position) t)
+;;              (match-string 0)
+;;            nil)))
+;;     (sacha/planner-diary-delete-entry)
+;;     (when id
+;;       (planner-seek-to-first "Tasks")
+;;       (re-search-forward id nil t))))
 
-(defun sacha/planner-diary-delete-entry ()
-  "Delete the current entry from `diary-file'."
-  (interactive)
-  (let ((cal-date (planner-filename-to-calendar-date (planner-page-name)))
-        (text (buffer-substring (line-beginning-position)
-                                (line-end-position)))
-        (case-fold-search nil))
-    (save-excursion
-      (save-window-excursion
-        (find-file diary-file)
-        (save-excursion
-          (save-restriction
-            (widen)
-            (goto-char (point-max))
-            (when (re-search-backward
-                   (concat "^"
-                           (regexp-quote
-                            (concat (calendar-date-string cal-date t t)
-                                    " " text))))
-              (delete-region (line-beginning-position)
-                             (min (1+ (line-end-position)) (point-max))))
-            (save-buffer))))
-      (planner-diary-insert-diary-maybe t))))
+;; (defun sacha/planner-diary-delete-entry ()
+;;   "Delete the current entry from `diary-file'."
+;;   (interactive)
+;;   (let ((cal-date (planner-filename-to-calendar-date (planner-page-name)))
+;;         (text (buffer-substring (line-beginning-position)
+;;                                 (line-end-position)))
+;;         (case-fold-search nil))
+;;     (save-excursion
+;;       (save-window-excursion
+;;         (find-file diary-file)
+;;         (save-excursion
+;;           (save-restriction
+;;             (widen)
+;;             (goto-char (point-max))
+;;             (when (re-search-backward
+;;                    (concat "^"
+;;                            (regexp-quote
+;;                             (concat (calendar-date-string cal-date t t)
+;;                                     " " text))))
+;;               (delete-region (line-beginning-position)
+;;                              (min (1+ (line-end-position)) (point-max))))
+;;             (save-buffer))))
+;;       (planner-diary-insert-diary-maybe t))))
 
 ;;;_+ Header and footer
 
@@ -258,22 +261,22 @@
   (message "%s" (match-string 0)))
 
 ;;;_+ RSS blogging
-(add-to-list 'remember-planner-append-hook 'planner-rss-add-note t)
+;; (add-to-list 'remember-planner-append-hook 'planner-rss-add-note t)
 
-(defadvice planner-rss-add-note (around sacha/absolute-urls activate)
-  "Publish absolute URLs."
-  (let ((sacha/emacs-wiki-use-absolute-url-flag t))
-    (setq ad-return-value ad-do-it)))
+;; (defadvice planner-rss-add-note (around sacha/absolute-urls activate)
+;;   "Publish absolute URLs."
+;;   (let ((sacha/emacs-wiki-use-absolute-url-flag t))
+;;     (setq ad-return-value ad-do-it)))
 
-(defun sacha/rss-delete-item ()
-  (interactive)
-  (delete-region
-   (if (looking-at "<item>")
-       (point)
-     (when (re-search-backward "<item>" nil t)
-       (match-beginning 0)))
-   (when (re-search-forward "</item>" nil t)
-     (match-end 0))))
+;; (defun sacha/rss-delete-item ()
+;;   (interactive)
+;;   (delete-region
+;;    (if (looking-at "<item>")
+;;        (point)
+;;      (when (re-search-backward "<item>" nil t)
+;;        (match-beginning 0)))
+;;    (when (re-search-forward "</item>" nil t)
+;;      (match-end 0))))
 
 ;;;_+ Misc
 
@@ -303,11 +306,11 @@
           (string-match "^/home/yann" filename))))
 
 ;; I don't need my tasks renumbered.
-(add-hook 'planner-mode-hook
-          (lambda ()
-            (remove-hook 'write-file-functions 'planner-renumber-tasks t)
-            (remove-hook 'write-file-functions 'planner-align-tasks t)
-            (remove-hook 'write-file-functions 'planner-renumber-notes t)))
+;; (add-hook 'planner-mode-hook
+;;           (lambda ()
+;;             (remove-hook 'write-file-functions 'planner-renumber-tasks t)
+;;             (remove-hook 'write-file-functions 'planner-align-tasks t)
+;;             (remove-hook 'write-file-functions 'planner-renumber-notes t)))
 
 ;; I want notes preceded by a number so I know how to link to them.
 

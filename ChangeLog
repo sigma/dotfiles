@@ -1,11 +1,38 @@
 2004-09-26  Yann Hodique  <Yann.Hodique@lifl.fr>
 
+	* perso/remember-config.el:
+	removed useless dependency to planner-rss
+
+	* perso/planner-config.el:
+	removed useless dependency to diary, don't load bbdb or gnus until really needed
+
+	* perso/mycompletion.el:
+	removed useless dependency to template
+
+	* perso/mycode.el:
+	removed useless dependency to cc-cmds
+
+	* perso/emacs-wiki-config.el:
+	removed useless dependency to w3m
+
+	* perso/visual.el:
+	initial checkin
+
 	* dotemacs.el:
 	(muse-mode): autoload it
 	(project): properly request it
+	(visual): use it
+	(time-stamp): make proper use of it
+	(c-mode-common-hook): autoload doxymacs
+	(autoload): more autoloads
+	re-enabled html configuration
+	reduced loading time from 8 to 2.5 seconds. YEAH !
 
 	* dotemacs-cust.el:
 	(custom-set-variables): reuse sections for ChangeLogs
+	(custom-set-variables): use JavaDoc-style doxygen
+	(custom-set-faces): change default mmm-submode background
+	moved visual stuff to it's own package
 
 2004-09-22  Yann Hodique  <Yann.Hodique@lifl.fr>
 

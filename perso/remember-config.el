@@ -5,7 +5,7 @@
 
 (require 'remember)
 (require 'planner)
-(require 'planner-rss)
+;; (require 'planner-rss)
 (require 'remember-planner)
 ;; (require 'remember-bibl)
 

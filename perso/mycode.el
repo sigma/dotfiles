@@ -26,7 +26,7 @@
 
 ;;; Code:
 
-(require 'cc-cmds)
+;; (require 'cc-cmds)
 (require 'patches)
 
 (if (not (fboundp 'emacs-type-is-regular))
@@ -236,17 +236,20 @@
   (c-toggle-hungry-state t)
 
   ;;Newline and indent source for enter.
-  (local-set-key [RET] 'newline-and-indent)
-  (c-set-style "ezphp")
+  (local-set-key "\r" 'newline-and-indent)
 )
 
-(add-hook 'php-mode-hook 'my-php-mode-hook)
+(add-hook 'php-mode-user-hook
+          (lambda ()
+            (my-php-mode-hook)
+            (glasses-mode 1)
+            (camelCase-mode 1)))
 
 (add-hook 'c-mode-common-hook
           (lambda ()
             (my-c-mode-common-hook)
             ;; activate glasses
-            (glasses-mode)
+            (glasses-mode 1)
             (camelCase-mode 1)
             (set (make-local-variable 'fill-nobreak-predicate)
 		 (lambda ()
