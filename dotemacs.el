@@ -1,5 +1,5 @@
 ;; -*- mode: emacs-lisp; auto-compile-lisp: nil; -*-
-;; Time-stamp: <16/06/2004 15:53:16 Yann Hodique>
+;; Time-stamp: <19/06/2004 17:12:36 Yann Hodique>
 
 ;; Use this one instead of require to ignore errors
 (defun request (pack)
@@ -55,7 +55,7 @@
 ;; Load the emacs type verifier first (gnu emacs, xemacs, ...)
 (request 'emacs-type)
 
-(if (request 'desktop)
+(when (request 'desktop)
     (progn
       (desktop-load-default)
       (desktop-read)))
@@ -71,7 +71,7 @@
 (setq unibyte-display-via-language-environment t)
 (setq-default ctl-arrow 'latin-9)
 
-(if (request 'ucs-tables)
+(when (request 'ucs-tables)
     (progn
       (unify-8859-on-encoding-mode 1)
       (unify-8859-on-decoding-mode 1)))
@@ -112,8 +112,50 @@
   ;; Calendar
   ;;
 
-(request 'calendar)
-(setq european-calendar-style t)
+(when (request 'calendar)
+  (setq european-calendar-style t))
+
+  ;;;;;;;;;;
+  ;; Ediff
+  ;;
+
+(setq ediff-window-setup-function 'ediff-setup-windows-plain)
+(setq ediff-split-window-function 'split-window-horizontally)
+
+;; Some custom configuration to ediff
+(defvar my-ediff-bwin-config nil "Window configuration before ediff.")
+
+(defcustom my-ediff-bwin-reg ?b
+  "*Register to be set up to hold `my-ediff-bwin-config'
+    configuration.")
+
+(defvar my-ediff-awin-config nil "Window configuration after ediff.")
+
+(defcustom my-ediff-awin-reg ?e
+  "*Register to be used to hold `my-ediff-awin-config' window
+    configuration.")
+
+(defun my-ediff-bsh ()
+  "Function to be called before any buffers or window setup for
+    ediff."
+  (setq my-ediff-bwin-config (current-window-configuration))
+  (set-register my-ediff-bwin-reg
+                  (list my-ediff-bwin-config (point-marker))))
+
+(defun my-ediff-ash ()
+  "Function to be called after buffers and window setup for ediff."
+  (setq my-ediff-awin-config (current-window-configuration))
+  (set-register my-ediff-awin-reg
+                (list my-ediff-awin-config (point-marker))))
+
+(defun my-ediff-qh ()
+  "Function to be called when ediff quits."
+  (when my-ediff-bwin-config
+    (set-window-configuration my-ediff-bwin-config)))
+
+(add-hook 'ediff-before-setup-hook 'my-ediff-bsh)
+(add-hook 'ediff-after-setup-windows-hook 'my-ediff-ash)
+(add-hook 'ediff-quit-hook 'my-ediff-qh)
 
   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
   ;; Tramp : transparent remote editing
@@ -161,7 +203,7 @@
   ;; MTorus : multiple buffer rings
   ;;
 
-(if (request 'mtorus)
+(when (request 'mtorus)
     (progn
       (mtorus-init)
       (global-set-key '[(shift right)] 'mtorus-next-marker)
@@ -199,7 +241,7 @@
   ;; Doxymacs : great documentation system
   ;;
 
-(if (request 'doxymacs)
+(when (request 'doxymacs)
     (progn
       (setq doxymacs-relative-path "Doc/html"
             doxymacs-use-external-xml-parser t)
@@ -240,7 +282,7 @@
 (eval-after-load "latex"
   '(add-to-list 'LaTeX-style-list '("prosper")))
 
-(if
+(when
     (request 'tex-site)
     (progn
       (setq-default TeX-master t)
@@ -249,7 +291,8 @@
       ;; show/hide parts of your document
       (add-hook 'LaTeX-mode-hook 'outline-minor-mode)
       ;; preview-latex is great
-      (add-hook 'LaTeX-mode-hook #'LaTeX-preview-setup)
+      (when (request 'preview)
+          (add-hook 'LaTeX-mode-hook #'LaTeX-preview-setup))
       ;; point my typos
       (add-hook 'LaTeX-mode-hook 'flyspell-mode)
       ;; produce justified paragraphs
@@ -305,7 +348,7 @@
   ;; Fracc : french accent mode
   ;;
 
-(if (request 'fracc)
+(when (request 'fracc)
     (progn
       (defun install-french-accent-mode-if-needed ()
         "Install French accent mode if the buffer seems to contain French text.
@@ -339,6 +382,27 @@ there are more than 1% of such letters then turn French accent mode on."
 
 ;; see inside for more details...
 (request 'mycode)
+
+(defmacro make-double-command (name args doc-string interactive
+                                      first-form second-form)
+    (let ((int-form (if (not interactive)
+                        '(interactive)
+                      (list 'interactive interactive))))
+      `(progn
+       (defun ,name ,args ,doc-string
+         ,int-form
+         (if (eq last-command this-command)
+             ,(if (and (listp second-form) (> (length second-form) 1))
+                  (cons 'progn second-form)
+                second-form)
+           ,first-form)))))
+(put 'make-double-command 'lisp-indent-function 2)
+;; See DefMacro for an explanation of this call to put
+;; (make-double-command my-home ()
+;;     "Go to beginning of line, or beginning of buffer."
+;;     nil
+;;     (beginning-of-line)
+;;     (beginning-of-buffer))
 
 (defun yh-c-rearrange-electrics ()
   "Rearrange electric chars according to current c-style"
@@ -466,6 +530,20 @@ there are more than 1% of such letters then turn French accent mode on."
       (forward-char)
       (setq old-col (1- old-col)))))
 
+(defun totd ()
+  (interactive)
+  (with-output-to-temp-buffer "*Tip of the day*"
+    (let* ((commands (loop for s being the symbols
+                           when (commandp s) collect s))
+           (command (nth (random (length commands)) commands)))
+      (princ
+       (concat "Your tip for the day is:\n========================\n\n"
+               (describe-function command)
+               "\n\nInvoke with:\n\n"
+               (with-temp-buffer
+                 (where-is command t)
+                 (buffer-string)))))))
+
 ;; Adaptative "exit" behavior
 (defun exit-no-gnuserv-or-frame ()
   (interactive)
@@ -497,7 +575,10 @@ there are more than 1% of such letters then turn French accent mode on."
   (make-main-frame)
 ;  (gnuserv-start)
                                         ;  (code-init "Code")
+  (require 'winring)
   (ecb-activate)
+  (ecb-winman-winring-enable-support)
+  (winring-initialize)
                                         ;  (select-frame main-frame)
   )
 
@@ -630,5 +711,7 @@ there are more than 1% of such letters then turn French accent mode on."
 
 (require 'color-moccur)
 (require 'moccur-edit)
+
+(require 'erc-config)
 
 (message ".emacs loaded")

@@ -1,0 +1,11 @@
+2004-06-19  Yann Hodique  <Yann.Hodique@lifl.fr>
+
+	* dotemacs.el:
+	(ediff): added ediff configuration
+	(request): preview-latex fix
+	(make-double-command): new usefull macro from emacswiki
+	(totd): new command for fun
+	(init): added winring support for ecb
+	(erc-config): new module
+	(request): replaced 'if by 'when when (or if :)) possible
+
