@@ -136,14 +136,12 @@
  '(recentf-save-file "~/.emacs-recentf")
  '(reftex-extra-bindings nil)
  '(reftex-index-follow-mode t)
- '(reftex-plug-into-AUCTeX t)
+ '(reftex-plug-into-AUCTeX t t)
  '(reftex-toc-follow-mode t)
  '(save-place-limit 100)
  '(sawfish-extra-keyword-list (quote ("add-frame-style" "call-after-load" "call-after-property-changed" "call-after-state-changed" "custom-set-property" "define" "define-structure" "export" "open")))
  '(sawfish-warning-keyword-list (quote ("fixme" "FIXME" "Fixme" "fix me" "Fix me" "!!!" "Grrr" "Bummer" "todo" "TODO" "Todo")))
  '(scroll-bar-mode nil)
- '(semanticdb-default-file-name ".semantic.cache")
- '(semanticdb-default-save-directory "~/.semantic")
  '(semanticdb-global-mode t nil (semanticdb))
  '(show-paren-mode t nil (paren))
  '(speedbar-frame-parameters (quote ((width . 20) (border-width . 0) (menu-bar-lines . 0) (tool-bar-lines . 0) (unsplittable . t))))
@@ -228,3 +226,6 @@
  '(w3-style-face-00005 ((t (:underline nil :height 150))))
  '(w3-style-face-00007 ((t (:underline nil :height 150))))
  '(w3-style-face-00008 ((t (:underline nil :weight normal :height 150)))))
+
+;; not honoured by custom-set-property. TODO: investigate why
+(setq-default semanticdb-default-save-directory "~/.semantic")

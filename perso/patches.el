@@ -39,7 +39,7 @@
 (defun mapcond (test result list &optional default)
   "Map a TEST function over LIST and return the application of
   the RESULT function over the first positive answer. If DEFAULT
-  is not nil, then in case of on success, this value is returned"
+  is not nil, then in case of no success, this value is returned"
   (or (let ((ex t)
             (res nil))
         (while (and ex list)
@@ -53,7 +53,10 @@
 
 (defmacro make-double-command (name args doc-string interactive
                                       first-form second-form)
-  "Define a new command from 2 behaviors"
+  "Define a new command from 2 behaviors. First invocation runs
+  the first one. An immediate second invocation runs the second
+  command. Any further invocation keeps running the second
+  command."
   (declare (indent 2))
   (let ((int-form (if (not interactive)
                       '(interactive)
@@ -69,7 +72,7 @@
 
 ;; Many thanks to utis (Oliver Scholz)
 (defmacro defmadvice (flist spec &rest body)
-  "Write the same advice for several functions."
+  "Define the same advice for several functions."
   (let ((defs (mapcar
                (lambda (f) `(defadvice ,f ,(append (list (car spec) (intern (format "ad-%s-%s-%s"
                                                                                     (symbol-name f)
@@ -127,6 +130,8 @@
 
 (setq backup-enable-predicate 'ecm-backup-enable-predicate)
 (setq backup-directory-alist '(("." . "~/.backups")))
+
+;; don't break links
 (setq backup-by-copying t)
 
 ;; Put autosaves files in a single directory too
@@ -146,7 +151,7 @@
     (if (not (or (window-minibuffer-p window) (member (buffer-name (window-buffer)) buffer-no-margin-alist)))
         (let* ((position (progn (set-buffer (window-buffer)) (point)))
                (wstart (window-start))
-               (wbottl (- (window-height) 2))
+               (wbottl (- (window-height) 4))
                (topshift (- (max 0 (min top-margin (- wbottl 1)))))
                (diff (- (min topshift (- bottom-margin wbottl)) topshift)))
           (vertical-motion topshift)
@@ -173,12 +178,13 @@
 
 ;; Color prefix in minibuffer
 (unless (facep 'minibuffer-prompt)
-  (let ((face (cdr (memq 'face minibuffer-prompt-properties))))
+  (let ((face (cdr (memq 'face minibuffer-prompt-properties)))
+        (minibuff-face (if (boundp 'minibuffer-face) minibuffer-face nil)))
     (if face
-        (setcar face minibuffer-face)
+        (setcar face minibuff-face)
       (setq minibuffer-prompt-properties
             (append minibuffer-prompt-properties
-                    (list 'face 'minibuffer-face))))))
+                    (list 'face 'minibuff-face))))))
 
 ;; Adapt open-line behavior when arg <= 0
 (defadvice open-line( around open-line-around (arg) act )
@@ -261,10 +267,10 @@ select the completion near point.\n\n")))))
 (add-hook 'completion-setup-hook 'yh/completion-setup-function)
 
 ;; Suppress annoying messages. Needs some work
-;; (defadvice message (around message-around act)
-;;   "Don't let annoying messages popup while using the minibuffer"
-;;   (unless (minibuffer-window-active-p (minibuffer-window))
-;;     ad-do-it))
+(defadvice message (around message-around act)
+  "Don't let annoying messages popup while using the minibuffer"
+  (unless (minibuffer-window-active-p (minibuffer-window))
+    ad-do-it))
 
 ;; Author: Patrick Gundlach
 ;; nice mark - shows mark as a highlighted 'cursor' so user 'always'

@@ -54,11 +54,13 @@
               )))
 
 (font-lock-add-keywords 'guile-scheme-mode
-                        `((,(concat "\\<" (regexp-opt '("defun" "defvar" "defmacro" "defmacro*") t)
+                        `((,(concat "\\<" (regexp-opt '("defun" "defvar" "defmacro" "defmacro*" "defface") t)
                                     "\\>[ 	']*\\(\\sw+\\)?")
                            (1 font-lock-keyword-face)
                            (2 font-lock-constant-face nil t))
                           ))
+
+(add-to-list 'auto-mode-alist '("\\.scm\\'" . guile-scheme-mode))
 
 (provide 'lisp-config)
 ;;; lisp-config.el ends here

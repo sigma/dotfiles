@@ -31,11 +31,10 @@
   "Includes a header in the edited file."
   (let ((name (buffer-name)))
     (with-temp-buffer
-      (insert (format "/*\n%-75s\n" (concat " *  File: " name)))
-      (insert (format "%-75s\n" (concat " *  Created: " (calendar-date-string (calendar-current-date)))))
-      (insert (format "%-75s\n" " *  Time-stamp: <>"))
-      (insert (format "%-75s\n" (concat " *  Copyright: " user-full-name)))
-      (insert (format "%-75s\n */\n" (concat " *  Email: " user-mail-address)))
+      (insert (format "%-75s\n\n" "/*  Time-stamp: <>  */"))
+      (insert (format "/**\n%-75s\n" (concat " *  @file " name)))
+      (insert (format "%-75s\n" (concat " *  @date " (calendar-date-string (calendar-current-date)))))
+      (insert (format "%-75s\n" (concat " *  @author " user-full-name " <" user-mail-address ">\n */")))
       (insert (format "
 /************************************************************************
  *                                                                      *

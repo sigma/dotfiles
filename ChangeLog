@@ -1,3 +1,15 @@
+2005-02-14  Yann Hodique  <Yann.Hodique@lifl.fr>
+
+	* perso/mycompletion.el:
+	(gpl-header): updated gpl-header so that it fits well with doxygen
+
+	* dotemacs-cust.el:
+	moved semanticdb stuff to setq-default
+
+	* config/lisp-config.el:
+	(guile-scheme-mode): added "defface" to guile keywords (QNet2 project)
+	(auto-mode-alist): open .scm files with guile-scheme
+
 2005-01-24  Yann Hodique  <Yann.Hodique@lifl.fr>
 
 	* perso/mycode.el:

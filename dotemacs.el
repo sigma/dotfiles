@@ -271,7 +271,7 @@
   (interactive)  (switch-to-buffer "*ASCII*")  (erase-buffer)
   (insert (format "ASCII characters up to number %d.\n" 254))
   (let ((i 0))
-    (while (< i 254)      (setq i (+ i 1))
+    (while (< i 254)      (setq i (1+ i))
            (insert (format "%4d %c\n" i i))))  (beginning-of-buffer))
 
 (defun yank-and-forward-line ()
@@ -497,6 +497,21 @@
 
 
 ;;; Experimental
+
+(defun wrap-yank (beg end &optional arg)
+  (interactive "rP")
+  (save-excursion
+    (goto-char end)
+    (yank)
+    (when arg
+      (newline))
+    (goto-char beg)
+    (yank 2)
+    (when arg
+      (newline))))
+
+(global-set-key (kbd "C-M-y") 'wrap-yank)
+
 (autoload 'graphviz-dot-mode "graphviz-dot-mode" "" t nil)
 (add-to-list 'auto-mode-alist '("\\.dot\\'" . graphviz-dot-mode))
 
