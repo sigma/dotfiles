@@ -119,6 +119,7 @@
  '(tempo-interactive t)
  '(tool-bar-mode nil nil (tool-bar))
  '(tooltip-gud-tips-p t)
+ '(tramp-default-method-alist (quote (("%" "" "smb") ("" "\\`\\(anonymous\\|ftp\\)\\'" "ftp") ("\\`ftp" "" "ftp") ("\\`localhost\\'" "\\`root\\'" "su"))))
  '(truncate-partial-width-windows nil)
  '(vc-follow-symlinks t)
  '(vc-make-backup-files t)
