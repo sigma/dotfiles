@@ -1,3 +1,6 @@
+;; -*- mode: emacs-lisp; auto-compile-lisp: nil; -*-
+;; Time-stamp: <16/06/2004 17:37:11 Yann Hodique>
+
 ;; Load site-specific stuff
 (if (file-exists-p (expand-file-name "~/.gnus-local.el"))
     (load-file (expand-file-name "~/.gnus-local.el")))

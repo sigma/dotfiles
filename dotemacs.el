@@ -1,5 +1,5 @@
 ;; -*- mode: emacs-lisp; auto-compile-lisp: nil; -*-
-;; Time-stamp: <16/06/2004 11:12:10 Yann Hodique>
+;; Time-stamp: <16/06/2004 15:53:16 Yann Hodique>
 
 ;; Use this one instead of require to ignore errors
 (defun request (pack)
