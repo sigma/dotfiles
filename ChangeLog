@@ -1,5 +1,8 @@
 2005-04-02  Yann Hodique  <Yann.Hodique@lifl.fr>
 
+	* config/latex-config.el: new environments for slides
+	(my-LaTeX-hook): externalize this hook
+
 	* config/changelog-config.el:
 	(yh/project-changelog-file): usual name is ChangeLog
 

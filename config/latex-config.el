@@ -30,34 +30,35 @@
 
 ;; (request 'typopunct)
 ;; (typopunct-change-language 'francais t)
-(eval-after-load "latex"
-  '(add-to-list 'LaTeX-style-list '("prosper")))
+
+(defun LaTeX-env-slide (environment)
+  "Insert ENVIRONMENT with label for bibitem."
+  (LaTeX-insert-environment environment
+			    (concat TeX-grop
+				    (read-string "Title: ")
+				    TeX-grcl))
+  (end-of-line 0)
+  (delete-char 1)
+  (delete-horizontal-space)
+  (newline-and-indent))
+
+(defun LaTeX-env-overlays (environment)
+  "Insert ENVIRONMENT with label for bibitem."
+  (LaTeX-insert-environment environment
+			    (concat TeX-grop
+				    (read-string "Number: " "2")
+				    TeX-grcl))
+  (end-of-line 0)
+  (delete-char 1)
+  (delete-horizontal-space)
+  (newline-and-indent))
 
 (setq reftex-plug-into-AUCTeX t)
 (setq reftex-enable-partial-scans t)
 (setq reftex-save-parse-info t)
 (setq reftex-use-multiple-selection-buffers t)
 
-(when (request 'tex-site)
-  (progn
-    (setq-default TeX-master t)
-    ;; reftex helps managing references, toc, ...
-    (add-hook 'LaTeX-mode-hook 'reftex-mode)
-    ;; show/hide parts of your document
-    (add-hook 'LaTeX-mode-hook 'outline-minor-mode)
-    ;; preview-latex is great
-    (when (request 'preview)
-      (add-hook 'LaTeX-mode-hook 'LaTeX-preview-setup))
-    ;; point my typos
-    (add-hook 'LaTeX-mode-hook 'flyspell-mode)
-    ;; use abbrev
-    (add-hook 'LaTeX-mode-hook 'abbrev-mode)
-    ;; Most people don't want that... I do
-    ;; highlight *any* change, color rotation
-    (add-hook 'LaTeX-mode-hook 'highlight-changes-mode)
-    ;;       ;; DWIM with quotes
-                                        ;       (add-hook 'LaTeX-mode-hook 'typopunct-mode)
-    (defun my-LaTeX-hook ()
+(defun my-LaTeX-hook ()
       ;; I like to have my own verbatim contructions well indented
       (setq font-lock-defaults
             '((font-latex-keywords font-latex-keywords-1 font-latex-keywords-2)
@@ -83,8 +84,33 @@
                 (2 "<"))
                ("\\\\verb\\*?\\([^a-z@]\\).*?\\(\\1\\)"
                 (1 "\"")
-                (2 "\""))))))
+                (2 "\"")))))
+      (add-to-list 'LaTeX-style-list '("prosper"))
 
+      (LaTeX-add-environments
+       '("slide" LaTeX-env-slide)
+       '("overlays" LaTeX-env-overlays))
+      )
+
+(when (request 'tex-site)
+  (progn
+    (setq-default TeX-master t)
+    ;; reftex helps managing references, toc, ...
+    (add-hook 'LaTeX-mode-hook 'reftex-mode)
+    ;; show/hide parts of your document
+    (add-hook 'LaTeX-mode-hook 'outline-minor-mode)
+    ;; preview-latex is great
+    (when (request 'preview)
+      (add-hook 'LaTeX-mode-hook 'LaTeX-preview-setup))
+    ;; point my typos
+    (add-hook 'LaTeX-mode-hook 'flyspell-mode)
+    ;; use abbrev
+    (add-hook 'LaTeX-mode-hook 'abbrev-mode)
+    ;; Most people don't want that... I do
+    ;; highlight *any* change, color rotation
+    (add-hook 'LaTeX-mode-hook 'highlight-changes-mode)
+    ;;       ;; DWIM with quotes
+                                        ;       (add-hook 'LaTeX-mode-hook 'typopunct-mode)
     (add-hook 'LaTeX-mode-hook 'my-LaTeX-hook)
     ))
 
