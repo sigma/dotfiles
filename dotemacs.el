@@ -587,6 +587,7 @@ there are more than 1% of such letters then turn French accent mode on."
 
 (defun simplify-blank-lines ()
   "Delete extra blank lines"
+  (interactive)
   (save-excursion
     (goto-char (point-min))
     (while (search-forward-regexp (string ?^ 10 10) nil t)
