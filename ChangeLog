@@ -1,25 +1,31 @@
+2004-08-02  Yann Hodique  <Yann.Hodique@lifl.fr>
+
+	* dotemacs.el
+	(simplify-blank-lines): advice was a bad idea
+	switched again to standard keybindings
+
 2004-07-29  Yann Hodique  <Yann.Hodique@lifl.fr>
 
-	* dotemacs.el 
+	* dotemacs.el
 	(highlight-changes-enable-hook): prevent buffer to be marked as modified when removing highlighting
 	pmwiki configuration
 
-	* perso/pmwiki-mode.el: 
+	* perso/pmwiki-mode.el:
 	initial checkin
 
-	* perso/http-post.el: 
+	* perso/http-post.el:
 	initial checkin
 
-	* perso/http-get.el: 
+	* perso/http-get.el:
 	initial checkin
 
 2004-07-28  Yann Hodique  <Yann.Hodique@lifl.fr>
 
-	* dotemacs.el 
+	* dotemacs.el
 	(emacs-lisp-mode): more highlighting
-	more autoloads 
+	more autoloads
 
-	* perso/rrc.el: 
+	* perso/rrc.el:
 	initial checkin
 
 	* dotemacs.el
@@ -27,7 +33,7 @@
 
 2004-07-27  Yann Hodique  <Yann.Hodique@lifl.fr>
 
-	* perso/mycode.el: 
+	* perso/mycode.el:
 	remove tons of unused code
 
 	* dotemacs.el:

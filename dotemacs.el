@@ -1,5 +1,5 @@
 ;; -*- mode: emacs-lisp; auto-compile-lisp: nil; -*-
-;; $Id: dotemacs.el,v 1.34 2004/07/29 10:59:45 sigma Exp $
+;; $Id: dotemacs.el,v 1.35 2004/08/02 15:49:41 sigma Exp $
 
 ;; Load site-specific stuff
 (if (file-exists-p (expand-file-name "~/.emacs-local"))
@@ -94,8 +94,6 @@
 
 (defun sk-insert-oe (&optional arg) "Insert oe"
   (interactive "*P")
-;  (if arg
-;     (insert (make-char 'mule-unicode-0100-24ff 116 76))
     (insert (make-char 'latin-iso8859-15 #xBD)))
 
 (global-set-key (kbd "H-o H-e") 'sk-insert-oe)
@@ -217,7 +215,8 @@
       (request 'lispy-font-lock)
       (request 'lispy-occur)
       (request 'lispy-session)
-      (request 'lispy-osd)))
+;;       (request 'lispy-osd)
+      ))
 
   ;;;;;;;;;;;;;;;;;;;;;;;;;
   ;; Eshell : Emacs shell
@@ -481,7 +480,7 @@ there are more than 1% of such letters then turn French accent mode on."
                   (execute-kbd-macro (car symb)))))
             '(("{" +) ("}" -)))))
 
-(defadvice delete-trailing-whitespace( after open-line-after act )
+(defun simplify-blank-lines ()
   "Also delete extra blank lines"
   (save-excursion
     (goto-char (point-min))
@@ -542,7 +541,8 @@ there are more than 1% of such letters then turn French accent mode on."
 (add-hook 'after-save-hook 'byte-compile-elisp)
 
 ;; I hate trailing whitespaces (use with caution)
-;;(add-hook 'write-file-hooks 'delete-trailing-whitespace)
+(add-hook 'write-file-hooks 'delete-trailing-whitespace)
+;;(add-hook 'write-file-hooks 'simplify-blank-lines)
 
 ;; apply chmod over the current file (usually a+x for scripts)
 (defun chmod-file ()
@@ -639,9 +639,9 @@ there are more than 1% of such letters then turn French accent mode on."
 (global-set-key [(f3)] 'ecb-toggle-compile-window)
 ;; Depending on your keyboard you may want another one binding
 (global-set-key (kbd "C-x ~") 'previous-error)
-(global-set-key (kbd "H-c s") 'eshell)
-(global-set-key (kbd "H-c c") 'mode-compile)
-(global-set-key (kbd "H-c k") 'mode-compile-kill)
+(global-set-key (kbd "C-c s") 'eshell)
+(global-set-key (kbd "C-c c") 'mode-compile)
+(global-set-key (kbd "C-c k") 'mode-compile-kill)
 (global-set-key [\C-tab] 'other-window)
 
 ;; These were traditional bindings, why did they change??
@@ -673,10 +673,10 @@ there are more than 1% of such letters then turn French accent mode on."
                                     (kill-this-buffer)
                                   (mapcar (lambda (buf) (kill-buffer buf)) (buffer-list)))))
 (global-set-key [(f4)] 'speedbar-get-focus)
-(global-set-key (kbd "H-c m") (lambda () (interactive) (gnus 2)))
-(global-set-key (kbd "H-c x") 'chmod-file)
-(global-set-key (kbd "H-c i") 'init)
-(global-set-key (kbd "H-c h") 'auto-insert)
+(global-set-key (kbd "C-c m") (lambda () (interactive) (gnus 2)))
+(global-set-key (kbd "C-c x") 'chmod-file)
+(global-set-key (kbd "C-c i") 'init)
+(global-set-key (kbd "C-c h") 'auto-insert)
 (global-set-key (kbd "C-x C-f") 'find-file-guessing)
 
 (define-key global-map (kbd "H-s") 'isearchb-activate)
@@ -691,15 +691,15 @@ there are more than 1% of such letters then turn French accent mode on."
 	 (ecb-deactivate)
        (ecb-activate)))))
 
-(global-set-key [(hyper z)]               'zap-upto-char)
-(global-set-key [(hyper meta z)]          'zap-to-char)
-(global-set-key [(shift hyper z)]         'zap-following-char)
-(global-set-key [(shift hyper meta z)]    'zap-from-char)
+(global-set-key (kbd "H-z") 'zap-upto-char)
+(global-set-key (kbd "H-M-z") 'zap-to-char)
+(global-set-key (kbd "H-Z") 'zap-following-char)
+(global-set-key (kbd "H-M-Z") 'zap-from-char)
 
 ;; Project related keys
-(global-set-key [(control f1)] 'toggle-source-header)
+(global-set-key (kbd "<C-f1>") 'toggle-source-header)
 
-(global-set-key [(hyper ?r)]  'replace-recent-character)
+(global-set-key (kbd "H-r")  'replace-recent-character)
 
 ;;;;;;;;;;;;;;
 ;; Autoloads
