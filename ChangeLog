@@ -1,5 +1,11 @@
 2004-09-22  Yann Hodique  <Yann.Hodique@lifl.fr>
 
+	* perso/patches.el:
+	add code for showing mark position
+
+	* dotemacs-cust.el:
+	(custom-set-faces): differentiate string and doc
+
 	* perso/planner-config.el:
 	(planner-publishing-directory): don't trash my public_html
 

@@ -18,7 +18,7 @@
 (require 'planner-gnus)
 (planner-gnus-insinuate)
 ;; (require 'planner-erc)
-;;(require 'planner-lisp)
+;; (require 'planner-lisp)
 (require 'planner-id)
 ;; (require 'planner-notes)
 (require 'planner-rss)

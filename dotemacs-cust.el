@@ -215,6 +215,7 @@
  '(font-latex-string-face ((((class color) (background dark)) (:inherit font-lock-string-face))))
  '(font-lock-builtin-face ((((class color) (min-colors 88) (background dark)) (:foreground "lightsteelblue"))))
  '(font-lock-comment-face ((((class color) (min-colors 88) (background dark)) (:foreground "gray"))))
+ '(font-lock-doc-face ((t (:foreground "lightgreen"))))
  '(font-lock-floatnumber-face ((((class color) (background dark)) (:foreground "yellow4"))))
  '(font-lock-function-name-face ((((class color) (min-colors 88) (background dark)) (:foreground "lightblue2"))))
  '(font-lock-hexnumber-face ((((class color) (background dark)) (:foreground "cyan"))))
