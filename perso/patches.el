@@ -194,20 +194,13 @@
   (unless (minibuffer-window-active-p (minibuffer-window))
       ad-do-it))
 
-(defun my-split-window-vertically ()
+(defadvice split-window-vertically (after ad-split-window-vertically-other-buffer act)
   "Open another buffer in the new window"
-  (interactive)
-  (split-window-vertically)
   (set-window-buffer (next-window) (other-buffer)))
 
-(defun my-split-window-horizontally ()
+(defadvice split-window-horizontally (after ad-split-window-horizontally-other-buffer act)
   "Open another buffer in the new window"
-  (interactive)
-  (split-window-horizontally)
   (set-window-buffer (next-window) (other-buffer)))
-
-(global-set-key "\C-x2" 'my-split-window-vertically)
-(global-set-key "\C-x3" 'my-split-window-horizontally)
 
 (provide 'patches)
 ;;; patches.el ends here

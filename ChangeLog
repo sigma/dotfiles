@@ -1,5 +1,8 @@
 2004-06-20  Yann Hodique  <Yann.Hodique@lifl.fr>
 
+	* perso/patches.el (split-window-vertically): replaced by advice
+	(split-window-horizontally): replaced by advice
+
 	* dotemacs.el: save place by default
 
 	* perso/visible-mark-mode.el (visible-mark-move-overlay): fixed nullMarkerException ;)
