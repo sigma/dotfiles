@@ -1,5 +1,5 @@
 ;; -*- mode: emacs-lisp; mode: hi-lock; mode: page-break; auto-compile-lisp: nil; -*-
-;; $Id: dotemacs.el,v 1.57 2004/09/29 22:50:41 sigma Exp $
+;; $Id: dotemacs.el,v 1.58 2004/10/05 09:30:07 sigma Exp $
 
 ;; Hi-lock: (("^;;; \\(.*\\)" (1 'hi-black-hb t)))
 ;; Hi-lock: (("^ +;;; \\(.*\\)" (1 'hi-black-b t)))
@@ -96,8 +96,9 @@
 (add-to-list 'ispell-dictionary-alist '("latin" "[A-Za-z]" "[^A-Za-z]" "[']" nil nil "~tex" iso-8859-1))
 (setq ispell-program-name "aspell")
 
-(set-language-environment 'latin-1)
-(prefer-coding-system 'latin-1)
+;; (set-language-environment 'latin-1)
+;; (prefer-coding-system 'latin-1)
+(prefer-coding-system 'mule-utf-8)
 
 (setq unibyte-display-via-language-environment t)
 (setq-default ctl-arrow 'latin-9)
@@ -495,6 +496,10 @@ there are more than 1% of such letters then turn French accent mode on."
 (autoload 'crontab-mode "crontab-mode" "" t nil)
 (setq auto-mode-alist
       (cons '("crontab\\'" . crontab-mode) auto-mode-alist))
+
+;;; FlashCard
+(autoload 'flashcard-mode "flashcard" "" t nil)
+(add-to-list 'auto-mode-alist '("\\.deck\\'" . flashcard-mode))
 
 
 ;;; Utils/Functions
