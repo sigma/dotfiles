@@ -1,5 +1,5 @@
 ;; -*- mode: emacs-lisp; mode: hi-lock; mode: page-break; auto-compile-lisp: nil; -*-
-;; $Id: dotgnus.el,v 1.12 2004/09/15 17:23:38 sigma Exp $
+;; $Id: dotgnus.el,v 1.13 2004/09/16 08:04:33 sigma Exp $
 
 ;; Hi-lock: (("^;;; \\(.*\\)" (1 'hi-black-hb t)))
 ;; Hi-lock: (("^ +;;; \\(.*\\)" (1 'hi-black-b t)))
@@ -189,9 +189,19 @@
 (if (eq window-system 'x)
     (progn
       (gnus-add-configuration
+       `(group
+	 (vertical 1.0
+		   (horizontal 9
+			       ("*BBDB*" 0.3)
+			       ("*Calendar*" 1.0))
+		   (horizontal 1.0
+			       (group 0.3 point)
+			       (,planner-default-page 1.0)))))
+
+      (gnus-add-configuration
        '(article
 	 (vertical 1.0
-		   (horizontal 0.25
+		   (horizontal 9
 			       ("*BBDB*" 0.3)
 			       (summary 1.0 point))
 		   (horizontal 1.0
@@ -201,7 +211,7 @@
       (gnus-add-configuration
        '(reply-yank
 	 (vertical 1.0
-		   (horizontal 0.25
+		   (horizontal 9
 			       ("*BBDB*" 0.3)
 			       (summary 1.0))
 		   (horizontal 1.0
@@ -211,17 +221,17 @@
       (gnus-add-configuration
        '(forward
 	 (vertical 1.0
-		   (horizontal 0.25
+		   (horizontal 9
 			       ("*BBDB*" 0.3)
 			       (summary 1.0))
 		   (horizontal 1.0
 			       (group 0.3)
-			       (forward 1.0 point)))))
+			       (message 1.0 point)))))
 
       (gnus-add-configuration
        '(summary
 	 (vertical 1.0
-		   (horizontal 0.25
+		   (horizontal 9
 			       ("*BBDB*" 0.3)
 			       (summary 1.0 point))
 		   (horizontal 1.0
@@ -231,7 +241,7 @@
       (gnus-add-configuration
        '(reply
 	 (vertical 1.0
-                   (horizontal 0.25
+                   (horizontal 9
 			       ("*BBDB*" 0.3)
 			       (summary 1.0))
 		   (horizontal 1.0
@@ -757,3 +767,5 @@ Must be called from the `gnus-select-group-hook'."
 (autoload 'trivial-cite "tc" t t)
 
 (server-start)
+(calendar)
+(find-file (concat planner-directory "/" planner-default-page))

@@ -1,6 +1,24 @@
+2004-09-16  Yann Hodique  <Yann.Hodique@lifl.fr>
+
+	* dotgnus.el:
+	more window configuration
+	launch calendar and planner at startup
+
+	* dotemacs.el
+	(planner-config): re-enabled
+
+	* perso/emacs-wiki-config.el:
+	update to latest sacahc's version
+
+	* perso/planner-config.el:
+	update to latest sacahc's version
+
+	* perso/remember-config.el:
+	initial checkin
+
 2004-09-15  Yann Hodique  <Yann.Hodique@lifl.fr>
 
-	* dotgnus.el
+	* dotgnus.el:
 	don't use newsrc
 	(gnus-add-configuration): try this config
 
@@ -13,13 +31,13 @@
 
 2004-09-14  Yann Hodique  <Yann.Hodique@lifl.fr>
 
-	* dotemacs.el
+	* dotemacs.el:
 	(kill-read-only-ok): don't beep when "killing" in read-only
 	(tramp): use the correct package
 
 2004-09-10  Yann Hodique  <Yann.Hodique@lifl.fr>
 
-	* dotemacs.el
+	* dotemacs.el:
 	(longlines): re-enabled with refill-mode
 
 	* perso/patches.el:
@@ -27,7 +45,7 @@
 
 2004-09-09  Yann Hodique  <Yann.Hodique@lifl.fr>
 
-	* dotemacs.el
+	* dotemacs.el:
 	(multi-region-map): change keybinding (conflicted with usefull ones in LaTeX-mode)
 
 2004-09-08  Yann Hodique  <Yann.Hodique@lifl.fr>

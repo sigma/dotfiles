@@ -1,25 +1,26 @@
 ;;; My configuration file for johnw/resolve's excellent emacs-wiki.el
 ;;; Sacha Chua <sacha@free.net.ph>
 
+(require 'font-lock)
+(global-font-lock-mode t)
 (require 'emacs-wiki)
-;(require 'emacs-wiki-id)
+
 ;; Can't do lazy font lock support - <lisp> tags won't get interpreted properly.
-;; (unless (listp font-lock-support-mode)
-;;   (setq font-lock-support-mode (cons t font-lock-support-mode)))
-;; (add-to-list 'font-lock-support-mode '(emacs-wiki-mode . nil))
+;(unless (listp font-lock-support-mode)
+;  (setq font-lock-support-mode (list (cons t font-lock-support-mode))))
+;(add-to-list 'font-lock-support-mode '(emacs-wiki-mode . nil))
 
 ;;;_+ Setting up details
 
 ;; We use Damien Elmes' excellent stylesheet, available at
 ;; http://www.repose.cx/core.css
 (setq emacs-wiki-style-sheet "<link rel=\"stylesheet\" type=\"text/css\" href=\"style.css\">")
-(setq emacs-wiki-maintainer "mailto:y_hodique@yahoo.fr")
-;(setq emacs-wiki-publishing-directory "~/notebook/wiki")
+(setq emacs-wiki-maintainer "mailto:Yann.Hodique@lifl.fr")
+(setq emacs-wiki-publishing-directory "~/public_html")
 
 ;;;_+ Automatically publish files upon saving
 (defun sacha/emacs-wiki-auto-publish ()
-  (when (or (equal major-mode 'emacs-wiki-mode)
-	    (equal major-mode 'planner-mode))
+  (when (derived-mode-p 'emacs-wiki-mode)
     (unless emacs-wiki-publishing-p
       (let ((emacs-wiki-publishing-p t)
             (emacs-wiki-after-wiki-publish-hook nil))
@@ -27,17 +28,6 @@
 (add-hook 'emacs-wiki-mode-hook
           (lambda () (add-hook 'after-save-hook
                                'sacha/emacs-wiki-auto-publish nil t)))
-
-;;;_+ Edit links at point
-(defun sacha/emacs-wiki-edit-link-at-point ()
-  "Edits the current link but does not rename the wiki page originally referred to."
-  (interactive "*")
-  (let (old-name)
-    (if (emacs-wiki-link-at-point)
-        (replace-match (save-match-data (read-string "Edit link: " (match-string-no-properties 0))))
-      (error "There is no valid link at point"))))
-(define-key emacs-wiki-mode-map [(control ?c) (control ?e)]
-  'sacha/emacs-wiki-edit-link-at-point)
 
 ;;;_+ Misc
 (setq emacs-wiki-file-ignore-regexp
@@ -73,6 +63,32 @@
 (defun emacs-wiki-grin-tag (beg end) (insert "&lt;grin&gt;"))
 (defun emacs-wiki-laugh-tag (beg end) (insert "&lt;laugh&gt;"))
 (defun emacs-wiki-smile-tag (beg end) (insert "&lt;smile&gt;"))
+
+;;;_+ Local file links should be transformed to relative file links if possible
+
+(defvar sacha/emacs-wiki-use-absolute-url-flag nil
+  "Non-nil means publish absolute URLs.")
+
+(require 'w3m)
+
+;;(defadvice emacs-wiki-link-url (aaround sacha activate)
+;;  "Return relative links if possible."
+;;  ad-do-it
+;;   (when ad-return-value
+;;     (unless (emacs-wiki-wiki-url-p ad-return-value)
+;;       (let ((planner-directory "/home/sacha/public_html/notebook/plans"))
+;;         (setq ad-return-value
+;;               (file-relative-name
+;;                (expand-file-name
+;;                 ad-return-value
+;;                 planner-directory)
+;;                planner-directory)))
+;;       (when (and sacha/emacs-wiki-use-absolute-url-flag
+;;                  emacs-wiki-publishing-p)
+;;         (setq ad-return-value
+;;               (w3m-expand-url
+;;                ad-return-value
+;;                "http://sacha.free.net.ph/notebook/wiki/"))))))
 
 ;;;_+ <contents> should strip all the tags
 
@@ -154,7 +170,7 @@
     (error "There is no valid link at point")))
 
 ;;;_+ Highlighting
-;(add-hook 'emacs-wiki-mode-hook (lambda () (add-hook 'emacs-wiki-highlight-buffer-hook 'emacs-wiki-id-markup nil t)))
+;;(add-hook 'emacs-wiki-mode-hook (lambda () (add-hook 'emacs-wiki-highlight-buffer-hook 'emacs-wiki-id-markup nil t)))
 
 ;;;_+ <example mode=....></example>
 ;;; Stolen shamelessy from code by Satyaki Das <satyaki@theforce.stanford.edu>
@@ -270,4 +286,78 @@
       (backward-char))
     nil))
 
+;;;_ + External viewers
+
+(defun sacha/emacs-wiki-perform-operation-on-link-at-point (command)
+  "Run a shell command on the link at point."
+  (interactive
+   (list
+    (read-string
+     "Command: "
+     (when (emacs-wiki-link-at-point)
+       (concat
+        (shell-quote-argument
+         (emacs-wiki-wiki-link-target (match-string-no-properties 0)))
+        " &")))))
+  (with-temp-buffer
+    (cd planner-directory)
+    (shell-command command)))
+
+(defun sacha/emacs-wiki-get-base-path ()
+  "Base path."
+  (cond ((string-match "CS139" (buffer-name))
+         "../school/2004-sem1/cs139.3")
+        ((string-match "CS21" (buffer-name))
+         "../school/2004-sem1/cs21a")
+        ((string-match "CS110" (buffer-name))
+         "../school/2004-sem1/cs110")))
+
+(defun sacha/emacs-wiki-insert-document (document title)
+  "Insert document links."
+  (interactive "MDocument:
+MTitle: ")
+  (let ((base (sacha/emacs-wiki-get-base-path)))
+    (insert
+     (mapconcat
+      (lambda (extension)
+        (format
+         "[[%s/%s.%s][%s (%s)]]"
+         base
+         document
+         (downcase extension)
+         title
+         (upcase extension)))
+      (list "PDF" "SXW" "DOC")
+      " - "))))
+
+(defun sacha/emacs-wiki-insert-presentation (document title)
+  "Insert document links."
+  (interactive "MDocument:
+MTitle: ")
+  (let ((base (sacha/emacs-wiki-get-base-path)))
+    (insert
+     (mapconcat
+      (lambda (extension)
+        (format
+         "[[%s/%s.%s][%s (%s)]]"
+         base
+         document
+         (downcase extension)
+         title
+         (upcase extension)))
+      (list "PDF" "SXI" "PPT")
+      " - ")
+     (format
+      " - [[%s/%s-handouts.pdf][%s (Handouts, PDF)]]"
+      base
+      document
+      title))))
+
+(define-key emacs-wiki-mode-map (kbd "C-c !")
+  'sacha/emacs-wiki-perform-operation-on-link-at-point)
+
+;; Manually refresh the alist whenever a file is saved.
+(setq emacs-wiki-refresh-file-alist-p nil)
+
 (provide 'emacs-wiki-config)
+

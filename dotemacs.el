@@ -1,5 +1,5 @@
 ;; -*- mode: emacs-lisp; mode: hi-lock; mode: page-break; auto-compile-lisp: nil; -*-
-;; $Id: dotemacs.el,v 1.47 2004/09/15 17:19:20 sigma Exp $
+;; $Id: dotemacs.el,v 1.48 2004/09/16 08:04:33 sigma Exp $
 
 ;; Hi-lock: (("^;;; \\(.*\\)" (1 'hi-black-hb t)))
 ;; Hi-lock: (("^ +;;; \\(.*\\)" (1 'hi-black-b t)))
@@ -787,8 +787,9 @@ there are more than 1% of such letters then turn French accent mode on."
 (autoload 'replace-recent-character "rrc" "" t nil)
 (autoload 'h4x0r-string "h4x0r" "" t nil)
 
-;; (require 'planner-config)
-(request 'emacs-wiki-config)
+(require 'planner-config)
+(require 'emacs-wiki-config)
+(require 'remember-config)
 
 (when (and (string= "xterm" (getenv "TERM")) (request 'xterm-extras))
   (xterm-extra-keys))
