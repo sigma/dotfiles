@@ -1,0 +1,9 @@
+import glob
+
+Import('env')
+env.Prepend(EFLAGS = '-L perso ')
+
+src_files = glob.glob("*.el")
+
+for file in src_files:
+    env.Elisp(file)
