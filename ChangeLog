@@ -1,5 +1,14 @@
 2004-07-15  Yann Hodique  <Yann.Hodique@lifl.fr>
 
+	* dotemacs.el
+	(request): remove paragraph justification
+
+	* dotemacs-cust.el
+	(custom-set-variables): excluded tramp files from recentf, save in ~/.emacs-recentf
+
+	* perso/xterm-extras.el:
+	version update
+
 	* perso/mycode.el:
 	fixed mess in this file (cvs bug?)
 

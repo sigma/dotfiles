@@ -100,7 +100,6 @@
 ;;   Ctrl ~Meta ~Shift <Key> Sys_Req:     string(0x1b) string("[z5e")    \n\
 ;;   Ctrl ~Meta  Shift <Key> Sys_Req:     string(0x1b) string("[z6e")    \n
 
-
 ;; Code:
 
 (defun xterm-extra-remap-function-keys ()

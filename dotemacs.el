@@ -1,5 +1,5 @@
 ;; -*- mode: emacs-lisp; auto-compile-lisp: nil; -*-
-;; $Id: dotemacs.el,v 1.26 2004/07/14 22:09:19 sigma Exp $
+;; $Id: dotemacs.el,v 1.27 2004/07/15 08:41:29 sigma Exp $
 
 ;; Load site-specific stuff
 (if (file-exists-p (expand-file-name "~/.emacs-local"))
@@ -336,8 +336,6 @@
           (add-hook 'LaTeX-mode-hook #'LaTeX-preview-setup))
       ;; point my typos
       (add-hook 'LaTeX-mode-hook 'flyspell-mode)
-      ;; produce justified paragraphs
-      (add-hook 'LaTeX-mode-hook (lambda () (setq default-justification 'full)))
       ;; Most people don't want that... I do
       ;; highlight *any* change, color rotation
       (add-hook 'LaTeX-mode-hook 'highlight-changes-mode)
