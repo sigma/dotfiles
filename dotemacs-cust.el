@@ -94,6 +94,31 @@
  '(max-specpdl-size 1000)
  '(mouse-avoidance-threshold 15)
  '(mouse-yank-at-point t)
+ '(muse-colors-markup (quote (("\\b=[^
+	 =>]" 61 muse-colors-verbatim) ("\\*+" 42 muse-colors-emphasized) ("^#title" 35 muse-colors-title) (muse-link-regexp 91 muse-colors-link))))
+ '(muse-html-charset-default "utf-8")
+ '(muse-html-encoding-default (quote utf-8))
+ '(muse-latex-header "\\documentclass{article}
+
+\\usepackage[english]{babel}
+\\usepackage[utf8]{inputenc}
+\\usepackage[T1]{fontenc}
+\\usepackage{hyperref}
+\\usepackage[pdftex]{graphicx}
+
+\\begin{document}
+
+\\title{<lisp>(muse-publishing-directive \"title\")</lisp>}
+\\author{<lisp>(muse-publishing-directive \"author\")</lisp>}
+\\date{<lisp>(muse-publishing-directive \"date\")</lisp>}
+
+\\maketitle
+
+<lisp>(and muse-publish-generate-contents
+	   \"\\\\tableofcontents
+\\\\newpage\")</lisp>
+
+")
  '(next-line-add-newlines nil)
  '(osd-args (quote ("--delay=3" "--age=3" "--pos=bottom" "--offset=70" "--outline=5" "--outlinecolour=grey" "--font=-microsoft-verdana-medium-r-normal--10-*-*-*-*-*-*")))
  '(paren-dont-load-timer nil)
@@ -105,7 +130,7 @@
  '(recentf-exclude (quote (":")))
  '(recentf-mode t nil (recentf))
  '(recentf-save-file "~/.emacs-recentf")
- '(reftex-plug-into-AUCTeX t t)
+ '(reftex-plug-into-AUCTeX t)
  '(save-place-limit 100)
  '(sawfish-extra-keyword-list (quote ("add-frame-style" "call-after-load" "call-after-property-changed" "call-after-state-changed" "custom-set-property" "define" "define-structure" "export" "open")))
  '(sawfish-warning-keyword-list (quote ("fixme" "FIXME" "Fixme" "fix me" "Fix me" "!!!" "Grrr" "Bummer" "todo" "TODO" "Todo")))

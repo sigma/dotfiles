@@ -119,6 +119,7 @@
 
 (setq backup-enable-predicate 'ecm-backup-enable-predicate)
 (setq backup-directory-alist '(("." . "~/.backups")))
+(setq backup-by-copying t)
 
 ;; Put autosaves files in a single directory too
 (when (request 'auto-save)

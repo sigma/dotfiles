@@ -44,9 +44,9 @@ there are more than 1% of such letters then turn French accent mode on."
       (cond ((> (* n 100) size)
              (fracc-mode fracc-8bits-tex-encoding))))))
 
-(add-hook 'tex-mode-hook 'install-french-accent-mode-if-needed)
-(add-hook 'LaTeX-mode-hook 'install-french-accent-mode-if-needed)
-(add-hook 'text-mode-hook 'install-french-accent-mode-if-needed)
+;; (add-hook 'tex-mode-hook 'install-french-accent-mode-if-needed)
+;; (add-hook 'LaTeX-mode-hook 'install-french-accent-mode-if-needed)
+;; (add-hook 'text-mode-hook 'install-french-accent-mode-if-needed)
 
 (provide 'fracc-config)
 ;;; fracc-config.el ends here

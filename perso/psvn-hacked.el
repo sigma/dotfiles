@@ -2092,7 +2092,7 @@ If ARG then prompt for revision to diff against."
          (base-buff (find-file-noselect (cdar svn-status-get-specific-revision-file-info)))
          (svn-transient-buffers (list base-buff ))
          (startup-hook '(svn-ediff-startup-hook)))
-    (ediff-buffers my-buffer base-buff  startup-hook)))
+    (ediff-buffers base-buff my-buffer  startup-hook)))
 
 (defun svn-ediff-startup-hook ()
   (add-hook 'ediff-after-quit-hook-internal

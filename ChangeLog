@@ -1,3 +1,11 @@
+2005-01-07  Yann Hodique  <Yann.Hodique@lifl.fr>
+
+	* perso/patches.el:
+	(backup-by-copying): preserve links after modifications
+
+	* dotemacs-cust.el:
+	(custom-set-variables): muse settings for charsets
+
 2005-01-06  Yann Hodique  <Yann.Hodique@lifl.fr>
 
 	* dotemacs.el:
