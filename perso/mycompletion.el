@@ -254,11 +254,11 @@ never prompted."
   (or (tempo-expand-if-complete)
       (insert " ")))
 
-(defun yh-tempo-define-template (name key list elements &optional tag documentation taglist)
+(defun yh/tempo-define-template (name key list elements &optional tag documentation taglist)
   (tempo-define-template name elements tag documentation taglist)
   (add-to-list list (cons name key)))
 
-(defun yh-tempo-build-local-map (alist)
+(defun yh/tempo-build-local-map (alist)
   (mapcar (lambda (arg)
             (local-set-key
              (concat "\C-c\C-m" (cdr arg))

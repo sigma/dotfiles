@@ -199,11 +199,17 @@
     (define-key map "\eO2H" [S-home])
 
     (define-key map "\eO5A" [C-up])
+    (define-key map "\e[1;5A" [C-up])
     (define-key map "\eO5B" [C-down])
+    (define-key map "\e[1;5B" [C-down])
     (define-key map "\eO5C" [C-right])
+    (define-key map "\e[1;5C" [C-right])
     (define-key map "\eO5D" [C-left])
+    (define-key map "\e[1;5D" [C-left])
     (define-key map "\eO5F" [C-end])
+    (define-key map "\e[1;5F" [C-end])
     (define-key map "\eO5H" [C-home])
+    (define-key map "\e[1;5H" [C-home])
 
     ;; Even if the local machine has an up-to-date xterm and termcap
     ;; entry, the remote machine may not have an up-to-date termcap, in
@@ -415,13 +421,13 @@
   (define-key function-key-map "\e[z7b"    [M-C-return])
   (define-key function-key-map "\e[z8b"    [M-C-S-return])
 
-  (define-key function-key-map "\e[z2c"    [S-backspace])
-  (define-key function-key-map "\e[z3c"    [M-backspace])
-  (define-key function-key-map "\e[z4c"    [M-S-backspace])
-  (define-key function-key-map "\e[z5c"    [C-backspace])
-  (define-key function-key-map "\e[z6c"    [C-S-backspace])
-  (define-key function-key-map "\e[z7c"    [M-C-backspace])
-  (define-key function-key-map "\e[z8c"    [M-C-S-backspace])
+  (define-key function-key-map "\e[z2c"    (kbd "S-DEL"))
+  (define-key function-key-map "\e[z3c"    (kbd "M-DEL"))
+  (define-key function-key-map "\e[z4c"    (kbd "M-S-DEL"))
+  (define-key function-key-map "\e[z5c"    (kbd "C-DEL"))
+  (define-key function-key-map "\e[z6c"    (kbd "C-S-DEL"))
+  (define-key function-key-map "\e[z7c"    (kbd "M-C-DEL"))
+  (define-key function-key-map "\e[z8c"    (kbd "M-C-S-DEL"))
 
   (define-key function-key-map "\e[zd"     [pause])
   (define-key function-key-map "\e[z2d"    [S-pause])

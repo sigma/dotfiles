@@ -54,10 +54,8 @@
 (defun map-apply(func xs)
   (mapcar #'(lambda (l)(apply func l)) xs))
 
-(defmacro lam(args &rest body) `(lambda  ,args ,@body))
-
 ;; here start the real code
-(map-apply (lam (face color)
+(map-apply (lambda (face color)
 		(make-face face) (set-face-foreground face color))
 	   '(
 	     (dircolors-face-dir            "SkyBlue"        )
@@ -125,24 +123,16 @@
    or can be of the form (r regexp)"
  )
 
-
-
 (setq dircolors-font-lock-keywords
       (append
-	'(
-	  ("\\w*/" . 'dircolors-face-dir); why this ` and 'tricks ??
-	  )
-	(map-apply
-	 (lam (lext face)
-	      (cons (join-string
-		     (mapcar
-		      (lam (e) (if (stringp e)
-;				   (concat "\\w\\(\\w\\|[_-]\\)*+\\." e "\\>")
-				   (concat "\\w*\\." e "\\>")
-				 (concat "\\w*" (cadr e) "\\w*\\>") ;regexp '(r "reg")
-				 )) lext)
-		     "\\|"
-		     ) (list 'quote face))) dircolors-extension)))
+       '(("\\w*/" . 'dircolors-face-dir))
+       (map-apply
+        (lambda (lext face)
+          (cons (join-string
+                 (mapcar (lambda (e) (if (stringp e)
+                                         (concat "\\w*\\." e "\\>")
+                                       (concat "\\w*" (cadr e) "\\w*\\>")
+                                       )) lext) "\\|") (list 'quote face))) dircolors-extension)))
 
 (defun dircolors()
   (interactive)
@@ -154,13 +144,13 @@
 	'(dircolors-font-lock-keywords
 	  t ; KEYWORDS-ONLY, dont want fontification of comment/strings ?
 	  nil ; CASE-FOLD
-					; SYNTAX-ALIST, say that _ is a word constituent
-	  ((?_ . "w") (?- . "w") (?+ . "w") (?. . "w"))
+	  ((?_ . "w") (?- . "w") (?+ . "w") (?. . "w")) ; SYNTAX-ALIST, say that _ is a word constituent
 	  ))
   (font-lock-mode 1))
 
 (add-hook 'completion-list-mode-hook 'dircolors)
-(add-hook 'buffer-menu-mode-hook     'dircolors)
+(add-hook 'buffer-menu-mode-hook 'dircolors)
+
 (provide 'dircolors)
 
 

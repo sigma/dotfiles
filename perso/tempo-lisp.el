@@ -31,7 +31,7 @@
 (defvar elisp-tempo-tags nil)
 (defvar elisp-tempo-keys-alist nil)
 
-(yh-tempo-define-template "elisp-defun"
+(yh/tempo-define-template "elisp-defun"
                        "f"
                        'elisp-tempo-keys-alist
 		       '("defun " p " (" p ")" n> "\"" p "\"" n> r> ")")
@@ -39,7 +39,7 @@
 		       "Insert a defun expression"
 		       'elisp-tempo-tags)
 
-(yh-tempo-define-template "elisp-defvar"
+(yh/tempo-define-template "elisp-defvar"
                        "v"
                        'elisp-tempo-keys-alist
 		       '("defvar " p  n> "\"" p "\")")
@@ -47,7 +47,7 @@
 		       "Insert a defvar expression"
 		       'elisp-tempo-tags)
 
-(yh-tempo-define-template "elisp-if"
+(yh/tempo-define-template "elisp-if"
                        "i"
                        'elisp-tempo-keys-alist
 		       '("if " p n> r> ")")
@@ -55,7 +55,7 @@
 		       "Insert an if expression"
 		       'elisp-tempo-tags)
 
-(yh-tempo-define-template "elisp-cond"
+(yh/tempo-define-template "elisp-cond"
                        "c"
                        'elisp-tempo-keys-alist
 		       '("cond ((" p ") " r> "))")
@@ -71,7 +71,7 @@
 ;   (local-set-key " " 'tempo-space)
    (setq tempo-match-finder "(\\([^\\b]+\\)\\=")
    (tempo-use-tag-list 'elisp-tempo-tags)
-   (yh-tempo-build-local-map elisp-tempo-keys-alist))
+   (yh/tempo-build-local-map elisp-tempo-keys-alist))
 
 (add-hook 'emacs-lisp-mode-hook 'elisp-tempo)
 

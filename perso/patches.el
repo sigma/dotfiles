@@ -35,9 +35,65 @@
     (require pack)
   (error nil)))
 
+;; Map a condition/action on a list
+(defun mapcond (test result list &optional default)
+  (or (let ((ex t))
+        (while (and ex list)
+          (if (funcall test (car list))
+              (progn
+                (setq ex nil)
+                (funcall result (car list)))
+            (setq list (cdr list)))))
+      default))
+
+(defmacro make-double-command (name args doc-string interactive
+                                      first-form second-form)
+  "define a new command from 2 behaviors"
+  (declare (indent 2))
+  (let ((int-form (if (not interactive)
+                      '(interactive)
+                    (list 'interactive interactive))))
+    `(progn
+       (defun ,name ,args ,doc-string
+         ,int-form
+         (if (eq last-command this-command)
+             ,(if (and (listp second-form) (> (length second-form) 1))
+                  (cons 'progn second-form)
+                second-form)
+           ,first-form)))))
+
+;; Many thanks to utis (Oliver Scholz)
+(defmacro defmadvice (flist spec &rest body)
+  (let ((defs (mapcar
+               (lambda (f) `(defadvice ,f ,(append (list (car spec) (intern (format "ad-%s-%s-%s"
+                                                                                    (symbol-name f)
+                                                                                    (symbol-name (cadr spec))
+                                                                                    (car spec)))) (cddr spec))
+                              ,@body)) flist))) `(progn ,@defs)))
+
+;; add the same function to multiple hooks
+(defun add-mhook (mlist func) (dolist (m mlist) (add-hook m func)))
+
+;; clear a hook
+(defun clear-hook (hook) (set hook nil))
+
+;; suppress annoying messages from speedbar package
+(defmadvice (dframe-handle-make-frame-visible dframe-handle-iconify-frame dframe-handle-delete-frame)
+  (around dframe act)
+  "Inhibit message function"
+  (flet ((message (&rest args) nil))
+    ad-do-it))
+
+;; fix split-window behavior
+(defmadvice (split-window-vertically split-window-horizontally)
+  (after split act)
+  "Open another buffer in the new window"
+  (set-window-buffer (next-window) (other-buffer)))
+
 ;; make the y or n suffice for a yes or no question
 (fset 'yes-or-no-p 'y-or-n-p)
 
+;; Goto matching parenthesis
 (defun match-paren ()
   "Will bounce between matching parens just like % in vi"
   (interactive)
@@ -65,8 +121,8 @@
 (setq backup-directory-alist '(("." . "~/.backups")))
 
 ;; Put autosaves files in a single directory too
-(setq auto-save-directory (expand-file-name "~/.autosaves/"))
-(require 'auto-save "auto-save.el" t)
+(when (request 'auto-save)
+  (setq auto-save-directory (expand-file-name "~/.autosaves/")))
 
 ;; Why the hell should some commands be disabled?
 (setq disabled-command-hook nil)
@@ -101,15 +157,16 @@
   (setq top-margin up
         bottom-margin down
         buffer-no-margin-alist except)
-  (add-hook    'post-command-hook 'check-margin))
+  (add-hook 'post-command-hook 'check-margin))
 
 ;; Color prefix in minibuffer
-;; (let ((face (cdr (memq 'face minibuffer-prompt-properties))))
-;;   (if face
-;;       (setcar face minibuffer-face)
-;;     (setq minibuffer-prompt-properties
-;;           (append minibuffer-prompt-properties
-;;                   (list 'face 'minibuffer-face)))))
+(unless (facep 'minibuffer-prompt)
+  (let ((face (cdr (memq 'face minibuffer-prompt-properties))))
+    (if face
+        (setcar face minibuffer-face)
+      (setq minibuffer-prompt-properties
+            (append minibuffer-prompt-properties
+                    (list 'face 'minibuffer-face))))))
 
 ;; Adapt open-line behavior when arg <= 0
 (defadvice open-line( around open-line-around (arg) act )
@@ -120,35 +177,6 @@
           (end-of-line)
           (open-line (- var))))
     ad-do-it))
-
-;; Suppress annoying messages. Needs some work
-(defadvice message (around message-around act)
-  "Don't let annoying messages popup while using the minibuffer"
-  (unless (minibuffer-window-active-p (minibuffer-window))
-    ad-do-it))
-
-;; Many thanks to utis (Oliver Scholz)
-(defmacro defmadvice (flist spec &rest body)
-  (let ((defs (mapcar
-               (lambda (f) `(defadvice ,f ,(append (list (car spec) (intern (format "ad-%s-%s-%s"
-                                                                                    (symbol-name f)
-                                                                                    (symbol-name (cadr spec))
-                                                                                    (car spec)))) (cddr spec))
-                              ,@body)) flist)))
-    `(progn ,@defs)))
-
-(defun add-mhook (mlist func) (dolist (m mlist) (add-hook m func)))
-
-(defmadvice (dframe-handle-make-frame-visible dframe-handle-iconify-frame dframe-handle-delete-frame)
-  (around dframe act)
-  "Inhibit message function"
-  (flet ((message (&rest args) nil))
-    ad-do-it))
-
-(defmadvice (split-window-vertically split-window-horizontally)
-  (after split act)
-  "Open another buffer in the new window"
-  (set-window-buffer (next-window) (other-buffer)))
 
 ;; BUFFER SWITCHING FIX
 ;;
@@ -166,12 +194,12 @@
 ;; March 1998
 ;; Re-hacked and dramatically packed by Yann Hodique (2004)
 
-(defvar yh-remove-first-completion nil)
+(defvar yh/remove-first-completion nil)
 
-(defun yh-clean-minibuffer-completion-table ()
+(defun yh/clean-minibuffer-completion-table ()
   "Suppress current buffer from completion list if needed"
-  (when yh-remove-first-completion
-    (progn (setq yh-remove-first-completion nil)
+  (when yh/remove-first-completion
+    (progn (setq yh/remove-first-completion nil)
            (when (consp minibuffer-completion-table)
              (setq  minibuffer-completion-table
                     (cdr minibuffer-completion-table))))))
@@ -179,16 +207,52 @@
 (defmadvice (minibuffer-complete minibuffer-complete-word minibuffer-complete-and-exit)
   (before complete act)
   "Suppress current buffer from completion list if needed"
-  (yh-clean-minibuffer-completion-table))
+  (yh/clean-minibuffer-completion-table))
 
 (defadvice switch-to-buffer (before ad-switch-to-buffer-before act)
   "Activate first entry removal, in order to avoid completing the current buffer name"
-  (setq yh-remove-first-completion t))
+  (setq yh/remove-first-completion t))
 
 (defun yank-rpop (arg)
   (interactive "*p")
   (yank-pop (- arg)))
 (global-set-key "\M-Y" 'yank-rpop)
+
+(defun yh/completion-setup-function ()
+  (if minibuffer-completing-file-name
+      (file-completion-setup-function)
+    (completion-setup-function)))
+
+;; The default completion-setup-function conflicts with my dircolors settings
+(defun file-completion-setup-function ()
+  (let ((mainbuf (current-buffer))
+	(mbuf-contents (minibuffer-contents)))
+    (with-current-buffer mainbuf
+      (setq default-directory (file-name-directory mbuf-contents)))
+    (when (and partial-completion-mode (not (eobp)))
+      (setq mbuf-contents
+	    (substring mbuf-contents 0 (- (point) (point-max)))))
+    (with-current-buffer standard-output
+      (completion-list-mode)
+      (make-local-variable 'completion-reference-buffer)
+      (setq completion-reference-buffer mainbuf)
+      ;; Insert help string.
+      (goto-char (point-min))
+      (if (display-mouse-p)
+	  (insert (substitute-command-keys
+		   "Click \\[mouse-choose-completion] on a completion to select it.\n")))
+      (insert (substitute-command-keys
+	       "In this buffer, type \\[choose-completion] to \
+select the completion near point.\n\n")))))
+
+(remove-hook 'completion-setup-hook 'completion-setup-function)
+(add-hook 'completion-setup-hook 'yh/completion-setup-function)
+
+;; Suppress annoying messages. Needs some work
+;; (defadvice message (around message-around act)
+;;   "Don't let annoying messages popup while using the minibuffer"
+;;   (unless (minibuffer-window-active-p (minibuffer-window))
+;;     ad-do-it))
 
 (provide 'patches)
 ;;; patches.el ends here

@@ -51,7 +51,6 @@
  '(ecb-layout-name "sigma")
  '(ecb-layout-window-sizes (quote (("sigma" (0.1761904761904762 . 0.8589743589743589) (0.19523809523809524 . 0.2564102564102564) (0.10476190476190476 . 0.3076923076923077) (0.09047619047619047 . 0.3076923076923077) (0.19523809523809524 . 0.2948717948717949)) ("left9" (0.1419753086419753 . 0.8225806451612904)))))
  '(ecb-major-modes-deactivate (quote (hide-all-except-activated . "\\(Info\\|custom\\)-mode")))
- '(ecb-options-version "2.25")
  '(ecb-other-window-behavior (quote only-edit))
  '(ecb-tip-of-the-day nil)
  '(enable-multibyte-characters t)
@@ -83,7 +82,6 @@
  '(htmlize-html-major-mode (quote html-mode))
  '(indent-tabs-mode nil)
  '(inhibit-startup-message t)
- '(kill-whole-line t)
  '(line-number-mode t)
  '(mark-diary-entries-in-calendar t)
  '(max-lisp-eval-depth 500)
@@ -92,10 +90,8 @@
  '(mouse-yank-at-point t)
  '(next-line-add-newlines nil)
  '(osd-args (quote ("--delay=3" "--age=3" "--pos=bottom" "--offset=70" "--outline=5" "--outlinecolour=grey" "--font=-microsoft-verdana-medium-r-normal--10-*-*-*-*-*-*")))
+ '(paren-dont-load-timer nil)
  '(parens-require-spaces nil)
- '(pc-select-meta-moves-sexps t)
- '(pc-select-selection-keys-only t)
- '(pc-selection-mode t)
  '(pcomplete-autolist t)
  '(pcomplete-cycle-completions nil)
  '(preview-default-option-list (quote ("displaymath" "floats" "graphics" "textmath" "footnotes")))
@@ -142,7 +138,7 @@
     (((class grayscale) (background light)) (:foreground "LightGray" :bold t))
     (((class grayscale) (background dark)) (:foreground "DimGray" :bold t))
     (((class color) (background light)) (:background "hotpink"))
-    (((class color) (background dark)) (:foreground "black" :background "hotpink"))
+    (((class color) (background dark)) (:foreground "yellow3" :background "hotpink"))
     (t (:italic t)))
   "blah"
   :group 'font-lock-highlighting-faces)
@@ -187,14 +183,21 @@
   "blah"
   :group 'font-lock-highlighting-faces)
 
-(defface minibuffer-face '((t (:bold t :foreground "LightBlue")))
-  "Face used to color the minibuffer.")
+(unless (facep 'minibuffer-prompt)
+  (defvar minibuffer-face 'minibuffer-face)
+  (defface minibuffer-face '((t (:bold t :foreground "LightBlue")))
+    "Face used to color the minibuffer."))
 
 (custom-set-faces
   ;; custom-set-faces was added by Custom.
   ;; If you edit it by hand, you could mess it up, so be careful.
   ;; Your init file should contain only one such instance.
   ;; If there is more than one, they won't work right.
+ '(bold ((t (:foreground "lightcoral" :weight bold))))
+ '(bold-italic ((t (:foreground "orange" :slant italic :weight bold))))
+ '(cparen-around-andor-face ((t (:foreground "red" :weight bold))))
+ '(cparen-around-begin-face ((t (:foreground "red"))))
+ '(cparen-around-define-face ((t (:foreground "lightblue" :weight bold))))
  '(cursor ((t (:background "yellow"))) t)
  '(dircolors-face-objet ((t (:foreground "Gray"))) t)
  '(ecb-default-highlight-face ((((class color) (background dark)) (:inherit ecb-default-general-face :background "slateblue"))))
@@ -203,7 +206,10 @@
  '(ecb-method-face ((((class color) (background dark)) (:inherit ecb-default-highlight-face))))
  '(ecb-source-face ((((class color) (background dark)) (:inherit ecb-default-highlight-face))))
  '(ecb-token-header-face ((((class color) (background dark)) (:background "SeaGreen4"))))
+ '(font-lock-builtin-face ((((class color) (min-colors 88) (background dark)) (:foreground "lightsteelblue"))))
+ '(font-lock-comment-face ((((class color) (min-colors 88) (background dark)) (:foreground "gray"))))
  '(font-lock-floatnumber-face ((((class color) (background dark)) (:foreground "yellow4"))))
+ '(font-lock-function-name-face ((((class color) (min-colors 88) (background dark)) (:foreground "lightblue2"))))
  '(font-lock-hexnumber-face ((((class color) (background dark)) (:foreground "cyan"))))
  '(font-lock-keys-face ((((class color) (background dark)) (:foreground "yellow"))))
  '(font-lock-number-face ((t (:foreground "yellow3"))))
@@ -213,11 +219,14 @@
  '(font-lock-pvs-set-brace-face ((t (:foreground "darkred"))))
  '(font-lock-pvs-table-face ((t (:foreground "black"))))
  '(font-lock-qt-face ((((class color) (background dark)) (:foreground "green4"))))
+ '(font-lock-string-face ((((class color) (min-colors 88) (background dark)) (:foreground "green3"))))
+ '(font-lock-variable-name-face ((((class color) (min-colors 88) (background dark)) (:foreground "LightSkyBlue"))))
  '(gnus-group-mail-low-empty-face ((((class color) (background dark)) (:foreground "aquamarine3"))))
  '(gnus-group-mail-low-face ((t (:foreground "aquamarine3" :weight bold))))
  '(gnus-header-content-face ((t (:foreground "green" :slant italic))))
  '(gnus-header-name-face ((((class color) (background dark)) (:foreground "LightGreen"))))
- '(highlight ((t (:background "slateblue"))))
+ '(highlight ((((class color) (background dark) (type x)) (:background "slateblue")) (((class color) (background dark) (type nil)) (:background "blue"))))
+ '(italic ((((supports :slant italic)) (:foreground "Orchid" :slant italic))))
  '(menu ((((type x-toolkit)) (:background "lightgrey" :foreground "black" :box (:line-width 1 :style released-button)))))
  '(message-header-name-face ((((class color) (background dark)) (:foreground "green3"))))
  '(message-header-other-face ((((class color) (background dark)) (:foreground "#dd0000"))))
@@ -236,54 +245,24 @@
 
 (setq font-lock-support-mode 'lazy-lock-mode)
 (setq lazy-lock-stealth-time    1
-      lazy-lock-stealth-verbose nil); je veux pas voir le status du fontify
-
-(set-face-foreground 'bold        "lightcoral")    ;avant red
-(set-face-foreground 'italic      "Orchid")        ;lightslateblue
-(set-face-foreground 'underline   "seagreen3")
-(set-face-foreground 'bold-italic "orange")
-
-(set-face-underline-p 'underline nil)
-(set-face-background  'region    "slategrey")
-(set-face-background  'highlight "slateblue") ;nil pour ispell
-
-(set-face-background 'show-paren-match-face "slateblue")
-(set-face-background 'show-paren-mismatch-face "magenta")
-
-(set-face-foreground font-lock-comment-face "gray")       ;red    Firebrick
-(set-face-foreground font-lock-string-face  "green3")     ;green4
-
-(set-face-foreground font-lock-function-name-face "lightblue2") ;blue3
-
-(set-face-foreground font-lock-variable-name-face "lightblue3") ;blue3
-
-(set-face-foreground 'font-lock-builtin-face "coral")
-(set-face-foreground font-lock-type-face     "palegreen") ;orange
-
-(defun Set-face-foreground (f c) (make-face f) (set-face-foreground f c))
-(defun Set-face-background (f c) (make-face f) (set-face-background f c))
-
-(Set-face-foreground 'font-lock-number-face      "yellow3") ;"purple"
-(Set-face-foreground 'font-lock-punctuation-face "cyan");   "green4"
+      lazy-lock-stealth-verbose nil)
 
 (request 'dircolors)
 
 ;; Frame appearence
 (set-default-font "fixed")
-(if (eq window-system 'x)
+(when (eq window-system 'x)
     (setq default-frame-alist
           (append default-frame-alist
-                  '(
-                    (tool-bar-lines . 0)
+                  '((tool-bar-lines . 0)
                     (menu-bar-lines . 0)
                     (width . 100)
                     (height . 50)
                     (foreground-color . "wheat")
                     (background-color . "darkslategray")
-;;                    (cursor-color . "orchid")
+                    (cursor-color . "yellow")
                     (font . "fixed")
-                    )))
-)
+                    ))))
 
 (if (> emacs-major-version 20) (custom-set-variables '(tool-bar-mode nil nil (tool-bar))))
 (if (> emacs-major-version 20) (set-scroll-bar-mode nil))

@@ -40,7 +40,7 @@
 
 ;;; Preprocessor Templates (appended to c-tempo-tags)
 
-(yh-tempo-define-template "c-include"
+(yh/tempo-define-template "c-include"
                           "# i"
                           'c-tempo-keys-alist
                           '("#include <" r ".h>" > n)
@@ -48,7 +48,7 @@
                           "Insert a #include <> statement"
                           'c-tempo-tags)
 
-(yh-tempo-define-template "c-ifdef"
+(yh/tempo-define-template "c-ifdef"
                           "# f"
                           'c-tempo-keys-alist
                           '("#ifdef " (p "ifdef-clause: " clause) > n> p n
@@ -58,7 +58,7 @@
                           "Insert a #ifdef #else #endif statement"
                           'c-tempo-tags)
 
-(yh-tempo-define-template "c-ifndef"
+(yh/tempo-define-template "c-ifndef"
                           "# n"
                           'c-tempo-keys-alist
                           '("#ifndef " (p "ifndef-clause: " clause) > n
@@ -70,7 +70,7 @@
 
 ;;; C-Mode Templates
 
-(yh-tempo-define-template "c-if"
+(yh/tempo-define-template "c-if"
                           "i"
                           'c-tempo-keys-alist
                           '(> "if(" (p "if-clause: " clause) ")"
@@ -80,7 +80,7 @@
                           "Insert a C if statement"
                           'c-tempo-tags)
 
-(yh-tempo-define-template "c-else"
+(yh/tempo-define-template "c-else"
                           "e"
                           'c-tempo-keys-alist
                           '(> "else {" > n> r> n
@@ -89,7 +89,7 @@
                           "Insert a C else statement"
                           'c-tempo-tags)
 
-(yh-tempo-define-template "c-if-else"
+(yh/tempo-define-template "c-if-else"
                           "I"
                           'c-tempo-keys-alist
                           '(> "if(" (p "if-clause: " clause) ") {" > n> r> ~ n
@@ -100,7 +100,7 @@
                           "Insert a C if else statement"
                           'c-tempo-tags)
 
-(yh-tempo-define-template "c-while"
+(yh/tempo-define-template "c-while"
                           "w"
                           'c-tempo-keys-alist
                           '(> "while(" (p "while-clause: " clause) ") {" > n> r> n
@@ -109,7 +109,7 @@
                           "Insert a C while statement"
                           'c-tempo-tags)
 
-(yh-tempo-define-template "c-for"
+(yh/tempo-define-template "c-for"
                           "f"
                           'c-tempo-keys-alist
                           '(> "for(" (p "for-clause: " clause) ") {" > n> r> n
@@ -118,7 +118,7 @@
                           "Insert a C for statement"
                           'c-tempo-tags)
 
-(yh-tempo-define-template "c-for-i"
+(yh/tempo-define-template "c-for-i"
                           "F"
                           'c-tempo-keys-alist
                           '(> "for(" (p "variable: " var) " = 0; " (s var)
@@ -128,7 +128,7 @@
                           "Insert a C for loop: for(x = 0; x < ..; x++)"
                           'c-tempo-tags)
 
-(yh-tempo-define-template "c-main"
+(yh/tempo-define-template "c-main"
                           "M"
                           'c-tempo-keys-alist
                           '(> "int main(int argc, char *argv[]) {" > n> r> n
@@ -138,7 +138,7 @@
                           "Insert a C main statement"
                           'c-tempo-tags)
 
-(yh-tempo-define-template "c-if-malloc"
+(yh/tempo-define-template "c-if-malloc"
                           "m"
                           'c-tempo-keys-alist
                           '(> "if((" (p "variable: " var) " = ("
@@ -149,7 +149,7 @@
                           "Insert a C if(malloc...) statement"
                           'c-tempo-tags)
 
-(yh-tempo-define-template "c-switch"
+(yh/tempo-define-template "c-switch"
                           "s"
                           'c-tempo-keys-alist
                           '(> "switch(" (p "switch-condition: " clause) ") {" > n
@@ -162,7 +162,7 @@
                           "Insert a C switch statement"
                           'c-tempo-tags)
 
-(yh-tempo-define-template "c-case"
+(yh/tempo-define-template "c-case"
                           "c"
                           'c-tempo-keys-alist
                           '(n "case " (p "value: ") ":" > n> p n
@@ -176,7 +176,7 @@
 
 ;; Warning : make use of hacked tempo for 'z flag and '~ position
 
-(yh-tempo-define-template "c++-class"
+(yh/tempo-define-template "c++-class"
                           "C"
                           'c-tempo-keys-alist
                           '("class " (z "classname: "
@@ -203,12 +203,12 @@
 (add-hook 'c-mode-hook (lambda ()
 			  (tempo-use-tag-list 'c-tempo-tags)
                           (tempo-use-tag-list 'c++-tempo-tags)
-			  (yh-tempo-build-local-map c-tempo-keys-alist)))
+			  (yh/tempo-build-local-map c-tempo-keys-alist)))
 
 (add-hook 'c++-mode-hook (lambda ()
                            (tempo-use-tag-list 'c-tempo-tags)
                            (tempo-use-tag-list 'c++-tempo-tags)
-                           (yh-tempo-build-local-map c-tempo-keys-alist)))
+                           (yh/tempo-build-local-map c-tempo-keys-alist)))
 
 (provide 'tempo-c++)
 ;;; tempo-c++.el ends here

@@ -26,6 +26,9 @@
 
 ;;; Code:
 
+(require 'cc-cmds)
+(require 'patches)
+
 (if (not (fboundp 'emacs-type-is-regular))
     (defun emacs-type-is-regular () t))
 
@@ -40,45 +43,45 @@
       (list
        '("\\<[0-9]+\\.[0-9]+\\>" (0 font-lock-floatnumber-face))
        '("^#[ 	]*error[ 	]+\\(.+\\)"
-        (1 font-lock-warning-face prepend))
+         (1 font-lock-warning-face prepend))
        '("^#[ 	]*\\(import\\|include\\)[ 	]*\\(<[^>\"\n]*>?\\)"
-        (2 font-lock-string-face))
+         (2 font-lock-string-face))
        '("^#[ 	]*define[ 	]+\\(\\sw+\\)("
-        (1 font-lock-function-name-face))
+         (1 font-lock-function-name-face))
        '("^#[ 	]*\\(elif\\|if\\)\\>"
-        ("\\<\\(defined\\)\\>[ 	]*(?\\(\\sw+\\)?" nil nil
-         (1 font-lock-builtin-face)
-         (2 font-lock-variable-name-face nil t)))
+         ("\\<\\(defined\\)\\>[ 	]*(?\\(\\sw+\\)?" nil nil
+          (1 font-lock-builtin-face)
+          (2 font-lock-variable-name-face nil t)))
        '("^#[ 	]*\\(\\sw+\\)\\>[ 	!]*\\(\\sw+\\)?"
-        (1 font-lock-builtin-face)
-        (2 font-lock-variable-name-face nil t))
+         (1 font-lock-builtin-face)
+         (2 font-lock-variable-name-face nil t))
        '("\\<\\(public\\|private\\|protected\\)\\>[ \t]+\\(\\<\\(signals\\|slots\\)\\>\\)[ \t]*:"
-        (1 font-lock-type-face)
-        (2 font-lock-type-face)
-        )
+         (1 font-lock-type-face)
+         (2 font-lock-type-face)
+         )
        '("\\<\\(class\\|public\\|private\\|protected\\|typename\\|signals\\|slots\\)\\>[ 	]*\\(\\(\\sw+\\)\\>\\([ 	]*<\\([^>\n]+\\)[ 	*&]*>\\)?\\([ 	]*::[ 	*~]*\\(\\sw+\\)\\)*\\)?"
-        (1 font-lock-type-face)
-        (3
-         (if
-             (match-beginning 6)
-             font-lock-type-face font-lock-function-name-face)
-         nil t)
-        (5 font-lock-function-name-face nil t)
-        (7 font-lock-function-name-face nil t))
+         (1 font-lock-type-face)
+         (3
+          (if
+              (match-beginning 6)
+              font-lock-type-face font-lock-function-name-face)
+          nil t)
+         (5 font-lock-function-name-face nil t)
+         (7 font-lock-function-name-face nil t))
        '("^\\(\\sw+\\)\\>\\([ 	]*<\\([^>\n]+\\)[ 	*&]*>\\)?\\([ 	]*::[ 	*~]*\\(\\sw+\\)\\)*[ 	]*("
-        (1
+         (1
 	  (if
 	      (or
 	       (match-beginning 2)
 	       (match-beginning 4))
 	      font-lock-type-face font-lock-function-name-face))
-        (3 font-lock-function-name-face nil t)
-        (5 font-lock-function-name-face nil t))
+         (3 font-lock-function-name-face nil t)
+         (5 font-lock-function-name-face nil t))
        '("\\<\\(auto\\|bool\\|c\\(har\\|o\\(mplex\\|nst\\)\\)\\|double\\|e\\(num\\|x\\(p\\(licit\\|ort\\)\\|tern\\)\\)\\|f\\(loat\\|riend\\)\\|in\\(line\\|t\\)\\|long\\|mutable\\|namespace\\|register\\|s\\(hort\\|igned\\|t\\(atic\\|ruct\\)\\)\\|t\\(emplate\\|ypedef\\)\\|u\\(n\\(ion\\|signed\\)\\|sing\\)\\|v\\(irtual\\|o\\(id\\|latile\\)\\)\\|Q[A-Z][a-zA-Z_]*\\|Q[a-z][A-Z][a-zA-Z_]*\\|uint\\|ulong\\|string\\)\\>"
-        (0 font-lock-type-face))
+         (0 font-lock-type-face))
        '("\\<\\(operator\\)\\>[ 	]*\\(!=\\|%=\\|&[&=]\\|()\\|\\*=\\|\\+[+=]\\|-\\(>\\*\\|[=>-]\\)\\|/=\\|<\\(<=\\|[<=]\\)\\|==\\|>\\(>=\\|[=>]\\)\\|\\[\\]\\|\\^=\\||[=|]\\|[!%&*+,/<=>|~^-]\\)?"
-        (1 font-lock-keyword-face)
-        (2 font-lock-builtin-face nil t))
+         (1 font-lock-keyword-face)
+         (2 font-lock-builtin-face nil t))
        '("\\<\\(case\\|goto\\)\\>[ 	]*\\(-?\\sw+\\)?"
          (1 font-lock-keyword-face)
          (2 font-lock-constant-face nil t))
@@ -144,21 +147,108 @@
 	       (match-beginning 6)
 	       font-lock-function-name-face font-lock-variable-name-face)
 	   nil t)))
-	'("[{}()<>=;:+\\*\\/\\[]\\|\\]\\|\\-" (0 font-lock-keys-face))
-	'("\\<[0-9]+\\>" (0 font-lock-number-face))
-	'("\\<0x[0-9a-fA-F]+\\>" (0 font-lock-hexnumber-face))
+       '("[{}()<>=;:+\\*\\/\\[]\\|\\]\\|\\-" (0 font-lock-keys-face))
+       '("\\<[0-9]+\\>" (0 font-lock-number-face))
+       '("\\<0x[0-9a-fA-F]+\\>" (0 font-lock-hexnumber-face))
 					;     ((concat "\\<"
 					; 	     (regexp-opt '("Q_OBJECT" "emit" "connect" "disconnect" "SIGNAL" "SLOT" "Q_EXPORT"))
 					; 	     "\\>" )
 					;      (0 font-lock-qt-face))
-	'("\\<\\(Q_\\(EXPORT\\|OBJECT\\|PROPERTY\\)\\|S\\(IGNAL\\|LOT\\)\\|connect\\|disconnect\\|emit\\)\\>"
-          (0 font-lock-qt-face))
-	)))
-;(font-lock-add-keywords 'c++-mode '(("[{}()<>=;:+\\*\\/\\[]\\|\\]\\|\\-" (0 font-lock-keys-face))))
+       '("\\<\\(Q_\\(EXPORT\\|OBJECT\\|PROPERTY\\)\\|S\\(IGNAL\\|LOT\\)\\|connect\\|disconnect\\|emit\\)\\>"
+         (0 font-lock-qt-face))
+       )))
+
+(dolist (mode '(c-mode c++-mode java-mode php-mode)) (font-lock-add-keywords mode c++-new-font-lock-keywords))
+
+(defun my-c-mode-common-hook()
+  (interactive)
+  ;; offset customizations not in my-c-style
+  (c-set-offset 'member-init-intro '++)
+  ;; Regular expression for the outline mode.
+  ;; Enable outline mode with M-x outline-minor-mode
+  (setq outline-regexp (concat
+			"^"		; beginning of line is required
+			"\\(template[ \t]*<[^>]+>[ \t]*\\)?" ; there may be a "template <...>"
+			"\\([a-zA-Z0-9_:]+[ \t]+\\)?" ; type specs; there can be no
+			"\\([a-zA-Z0-9_:]+[ \t]+\\)?" ; more than 3 tokens, right?
+
+			"\\("		; last type spec including */&
+			"[a-zA-Z0-9_:]+"
+			"\\([ \t]*[*&]+[ \t]*\\|[ \t]+\\)" ; either pointer/ref sign or whitespace
+			"\\)?"		; if there is a last type spec
+			"\\("		; name; take that into the imenu entry
+			"[a-zA-Z0-9_:~]+" ; member function, ctor or dtor...
+					; (may not contain * because then
+					; "a::operator char*" would become "char*"!)
+			"\\|"
+			"\\([a-zA-Z0-9_:~]*::\\)?operator"
+			"[^a-zA-Z1-9_][^(]*" ; ...or operator
+			" \\)"
+			"[ \t]*([^)]*)[ \t\n]*[^ ;]" ; require something other than a ; after
+			))
+  ;; Figure out this one later
+;;  (setq outline-heading-end-regexp "^{\n")
+
+  ;; We want spaces instead of real tabs.
+  (setq indent-tabs-mode nil)
+  ;; other customizations
+
+  ;; Allow c++-files only
+  (make-local-variable 'buffer-include-regexp)
+  (if c++-buffers-only
+      (setq buffer-include-regexp '()))
+  (setq buffer-include-regexp (cons c++-buffer-include-regexp buffer-include-regexp))
+
+  (setq tab-width 4)
+  ;; we like hungry-delete
+  (c-toggle-hungry-state 1)
+  ;; uncomment for those who like auto-newline
+  ;; (c-toggle-auto-state 1)
+
+  ;; keybindings for all supported languages.  We can put these in
+  ;; c-mode-base-map because c-mode-map, c++-mode-map, objc-mode-map,
+  ;; java-mode-map, and idl-mode-map inherit from it.
+
+  (local-set-key [S-f4] 'align)
+  (outline-minor-mode)
+  (define-key esc-map "\t" 'project-expand-symbol)
+)
+
+(defun my-php-mode-hook()
+  (interactive)
+  ;; offset customizations not in my-c-style
+  (c-set-offset 'member-init-intro '+)
+  ;; Regular expression for the outline mode.
+  ;; Enable outline mode with M-x outline-minor-mode
+  (setq outline-regexp "^[ \t\n\r\f]*function[ \t\n\r\f]+[a-zA-Z_0-9]+([^)]*)")
+
+  ;; We want spaces instead of real tabs.
+  (setq indent-tabs-mode nil)
+
+  ;; Allow c++-files only
+  (make-local-variable 'buffer-include-regexp)
+  (if c++-buffers-only
+      (setq buffer-include-regexp '()))
+  (setq buffer-include-regexp (cons php-buffer-include-regexp buffer-include-regexp))
+
+  (setq tab-width 4)
+  ;; we like hungry-delete
+  (c-toggle-hungry-state t)
+
+  ;;Newline and indent source for enter.
+  (local-set-key [RET] 'newline-and-indent)
+  (c-set-style "ezphp")
+)
+
+(add-hook 'php-mode-hook 'my-php-mode-hook)
 
 (add-hook 'c-mode-common-hook
-	  (lambda ()
-	    (set (make-local-variable 'fill-nobreak-predicate)
+          (lambda ()
+            (my-c-mode-common-hook)
+            ;; activate glasses
+            (glasses-mode)
+            (camelCase-mode 1)
+            (set (make-local-variable 'fill-nobreak-predicate)
 		 (lambda ()
 		   (not (eq (get-text-property (point) 'face)
 			    'font-lock-comment-face))))))
@@ -232,17 +322,6 @@
                                                              (let ((hc (header-source))
                                                                    (dir (file-name-directory (buffer-file-name))))
                                                                (expand-member-functions (concat dir (car hc)) (concat dir (cdr hc))))))))
-
-; activate glasses
-(add-hook 'c-mode-hook '(lambda ()
-                             (glasses-mode)
-                             (camelCase-mode 1)))
-(add-hook 'c++-mode-hook '(lambda ()
-                             (glasses-mode)
-                             (camelCase-mode 1)))
-(add-hook 'java-mode-hook '(lambda ()
-                             (glasses-mode)
-                             (camelCase-mode 1)))
 
 (defconst my-c-style
   ;; Always indent c/c++ sources, never insert tabs
@@ -441,115 +520,6 @@
 (c-add-style "camille" camille-c-style)
 (c-add-style "eZSystems" ezsystems-c-style)
 (c-add-style "eZPHP" ezsystems-php-style)
-
-(defun my-c-mode-common-hook()
-  (interactive)
-  ;; offset customizations not in my-c-style
-  (c-set-offset 'member-init-intro '++)
-  ;; Regular expression for the outline mode.
-  ;; Enable outline mode with M-x outline-minor-mode
-  (setq outline-regexp (concat
-			"^"		; beginning of line is required
-			"\\(template[ \t]*<[^>]+>[ \t]*\\)?" ; there may be a "template <...>"
-			"\\([a-zA-Z0-9_:]+[ \t]+\\)?" ; type specs; there can be no
-			"\\([a-zA-Z0-9_:]+[ \t]+\\)?" ; more than 3 tokens, right?
-
-			"\\("		; last type spec including */&
-			"[a-zA-Z0-9_:]+"
-			"\\([ \t]*[*&]+[ \t]*\\|[ \t]+\\)" ; either pointer/ref sign or whitespace
-			"\\)?"		; if there is a last type spec
-			"\\("		; name; take that into the imenu entry
-			"[a-zA-Z0-9_:~]+" ; member function, ctor or dtor...
-					; (may not contain * because then
-					; "a::operator char*" would become "char*"!)
-			"\\|"
-			"\\([a-zA-Z0-9_:~]*::\\)?operator"
-			"[^a-zA-Z1-9_][^(]*" ; ...or operator
-			" \\)"
-			"[ \t]*([^)]*)[ \t\n]*[^ ;]" ; require something other than a ; after
-			))
-  ;; Figure out this one later
-;;  (setq outline-heading-end-regexp "^{\n")
-
-  ;; We want spaces instead of real tabs.
-  (setq indent-tabs-mode nil)
-  ;; other customizations
-  (make-local-variable 'font-lock-defaults)
-  (if (emacs-type-is-regular)
-      (setq font-lock-defaults (list c++-new-font-lock-keywords)))
-
-  ;; Allow c++-files only
-  (make-local-variable 'buffer-include-regexp)
-  (if c++-buffers-only
-      (setq buffer-include-regexp '()))
-  (setq buffer-include-regexp (cons c++-buffer-include-regexp buffer-include-regexp))
-
-  (setq tab-width 4)
-  ;; we like hungry-delete
-  (c-toggle-hungry-state 1)
-  ;; uncomment for those who like auto-newline
-  (c-toggle-auto-state 1)
-
-  ;; keybindings for all supported languages.  We can put these in
-  ;; c-mode-base-map because c-mode-map, c++-mode-map, objc-mode-map,
-  ;; java-mode-map, and idl-mode-map inherit from it.
-
-  (local-set-key [S-f4] 'align)
-  (outline-minor-mode)
-  (define-key esc-map "\t" 'project-expand-symbol)
-)
-
-(add-hook 'c-mode-common-hook 'my-c-mode-common-hook)
-
-(defun my-php-mode-hook()
-  (interactive)
-  ;; offset customizations not in my-c-style
-  (c-set-offset 'member-init-intro '+)
-  ;; Regular expression for the outline mode.
-  ;; Enable outline mode with M-x outline-minor-mode
-  (setq outline-regexp "^[ \t\n\r\f]*function[ \t\n\r\f]+[a-zA-Z_0-9]+([^)]*)")
-
-  ;; We want spaces instead of real tabs.
-  (setq indent-tabs-mode nil)
-  ;; other customizations
-  (make-local-variable 'font-lock-defaults)
-  (if (emacs-type-is-regular)
-      (setq font-lock-defaults '(c++-new-font-lock-keywords)))
-
-  ;; Allow c++-files only
-  (make-local-variable 'buffer-include-regexp)
-  (if c++-buffers-only
-      (setq buffer-include-regexp '()))
-  (setq buffer-include-regexp (cons php-buffer-include-regexp buffer-include-regexp))
-
-  (setq tab-width 4)
-  ;; we like hungry-delete
-  (c-toggle-hungry-state t)
-
-  ;;Newline and indent source for enter.
-  (local-set-key [RET] 'newline-and-indent)
-  (c-set-style "ezphp")
-)
-
-(add-hook 'php-mode-hook 'my-php-mode-hook)
-
-;; CSS mode support
-(if (if (emacs-type-is-regular)
-	(require 'css-mode nil t)
-      (require 'css-mode))
-    (setq auto-mode-alist
-	  (cons '("\\.css\\'" . css-mode) auto-mode-alist)))
-
-;; Add crontab mode
-(if (if (emacs-type-is-regular)
-	(require 'crontab-mode nil t)
-      (require 'crontab-mode))
-    (setq auto-mode-alist
-	  (cons '("crontab\\'" . crontab-mode) auto-mode-alist)))
-
-;; Load default classes
-(if (file-exists-p "~/.emacs.d/emacs-d-classes.el")
-    (load-file "~/.emacs.d/emacs-d-classes.el"))
 
 (provide 'mycode)
 ;;; mycode.el ends here

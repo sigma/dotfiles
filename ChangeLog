@@ -1,3 +1,58 @@
+2004-08-28  Yann Hodique  <Yann.Hodique@lifl.fr>
+
+	* perso/xterm-extras.el
+	(xterm-extra-extra-keys): make DEL key work better
+
+	* perso/tempo-lisp.el
+	renaming
+
+	* perso/tempo-c++.el
+	renaming
+
+	* perso/project.el:
+	initial checkin
+
+	* perso/pod.el
+	(pod-subseq): make it work
+
+	* perso/patches.el:
+	reordering, renaming
+	(mapcond): new function
+	(clear-hook): new function
+	(facep): re-enabled face generation for minibuffer if needed
+	(yh/completion-setup-function):
+
+	* perso/mycompletion.el
+	renaming
+
+	* perso/idledo.el
+	initial checkin
+
+	* perso/mycode.el
+	more requirements, some reordering
+	(c-mode-common-hook): refactoring
+
+	* perso/dircolors.el:
+	remove useless code
+
+	* emacs.d/emacs-d-vars.el
+	remove lots of unused variables
+
+	* dotgnus.el:
+	more formatting, some renaming and reordering
+
+	* dotemacs.el:
+	more formatting, some renaming and reordering
+	(longlines): use longlines in latex mode
+	new section: parenthesis configuration
+	new section: lisp languages
+	(find-file-guessing): don't open file automatically
+
+	* dotemacs-cust.el
+	(custom-set-variables): remove useless settings
+	(facep): add a test to inhibit useless face definition
+	(custom-set-faces): more settings
+
 2004-08-10  Yann Hodique  <Yann.Hodique@lifl.fr>
 
 	* dotgnus.el

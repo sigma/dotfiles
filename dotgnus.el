@@ -1,11 +1,17 @@
-;; -*- mode: emacs-lisp; auto-compile-lisp: nil; -*-
-;; $Id: dotgnus.el,v 1.7 2004/08/10 15:50:38 sigma Exp $
+;; -*- mode: emacs-lisp; mode: hi-lock; mode: page-break; auto-compile-lisp: nil; -*-
+;; $Id: dotgnus.el,v 1.8 2004/08/28 16:12:38 sigma Exp $
 
-(require 'nnir)
+;; Hi-lock: (("^;;; \\(.*\\)" (1 'hi-black-hb t)))
+;; Hi-lock: (("^ +;;; \\(.*\\)" (1 'hi-black-b t)))
+;; Hi-lock: ((";; \\(.*\\)" (1 'italic append)))
+;; Hi-lock: end
 
+;;; Basis
 ;; Load site-specific stuff
 (if (file-exists-p (expand-file-name "~/.gnus-local.el"))
     (load-file (expand-file-name "~/.gnus-local.el")))
+
+(require 'nnir)
 
 (require 'message-x)
 
@@ -95,9 +101,8 @@
  gnus-permanently-visible-groups ".*"
  gnus-large-newsgroup 100)
 
-;;-----------------------------------------------------------------------------
-;; Summary buffer
-;;-----------------------------------------------------------------------------
+
+;;; Summary buffer
 (add-hook 'gnus-summary-mode-hook
 	  (lambda ()
 	    (if (or (gnus-news-group-p gnus-newsgroup-name)
@@ -228,9 +233,8 @@
 
 (setq nnmail-treat-duplicates 'warn)
 
-;;-----------------------------------------------------------------------------
-;; Mail sending
-;;-----------------------------------------------------------------------------
+
+;;; Mail sending
 
 (add-hook 'message-mode-hook 'turn-on-auto-fill)
 
@@ -247,9 +251,8 @@
 			     "^========*$" ; Pervert!
 			     ))
 
-;;-----------------------------------------------------------------------------
-;; Posting Styles
-;;-----------------------------------------------------------------------------
+
+;;; Posting Styles
 
 (setq
  gnus-posting-styles
@@ -288,9 +291,7 @@
    ("^Newsgroups:.*emacs\\|^Newsgroups:.*gnus" "emacs-stuff")
    (".*" "misc")))
 
-;;-----------------------------------------------------------------------------
-;; Misc
-;;-----------------------------------------------------------------------------
+;;; Misc
 
 (defadvice gnus-summary-reply (around reply-in-news activate)
   (interactive)
@@ -308,9 +309,8 @@
 (define-key gnus-summary-mode-map [(right)] 'my-gnus-summary-show-thread)
 (define-key gnus-summary-mode-map [(left)]  'gnus-summary-hide-thread)
 
-;;-----------------------------------------------------------------------------
-;; BBDB
-;;-----------------------------------------------------------------------------
+
+;;; BBDB
 
 (when nbc-bbdb
   (require 'bbdb)
@@ -358,9 +358,8 @@
                                 ("Face" (".+" face 0 'replace))))
 )
 
-;;-----------------------------------------------------------------------------
-;; Gnus extensions
-;;-----------------------------------------------------------------------------
+
+;;; Gnus extensions
 
 (when nbc-nnir
   (require 'nnir)
@@ -510,9 +509,8 @@ The epigram is inserted at point if called interactively."
 (add-hook 'gnus-summary-mode-hook 'my-setup-hl-line)
 (add-hook 'gnus-group-mode-hook 'my-setup-hl-line)
 
-;;
-;; Supercite
-;;
+
+;;; Supercite
 
 ;; Supercite Settings
 (autoload 'sc-cite-original     "supercite" "Supercite 3.1" t)
@@ -541,9 +539,8 @@ The epigram is inserted at point if called interactively."
 				      "sc-lastchoice"
 				      "lastname"))
 
-;;
-;; dot-gnus-sa.el --- SpamAssassin-related stuff for Gnus
-;;
+
+;;; SpamAssassin-related stuff for Gnus
 
 ;; Show the SpamAssassin score of mails in mail groups
 
@@ -675,7 +672,8 @@ Must be called from the `gnus-select-group-hook'."
 ;(define-key gnus-summary-mode-map (kbd "") 'nix-report-spam-all)
 (define-key gnus-summary-mode-map (kbd "M M-$") 'nix-revoke-spam)
 
-;; PGG
+
+;;; PGG
 (require 'pgg)
 ;; verify/decrypt only if mml knows about the protocl used
 (setq mm-verify-option 'known)
