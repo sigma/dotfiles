@@ -1,3 +1,9 @@
+2005-04-01  Yann Hodique  <Yann.Hodique@lifl.fr>
+
+	* dotemacs.el: do not debug-on-error by default
+	(diff-buffer-with-associated-file): new util function
+	(global-set-key): change meaning of C-x k to diff when unsaved
+
 2005-03-28  Yann Hodique  <Yann.Hodique@lifl.fr>
 
 	* perso/psvn-hacked.el:
