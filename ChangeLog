@@ -1,3 +1,15 @@
+2004-09-19  Yann Hodique  <Yann.Hodique@lifl.fr>
+
+	* perso/planner-config.el:
+	new function to reuse same window if possible
+
+	* dotemacs.el:
+	(read-file-name-completion-ignore-case): set to t
+	longlines definitely sucks
+
+	* dotemacs-cust.el:
+	(custom-set-faces): unify latex faces with default ones
+
 2004-09-16  Yann Hodique  <Yann.Hodique@lifl.fr>
 
 	* dotgnus.el:

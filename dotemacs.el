@@ -1,5 +1,5 @@
 ;; -*- mode: emacs-lisp; mode: hi-lock; mode: page-break; auto-compile-lisp: nil; -*-
-;; $Id: dotemacs.el,v 1.49 2004/09/16 08:38:22 sigma Exp $
+;; $Id: dotemacs.el,v 1.50 2004/09/19 18:27:42 sigma Exp $
 
 ;; Hi-lock: (("^;;; \\(.*\\)" (1 'hi-black-hb t)))
 ;; Hi-lock: (("^ +;;; \\(.*\\)" (1 'hi-black-b t)))
@@ -81,6 +81,9 @@
 ;; open compressed files
 (request 'jka-compr)
 (if (not (jka-compr-installed-p)) (auto-compression-mode))
+
+;; ignore case for finding files
+(setq read-file-name-completion-ignore-case t)
 
 
 ;;; Charsets & languages
@@ -371,9 +374,6 @@
     ;;       ;; DWIM with quotes
                                         ;       (add-hook 'LaTeX-mode-hook 'typopunct-mode)
     (defun my-LaTeX-hook ()
-      (when (request 'longlines)
-        (longlines-mode-on)
-        (refill-mode 1))
       ;; I like to have my own verbatim contructions well indented
       (setq font-lock-defaults
             '((font-latex-keywords font-latex-keywords-1 font-latex-keywords-2)
