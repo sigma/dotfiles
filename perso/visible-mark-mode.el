@@ -26,23 +26,35 @@
 
 (defun visible-mark-move-overlay ()
   "Move the overlay in `visible-mark-overlay' to a new position."
-  (move-overlay visible-mark-overlay
-                (mark)
-                (1+ (mark))))
+  (let ((m (mark)))
+    (when m (move-overlay visible-mark-overlay m (1+ m)))))
 
 (require 'easy-mmode)
+
+(defcustom global-visible-mark-mode-exclude-alist nil
+  "A list of buffer names to be excluded"
+  :group 'visible-mark
+  :type '(repeat regexp))
+
+(defun visible-mark-mode-maybe ()
+  (when (cond
+         ((minibufferp (current-buffer)) nil)
+         ((flet ((fun (arg)
+                      (if (null arg) nil
+                        (or (string-match (car arg) (buffer-name))
+                            (fun (cdr arg))))))
+            (fun global-visible-mark-mode-exclude-alist)) nil)
+         (t t))
+    (visible-mark-mode)))
 
 (define-minor-mode visible-mark-mode
   "A mode to make the mark visible."
   nil nil nil
   :group 'visible-mark
   (if visible-mark-mode
-      (progn
-        (unless (mark)
-          (set-mark (point-min)))
+      (let ((m (or (mark) (set-mark (point-min)))))
         (unless visible-mark-overlay
-          (setq visible-mark-overlay (make-overlay (mark)
-                                                   (1+ (mark))))
+          (setq visible-mark-overlay (make-overlay m (1+ m)))
           (overlay-put visible-mark-overlay 'face 'visible-mark-face)
           (add-hook 'post-command-hook 'visible-mark-move-overlay)))
       (when visible-mark-overlay
@@ -50,6 +62,6 @@
         (setq visible-mark-overlay nil))))
 
 (easy-mmode-define-global-mode
- global-visible-mark-mode visible-mark-mode visible-mark-mode :group visible-mark)
+ global-visible-mark-mode visible-mark-mode visible-mark-mode-maybe :group 'visible-mark)
 
 (provide 'visible-mark-mode)

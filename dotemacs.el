@@ -1,5 +1,5 @@
 ;; -*- mode: emacs-lisp; auto-compile-lisp: nil; -*-
-;; Time-stamp: <19/06/2004 19:51:57 Yann Hodique>
+;; Time-stamp: <20/06/2004 09:09:32 Yann Hodique>
 
 ;; Use this one instead of require to ignore errors
 (defun request (pack)
@@ -62,6 +62,9 @@
 
 (when (request 'visible-mark-mode)
   (global-visible-mark-mode 1))
+
+;; Save place by default
+(setq-default save-place t)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Charsets & languages

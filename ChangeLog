@@ -1,3 +1,12 @@
+2004-06-20  Yann Hodique  <Yann.Hodique@lifl.fr>
+
+	* dotemacs.el: save place by default
+
+	* perso/visible-mark-mode.el (visible-mark-move-overlay): fixed nullMarkerException ;)
+	(global-visible-mark-mode-exclude-alist): new list of exceptions for global mode
+	(visible-mark-mode-maybe): new check for global mode
+	(global-visible-mark-mode): use visible-mark-mode-maybe, fixed :group
+
 2004-06-19  Yann Hodique  <Yann.Hodique@lifl.fr>
 
 	* dotemacs.el (request): use global-visible-mark-mode
