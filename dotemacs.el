@@ -1,5 +1,5 @@
 ;; -*- mode: emacs-lisp; auto-compile-lisp: nil; -*-
-;; Time-stamp: <15/06/2004 18:24:47 Yann Hodique>
+;; Time-stamp: <15/06/2004 19:13:31 Yann Hodique>
 
 ;; Use this one instead of require to ignore errors
 (defun request (pack)
@@ -526,10 +526,11 @@ there are more than 1% of such letters then turn French accent mode on."
 (global-set-key [\C-end] 'end-of-line)
 
 ;; mouse scrolling
-(global-set-key [mouse-4] 'scroll-down)
-(global-set-key [mouse-5] 'scroll-up)
-(global-set-key [\C-mouse-4] 'scroll-down-one-line)
-(global-set-key [\C-mouse-5] 'scroll-up-one-line)
+(unless (featurep 'mwheel)
+  (global-set-key [mouse-4] 'scroll-down)
+  (global-set-key [mouse-5] 'scroll-up)
+  (global-set-key [\C-mouse-4] 'scroll-down-one-line)
+  (global-set-key [\C-mouse-5] 'scroll-up-one-line))
 
 ;; rectangle bindings. don't mix with registers! :)
 (global-set-key (kbd "C-x r C-SPC") 'rm-set-mark)
