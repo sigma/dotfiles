@@ -1,5 +1,5 @@
 ;; -*- mode: emacs-lisp; mode: hi-lock; mode: page-break; auto-compile-lisp: nil; -*-
-;; $Id: dotemacs.el,v 1.64 2004/11/19 10:18:50 sigma Exp $
+;; $Id: dotemacs.el,v 1.65 2004/11/21 11:02:10 sigma Exp $
 
 ;; Hi-lock: (("^;;; \\(.*\\)" (1 'hi-black-hb t)))
 ;; Hi-lock: (("^ +;;; \\(.*\\)" (1 'hi-black-b t)))
@@ -127,8 +127,31 @@
 (eval-after-load "buff-menu" '(request 'buff-menu+))
 (global-set-key (kbd "C-x C-b") 'buffer-menu)
 
-(define-key dired-mode-map (kbd "C-c C-c") 'wdired-change-to-wdired-mode)
+(add-hook 'dired-load-hook
+          (lambda ()
+            (require 'dired-aux)
+            (require 'dired-x)
 
+            ;; use ediff for diffing
+            (defadvice dired-diff (around ad-dired-diff-ediff act)
+              (flet ((diff (old new switches) (ediff old new)))
+                ad-do-it))
+            (defadvice dired-backup-diff (around ad-dired-backup-diff-ediff act)
+              (flet ((diff-backup (old switches) (ediff-backup old)))
+                ad-do-it))
+
+            ;; Set dired-x global variables here.  For example:
+            (setq dired-x-hands-off-my-keys nil
+                  dired-find-subdir nil)
+            ))
+
+(add-hook 'dired-mode-hook
+          (lambda ()
+            ;; Set dired-x buffer-local variables here.  For example:
+            (dired-omit-mode 1)
+            ))
+
+(define-key dired-mode-map (kbd "C-c C-c") 'wdired-change-to-wdired-mode)
 
 ;;; Packages configuration
 
@@ -934,6 +957,8 @@ Goes backward if ARG is negative; error if CHAR not found." t nil)
 ;; Want to use alsa with mpg321 ?
 ;(setq emms-player-mpg321-parameters '("-o" "alsa"))
 
+
+(add-to-list 'auto-mode-alist '("\\.hlal\\'" . c-mode))
 
 ;; (setq sgml-warn-about-undefined-entities nil)
 

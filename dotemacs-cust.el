@@ -35,6 +35,7 @@
  '(custom-file "~/.emacs-cust")
  '(default-justification (quote left))
  '(desktop-save-mode nil nil (desktop))
+ '(dired-omit-files "^\\.?#\\|^\\.$")
  '(display-time-24hr-format t)
  '(display-time-day-and-date t)
  '(doxymacs-doxygen-style "JavaDoc")
