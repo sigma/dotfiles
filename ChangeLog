@@ -1,3 +1,18 @@
+2004-07-29  Yann Hodique  <Yann.Hodique@lifl.fr>
+
+	* dotemacs.el 
+	(highlight-changes-enable-hook): prevent buffer to be marked as modified when removing highlighting
+	pmwiki configuration
+
+	* perso/pmwiki-mode.el: 
+	initial checkin
+
+	* perso/http-post.el: 
+	initial checkin
+
+	* perso/http-get.el: 
+	initial checkin
+
 2004-07-28  Yann Hodique  <Yann.Hodique@lifl.fr>
 
 	* dotemacs.el 

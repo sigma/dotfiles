@@ -1,5 +1,5 @@
 ;; -*- mode: emacs-lisp; auto-compile-lisp: nil; -*-
-;; $Id: dotemacs.el,v 1.33 2004/07/28 16:53:14 sigma Exp $
+;; $Id: dotemacs.el,v 1.34 2004/07/29 10:59:45 sigma Exp $
 
 ;; Load site-specific stuff
 (if (file-exists-p (expand-file-name "~/.emacs-local"))
@@ -382,7 +382,9 @@
 (add-hook 'highlight-changes-enable-hook (lambda ()
                                            (local-set-key "\C-c+" 'highlight-changes-next-change)
                                            (local-set-key "\C-c-" 'highlight-changes-previous-change)
-                                           (local-set-key (kbd "C-c DEL") (lambda () (interactive) (highlight-changes-remove-highlight (point-min) (point-max))))
+                                           (local-set-key (kbd "C-c DEL") (lambda () (interactive) (let ((mod (buffer-modified-p)))
+                                                                                                     (highlight-changes-remove-highlight (point-min) (point-max))
+                                                                                                     (restore-buffer-modified-p mod))))
                                            (local-set-key "\C-c_" 'highlight-changes-rotate-faces)))
 
 
@@ -411,6 +413,19 @@ there are more than 1% of such letters then turn French accent mode on."
       (add-hook 'LaTeX-mode-hook 'install-french-accent-mode-if-needed)
       (add-hook 'text-mode-hook 'install-french-accent-mode-if-needed)
       ))
+
+  ;;;;;;;;;;;
+  ;; pmwiki
+  ;;
+
+(when (request 'pmwiki-mode)
+  (defun mywiki-open (name)
+    (interactive "sName (default Main.WikiSandbox): ")
+    (if (pmwiki-URIp name)
+        (pmwiki-edit (pmwiki-loc 'link name) (pmwiki-loc 'base name))
+      (pmwiki-edit (pmwiki-name-to-link
+                    (pmwiki-default-string name "Main.WikiSandbox"))
+                   (pmwiki-loc 'base mywiki-sandbox-uri)))))
 
   ;;;;;;;;;;;;;;;;;;
   ;; Various hacks
