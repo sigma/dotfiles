@@ -107,14 +107,14 @@
 ;;;; after discoveing that expand-member-functions didn't work there.
 
 ;;;; Tue Jan 23 12:55:12 2001 Fixed typo on line 839.  Thanks to Barney Dalton
-;;;; Barnaby.Dalton@radioscape.com 
+;;;; Barnaby.Dalton@radioscape.com
 
 ;;;; Wed Jan 24 13:40:18 2001 Added variables for header file and
 ;;;; source file extensions at the suggestion of Barney Dalton.
 
 (require 'cl)
 
-;;;; Customization 
+;;;; Customization
 
 (defvar mf--insert-commentary nil
   "*non-nil means decorate member functions with commentary on insertion")
@@ -139,21 +139,21 @@ member functions into a read only file.")
 (defconst mf--version "0.3.1"
   "First GPL version.")
 
-(defconst c++-keywords 
-  (sort 
+(defconst c++-keywords
+  (sort
    (list "and" "bool" "compl" "do" "export" "goto" "namespace" "or_eq" "return"
          "struct" "try" "using" "xor" "and_eq" "break" "const" "double" "extern"
          "if" "new" "private" "short" "switch" "typedef" "virtual" "xor_eq" "asm"
-         "case" "const_cast" "dynamic_cast" "false" "inline" "not" "protected" 
-         "signed" "template" "typeid" "void" "auto" "catch" "continue" "else" 
+         "case" "const_cast" "dynamic_cast" "false" "inline" "not" "protected"
+         "signed" "template" "typeid" "void" "auto" "catch" "continue" "else"
          "float" "int" "not_eq" "public" "sizeof" "this" "typename" "volatile"
          "bitand" "char" "default" "enum" "for" "long" "operator" "register"
          "static" "throw" "union" "wchar_t" "bitor" "class" "delete" "explicit"
-         "friend" "mutable" "or" "reinterpret_cast" "static_cast" "true" 
+         "friend" "mutable" "or" "reinterpret_cast" "static_cast" "true"
          "unsigned" "while" ) #'(lambda (a b) (> (length a) (length b)))))
 
 (defconst c++-operators                 ; doesn't include "()" or "[]"
-  (sort (list "\\+" "-" "\\*" "/" "%" "\\^" "&" "|" "~" "!" "=" "<<" ">>" 
+  (sort (list "\\+" "-" "\\*" "/" "%" "\\^" "&" "|" "~" "!" "=" "<<" ">>"
               "\\+=" "-=" "\\*=" "/=" "%=" "^=" "&=" "|=" "<" ">" ">>="
               "<<=" "==" "!=" "<=" ">=" "&&" "||" "\\+\\+" "--" "," "->\\*"
               "->" "\\.") #'(lambda (a b) (> (length a) (length b)))))
@@ -176,7 +176,7 @@ member functions into a read only file.")
     (c-comment-end . "*/")
     (whitespace . "[ \t\n]+")           ; not really a token.
     (identifier . "[A-Za-z_][A-Za-z_0-9]*")
-    (string-literal . "\"[^\"]*\"")                         
+    (string-literal . "\"[^\"]*\"")
     (float-literal . "[+-]?[0-9]*\\.[0-9]+\\([eE][0-9]+\\)?[dDFf]?")
     (integer-literal . "[+-]?[0-9]+[Ll]?")
     (scope-resolution . "::")
@@ -185,10 +185,10 @@ member functions into a read only file.")
     (open-brace . "{")
     (close-brace . "}")
     (open-bracket . "\\[")
-    (close-bracket . "\\]") 
+    (close-bracket . "\\]")
     (statement-separator . ";")
     (include-directive . "^[ \t]*#[ \t]*include.*$")
-    (macro-define . "^[ \t]*#[ \t]*define [A-Za-z_][A-Za-z_0-9]*[(].*$") 
+    (macro-define . "^[ \t]*#[ \t]*define [A-Za-z_][A-Za-z_0-9]*[(].*$")
     (preproc-define . "^[ \t]*#[ \t]*define [A-Za-z_][A-Za-z_0-9]*[^(].*$")
     (preproc-directive . "^[ \t]*#.*$")
     (punctuation . "[:\\?]") ))
@@ -207,8 +207,8 @@ member functions into a read only file.")
   "Skip over whitespace and comments."
   ;; until looking at non-whitespace, & not '/'
   ;; also not end of buffer...
-  (while (and (not (= (point) (point-max))) 
-              (not (looking-at "[^ \t\n/]"))) 
+  (while (and (not (= (point) (point-max)))
+              (not (looking-at "[^ \t\n/]")))
     (while (looking-at "[ \t\n]")       ; skip over whitespace.
       (forward-char))
     (if (looking-at "//")               ; skip over C++ style comments.
@@ -220,13 +220,13 @@ member functions into a read only file.")
 (defun mf--next-token ()
   "Starting at point, find the next token regexp that matches the following text."
   (mf--skip-comments)
-  (some #'(lambda (token-regexp-dotted-pair) 
+  (some #'(lambda (token-regexp-dotted-pair)
             (if (looking-at (cdr token-regexp-dotted-pair))
                 (progn (goto-char (match-end 0))
-                       (list (car token-regexp-dotted-pair) 
-                             (buffer-substring (match-beginning 0) 
+                       (list (car token-regexp-dotted-pair)
+                             (buffer-substring (match-beginning 0)
                                                (match-end 0))))
-              (progn 
+              (progn
                 (setq next-token-status nil)
                 nil))) c++-token-regexp-alist))
 
@@ -280,7 +280,7 @@ for template arguments lists."
       (cond ((equal el '(keyword "template"))
              (setq in-template t)
              (push (list 'template-spec) sub-expr-stack))
-            ((equal el '(operator "<")) 
+            ((equal el '(operator "<"))
              (if in-template
                  (progn
                    (setq template-depth (+ 1 template-depth))
@@ -304,9 +304,9 @@ for template arguments lists."
 (defun mf--next-class (blockified-list)
     "Find the next occurance of \"class\" in a blockified token list.
 The returned list is the start of a complete class declaration."
-    (let ((position (position-if #'(lambda (el) 
-                                     (and (eq (car el) 'keyword) 
-                                          (string-equal (cadr el) "class"))) 
+    (let ((position (position-if #'(lambda (el)
+                                     (and (eq (car el) 'keyword)
+                                          (string-equal (cadr el) "class")))
                                  blockified-list))
           (result blockified-list))
       (if position
@@ -330,10 +330,10 @@ The returned list is the start of a complete class declaration."
   "Does the blockified-list point at a full class declaration?
 blockified-list must point at a class keyword."
   (if (< (position-if #'(lambda (el)
-                          (eq (car el) 'block)) 
+                          (eq (car el) 'block))
                       blockified-list)
          (position-if #'(lambda (el)
-                          (eq (car el) 'statement-separator)) 
+                          (eq (car el) 'statement-separator))
                       blockified-list))
       blockified-list
     nil))
@@ -341,7 +341,7 @@ blockified-list must point at a class keyword."
 (defun mf--class-name (blockified-list)
   "Get the name of the class at the beginning of blockified-list."
   (cadr (find-if #'(lambda (el)
-                     (eq (car el) 'identifier)) 
+                     (eq (car el) 'identifier))
                  blockified-list)))
 
 (defun mf--class-decl-block (blockified-list)
@@ -349,14 +349,14 @@ blockified-list must point at a class keyword."
 The blockified-list must point at a full class declaration."
   (when blockified-list
     (cdr (find-if #'(lambda (el)
-                      (eq (car el) 'block)) 
+                      (eq (car el) 'block))
                   blockified-list))))
 
 (defun mf--tokens-after-class-decl-block (blockified-list)
   "Get the part of a blockified list that follows the class declaration.
 The blockified list must begin with a complete class declaration."
   (when blockified-list
-    (subseq blockified-list 
+    (subseq blockified-list
             (+ 1 (position-if #'(lambda (el)
                                   (eq (car el) 'block))
                               blockified-list)))))
@@ -366,19 +366,19 @@ The blockified list must begin with a complete class declaration."
   (lexical-let ((sub-expr-stack (list nil)))
     (dolist (el class-decl-block-list (reverse sub-expr-stack))
       (cond ((eq (car el) 'statement-separator)
-             (setf (car sub-expr-stack) 
+             (setf (car sub-expr-stack)
                    (reverse (car sub-expr-stack)))
              (push (list) sub-expr-stack))
             ;; remove access specifiers from the list of decl's.
             ((and (and (eq (car el) 'punctuation) (string-equal (cadr el) ":"))
                   (and (eq (car (car (car sub-expr-stack))) 'keyword) ; check the last thing pushed.
-                       (string-match "public\\|private\\|protected" 
+                       (string-match "public\\|private\\|protected"
                                      (cadr (car (car sub-expr-stack))))))
              (pop (car sub-expr-stack) )
              (push (list) sub-expr-stack))
             ((eq (car el) 'block)
              (push el (car sub-expr-stack))
-             (setf (car sub-expr-stack) 
+             (setf (car sub-expr-stack)
                    (reverse (car sub-expr-stack)))
              (push (list) sub-expr-stack))
             (t (push el (car sub-expr-stack)))))))
@@ -446,7 +446,7 @@ The blockified list must begin with a complete class declaration."
                    (t (push c result)))
              (setq found-parens t))
             ((and (eq (car c) 'keyword)
-                  (string-equal (second c) "operator")) ; handle overloaded operator 
+                  (string-equal (second c) "operator")) ; handle overloaded operator
              (push (list 'identifier class-name) result) ; N.B. still won't handle operator()
              (when has-template-spec
                (mapcar #'(lambda (arg) (push arg result))
@@ -470,7 +470,7 @@ The blockified list must begin with a complete class declaration."
 
 (defun mf--remove-preproc-dirs (token-list)
   "Remove preprocessor directives from the token list."
-  (remove-if #'(lambda (el) 
+  (remove-if #'(lambda (el)
                  (or (eq (car el) 'preproc-directive)
                      (eq (car el) 'include-directive)
                      (eq (car el) 'preproc-define)
@@ -485,30 +485,30 @@ The blockified list must begin with a complete class declaration."
 
 (defun mf--list-fn-defs-buffer (buffer-name)
   "Extract a list of function definitions from a .C file"
-  (mf--fn-dfns 
+  (mf--fn-dfns
    (mf--list-decls
     (mf--template-specify
-     (mf--blockify 
-      (mf--remove-preproc-dirs 
+     (mf--blockify
+      (mf--remove-preproc-dirs
        (mf--tokenize-buffer buffer-name)))))))
 
 (defun mf--list-member-fn-decls-buffer (buffer-name)
   "Extract a list of member function declarations from a .h file"
-  (let ((tl (mf--blockify (mf--remove-preproc-dirs 
+  (let ((tl (mf--blockify (mf--remove-preproc-dirs
                        (mf--tokenize-buffer buffer-name))))
         (result (list)))
     (while (setq tl (mf--next-class (mf--template-specify tl)))
       (let ((mf--class-name (mf--class-name tl))
             (mf--class-decl-block (mf--class-decl-block tl)))
-        (setq result (append result 
-                             (mf--prepend-class-scope-designators 
-                              mf--class-name 
+        (setq result (append result
+                             (mf--prepend-class-scope-designators
+                              mf--class-name
                               (mf--member-fn-decls (mf--list-decls mf--class-decl-block))))))
       (setq tl (mf--tokens-after-class-decl-block tl)))
     result))
 
 (defun mf--split-at-every (list test)
-  "Split a list at every element that matches test. 
+  "Split a list at every element that matches test.
 Matching elements are discarded."
   (let ((both (mf--split-at list test)))
     (cond ((= (length both) 2)
@@ -516,14 +516,14 @@ Matching elements are discarded."
           (t both))))
 
 (defun mf--split-at (list test)
-  "Split a list at first element that matches test. 
+  "Split a list at first element that matches test.
 Matching element is discarded."
   (do ((left nil (cons (car right) left))
        (right list (cdr right)))
       ((null right) (list (nreverse left)))
     (if (funcall test (car right))
-          (return-from nil (list 
-                          (nreverse left) 
+          (return-from nil (list
+                          (nreverse left)
                           (cdr right))))))
 
 ;; This one is tricky, hence the copious commentary.
@@ -538,14 +538,14 @@ Matching element is discarded."
         (cond
          ;; 1. both args have identifiers at the mismatch point, and
          ;; the identifiers are not the same string.
-         ((and (eq (car a1) 'identifier) 
+         ((and (eq (car a1) 'identifier)
                (eq (car a2) 'identifier))
           (equal (nthcdr (+ 1 where) d1) ; check that the rest of the list is the same.
                   (nthcdr (+ 1 where) d2)))
          ;; 2. one or the other argument list is missing an identifier
          ;; at the point where the mismatch occurs.
          ((eq (car a1) 'identifier)
-          (equal (nthcdr (+ 1 where) d1) 
+          (equal (nthcdr (+ 1 where) d1)
                   (nthcdr where d2)))   ; check that the rest of the list is the same.
          ((eq (car a2) 'identifier)
           (equal (nthcdr (+ 1 where) d2)
@@ -555,7 +555,7 @@ Matching element is discarded."
 
 (defun mf--equal-args (args1 args2)
   "Compare two argument lists."
-  (labels ((comma-op-p (el) (and 
+  (labels ((comma-op-p (el) (and
                           (eq (car el) 'operator)
                           (string-equal (second el) ","))))
     (or (equal args1 args2)            ; identical args
@@ -564,14 +564,14 @@ Matching element is discarded."
         ;; Compare the individual declarations; they must be in the same
         ;; order, so a comparison function can be mapped over them
         ;; pairwise.
-        (every #'(lambda (a b) (mf--equal-param-decl a b)) 
+        (every #'(lambda (a b) (mf--equal-param-decl a b))
                (mf--split-at (cdr args1)
                 #'(lambda (x) (comma-op-p x)))
                (mf--split-at (cdr args2)
                 #'(lambda (x) (comma-op-p x)))))))
 
-(defun mf--equal-decls (decl1 decl2) 
-  "Compare two decls.  
+(defun mf--equal-decls (decl1 decl2)
+  "Compare two decls.
 Decls are the same even if they differ in the names, but
 not the types, of their formal parameters."
   (or (equal decl1 decl2)              ; identical decls.
@@ -588,7 +588,6 @@ not the types, of their formal parameters."
               (return-from nil same))
           (if (not same)
               (return-from nil same))))))
-        
 
 (defun mf--undefined-decls (decl-list dfn-list)
   "Find all decls in decl-list that do not appear in dfn-list.  Need
@@ -602,7 +601,7 @@ other has no variable named in a parameter declaration."
 
 (defun mf--remove-decl-specifiers (decl)
   "Strip virtual and static from a declaration."
-  (remove-if #'(lambda (el) 
+  (remove-if #'(lambda (el)
                  (and (eq (car el) 'keyword)
                       (or (string-equal (cadr el) "static")
                           (string-equal (cadr el) "virtual")
@@ -614,8 +613,8 @@ other has no variable named in a parameter declaration."
   (mapcar (function mf--remove-decl-specifiers) decl-list))
 
 (defun mf--remove-default-args (decl-list)
-  "Remove default arguments from the formal args list of a declaration.  
-This is definitely needed for xlC on AIX, though I haven't checked whether it is 
+  "Remove default arguments from the formal args list of a declaration.
+This is definitely needed for xlC on AIX, though I haven't checked whether it is
 also needed for gcc."
   (mapcar #'(lambda (decl)
               (let ((result (list )))
@@ -647,7 +646,6 @@ also needed for gcc."
         (token (car decl) (car remaining-decl)))
       ((eq (car token) 'parens) (second last-token))))
 
-
 (defun mf--date-string ()
   (let ((time (decode-time (current-time))))
     (format "%s/%s/%s" (nth 4 time) (nth 3 time) (nth 5 time))))
@@ -655,7 +653,7 @@ also needed for gcc."
 (defun mf--format-comment-block (decl date-string)
   "Format a comment string for a member function definition."
   (if mf--insert-commentary
-      (format (concat "%s\n// CLASS NAME: %s\n" 
+      (format (concat "%s\n// CLASS NAME: %s\n"
                   "// MEMBER NAME: %s \n"
                   "// DESCRIPTION:\n//\n//\n"
                   "// HISTORY: \n//\t%s\t%s\tCreated\n//\n")
@@ -674,12 +672,12 @@ also needed for gcc."
     (let ((template-part
            (dolist (el (cdr (first decl)) template-string)
              (setq template-string (concat template-string " " (second el)))))
-          (final 
+          (final
            (dolist (el (cdr decl) result-string)
              (cond ((eq (car el) 'parens)
                     (setq result-string (concat result-string (mf--format-parens (cdr el)))))
                    ((string-equal (cadr el) "::")
-                    (setq result-string (concat result-string "::")) 
+                    (setq result-string (concat result-string "::"))
                     (setq spacer ""))
                    ((string-equal (cadr el) "~")
                     (setq result-string (concat result-string "~"))
@@ -692,15 +690,15 @@ also needed for gcc."
   "Format a blank definition for insertion in the source code."
   (let ((date-string (mf--date-string)))
     (if (eq (car (car decl)) 'template-spec)
-        (concat (mf--format-comment-block decl date-string) 
+        (concat (mf--format-comment-block decl date-string)
                 (mf--format-empty-template-definition decl))
       (progn
         (let ((result-string "")
               (spacer ""))
-          (let ((final 
+          (let ((final
                  (dolist (el decl result-string)
                    (cond ((eq (car el) 'parens)
-                          (setq result-string (concat result-string 
+                          (setq result-string (concat result-string
                                                       (mf--format-parens (cdr el)))))
                          ((string-equal (cadr el) "::")
                           (setq result-string (concat result-string "::"))
@@ -717,11 +715,11 @@ also needed for gcc."
   (let* ((result-string "(")
          (final (dolist (el parens-list result-string)
                   (cond ((string-equal (cadr el) ",")
-                         (setq result-string (concat 
-                                              (substring result-string 0 -1) 
+                         (setq result-string (concat
+                                              (substring result-string 0 -1)
                                               (cadr el) " ")))
-                        (t (setq result-string (concat 
-                                                result-string 
+                        (t (setq result-string (concat
+                                                result-string
                                                 (cadr el) " ")))))))
     (if (not (string-equal "(" (substring final -1)))
         (concat (substring final 0 -1) ")")
@@ -729,37 +727,37 @@ also needed for gcc."
 
 (defun mf--undefined-decls-from-files (header-file dot-c-file)
   "Find all member functions in the given header file that have no definitions in the given .C file."
-  (mf--undefined-decls 
-   (mf--remove-specifiers 
-    (mf--remove-default-args 
-     (mf--list-member-fn-decls-buffer header-file))) 
+  (mf--undefined-decls
+   (mf--remove-specifiers
+    (mf--remove-default-args
+     (mf--list-member-fn-decls-buffer header-file)))
    (mf--list-fn-defs-buffer dot-c-file)))
 
 (defun mf--format-undefined-decls-from-files (header-file dot-c-file)
   "Format all of the found undefined member function declarations for insertion into the .C file."
   (mapconcat #'(lambda (el) (mf--format-empty-definition el))
-             (reverse (mf--undefined-decls-from-files 
+             (reverse (mf--undefined-decls-from-files
                        header-file dot-c-file)) "\n"))
 
 (defun mf--infer-c-filename (header-filename)
   "Guess a .C file name."
-  (if (string-match 
-       (concat "\\." (regexp-quote mf--header-file-extension) "$") 
+  (if (string-match
+       (concat "\\." (regexp-quote mf--header-file-extension) "$")
        header-filename)
       (concat (substring header-filename 0 -1) mf--source-file-extension)
     nil))
 
 (defun mf--expand-member-functions-args (str1 str2)
   "Prompt user for header and C file names."
-  (let* ((header-file nil) 
+  (let* ((header-file nil)
          (c-file nil)
          (default-header (buffer-name (current-buffer)))
          (default-c-file (mf--infer-c-filename default-header)))
-    (setq header-file 
+    (setq header-file
           (read-from-minibuffer (format "%s: " str1)
                                 default-header nil nil
                                 'query-replace-history))
-    (setq c-file 
+    (setq c-file
           (read-from-minibuffer (format "%s: " str2)
                                 default-c-file nil nil
                                 'query-replace-history))
@@ -838,22 +836,22 @@ implementation file."
   (save-window-excursion
     (save-excursion
       (save-restriction
-        (find-file-noselect header)
-        (find-file-noselect c-file)
-        (set-buffer c-file)
-        (goto-char (point-max))
-        (when (and mf--checkout-if-readonly buffer-read-only)
+        (let ((h-buffer (find-file-noselect header))
+              (c-buffer (find-file-noselect c-file)))
+          (set-buffer c-buffer)
+          (goto-char (point-max))
+          (when (and mf--checkout-if-readonly buffer-read-only)
             (vc-toggle-read-only))
-        ;; note: Optimized by evacuating function definition blocks in c-file.
-        (let ((temp-file (mf--make-temp-c-file c-file)))
-	  (save-excursion
-	    (set-buffer (get-buffer c-file))
-	    (setq mf--saved-string (mf--format-undefined-decls-from-files header temp-file))
-	    (set-buffer (get-buffer c-file))
+          ;; note: Optimized by evacuating function definition blocks in c-file.
+          (let ((temp-file (mf--make-temp-c-file (file-name-nondirectory c-file))))
+            (save-excursion
+              (set-buffer c-buffer)
+              (setq mf--saved-string (mf--format-undefined-decls-from-files (file-name-nondirectory header) temp-file))
+              (set-buffer c-buffer)
 	    (insert mf--saved-string)
 	    (set-buffer (get-buffer temp-file))
 	    (set-buffer-modified-p nil))
-          (kill-buffer temp-file))))))
+            (kill-buffer temp-file)))))))
 
 (provide 'member-function)
 
