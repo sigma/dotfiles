@@ -38,9 +38,7 @@
 ;; make the y or n suffice for a yes or no question
 (fset 'yes-or-no-p 'y-or-n-p)
 
-;; Made by Joe Casadonte (joc)
-;; Jump to corresponding paren-like character
-(defun joc-bounce-sexp ()
+(defun match-paren ()
   "Will bounce between matching parens just like % in vi"
   (interactive)
   (let ((prev-char (char-to-string (preceding-char)))
@@ -49,7 +47,7 @@
 		  ((string-match "[\]})>]" prev-char) (backward-sexp 1))
 		  (t (error "%s" "Not on a paren, brace, or bracket")))))
 
-(global-set-key [(control =)] 'joc-bounce-sexp)
+(global-set-key [(control =)] 'match-paren)
 
 ;; ...never switch to overwrite mode, not even accidentally
 (global-set-key [insert]
@@ -135,8 +133,7 @@
                                                                                     (symbol-name f)
                                                                                     (symbol-name (cadr spec))
                                                                                     (car spec)))) (cddr spec))
-                              ,@body))
-               flist)))
+                              ,@body)) flist)))
     `(progn ,@defs)))
 
 (defmadvice (dframe-handle-make-frame-visible dframe-handle-iconify-frame dframe-handle-delete-frame)

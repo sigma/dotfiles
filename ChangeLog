@@ -1,3 +1,14 @@
+2004-07-20  Yann Hodique  <Yann.Hodique@lifl.fr>
+
+	* perso/setnu.el:
+	initial checkin
+
+	* perso/pod.el:
+	initial checkin
+
+	* perso/patches.el
+	(match-paren): renamed after emacswiki
+
 2004-07-19  Yann Hodique  <Yann.Hodique@lifl.fr>
 
 	* dotgnus.el
