@@ -28,7 +28,7 @@
 
 ;;; Fracc : french accent mode
 
-(autoload 'fracc-mode "fracc" "" t nil)
+(require 'fracc)
 (defun install-french-accent-mode-if-needed ()
   "Install French accent mode if the buffer seems to contain French text.
 The guess is made by computing the proportion of letters with accents. If
