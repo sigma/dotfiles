@@ -4,6 +4,7 @@
 	(abbrev-mode): use it in LaTeX-mode
 	(server): in case one wants to use emacs on background
 	(global-set-key): suppress speedbar key, add cvs ones
+	(auto-mode-alist): muse files
 
 	* dotemacs-cust.el:
 	(custom-set-variables): break lines in a smarter way

@@ -69,27 +69,6 @@
 (defvar sacha/emacs-wiki-use-absolute-url-flag nil
   "Non-nil means publish absolute URLs.")
 
-;; (require 'w3m)
-
-;;(defadvice emacs-wiki-link-url (aaround sacha activate)
-;;  "Return relative links if possible."
-;;  ad-do-it
-;;   (when ad-return-value
-;;     (unless (emacs-wiki-wiki-url-p ad-return-value)
-;;       (let ((planner-directory "/home/sacha/public_html/notebook/plans"))
-;;         (setq ad-return-value
-;;               (file-relative-name
-;;                (expand-file-name
-;;                 ad-return-value
-;;                 planner-directory)
-;;                planner-directory)))
-;;       (when (and sacha/emacs-wiki-use-absolute-url-flag
-;;                  emacs-wiki-publishing-p)
-;;         (setq ad-return-value
-;;               (w3m-expand-url
-;;                ad-return-value
-;;                "http://sacha.free.net.ph/notebook/wiki/"))))))
-
 ;;;_+ <contents> should strip all the tags
 
 (defun sacha/emacs-wiki-strip-tags (string)
@@ -168,13 +147,6 @@
         (other-window 1)
 	(emacs-wiki-visit-link str))
     (error "There is no valid link at point")))
-
-;;;_+ Highlighting
-;;(add-hook 'emacs-wiki-mode-hook (lambda () (add-hook 'emacs-wiki-highlight-buffer-hook 'emacs-wiki-id-markup nil t)))
-
-;;;_+ <example mode=....></example>
-;;; Stolen shamelessy from code by Satyaki Das <satyaki@theforce.stanford.edu>
-;;; http://verify.stanford.edu/satyaki/emacs/EmacsWikiTricks.html
 
 (defun sacha/htmlfontify-insert-region (buffer begin end)
   "Insert into BUFFER the htmlified text between BEGIN and END."

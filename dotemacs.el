@@ -1,5 +1,5 @@
 ;; -*- mode: emacs-lisp; mode: hi-lock; mode: page-break; auto-compile-lisp: nil; -*-
-;; $Id: dotemacs.el,v 1.62 2004/10/27 10:03:18 sigma Exp $
+;; $Id: dotemacs.el,v 1.63 2004/10/27 21:45:17 sigma Exp $
 
 ;; Hi-lock: (("^;;; \\(.*\\)" (1 'hi-black-hb t)))
 ;; Hi-lock: (("^ +;;; \\(.*\\)" (1 'hi-black-b t)))
@@ -70,9 +70,6 @@
   (progn
     (desktop-save-mode 1)
     (desktop-read)))
-
-;; (when (request 'visible-mark-mode)
-;;   (global-visible-mark-mode 1))
 
 ;; Save place by default
 (when (request 'saveplace)
@@ -146,6 +143,8 @@
     (request 'muse-latex)
     (request 'muse-texinfo)
     (request 'muse-docbook)))
+
+(add-to-list 'auto-mode-alist '("\\.muse$"  . muse-mode))
 
 ;;; Changelog
 
@@ -421,7 +420,7 @@ there are more than 1% of such letters then turn French accent mode on."
     (let ((n 0)(size (- (point-max) (point-min))))
       (while (re-search-forward "\\\\['^`][eauo]" (point-max) t)
         (setq n (+ n 1)) )
-      (while (re-search-forward "[éèàùçêë]" (point-max) t)
+      (while (re-search-forward "[Ã©Ã¨Ã Ã¹Ã§ÃªÃ«]" (point-max) t)
         (setq n (+ n 1)) )
       (message "diacritic/normal ratio = %d/%d" n size)
       (cond ((> (* n 100) size)
@@ -455,7 +454,7 @@ there are more than 1% of such letters then turn French accent mode on."
 (font-lock-add-keywords 'emacs-lisp-mode
                         `((,(concat "\\<" (regexp-opt '("add-hook" "add-mhook"
                                                         "autoload" "defmadvice"
-                                                        "aset" "set" "setq" "fset"
+                                                        "aset" "set" "fset"
                                                         "remove-hook" "clear-hook"
                                                         "request" "make-double-command") t)
                                     "\\>[ 	']*\\(\\sw+\\)?")
