@@ -19,7 +19,7 @@
  '(auto-revert-check-vc-info t)
  '(bbdb-complete-name-allow-cycling t)
  '(bbdb-dwim-net-address-allow-redundancy t)
- '(blink-cursor nil)
+ '(blink-cursor-mode nil)
  '(browse-url-netscape-program "mozilla-firefox")
  '(c++-font-lock-extra-types (quote ("Q[a-zA-Z]*" "uint" "ulong" "string")))
  '(c-default-style (quote ((java-mode . "java") (other . "personal"))))
@@ -160,6 +160,7 @@
  '(vc-make-backup-files t)
  '(view-diary-entries-initially t)
  '(visible-bell t)
+ '(w3m-icon-directory "~/.emacs.d/emacs-w3m/icons")
  '(wdired-allow-to-change-permissions (quote advanced))
  '(which-function-mode nil nil (which-func)))
 

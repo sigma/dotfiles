@@ -1,4 +1,8 @@
-2005-02-14  Yann Hodique  <Yann.Hodique@lifl.fr>
+2005-03-18  Yann Hodique  <Yann.Hodique@lifl.fr>
+
+	* perso/visual.el: use file-name-shadow-mode
+
+2005-02-14 Yann Hodique <Yann.Hodique@lifl.fr>
 
 	* perso/mycompletion.el:
 	(gpl-header): updated gpl-header so that it fits well with doxygen
