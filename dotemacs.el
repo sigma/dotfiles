@@ -1,5 +1,5 @@
 ;; -*- mode: emacs-lisp; mode: hi-lock; mode: page-break; auto-compile-lisp: nil; -*-
-;; $Id: dotemacs.el,v 1.51 2004/09/20 19:24:59 sigma Exp $
+;; $Id: dotemacs.el,v 1.52 2004/09/22 09:01:45 sigma Exp $
 
 ;; Hi-lock: (("^;;; \\(.*\\)" (1 'hi-black-hb t)))
 ;; Hi-lock: (("^ +;;; \\(.*\\)" (1 'hi-black-b t)))
@@ -19,7 +19,7 @@
     (load-file (expand-file-name "~/.emacs-cust")))
 
 ;; Hacked scroll margin
-(set-scroll-margin 5 5 '("*eshell*" "*compile*"))
+(set-scroll-margin 5 5 '("*eshell*" "*compile*" "*Calendar*"))
 (setq scroll-step 1
       scroll-conservatively 15)
 

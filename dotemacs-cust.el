@@ -77,7 +77,7 @@
  '(global-senator-minor-mode t nil (senator))
  '(global-visible-mark-mode-exclude-alist (quote ("^\\*")))
  '(gud-chdir-before-run nil)
- '(hl-line-hack-exceptions (quote ("*eshell*")))
+ '(hl-line-hack-exceptions (quote ("*eshell*" "*Calendar*")))
  '(hl-line-hack-face (quote highlight))
  '(htmlize-head-tags "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=ISO-8859-1\">")
  '(htmlize-html-major-mode (quote html-mode))
