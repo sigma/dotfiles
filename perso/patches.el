@@ -159,6 +159,9 @@
         buffer-no-margin-alist except)
   (add-hook 'post-command-hook 'check-margin))
 
+;; Scroll up then down should go back to the start point
+(setq scroll-preserve-screen-position t)
+
 ;; Color prefix in minibuffer
 (unless (facep 'minibuffer-prompt)
   (let ((face (cdr (memq 'face minibuffer-prompt-properties))))
