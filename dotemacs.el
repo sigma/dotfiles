@@ -1,5 +1,5 @@
 ;; -*- mode: emacs-lisp; auto-compile-lisp: nil; -*-
-;; $Id: dotemacs.el,v 1.25 2004/07/14 18:09:02 sigma Exp $
+;; $Id: dotemacs.el,v 1.26 2004/07/14 22:09:19 sigma Exp $
 
 ;; Load site-specific stuff
 (if (file-exists-p (expand-file-name "~/.emacs-local"))
@@ -44,7 +44,7 @@
 (global-auto-revert-mode 1)
 
 ;; Enable dynamic highlighting
-;; (hi-lock-mode 1)
+(hi-lock-mode 1)
 
 ;; Throw out the mouse when typing
 (mouse-avoidance-mode 'exile)

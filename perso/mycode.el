@@ -555,7 +555,233 @@ it is automaticly created from the list specified in `project-autoinsert-alist'"
     (c-hanging-colons-alist     . ((member-init-intro before)
                                    (inher-intro)
                                    (case-label after)
+                                   (label after)
+                                   (access-label after)))
+    ;; List of various C/C++/ObjC constructs to "clean up".
+    (c-cleanup-list             . (scope-operator
+                                   empty-defun-braces
+                                   defun-close-semi
+                                   brace-else-brace
+                                   brace-elseif-brace))
+    ;; Association list of syntactic element symbols and indentation offsets.
+    (c-offsets-alist            . ((arglist-close . c-lineup-arglist)
+                                   (arglist-cont-nonempty . 0)
+                                   (substatement-open . 0)
+                                   (case-label        . +)
+                                   (block-open        . 0)
+                                   (access-label      . -)
+                                   (label             . 0)
+                                   (knr-argdecl-intro . -)
+                                   (innamespace . nil)))
+                                        ;       (c-echo-syntactic-information-p . t)
+    )
+  "Camille C/C++ Programming Style")
 
+(defconst ezsystems-c-style
+  ;; Always indent c/c++ sources, never insert tabs
+  '((c-tab-always-indent        . t)
+    (c-basic-offset . 4)
+    ;; Offset for line only comments
+    (c-comment-only-line-offset . 0)
+    ;; Controls the insertion of newlines before and after braces.
+    (c-hanging-braces-alist     . ((substatement-open after)
+				   (brace-list-open)))
+    ;; Controls the insertion of newlines before and after certain colons.
+    (c-hanging-colons-alist     . ((member-init-intro before)
+				   (inher-intro)
+				   (case-label after)
+				   (label after)
+				   (access-label after)))
+    ;; List of various C/C++/ObjC constructs to "clean up".
+    (c-cleanup-list             . (scope-operator
+				   empty-defun-braces
+				   defun-close-semi))
+    ;; Association list of syntactic element symbols and indentation offsets.
+    (c-offsets-alist            . (
+				   (arglist-close . c-lineup-arglist)
+				   (substatement-open . 0)
+				   (case-label        . +)
+				   (block-open        . 0)
+				   (access-label      . -)
+				   (label	      . 0)
+				   (knr-argdecl-intro . -)))
+					;	(c-echo-syntactic-information-p . t)
+    )
+  "eZ systems Programming Style")
+
+;; PHP related stuff
+
+;(require 'php-mode)
+
+(defconst ezsystems-php-style
+  ;; Always indent c/c++ sources, never insert tabs
+  '((c-tab-always-indent        . t)
+    (c-basic-offset . 4)
+    ;; Offset for line only comments
+    (c-comment-only-line-offset . 0)
+    ;; Controls the insertion of newlines before and after braces.
+    (c-hanging-braces-alist     . ((substatement-open after)
+				   (brace-list-open)))
+    ;; Controls the insertion of newlines before and after certain colons.
+    (c-hanging-colons-alist     . ((member-init-intro before)
+				   (inher-intro)
+				   (case-label after)
+				   (label after)
+				   (access-label after)))
+    ;; List of various C/C++/ObjC constructs to "clean up".
+    (c-cleanup-list             . (scope-operator
+				   empty-defun-braces
+				   defun-close-semi))
+    ;; Association list of syntactic element symbols and indentation offsets.
+    (c-offsets-alist            . (
+				   (arglist-close . c-lineup-arglist)
+				   (substatement-open . 0)
+				   (case-label        . +)
+				   (block-open        . 0)
+				   (access-label      . -)
+				   (label	      . 0)
+				   (knr-argdecl-intro . -)
+				   (inline-open . 0)))
+					;	(c-echo-syntactic-information-p . t)
+    )
+  "eZ systems PHP Programming Style")
+
+;; add my personal style.
+(c-add-style "personal" my-c-style)
+(c-add-style "bassist" ba-c-style)
+(c-add-style "camille" camille-c-style)
+(c-add-style "eZSystems" ezsystems-c-style)
+(c-add-style "eZPHP" ezsystems-php-style)
+
+(defun my-c-mode-common-hook()
+  (interactive)
+  ;; offset customizations not in my-c-style
+  (c-set-offset 'member-init-intro '++)
+  ;; Regular expression for the outline mode.
+  ;; Enable outline mode with M-x outline-minor-mode
+  (setq outline-regexp (concat
+			"^"		; beginning of line is required
+			"\\(template[ \t]*<[^>]+>[ \t]*\\)?" ; there may be a "template <...>"
+			"\\([a-zA-Z0-9_:]+[ \t]+\\)?" ; type specs; there can be no
+			"\\([a-zA-Z0-9_:]+[ \t]+\\)?" ; more than 3 tokens, right?
+
+			"\\("		; last type spec including */&
+			"[a-zA-Z0-9_:]+"
+			"\\([ \t]*[*&]+[ \t]*\\|[ \t]+\\)" ; either pointer/ref sign or whitespace
+			"\\)?"		; if there is a last type spec
+			"\\("		; name; take that into the imenu entry
+			"[a-zA-Z0-9_:~]+" ; member function, ctor or dtor...
+					; (may not contain * because then
+					; "a::operator char*" would become "char*"!)
+			"\\|"
+			"\\([a-zA-Z0-9_:~]*::\\)?operator"
+			"[^a-zA-Z1-9_][^(]*" ; ...or operator
+			" \\)"
+			"[ \t]*([^)]*)[ \t\n]*[^ ;]" ; require something other than a ; after
+			))
+  ;; Figure out this one later
+;;  (setq outline-heading-end-regexp "^{\n")
+
+  ;; We want spaces instead of real tabs.
+  (setq indent-tabs-mode nil)
+  ;; other customizations
+  (make-local-variable 'font-lock-defaults)
+  (if (emacs-type-is-regular)
+      (setq font-lock-defaults (list c++-new-font-lock-keywords)))
+
+  ;; Allow c++-files only
+  (make-local-variable 'buffer-include-regexp)
+  (if c++-buffers-only
+      (setq buffer-include-regexp '()))
+  (setq buffer-include-regexp (cons c++-buffer-include-regexp buffer-include-regexp))
+  (setq buffer-include-regexp (cons project-buffer-include-regexp buffer-include-regexp))
+
+  (setq tab-width 4)
+  ;; we like hungry-delete
+  (c-toggle-hungry-state 1)
+  ;; uncomment for those who like auto-newline
+  (c-toggle-auto-state 1)
+
+  ;; keybindings for all supported languages.  We can put these in
+  ;; c-mode-base-map because c-mode-map, c++-mode-map, objc-mode-map,
+  ;; java-mode-map, and idl-mode-map inherit from it.
+
+  (local-set-key [S-f4] 'align)
+  (outline-minor-mode)
+  (define-key esc-map "\t" 'project-expand-symbol)
+
+  (make-local-variable 'option-local-config-dir-func)
+  (setq option-local-config-dir-func '(project-local-config-dir))
+  (option-load-from-file-locally)
+)
+
+(add-hook 'c-mode-common-hook 'my-c-mode-common-hook)
+
+(defun my-php-mode-hook()
+  (interactive)
+  ;; offset customizations not in my-c-style
+  (c-set-offset 'member-init-intro '+)
+  ;; Regular expression for the outline mode.
+  ;; Enable outline mode with M-x outline-minor-mode
+  (setq outline-regexp "^[ \t\n\r\f]*function[ \t\n\r\f]+[a-zA-Z_0-9]+([^)]*)")
+
+  ;; We want spaces instead of real tabs.
+  (setq indent-tabs-mode nil)
+  ;; other customizations
+  (make-local-variable 'font-lock-defaults)
+  (if (emacs-type-is-regular)
+      (setq font-lock-defaults '(c++-new-font-lock-keywords)))
+
+  ;; Allow c++-files only
+  (make-local-variable 'buffer-include-regexp)
+  (if c++-buffers-only
+      (setq buffer-include-regexp '()))
+  (setq buffer-include-regexp (cons php-buffer-include-regexp buffer-include-regexp))
+
+  (setq tab-width 4)
+  ;; we like hungry-delete
+  (c-toggle-hungry-state t)
+
+  ;;Newline and indent source for enter.
+  (local-set-key [RET] 'newline-and-indent)
+  (c-set-style "ezphp")
+)
+
+(add-hook 'php-mode-hook 'my-php-mode-hook)
+
+(add-hook 'c++-mode-hook
+	  '(lambda ()
+	     ;;set style for the current buffer
+	     (easy-menu-define c-c++-menu c++-mode-map "C++ Project Commands"
+			       (c-project-menu "Project"))
+	     (easy-menu-add (c-project-menu mode-name))
+
+	     (easy-menu-define c-c++-menu c++-mode-map "General options"
+			       (config-menu "Option"))
+	     (easy-menu-add (config-menu mode-name))
+
+	     ;;Set some new keywords for qt's sake.
+	     (setq c-access-key c-qt-C++-access-key)
+	     ;(c-set-style "ezsystems")
+	     ))
+
+(add-hook 'text-mode-hook
+	  '(lambda ()
+	     (easy-menu-define text-menu text-mode-map "C++ Project Commands"
+	       (c-project-menu "Project"))
+	     (easy-menu-add (c-project-menu mode-name))
+	     ))
+
+(add-hook 'emacs-lisp-mode-hook
+	  '(lambda ()
+	     (easy-menu-define text-menu emacs-lisp-mode-map "C++ Project Commands"
+			       (c-project-menu "Project"))
+	     (easy-menu-add (c-project-menu mode-name))
+	     ))
+
+(add-hook 'tmake-mode-hook
+	  '(lambda ()
+	     (easy-menu-define text-menu tmake-mode-map "C++ Project Commands"
 			       (c-project-menu "Project"))
 	     (easy-menu-add (c-project-menu mode-name))
 	     ))
