@@ -4,7 +4,7 @@
 	(minimal): use completion-config from now
 
 	* dotemacs-cust.el:
-	(custom-set-variables): use partial-completion-mode
+	(custom-set-variables): use partial-completion-mode, fix desktop usage
 
 	* config/completion-config.el:
 	initial checkin, completion-related stuff
