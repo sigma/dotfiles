@@ -998,7 +998,8 @@ EVENT could be \"mouse clicked\" or similar."
     nil))
 (defun svn-status-line-info->lastchangerev (line-info)
   "Return the last revision in which LINE-INFO was modified."
-  (if (>= (nth 5 line-info) 0)
+  (if (and (number-or-marker-p (nth 5 line-info))
+           (>= (nth 5 line-info) 0))
       (nth 5 line-info)
     nil))
 (defun svn-status-line-info->author (line-info) (nth 6 line-info))
