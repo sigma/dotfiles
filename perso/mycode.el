@@ -442,33 +442,10 @@ it is automaticly created from the list specified in `project-autoinsert-alist'"
       (append completion-ignored-extensions
 	      '(".CKP" ".u" ".press" ".imp" ".BAK")))
 
-; Charset stuff
-(standard-display-european t)
-(set-input-mode (car (current-input-mode))
-		(nth 1 (current-input-mode))
-		0)
-
-(setq widget-editable-list-gui t)
-
-;; Scroll Bar gets dragged by mouse butn 1
-(global-set-key [vertical-scroll-bar down-mouse-1] 'scroll-bar-drag)
-
-;; Don't know what the Xemacs equivelant is, do you?
-(if (emacs-type-is-regular)
-    (progn
-     (set-language-environment "Latin-1")
-     (set-terminal-coding-system 'iso-latin-1)
-     (setq unibyte-display-via-language-environment t)))
-
 ;---------------------------------------------------------------------
 ; Font-lock, faces, etc.
 ;
-; Note that `font-lock-use-default-*' must come before `font-lock'.
-
 ; We're not to use the default colors
-(setq font-lock-use-default-fonts nil)
-(setq font-lock-use-default-colors nil)
-
 (require 'font-lock)
 
 ;; auto insert customization
@@ -2761,7 +2738,7 @@ in normal, downcase and upcase letters, in BUFFER."
 	'("\\<\\(Q_\\(EXPORT\\|OBJECT\\|PROPERTY\\)\\|S\\(IGNAL\\|LOT\\)\\|connect\\|disconnect\\|emit\\)\\>"
           (0 font-lock-qt-face))
 	)))
-
+;(font-lock-add-keywords 'c++-mode '(("[{}()<>=;:+\\*\\/\\[]\\|\\]\\|\\-" (0 font-lock-keys-face))))
 ; Auto-insert text when making new *.cpp, *.cc, *.h files.
 (add-hook 'find-file-hooks 'auto-insert)
 
@@ -2958,46 +2935,6 @@ in normal, downcase and upcase letters, in BUFFER."
 
 ;; Creates the index after the file has been loaded.
 (add-hook 'find-file-hooks 'project-add-index)
-
-;; Automaticly rescan the index
-;(setq imenu-auto-rescan t)
-
-;; Add Time-stamp <> or Time-stamp " " anywhere in the top 8 lines of a
-;; file to insert save date and time and user:
-
-(add-hook 'write-file-hooks 'time-stamp)
-
-;---------------------------------------------------------------------
-;I'd like to enable ispell check for text-mode too...
-
-(setq default-major-mode 'indented-text-mode)
-(add-hook 'indented-text-mode-hook 'turn-on-auto-fill)
-
-; (add-hook 'server-visit-hook '(lambda ()
-; 				(interactive)
-; 				(yes-or-no-p "Hello there")))
-(add-hook 'server-switch-hook 'make-frame-command)
-; (add-hook 'server-done-hook '(lambda ()
-; 			       (interactive)
-; 			       (if (is-buffer-a-client)
-; 				   (delete-frame))))
-
-;; Set the new size
-;(set-frame-width (car (car (cdr (current-frame-configuration)))) default-frame-width)
-;(set-frame-height (car (car (cdr (current-frame-configuration)))) default-frame-height)
-
-; Start with the same buffers, major modes and buffer positions:
-; You must do a M-x desktop-save the first time it's used. Emacs
-; must be started in the same current directory.
-
-;; Load the extras file
-(if (file-exists-p ".emacs-extras")
-    (load-file ".emacs-extras"))
-
-;; If non-nil each line of text is exactly one screen line, else wrap text.
-(setq-default truncate-lines nil)
-
-(setq imenu-use-popup-menu t)
 
 (defun change-var-in-file( var file val )
   "Changes the variable named var in the given file with the given val and saves it"

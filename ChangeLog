@@ -1,10 +1,14 @@
 2004-07-12  Yann Hodique  <Yann.Hodique@lifl.fr>
 
+	* perso/mycode.el:
+	general cleanup
+
 	* dotemacs.el
 	(make-double-command): use (declare) in macro
 	(my-home): new command, bound to C-Home
 	(my-end): new command, bound to C-End
 	(emacs-lisp-mode-map): bind C-c C-c to emacs-lisp-byte-compile
+	general cleanup
 
 	* perso/patches.el
 	(yank-rpop): go forward in kill ring for yanking (bound to M-Y)

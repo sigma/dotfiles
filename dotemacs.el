@@ -1,5 +1,5 @@
 ;; -*- mode: emacs-lisp; auto-compile-lisp: nil; -*-
-;; $Id: dotemacs.el,v 1.22 2004/07/12 08:17:54 sigma Exp $
+;; $Id: dotemacs.el,v 1.23 2004/07/12 19:31:26 sigma Exp $
 
 ;; Use this one instead of require to ignore errors
 (defun request (pack)
@@ -37,6 +37,10 @@
 (setq time-stamp-active t)
 ;; Sets new format for the time stamp, also used with the creation tag.
 (setq time-stamp-format "%02d/%02m/%:y %02H:%02M:%02S %U")
+
+;; Default mode
+(setq default-major-mode 'indented-text-mode)
+(add-hook 'indented-text-mode-hook 'turn-on-auto-fill)
 
 ;; We don't want to insert newlines when reaching end of buffer
 ;; and we want to kill the whole line when doing a Ctrl-k
