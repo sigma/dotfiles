@@ -1,3 +1,8 @@
+2004-09-09  Yann Hodique  <Yann.Hodique@lifl.fr>
+
+	* dotemacs.el
+	(multi-region-map): change keybinding (conflicted with usefull ones in LaTeX-mode)
+
 2004-09-08  Yann Hodique  <Yann.Hodique@lifl.fr>
 
 	* dotemacs.el:
