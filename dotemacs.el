@@ -1,5 +1,5 @@
 ;; -*- mode: emacs-lisp; mode: hi-lock; mode: page-break; auto-compile-lisp: nil; -*-
-;; $Id: dotemacs.el,v 1.38 2004/09/06 17:36:43 sigma Exp $
+;; $Id: dotemacs.el,v 1.39 2004/09/07 09:42:41 sigma Exp $
 
 ;; Hi-lock: (("^;;; \\(.*\\)" (1 'hi-black-hb t)))
 ;; Hi-lock: (("^ +;;; \\(.*\\)" (1 'hi-black-b t)))
@@ -85,6 +85,7 @@
 ;;; Charsets & languages
 
 (add-to-list 'ispell-dictionary-alist '("latin" "[A-Za-z]" "[^A-Za-z]" "[']" nil nil "~tex" iso-8859-1))
+(setq ispell-program-name "aspell")
 
 (set-language-environment 'latin-1)
 (prefer-coding-system 'latin-1)
@@ -110,6 +111,12 @@
     (insert (make-char 'latin-iso8859-15 #xBD)))
 
 (global-set-key (kbd "H-o H-e") 'sk-insert-oe)
+
+
+;;; Buffers
+
+(eval-after-load "buff-menu" '(request 'buff-menu+))
+(global-set-key (kbd "C-x C-b") 'buffer-menu)
 
 
 ;;; Packages configuration

@@ -1,3 +1,15 @@
+2004-09-07  Yann Hodique  <Yann.Hodique@lifl.fr>
+
+	* dotemacs.el:
+	(ispell-program-name): use aspell
+	use extended buffer menu
+
+	* perso/def-face-const.el:
+	initial checkin
+
+	* perso/buff-menu+.el:
+	initial checkin
+
 2004-09-06  Yann Hodique  <Yann.Hodique@lifl.fr>
 
 	* perso/tc.el:
