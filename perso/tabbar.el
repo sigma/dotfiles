@@ -6,7 +6,7 @@
 ;; Maintainer: David Ponce <david@dponce.com>
 ;; Created: 25 February 2003
 ;; Keywords: convenience
-;; Revision: $Id: tabbar.el,v 1.1 2004/04/19 17:53:50 sigma Exp $
+;; Revision: $Id: tabbar.el,v 1.2 2004/06/15 16:02:04 sigma Exp $
 
 (defconst tabbar-version "1.2")
 

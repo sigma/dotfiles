@@ -74,7 +74,7 @@
 ;;   completion of some sort.
 ;; o Support multiple nnfolder, nnml backends.
 
-;;; $Id: nnir-grepmail.el,v 1.1 2004/04/19 17:53:50 sigma Exp $
+;;; $Id: nnir-grepmail.el,v 1.2 2004/06/15 16:02:05 sigma Exp $
 
 
 ;;; Code:

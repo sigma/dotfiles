@@ -1,4 +1,4 @@
-;	$Id: post.el,v 1.1 2004/04/19 17:53:55 sigma Exp $	
+;	$Id: post.el,v 1.2 2004/06/15 16:02:05 sigma Exp $	
 ;; post.el --- Use (X?)Emacs(client) as an external editor for mail and news.
  
 ;; Authors: Eric Kidd <eric.kidd@pobox.com>,
@@ -51,8 +51,8 @@
 ;;; Revision History
 ;;;
 ;;; $Log: post.el,v $
-;;; Revision 1.1  2004/04/19 17:53:55  sigma
-;;; Initial revision
+;;; Revision 1.2  2004/06/15 16:02:05  sigma
+;;; global update
 ;;;
 ;;; Revision 2.4  2002/04/22 22:04:29  reid
 ;;; Tweaked post-emoticon-pattern yet again.

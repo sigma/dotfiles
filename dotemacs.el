@@ -1,5 +1,5 @@
 ;; -*- mode: emacs-lisp; auto-compile-lisp: nil; -*-
-;; Time-stamp: <19/04/2004 16:18:25 Yann Hodique>
+;; Time-stamp: <15/06/2004 17:43:53 Yann Hodique>
 
 ;; Use this one instead of require to ignore errors
 (defun request (pack)
@@ -8,45 +8,9 @@
     (require pack)
   (error nil)))
 
-;;;;;;;;;;;;;;;;;;;;;;;;
-;; Name/Email settings
-;;
-
-(setq user-full-name "Yann Hodique")
-(setq user-mail-address "Yann.Hodique@lifl.fr")
-(setq home-directory (getenv "HOME"))
-
-;;;;;;;;;;
-;; Paths
-;;
-(setq auto-insert-directory (expand-file-name "~/.emacs.d/autoinsert/")
-      diary-file (expand-file-name "~/.diary")
-      ecb-source-path (list "/usr/include" (expand-file-name "~/Projects") (expand-file-name "~/cvs"))
-      load-path (append (mapcar 'expand-file-name
-                                '(
-                                  "~/.emacs.d/cedet/common"
-                                  "~/.emacs.d/cedet/contrib"
-                                  "~/.emacs.d/cedet/eieio"
-                                  "~/.emacs.d/cedet/semantic"
-                                  "~/.emacs.d/cedet/speedbar"
-                                  "~/.emacs.d/cedet/ede"
-                                  "~/.emacs.d/cedet/cogre"
-                                  "~/.emacs.d/doxymacs/lisp"
-                                  "~/.emacs.d/perso"
-                                  "~/.emacs.d/ecb"
-                                  "~/.emacs.d/lispy"
-                                  "~/.emacs.d/auctex"
-                                  "~/.emacs.d/gnus/lisp"
-                                  "~/.emacs.d/emacs-w3m"
-                                  "~/cvs/emacs-wiki"
-                                  "~/.emacs.d/mailcrypt"
-                                  "~/.emacs.d/x-symbol"
-                                  "~/.emacs.d/tramp/tramp2"
-                                  "~/.emacs.d/bbdb/lisp"
-                                  "~/.emacs.d/site-lisp"))
-                        load-path
-                        '("/usr/share/emacs/site-lisp/"))
-      doxymacs-external-xml-parser-executable (expand-file-name "~/.emacs.d/doxymacs/c/doxymacs_parser"))
+;; Load site-specific stuff
+(if (file-exists-p (expand-file-name "~/.emacs-local"))
+    (load-file (expand-file-name "~/.emacs-local")))
 
 ;; My customizations are in a separate file
 (if (file-exists-p (expand-file-name "~/.emacs-cust"))
@@ -54,9 +18,9 @@
 
 ;; Fix various "bad" default behaviors
 (require 'patches)
-    ;; Hacked scroll margin
-(set-scroll-margin 5 5 '("*eshell*" "*compile*"))
 
+;; Hacked scroll margin
+(set-scroll-margin 5 5 '("*eshell*" "*compile*"))
 (setq scroll-step 1
       scroll-conservatively 15)
 
@@ -88,11 +52,37 @@
 ;; Throw out the mouse when typing
 (mouse-avoidance-mode 'exile)
 
-;; Always end file with a newline. (use with caution)
-(setq require-final-newline t)
-
 ;; Load the emacs type verifier first (gnu emacs, xemacs, ...)
 (request 'emacs-type)
+
+;;;;;;;;;;;;;
+;; Charsets
+
+(set-language-environment 'latin-1)
+(prefer-coding-system 'latin-1)
+
+(setq unibyte-display-via-language-environment t)
+(setq-default ctl-arrow 'latin-9)
+
+(require 'ucs-tables)
+(unify-8859-on-encoding-mode 1)
+(unify-8859-on-decoding-mode 1)
+
+(defun sk-insert-euro (&optional arg) "Insert Euro ISO 8859-15."
+  (interactive "*P")
+  (if arg
+      (insert (make-char 'mule-unicode-0100-24ff 116 76))
+    (insert (make-char 'latin-iso8859-15 164))))
+
+(global-set-key (kbd "H-5") 'sk-insert-euro)
+
+(defun sk-insert-oe (&optional arg) "Insert oe"
+  (interactive "*P")
+;  (if arg
+;     (insert (make-char 'mule-unicode-0100-24ff 116 76))
+    (insert (make-char 'latin-iso8859-15 #xBD)))
+
+(global-set-key (kbd "H-o H-e") 'sk-insert-oe)
 
 ;;;;;;;;;;;;;;
 ;; Variables
@@ -135,19 +125,6 @@
 (require 'lispy-occur)
 (require 'lispy-session)
 (require 'lispy-osd)
-
-;; Old one :
-;; (if (request 'mtp)
-;;     (progn
-;;       (defun raise-mtp ()
-;;         (interactive)
-;;         (switch-to-buffer "*<Mtp> Chat*")
-;;         )
-
-;;       (defun my-mtp-font-lock-hook ()
-;;         (if (eq major-mode 'mtp-mode)
-;;             (mtp-font-lock)))
-;;       (add-hook 'font-lock-mode-hook 'my-mtp-font-lock-hook)))
 
   ;;;;;;;;;;;;;;;;;;;;;;;;;
   ;; Eshell : Emacs shell
@@ -203,8 +180,6 @@
   ;; CEDET
   ;;
 (require 'eldoc)
-;;(setq semantic-load-turn-useful-things-on t)
-;; Load CEDET
 (load-file "~/.emacs.d/cedet/common/cedet.el")
 
   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -221,7 +196,7 @@
   ;; Completion
   ;;
 
-(request 'completion)
+;(request 'completion)
 
   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
   ;; Doxymacs : great documentation system
@@ -373,6 +348,44 @@ there are more than 1% of such letters then turn French accent mode on."
 
 ;; see inside for more details...
 (request 'mycode)
+
+(defun yh-c-rearrange-electrics ()
+  "Rearrange electric chars according to current c-style"
+  (interactive)
+  (save-excursion
+    (mapcar (lambda (symb)
+              (goto-char (point-min))
+              (while (search-forward (car symb) (point-max) t)
+                (let ((p (- (point) 1)))
+                  (back-to-indentation)
+                  (if (equal p (point))
+                      (progn
+                        (delete-indentation)
+                        (if (eq (cdr symb) '+)
+                            (forward-char)))
+                    (goto-char p))
+                  (delete-char 1)
+                  (execute-kbd-macro (car symb)))))
+            '(("{" +) ("}" -)))))
+
+(defadvice delete-trailing-whitespace( after open-line-after act )
+  "Also delete extra blank lines"
+  (save-excursion
+    (goto-char (point-min))
+    (while (search-forward-regexp (string ?^ 10 10) nil t)
+      (backward-char)
+      (delete-blank-lines))))
+
+(add-hook 'c-mode-common-hook (lambda ()
+                                (let ((rep (file-name-directory (buffer-file-name))))
+                                  (cond ((string-match (expand-file-name "~/Projects/bassist") rep)
+                                         (c-set-style "bassist"))
+                                        ((string-match (expand-file-name "~/cvs/Camille") rep)
+                                         (c-set-style "camille"))
+                                        (t
+                                         (c-set-style "personal")))
+                                  )) t)
+
 (request 'mycompletion)
 (request 'page-break)
 
@@ -501,9 +514,9 @@ there are more than 1% of such letters then turn French accent mode on."
 (global-set-key [(f3)] 'ecb-toggle-compile-window)
 ;; Depending on your keyboard you may want another one binding
 (global-set-key (kbd "C-x ~") 'previous-error)
-(global-set-key (kbd "C-c s") 'eshell)
-(global-set-key (kbd "C-c c") 'mode-compile)
-(global-set-key (kbd "C-c k") 'mode-compile-kill)
+(global-set-key (kbd "H-c s") 'eshell)
+(global-set-key (kbd "H-c c") 'mode-compile)
+(global-set-key (kbd "H-c k") 'mode-compile-kill)
 (global-set-key [\C-tab] 'other-window)
 
 ;; These were traditional bindings, why did they change??
@@ -532,11 +545,11 @@ there are more than 1% of such letters then turn French accent mode on."
                                     (kill-this-buffer)
                                   (kill-some-buffers))))
 (global-set-key [(f4)] 'speedbar-get-focus)
-(global-set-key (kbd "C-c m") 'gnus)
-(global-set-key (kbd "C-c x") 'chmod-file)
-(global-set-key (kbd "C-c i") 'init)
-(global-set-key (kbd "C-c h") 'auto-insert)
-(global-set-key (kbd "C-c f") (lambda () (interactive) (require 'ffap) (find-file (ffap-guesser))))
+(global-set-key (kbd "H-c m") (lambda () (interactive) (gnus 4)))
+(global-set-key (kbd "H-c x") 'chmod-file)
+(global-set-key (kbd "H-c i") 'init)
+(global-set-key (kbd "H-c h") 'auto-insert)
+(global-set-key (kbd "H-x H-f") (lambda () (interactive) (require 'ffap) (find-file (ffap-guesser))))
 
 (define-key-after (lookup-key global-map [menu-bar tools])
       [speedbar] '("Speedbar" . speedbar-frame-mode) [calendar])
@@ -598,6 +611,18 @@ there are more than 1% of such letters then turn French accent mode on."
 (define-key global-map (kbd "C-M-m") multi-region-map)
 
 (require 'isearchb)
-(define-key global-map [(control ?z)] 'isearchb-activate)
+(define-key global-map [(hyper ?s)] 'isearchb-activate)
+
+(require 'zap-char)
+(global-set-key [(hyper z)]               'zap-upto-char)
+(global-set-key [(hyper meta z)]          'zap-to-char)
+(global-set-key [(shift hyper z)]         'zap-following-char)
+(global-set-key [(shift hyper meta z)]    'zap-from-char)
+
+(require 'elscreen)
+;(require 'url)
+;(require 'w3)
+
+(require 'w3m-load)
 
 (message ".emacs loaded")

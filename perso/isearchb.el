@@ -4,7 +4,7 @@
 
 ;; Author: John Wiegley <johnw@gnu.org>
 ;; Created: 16 Apr 2004
-;; Version: 1.3
+;; Version: 1.5
 ;; Keywords: lisp
 ;; X-URL: http://www.newartisans.com/johnw/emacs.html
 
@@ -22,6 +22,15 @@
 ;; along with GNU Emacs; see the file COPYING.  If not, write to the
 ;; Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 ;; Boston, MA 02111-1307, USA.
+
+;;; Notice:
+
+;; Unless you are using the latest Emacs from CVS, you will need my
+;; modified copy of iswitchb.el (which also includes support for
+;; virtual buffers, if `iswitchb-use-virtual-buffers' is enabled).
+;; You can download this version of iswitchb.el at:
+;;
+;;   http://www.newartisans.com/johnw/Emacs/iswitchb.el
 
 ;;; Commentary:
 
@@ -60,13 +69,19 @@
 ;; you're looking for.
 ;;
 ;; C-s and C-r move forward and backward in the buffer list.  If
-;; `isearchb-show-completions' is non-nil (the default), a list of
+;; `isearchb-show-completions' is non-nil (the default), the list of
 ;; possible completions is shown in the minibuffer.
 ;;
-;; If `isearchb-idle-timeout' is set to a number (the default is 1),
-;; isearchb will quit after that many seconds of idle time.  Thus, if
-;; you switch to a buffer and wait for a second, you can start typing
-;; characters without manually exiting isearchb.
+;; If `isearchb-idle-timeout' is set to a number, isearchb will quit
+;; after that many seconds of idle time.  I recommend trying it set to
+;; one or two seconds.  Then, if you switch to a buffer and wait for
+;; that amount of time, you can start typing without manually exiting
+;; isearchb.
+
+;; TODO:
+;;   C-z C-z is broken
+;;   killing iswitchb.el and then trying to switch back is broken
+;;   make sure TAB isn't broken
 
 (require 'iswitchb)
 
@@ -74,7 +89,7 @@
   "Switch between buffers using a mechanism like isearch."
   :group 'iswitchb)
 
-(defcustom isearchb-idle-timeout 1
+(defcustom isearchb-idle-timeout nil
   "*Number of idle seconds before isearchb turns itself off.
 If nil, don't use a timeout."
   :type '(choice (integer :tag "Seconds")
@@ -87,33 +102,62 @@ If nil, don't use a timeout."
   :group 'isearchb)
 
 (defvar isearchb-start-buffer nil)
+(defvar isearchb-last-buffer nil)
 (defvar isearchb-idle-timer nil)
+
+(defun isearchb-stop (&optional return-to-buffer ignore-command)
+  (remove-hook 'pre-command-hook 'isearchb-follow-char)
+  (if return-to-buffer
+      (switch-to-buffer isearchb-start-buffer)
+    (setq isearchb-last-buffer isearchb-start-buffer))
+  (when isearchb-idle-timer
+    (cancel-timer isearchb-idle-timer)
+    (setq isearchb-idle-timer nil))
+  (if ignore-command
+      (setq this-command 'ignore
+	    last-command 'ignore))
+  (message nil))
+
+(defun isearchb-iswitchb ()
+  (interactive)
+  (let* ((prompt "iswitch ")
+	 (iswitchb-method 'samewindow)
+	 (buf (iswitchb-read-buffer prompt nil nil iswitchb-text t)))
+    (if (eq iswitchb-exit 'findfile)
+	(call-interactively 'find-file)
+      (when buf
+	(if (get-buffer buf)
+	    ;; buffer exists, so view it and then exit
+	    (iswitchb-visit-buffer buf)
+	  ;; else buffer doesn't exist
+	  (iswitchb-possible-new-buffer buf))))))
 
 (defun isearchb ()
   "Switch to buffer matching a substring, based on chars typed."
   (interactive)
   (unless (eq last-command 'isearchb)
     (setq iswitchb-text nil))
-  (if (null iswitchb-text)
-      (iswitchb-make-buflist iswitchb-default))
+  (unless iswitchb-text
+    (setq iswitchb-text "")
+    (iswitchb-make-buflist nil))
   (if last-command-char
-      (setq iswitchb-text
-	    (concat iswitchb-text (char-to-string last-command-char))))
+      (setq iswitchb-rescan t
+	    iswitchb-text (concat iswitchb-text
+				  (char-to-string last-command-char))))
   (iswitchb-set-matches)
   (let* ((match (car iswitchb-matches))
 	 (buf (and match (get-buffer match))))
-    (if buf
+    (if (null buf)
 	(progn
-	  (switch-to-buffer buf)
-	  (if isearchb-show-completions
-	      (message "isearchb: %s%s" iswitchb-text
-		       (iswitchb-completions iswitchb-text nil))
-	    (if (= 1 (length iswitchb-matches))
-		(message "isearchb: %s (only match)" iswitchb-text)
-	      (message "isearchb: %s" iswitchb-text))))
-      (message "No buffer matching \"%s\"" iswitchb-text)
-      (setq iswitchb-text
-	    (substring iswitchb-text 0 (1- (length iswitchb-text)))))))
+	  (isearchb-stop t)
+	  (isearchb-iswitchb))
+      (switch-to-buffer buf)
+      (if isearchb-show-completions
+	  (message "isearchb: %s%s" iswitchb-text
+		   (iswitchb-completions iswitchb-text nil))
+	(if (= 1 (length iswitchb-matches))
+	    (message "isearchb: %s (only match)" iswitchb-text)
+	  (message "isearchb: %s" iswitchb-text))))))
 
 (defun isearchb-set-keybindings (modifier)
   "Setup isearchb on the given MODIFIER."
@@ -122,96 +166,23 @@ If nil, don't use a timeout."
 	    (lookup-key global-map (vector i)))
 	(define-key global-map (vector (list modifier i)) 'isearchb))))
 
-(defun isearchb-read-buffer (prompt &optional default require-match)
-  "Replacement for the built-in `read-buffer'.
-Return the name of a buffer selected.
-PROMPT is the prompt to give to the user.  DEFAULT if given is the default
-buffer to be selected, which will go to the front of the list.
-If REQUIRE-MATCH is non-nil, an existing-buffer must be selected."
-  (let (buf-sel
-	iswitchb-final-text
-	(icomplete-mode nil) ;; prevent icomplete starting up
-	;; can only use fonts if they have been bound.
-	(iswitchb-use-fonts (and iswitchb-use-fonts
-				 (boundp 'font-lock-comment-face)
-				 (boundp 'font-lock-function-name-face))))
-    (iswitchb-define-mode-map)
-    (setq iswitchb-exit nil)
-    (setq iswitchb-default (if (bufferp default)
-			       (buffer-name default)
-			     default))
-    (let ((minibuffer-local-completion-map iswitchb-mode-map)
-	  ;; Record the minibuffer depth that we expect to find once
-	  ;; the minibuffer is set up and iswitchb-entryfn-p is called.
-	  (iswitchb-minibuf-depth (1+ (minibuffer-depth)))
-	  (iswitchb-require-match require-match))
-      ;; prompt the user for the buffer name
-      (setq iswitchb-final-text (completing-read
-				 prompt		  ;the prompt
-				 '(("dummy" . 1)) ;table
-				 nil		  ;predicate
-				 nil ;require-match [handled elsewhere]
-				 iswitchb-text ;initial-contents
-				 'iswitchb-history)))
-    (if (and (not (eq iswitchb-exit 'usefirst))
-	     (get-buffer iswitchb-final-text))
-	;; This happens for example if the buffer was chosen with the mouse.
-	(setq iswitchb-matches (list iswitchb-final-text)))
-    ;; Handling the require-match must be done in a better way.
-    (if (and require-match (not (iswitchb-existing-buffer-p)))
-	(error "Must specify valid buffer"))
-    (if (or (eq iswitchb-exit 'takeprompt)
-	    (null iswitchb-matches))
-	(setq buf-sel iswitchb-final-text)
-      ;; else take head of list
-      (setq buf-sel (car iswitchb-matches)))
-    ;; Or possibly choose the default buffer
-    (if  (equal iswitchb-final-text "")
-	(setq buf-sel
-	      (car iswitchb-matches)))
-    buf-sel))
-
-(defun isearchb-jump-to-iswitchb ()
-  (interactive)
-  (let* ((prompt "iswitch ")
-	 (buf (isearchb-read-buffer prompt)))
-    (if (eq iswitchb-exit 'findfile)
-	(call-interactively 'find-file)
-      (if buf
-	  (if (get-buffer buf)
-	      ;; buffer exists, so view it and then exit
-	      (iswitchb-visit-buffer buf)
-	    ;; else buffer doesn't exist
-	    (iswitchb-possible-new-buffer buf))))))
-
-(defun isearchb-timeout ()
-  (setq isearchb-idle-timer nil)
-  (setq last-command 'ignore)
-  (message nil))
-
-(defun isearchb-abort ()
-  (switch-to-buffer isearchb-start-buffer)
-  (when isearchb-idle-timer
-    (cancel-timer isearchb-idle-timer)
-    (setq isearchb-idle-timer nil))
-  (setq this-command 'ignore))
-
 (defun isearchb-follow-char ()
   (let (keys)
-    (when (and (memq last-command '(isearchb isearchb-activate))
-	       (setq keys (this-command-keys))
-	       (= 1 (length keys)))
+    (if (not (and (memq last-command '(isearchb isearchb-activate))
+		  (setq keys (this-command-keys))
+		  (= 1 (length keys))))
+	(isearchb-stop)
       (cond
        ((or (equal keys "\C-h") (equal keys "\C-?")
 	    (equal keys [backspace]) (equal keys [delete]))
 	(setq iswitchb-text
 	      (substring iswitchb-text 0 (1- (length iswitchb-text))))
 	(if (= 0 (length iswitchb-text))
-	    (isearchb-abort)
+	    (isearchb-stop t t)
 	  (setq last-command-char nil)
 	  (setq this-command 'isearchb)))
        ((or (equal keys "\C-i") (equal keys [tab]))
-	(setq this-command 'isearchb-jump-to-iswitchb))
+	(setq this-command 'isearchb-iswitchb))
        ((equal keys "\C-s")
 	(iswitchb-next-match)
 	(setq last-command-char nil)
@@ -221,31 +192,31 @@ If REQUIRE-MATCH is non-nil, an existing-buffer must be selected."
 	(setq last-command-char nil)
 	(setq this-command 'isearchb))
        ((equal keys "\C-g")
-	(isearchb-abort))
+	(ding)
+	(isearchb-stop t t))
        ((eq (lookup-key global-map keys) 'self-insert-command)
 	(setq this-command 'isearchb)))
       (if (and isearchb-idle-timeout
 	       (null isearchb-idle-timer))
 	(setq isearchb-idle-timer
 	      (run-with-idle-timer isearchb-idle-timeout nil
-				   'isearchb-timeout))))))
+				   'isearchb-stop))))))
 
 ;;;###autoload
 (defun isearchb-activate ()
   (interactive)
   (cond
    ((eq last-command 'isearchb)
-    (setq this-command 'ignore))
+    (isearchb-stop nil t))
    ((eq last-command 'isearchb-activate)
-    (switch-to-buffer (car iswitchb-buflist))
-    (setq this-command 'ignore))
+    (if isearchb-last-buffer
+	(switch-to-buffer isearchb-last-buffer)
+      (error "isearchb: There is no previous buffer to toggle to."))
+    (isearchb-stop nil t))
    (t
     (message "isearchb: ")
-    (setq isearchb-start-buffer (current-buffer))
-    (setq iswitchb-rescan t)
-    (setq iswitchb-text "")
-    (iswitchb-make-buflist iswitchb-default)
-    (iswitchb-set-matches)
+    (setq iswitchb-text nil
+	  isearchb-start-buffer (current-buffer))
     (add-hook 'pre-command-hook 'isearchb-follow-char))))
 
 (provide 'isearchb)

@@ -92,7 +92,6 @@
                              (glasses-mode)
                              (camelCase-mode 1)))
 
-
 (defun make-makefile()
   "Creates the Makefile from the .pro project file"
   (interactive)
@@ -466,7 +465,6 @@ it is automaticly created from the list specified in `project-autoinsert-alist'"
      (set-terminal-coding-system 'iso-latin-1)
      (setq unibyte-display-via-language-environment t)))
 
-
 ;---------------------------------------------------------------------
 ; Font-lock, faces, etc.
 ;
@@ -493,7 +491,13 @@ it is automaticly created from the list specified in `project-autoinsert-alist'"
     (c-comment-only-line-offset . 0)
     ;; Controls the insertion of newlines before and after braces.
     (c-hanging-braces-alist     . ((substatement-open after)
-				   (brace-list-open)))
+                                   (defun-open after)
+                                   (class-open after)
+                                   (inline-open after)
+                                   (block-open after)
+				   (brace-list-open after)
+                                   (extern-lang-open after)
+                                   (namespace-open after)))
     ;; Controls the insertion of newlines before and after certain colons.
     (c-hanging-colons-alist     . ((member-init-intro before)
 				   (inher-intro)
@@ -515,6 +519,90 @@ it is automaticly created from the list specified in `project-autoinsert-alist'"
 					;	(c-echo-syntactic-information-p . t)
     )
   "My C/C++ Programming Style")
+
+(defconst ba-c-style
+  ;; Always indent c/c++ sources, never insert tabs
+  '((c-tab-always-indent        . t)
+    ;; Offset for line only comments
+    (c-basic-offset . 4)
+    (indent-tabs-mode . t)
+    (c-comment-only-line-offset . 0)
+    ;; Controls the insertion of newlines before and after braces.
+    (c-hanging-braces-alist     . ((substatement-open after)
+                                   (defun-open after)
+                                   (class-open after)
+                                   (inline-open after)
+                                   (block-open after)
+				   (brace-list-open after)
+                                   (extern-lang-open after)
+                                   (namespace-open after)))
+    ;; Controls the insertion of newlines before and after certain colons.
+    (c-hanging-colons-alist     . ((member-init-intro before)
+				   (inher-intro)
+				   (case-label after)
+				   (label after)
+				   (access-label after)))
+    ;; List of various C/C++/ObjC constructs to "clean up".
+    (c-cleanup-list             . (scope-operator
+				   empty-defun-braces
+				   defun-close-semi
+                                   brace-else-brace
+                                   brace-elseif-brace))
+    ;; Association list of syntactic element symbols and indentation offsets.
+    (c-offsets-alist            . ((arglist-close . c-lineup-arglist)
+				   (substatement-open . 0)
+				   (case-label        . +)
+				   (block-open        . 0)
+				   (access-label      . -)
+				   (label	      . 0)
+				   (knr-argdecl-intro . -)
+                                   (innamespace . nil)))
+					;	(c-echo-syntactic-information-p . t)
+    )
+  "Blind-Assist C/C++ Programming Style")
+
+(defconst camille-c-style
+  ;; Always indent c/c++ sources, never insert tabs
+  '((c-tab-always-indent        . t)
+    ;; Offset for line only comments
+    (c-basic-offset . 4)
+    (indent-tabs-mode . t)
+    (c-comment-only-line-offset . 0)
+    ;; Controls the insertion of newlines before and after braces.
+    (c-hanging-braces-alist     . (
+;                                   (substatement-open after)
+;                                   (defun-open after)
+;                                   (class-open after)
+                                   (inline-open after)
+;                                   (block-open after)
+;				   (brace-list-open after)
+                                   (extern-lang-open after)
+;                                   (namespace-open after)
+))
+    ;; Controls the insertion of newlines before and after certain colons.
+    (c-hanging-colons-alist     . ((member-init-intro before)
+				   (inher-intro)
+				   (case-label after)
+				   (label after)
+				   (access-label after)))
+    ;; List of various C/C++/ObjC constructs to "clean up".
+    (c-cleanup-list             . (scope-operator
+				   empty-defun-braces
+				   defun-close-semi
+                                   brace-else-brace
+                                   brace-elseif-brace))
+    ;; Association list of syntactic element symbols and indentation offsets.
+    (c-offsets-alist            . ((arglist-close . c-lineup-arglist)
+				   (substatement-open . 0)
+				   (case-label        . +)
+				   (block-open        . 0)
+				   (access-label      . -)
+				   (label	      . 0)
+				   (knr-argdecl-intro . -)
+                                   (innamespace . nil)))
+					;	(c-echo-syntactic-information-p . t)
+    )
+  "Camille C/C++ Programming Style")
 
 (defconst ezsystems-c-style
   ;; Always indent c/c++ sources, never insert tabs
@@ -547,7 +635,6 @@ it is automaticly created from the list specified in `project-autoinsert-alist'"
 					;	(c-echo-syntactic-information-p . t)
     )
   "eZ systems Programming Style")
-
 
 ;; PHP related stuff
 
@@ -588,6 +675,8 @@ it is automaticly created from the list specified in `project-autoinsert-alist'"
 
 ;; add my personal style.
 (c-add-style "personal" my-c-style)
+(c-add-style "bassist" ba-c-style)
+(c-add-style "camille" camille-c-style)
 (c-add-style "eZSystems" ezsystems-c-style)
 (c-add-style "eZPHP" ezsystems-php-style)
 
@@ -620,7 +709,6 @@ it is automaticly created from the list specified in `project-autoinsert-alist'"
   ;; Figure out this one later
 ;;  (setq outline-heading-end-regexp "^{\n")
 
-
   ;; We want spaces instead of real tabs.
   (setq indent-tabs-mode nil)
   ;; other customizations
@@ -639,7 +727,7 @@ it is automaticly created from the list specified in `project-autoinsert-alist'"
   ;; we like hungry-delete
   (c-toggle-hungry-state 1)
   ;; uncomment for those who like auto-newline
-  ;(c-toggle-auto-state 1)
+  (c-toggle-auto-state 1)
 
   ;; keybindings for all supported languages.  We can put these in
   ;; c-mode-base-map because c-mode-map, c++-mode-map, objc-mode-map,
@@ -690,9 +778,6 @@ it is automaticly created from the list specified in `project-autoinsert-alist'"
 )
 
 (add-hook 'php-mode-hook 'my-php-mode-hook)
-
-;(c-set-style "eZSystems")
-(c-set-style "personal")
 
 (add-hook 'c++-mode-hook
 	  '(lambda ()
@@ -929,7 +1014,6 @@ and LOADED is the name of the loaded variable."
 	      (eval (cadr (cdr (cdr (cdr pkg))))))
 	  t)
       nil)))
-
 
 (defun option-check-packages ()
   (let ()
@@ -1381,7 +1465,6 @@ in the Options menu and then selecting save global\)") '("OK" . t) '("Cancel" . 
 		  (replace-match ""))))))
       )))
 
-
 (defun check-file( file )
   (let (buf
 	lst)
@@ -1394,7 +1477,6 @@ in the Options menu and then selecting save global\)") '("OK" . t) '("Cancel" . 
 	(setq lst (nconc lst (list (match-string 2))))))
     (kill-buffer buf)
     lst))
-
 
 (defun scan-directory( dir local )
   (let (files
@@ -1436,7 +1518,6 @@ in the Options menu and then selecting save global\)") '("OK" . t) '("Cancel" . 
       (setq str nil))
     (kill-buffer buf)
     str))
-
 
 (defun scan-directory-string( dir local name )
   (let (files
@@ -1576,7 +1657,6 @@ in the Options menu and then selecting save global\)") '("OK" . t) '("Cancel" . 
 
 (defvar buffer-include-list nil)
 
-
 (defvar c++-class-decl-regexp (concat
 			       "^"
 			       ;; May have a template<>(1)
@@ -1638,7 +1718,6 @@ in the Options menu and then selecting save global\)") '("OK" . t) '("Cancel" . 
 ;	    )
 	))
      classes))
-
 
 (defun find-includes()
   (interactive)
@@ -1721,7 +1800,6 @@ in the Options menu and then selecting save global\)") '("OK" . t) '("Cancel" . 
 			      (if c++-auto-include-remove
 				  (remove-include))))
 
-
 ;; Count words in buffer
 (defun count-words-buffer ()
   "Count the number of words in current the buffer
@@ -1784,7 +1862,6 @@ print a message in the minibuffer with the result."
 	(setq buffers (cdr buffers))))
     buffer))
 
-
 (defun project-file-list ( buffer tag )
   (if (stringp tag)
       (let ((lst nil))
@@ -1809,7 +1886,6 @@ print a message in the minibuffer with the result."
 (defun project-files ( project )
   (list (project-file-list project "SOURCES")
 	(project-file-list project "HEADERS")))
-
 
 (defun project-load-check ()
   (if (string-match project-regexp (buffer-name (current-buffer)))
@@ -1999,7 +2075,6 @@ in normal, downcase and upcase letters, in BUFFER."
 	  (setq name "c++"))))
     name))
 
-
 ;; Returns a list of options
 (defun project-config (project)
   "Returns project configuration."
@@ -2032,7 +2107,6 @@ in normal, downcase and upcase letters, in BUFFER."
 	    (setq name (match-string 1))
 	  (setq name ""))))
     name))
-
 
 ;; Aks for project name and creates a new project
 (defun project-new ()
@@ -2122,7 +2196,6 @@ in normal, downcase and upcase letters, in BUFFER."
 	      auto-insert-files)
 
       (switch-to-buffer old-buffer))))
-
 
 ;; Adds a class to the current project, creates the header and/or source file if non existing.
 (defun class-add ()
@@ -2252,7 +2325,6 @@ in normal, downcase and upcase letters, in BUFFER."
       (message "Couldn't find any projects \(In right directory ?\).")
       )))
 
-
 (defconst project-c++-func-regexp (concat
 			 "^"		; beginning of line is required
 			 "\\(template[ \t]*<[^>]+>[ \t]*\\)?" ; there may be a "template <...>"
@@ -2273,7 +2345,6 @@ in normal, downcase and upcase letters, in BUFFER."
 			 " \\)"
 			 "[ \t]*([^)]*)[ \t\n]*[^ ;]" ; require something other than a ; after
 			 ))
-
 
 (defun c-project-menu (modestr)
   (let ((m
@@ -2465,7 +2536,6 @@ in normal, downcase and upcase letters, in BUFFER."
   (if (search-forward-regexp project-c++-func-regexp nil t )
       (message (match-string 0))))
 
-
 ; Reads in an abbrev file if it exists
 ; C-x a i g to create an abbrev
 (if (file-exists-p abbrev-file-name)
@@ -2528,7 +2598,6 @@ in normal, downcase and upcase letters, in BUFFER."
     (setq files (project-expand-tag-list lst))
     (shell-command (concat "etags " files))
     ))
-
 
 (defun project-expand-symbol( arg )
   (interactive "P")
@@ -2614,7 +2683,6 @@ in normal, downcase and upcase letters, in BUFFER."
 (easy-menu-define project-menu lisp-interaction-mode-map "C++ Project Commands"
 		  (c-project-menu "Project"))
 (easy-menu-add (c-project-menu "Project"))
-
 
 ;; Define a new regexp for font-lock-mode
 ;; DONT'T MESS WITH IT
@@ -2740,7 +2808,6 @@ in normal, downcase and upcase letters, in BUFFER."
 
 ; Auto-insert text when making new *.cpp, *.cc, *.h files.
 (add-hook 'find-file-hooks 'auto-insert)
-
 
 ; If you create a file called Test.php, this function will replace:
 ;
@@ -2939,7 +3006,6 @@ in normal, downcase and upcase letters, in BUFFER."
 ;; Automaticly rescan the index
 ;(setq imenu-auto-rescan t)
 
-
 ;; Add Time-stamp <> or Time-stamp " " anywhere in the top 8 lines of a
 ;; file to insert save date and time and user:
 
@@ -2951,7 +3017,6 @@ in normal, downcase and upcase letters, in BUFFER."
 (setq default-major-mode 'indented-text-mode)
 (add-hook 'indented-text-mode-hook 'turn-on-auto-fill)
 
-
 ; (add-hook 'server-visit-hook '(lambda ()
 ; 				(interactive)
 ; 				(yes-or-no-p "Hello there")))
@@ -2960,7 +3025,6 @@ in normal, downcase and upcase letters, in BUFFER."
 ; 			       (interactive)
 ; 			       (if (is-buffer-a-client)
 ; 				   (delete-frame))))
-
 
 ;; Set the new size
 ;(set-frame-width (car (car (cdr (current-frame-configuration)))) default-frame-width)
@@ -3026,7 +3090,6 @@ in normal, downcase and upcase letters, in BUFFER."
 		 (lambda ()
 		   (not (eq (get-text-property (point) 'face)
 			    'font-lock-comment-face))))))
-
 
 (provide 'mycode)
 ;;; mycode.el ends here

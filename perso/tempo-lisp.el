@@ -68,7 +68,7 @@
    (local-set-key [M-S-tab] 'tempo-complete-tag)
    (local-set-key "\C-c\C-f" 'tempo-forward-mark)
    (local-set-key "\C-c\C-b" 'tempo-backward-mark)
-   (local-set-key " " 'tempo-space)
+;   (local-set-key " " 'tempo-space)
    (setq tempo-match-finder "(\\([^\\b]+\\)\\=")
    (tempo-use-tag-list 'elisp-tempo-tags)
    (yh-tempo-build-local-map elisp-tempo-keys-alist))

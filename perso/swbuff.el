@@ -6,7 +6,7 @@
 ;; Maintainer: David Ponce <david@dponce.com>
 ;; Created: 12 Nov 1998
 ;; Keywords: extensions convenience
-;; Revision: $Id: swbuff.el,v 1.1 2004/04/19 17:53:59 sigma Exp $
+;; Revision: $Id: swbuff.el,v 1.2 2004/06/15 16:02:05 sigma Exp $
 
 (defconst swbuff-version "3.2")
 

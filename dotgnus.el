@@ -1,10 +1,8 @@
-(require 'message-x)
+;; Load site-specific stuff
+(if (file-exists-p (expand-file-name "~/.gnus-local.el"))
+    (load-file (expand-file-name "~/.gnus-local.el")))
 
-;; Use smtp server for mail sending
-(setq message-send-mail-function 'smtpmail-send-it
-      send-mail-function 'smtpmail-send-it
-      smtpmail-smtp-server "mailhost.lifl.fr"
-      smtpmail-debug-info t)
+(require 'message-x)
 
 ;; Define url catchers
 (setq browse-url-browser-function '(("^mailto:" . gnus-url-mailto)
@@ -14,12 +12,6 @@
 (setq
  gnus-select-method
  '(nnnil ""))
-
-;; Don't include in wide replies
-(setq message-dont-reply-to-names "[Hh]odique")
-
-;; Where are gnus-specific files
-(setq nbc-gnus-dir "~/.elisp/gnus/")
 
 ;; use bbdb
 (setq nbc-bbdb t)
@@ -32,12 +24,7 @@
  ;; don't annoy me with confirmation requests
  gnus-expert-user t
  ;; 5 lines of signature
- gnus-signature-limit '(5.0 "^---*Forwarded article")
-
- gnus-signature-file         "~/.signature"
- gnus-startup-files          "~/.emacs.d/.newsrc/"
- nndraft-directory           "~/.emacs.d/var/gnus/"
- )
+ gnus-signature-limit '(5.0 "^---*Forwarded article"))
 
 (setq
  gnus-check-new-newsgroups t
@@ -50,14 +37,7 @@
  gnus-inhibit-startup-message t
  gnus-use-cache t
  ;; Split mails
- nnmail-split-methods 'nnmail-split-fancy
- nnmail-split-fancy  '(|
-		       (: nnmail-split-fancy-with-parent)
-		       (from "irisa" "irisa")
-		       (from "lifl" "lifl")
-		       (from "univ-lille1" "univ")
-		       (from ".*" "other" ))
- )
+ nnmail-split-methods 'nnmail-split-fancy)
 
 (defun my-gnus-expiry-target (group)
   (concat my-archived-group-backend ":"
@@ -76,32 +56,6 @@
  my-archived-group-backend "nnml"
  ;; set expiry target to a function call
  nnmail-expiry-target 'my-gnus-expiry-target)
-
-;;-----------------------------------------------------------------------------
-;; Fetch mails
-;;-----------------------------------------------------------------------------
-
-(add-to-list 'gnus-secondary-select-methods '(nnml ""
-                                                   ;; spool directory for the nnml mail backend
-                                                   (nnml-directory "~/Mail/mail/")
-                                                   ;; mail active file
-                                                   (nnml-active-file "~/Mail/mail/active")))
-
-(add-to-list 'gnus-secondary-select-methods
-      '(nntp "uslinuxtraining" (nntp-address "news.uslinuxtraining.com")))
-
-(setq nnimap-authinfo-file (expand-file-name "~/.authinfo"))
-
-(add-to-list 'gnus-secondary-select-methods
- 	     '(nnimap "ImapLifl"
- 		      (nnimap-address "imap.lifl.fr")
- 		      (nnimap-port 143)))
-
-(add-to-list 'gnus-secondary-select-methods
- 	     '(nnimap "ImapHome"
- 		      (nnimap-address "sigmamtp.dyndns.org")
- 		      (nnimap-port 993)
-                      (nnimap-stream ssl)))
 
 (setq
 ;;  gnus-use-procmail t
@@ -151,8 +105,7 @@
 
 (setq
  gnus-extra-headers '(Newsgroups X-Spam-Status)
- nnmail-extra-headers gnus-extra-headers
- gnus-ignored-from-addresses "[Hh]odique")
+ nnmail-extra-headers gnus-extra-headers)
 
 ;; Personal threading view
 (defun gnus-user-format-function-Z (ok)
@@ -168,13 +121,73 @@
      'face topic-face)))
 
 ;; Some line format
+(when window-system
+ (setq gnus-sum-thread-tree-root "\x4912f ")
+ (setq gnus-sum-thread-tree-single-indent "\x4912e ")
+ (setq gnus-sum-thread-tree-leaf-with-other "\x4903c\x49020\x490fa ")
+ (setq gnus-sum-thread-tree-vertical "\x49022")
+ (setq gnus-sum-thread-tree-single-leaf "\x490b0\x49020\x490fa "))
+
+(setq gnus-summary-same-subject "")
+
+(copy-face 'default 'mysubject)
+(setq gnus-face-1 'mysubject)
+
+(copy-face 'default 'mytime)
+(set-face-foreground 'mytime "red")
+(setq gnus-face-2 'mytime)
+
+(copy-face 'default 'mythreads)
+(set-face-foreground 'mythreads "red")
+(setq gnus-face-3 'mythreads)
+
+(copy-face 'default 'mygrey)
+(set-face-foreground 'mygrey "grey")
+(setq gnus-face-4 'mygrey)
+
+(copy-face 'default 'myblack)
+(set-face-foreground 'myblack "grey60")
+(setq gnus-face-5 'myblack)
+
+(copy-face 'default 'mybiggernumbers)
+(set-face-foreground 'mybiggernumbers "red")
+(setq gnus-face-6 'mybiggernumbers)
+
+(setq gnus-summary-line-format (concat
+                                "%*%5{%U%R%z%}"
+                                "%4{|%}"
+                                "%2{%-10&user-date;%}"
+                                "%4{|%}"
+                                "%4{|%}"
+                                "%2{ %}%(%-24,24n"
+                                "%4{|%}"
+                                "%2{%5i%}"
+                                "%4{|%}"
+                                "%2{%6k %}%)"
+                                "%4{|%}"
+                                "%2{ %}%3{%B%}%1{%s%}\n"))
+
 (setq
  gnus-group-line-format "%M%S%p%P%5y: %(%G%) (%t)\n"
  gnus-group-mode-line-format "Gnus: %%b"
- gnus-summary-line-format "%U%R%z %[%-15,15n%] : %-55,55uZ (%d)\n"
+; gnus-summary-line-format "%U%R%z %[%-15,15n%] : %-55,55uZ (%d)\n"
  gnus-summary-mode-line-format "Gnus: %g [%r/%U]"
  gnus-article-mode-line-format "Gnus: %g [%r/%U] %m"
  gnus-topic-line-format "%i[ %u&topic-line; ] %v\n")
+
+;; (gnus-add-configuration
+;;  '(article
+;;    (horizontal 1.0
+;;                (vertical 25 (group 1.0))
+;;                (vertical 1.0
+;;                          (summary 0.16 point)
+;;                          (article 1.0)))))
+
+;; (gnus-add-configuration
+;;  '(summary
+;;    (horizontal 1.0
+;;                (vertical 25 (group 1.0))
+;;                (vertical 1.0 (summary 1.0 point)))))
 
 (setq
  nbc-gnus-visible-headers
@@ -254,16 +267,6 @@
 
 (setq message-citation-line-function 'nbc-message-insert-citation-line)
 
-;;-----------------------------------------------------------------------------
-;; Archives
-;;-----------------------------------------------------------------------------
-;; Tell gnus which method to use for archives (nnfolder)
-(setq gnus-message-archive-method
-      '(nnfolder "archive"
-                 (nnfolder-directory   "~/Mail/archive")
-                 (nnfolder-active-file "~/Mail/archive/active")
-                 (nnfolder-get-new-mail nil)
-                 (nnfolder-inhibit-expiry t)))
 ;; Tell gnus into which group to store messages
 (setq gnus-message-archive-group
        '((if (message-news-p)
@@ -356,7 +359,7 @@
 
 (when nbc-nnir
   (require 'nnir)
-  (setq nnir-swish-e-index-file "~/.emacs.d/index.swish-e")
+;  (setq nnir-swish-e-index-file "~/.emacs.d/index.swish-e")
   (setq nnir-mail-backend (nth 0 gnus-secondary-select-methods)
 	nnir-search-engine 'swish-e))
 
@@ -397,8 +400,6 @@
   "Scan for new mail, updating the *Group* buffer."
   ;(osd-display "Scan for new mail")
   (gnus-demon-scan-mail-or-news-and-update 2))
-;; scan for mails every 10 minutes
-(gnus-demon-add-handler 'gnus-demon-scan-mail-and-update 10 2)
 
 ;;
 ;; level 3: mail and local news groups are scanned.
@@ -406,12 +407,23 @@
   "Scan for new mail, updating the *Group* buffer."
   ;(osd-display "Scan for new news")
   (gnus-demon-scan-mail-or-news-and-update 3))
-;; scan for news every 20 minutes
-(gnus-demon-add-handler 'gnus-demon-scan-news-and-update 20 2)
 
 (setq gnus-use-demon t)
 
+(defun yh-gnus-demon-install ()
+  (interactive)
+  ;; scan for news every 20 minutes
+  (gnus-demon-add-handler 'gnus-demon-scan-news-and-update 20 2)
+  ;; scan for mails every 10 minutes
+  (gnus-demon-add-handler 'gnus-demon-scan-mail-and-update 10 2))
+
+(defun yh-gnus-demon-uninstall ()
+  (interactive)
+  (gnus-demon-cancel))
+
 (setq message-signature 'fortune)
+
+(yh-gnus-demon-install)
 
 (defvar fortune-program nil
   "*Program used to generate epigrams, default \"fortune\".")
@@ -449,7 +461,7 @@ The epigram is inserted at point if called interactively."
         (insert fortune-string))
     fortune-string))
 
-(setq mm-text-html-renderer 'w3)
+(setq mm-text-html-renderer 'w3m)
 
 ;; gnus alias to switch identity
 ;; (require 'gnus-alias)
@@ -459,7 +471,6 @@ The epigram is inserted at point if called interactively."
 ;;                                   ("Lifl" "" "Yann Hodique <Yann.Hodique@lifl.fr>" "ENS Cachan / Lifl" nil "" ""))
 ;;       gnus-alias-identity-rules '(("News" message-news-p "Yahoo")
 ;;                                   ("Mails" message-mail-p "Lifl")))
-
 
 (setq gnus-group-highlight
       '(((and (= unread 0) (not mailp) (eq level 1)) . gnus-group-news-1-empty-face)
@@ -516,8 +527,6 @@ The epigram is inserted at point if called interactively."
 		    (forward-line -1))
 		  (forward-line 1)
 		  (delete-region (point) end))))))
-
-
 
 ;; Attibutions to use by preference - the first non-nil string wins
 (setq sc-preferred-attribution-list '("x-attribution"
@@ -674,7 +683,6 @@ Must be called from the `gnus-select-group-hook'."
 
 ;; Enough explicit settings
 (setq pgg-passphrase-cache-expiry 600)
-(setq pgg-default-user-id "8951D64C")
 
 ;; Tells Gnus to inline the part
 (eval-after-load "mm-decode"
@@ -696,4 +704,5 @@ Must be called from the `gnus-select-group-hook'."
 
 (require 'gnus-sum)
 (require 'nntodo)
-(setq nntodo-mbox-file "~/.nntodo")
+
+(require 'moy-bbdb)

@@ -7,7 +7,7 @@
 ;;; Keywords: extensions
 ;;; Created: 1992-03-23
 
-;;; $Id: escreen.el,v 1.1 2004/04/19 17:54:04 sigma Exp $
+;;; $Id: escreen.el,v 1.2 2004/06/15 16:02:05 sigma Exp $
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by

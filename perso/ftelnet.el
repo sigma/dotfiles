@@ -11,9 +11,9 @@
 ;; LCD Archive Entry:
 ;; ftelnet|Noah Friedman|friedman@prep.ai.mit.edu|
 ;; remote login interface|
-;; $Date: 2004/04/19 17:53:52 $|$Revision: 1.1 $|~/misc/ftelnet.el.gz|
+;; $Date: 2004/06/15 16:02:05 $|$Revision: 1.2 $|~/misc/ftelnet.el.gz|
 
-;; $Id: ftelnet.el,v 1.1 2004/04/19 17:53:52 sigma Exp $
+;; $Id: ftelnet.el,v 1.2 2004/06/15 16:02:05 sigma Exp $
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
