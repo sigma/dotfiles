@@ -1,5 +1,13 @@
 2004-07-19  Yann Hodique  <Yann.Hodique@lifl.fr>
 
+	* dotgnus.el
+	(nnir): use it :)
+
+	* dotemacs.el: use gnus as default mailer
+
+	* dotemacs-cust.el
+	(custom-set-variables): don't ask before saving eshell history, set preview-latex options
+
 	* perso/patches.el:
 	suppress backups hack
 	(defmadvice): customize advice name

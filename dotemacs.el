@@ -1,5 +1,5 @@
 ;; -*- mode: emacs-lisp; auto-compile-lisp: nil; -*-
-;; $Id: dotemacs.el,v 1.27 2004/07/15 08:41:29 sigma Exp $
+;; $Id: dotemacs.el,v 1.28 2004/07/19 07:46:09 sigma Exp $
 
 ;; Load site-specific stuff
 (if (file-exists-p (expand-file-name "~/.emacs-local"))
@@ -63,6 +63,10 @@
 ;; Save place by default
 (when (request 'saveplace)
   (setq-default save-place t))
+
+;; Use Gnus for mail
+(setq mail-user-agent 'gnus-user-agent)
+(setq read-mail-command 'gnus)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Charsets & languages

@@ -1,5 +1,7 @@
 ;; -*- mode: emacs-lisp; auto-compile-lisp: nil; -*-
-;; $Id: dotgnus.el,v 1.5 2004/06/30 15:29:40 sigma Exp $
+;; $Id: dotgnus.el,v 1.6 2004/07/19 07:46:09 sigma Exp $
+
+(require 'nnir)
 
 ;; Load site-specific stuff
 (if (file-exists-p (expand-file-name "~/.gnus-local.el"))
