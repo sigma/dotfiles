@@ -1,5 +1,5 @@
 ;; -*- mode: emacs-lisp; mode: hi-lock; mode: page-break; auto-compile-lisp: nil; -*-
-;; $Id: dotgnus.el,v 1.11 2004/09/15 17:19:20 sigma Exp $
+;; $Id: dotgnus.el,v 1.12 2004/09/15 17:23:38 sigma Exp $
 
 ;; Hi-lock: (("^;;; \\(.*\\)" (1 'hi-black-hb t)))
 ;; Hi-lock: (("^ +;;; \\(.*\\)" (1 'hi-black-b t)))
@@ -203,20 +203,20 @@
 	 (vertical 1.0
 		   (horizontal 0.25
 			       ("*BBDB*" 0.3)
-			       (summary 1.0 point))
+			       (summary 1.0))
 		   (horizontal 1.0
 			       (group 0.3)
-			       (message 1.0)))))
+			       (message 1.0 point)))))
 
       (gnus-add-configuration
        '(forward
 	 (vertical 1.0
 		   (horizontal 0.25
 			       ("*BBDB*" 0.3)
-			       (summary 1.0 point))
+			       (summary 1.0))
 		   (horizontal 1.0
 			       (group 0.3)
-			       (forward 1.0)))))
+			       (forward 1.0 point)))))
 
       (gnus-add-configuration
        '(summary
@@ -233,7 +233,7 @@
 	 (vertical 1.0
                    (horizontal 0.25
 			       ("*BBDB*" 0.3)
-			       (summary 1.0 point))
+			       (summary 1.0))
 		   (horizontal 1.0
 			       (group 0.3)
 			       (vertical 1.0
