@@ -1,5 +1,8 @@
 2005-01-06  Yann Hodique  <Yann.Hodique@lifl.fr>
 
+	* dotemacs.el:
+	(global-set-key): set M-DEL to kill-syntax-backward
+
 	* dotemacs-cust.el:
 	(custom-set-variables): suppress changelog indentation
 

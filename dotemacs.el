@@ -388,6 +388,8 @@
 
 ;;; Global key bindings
 
+(global-set-key (kbd "M-DEL") 'kill-syntax-backward)
+
 (global-set-key [(f3)] 'ecb-toggle-compile-window)
 ;; Depending on your keyboard you may want another one binding
 (global-set-key (kbd "C-x ~") 'previous-error)
