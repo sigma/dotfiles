@@ -201,6 +201,54 @@
                           "Insert a class skeleton"
                           'c++-tempo-tags)
 
+(yh/tempo-define-template "c++-for-it"
+                          "t"
+                          'c-tempo-keys-alist
+                          '(> "for(" (p "type: " type) "::iterator "
+                              (p "iterator: " iter) " = "
+                              (p "name: " name) ".begin(); " (s iter)
+                              " != " (s name) ".end(); ++" (s iter) ") {" > n> r> n
+                              "}" > n>)
+                          "forit"
+                          "Insert a C++ for loop: for(container::iterator it = a.begin(); it != a.end(); ++it)"
+                          'c-tempo-tags)
+
+(yh/tempo-define-template "c++-for-cit"
+                          "T"
+                          'c-tempo-keys-alist
+                          '(> "for(" (p "type: " type) "::const_iterator "
+                              (p "iterator: " iter) " = "
+                              (p "name: " name) ".begin(); " (s iter)
+                              " != " (s name) ".end(); ++" (s iter) ") {" > n> r> n
+                              "}" > n>)
+                          "forcit"
+                          "Insert a C++ for loop: for(container::const_iterator it = a.begin(); it != a.end(); ++it)"
+                          'c-tempo-tags)
+
+(yh/tempo-define-template "c++-qt--for-it"
+                          "q"
+                          'c-tempo-keys-alist
+                          '(> "for(" (p "type: " type) "::Iterator "
+                              (p "iterator: " iter) " = "
+                              (p "name: " name) ".begin(); " (s iter)
+                              " != " (s name) ".end(); ++" (s iter) ") {" > n> r> n
+                              "}" > n>)
+                          "qforit"
+                          "Insert a C++ for loop: for(container::Iterator it = a.begin(); it != a.end(); ++it)"
+                          'c-tempo-tags)
+
+(yh/tempo-define-template "c-for-it"
+                          "Q"
+                          'c-tempo-keys-alist
+                          '(> "for(" (p "type: " type) "::ConstIterator "
+                              (p "iterator: " iter) " = "
+                              (p "name: " name) ".begin(); " (s iter)
+                              " != " (s name) ".end(); ++" (s iter) ") {" > n> r> n
+                              "}" > n>)
+                          "qforcit"
+                          "Insert a C++ for loop: for(container::ConstIterator it = a.begin(); it != a.end(); ++it)"
+                          'c-tempo-tags)
+
 (add-hook 'c-mode-hook (lambda ()
 			  (tempo-use-tag-list 'c-tempo-tags)
                           (tempo-use-tag-list 'c++-tempo-tags)
