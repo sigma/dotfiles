@@ -40,6 +40,7 @@
       (if (car hc)
           (find-file (car hc))))))
 
+;; Rehacked by me
 (defun header-source ()
   "Returns a pair containing header and source name"
   (interactive)
@@ -55,31 +56,45 @@
 	  (setq file (substring name 0 offs))
 	  (while (and lst (not ok))
 	    (setq ext (car lst))
-	    (if (file-exists-p (concat file "." ext))
-		  (setq ok t))
+	    (cond
+             ((file-exists-p (concat file "." ext))
+              (setq ok t))
+             ((file-exists-p (concat "../src/" file "." ext))
+              (setq file (concat "../src/" file))
+              (setq ok t))
+             ((file-exists-p (concat "../sources/" file "." ext))
+              (setq file (concat "../sources/" file))
+              (setq ok t)))
 	    (setq lst (cdr lst)))
-	  (if ok
-	      (cons name (concat file "." ext))))
-      (let ()
+	  (when ok
+            (cons name (concat file "." ext))))
+      (progn
 	(setq offs (string-match c++-source-ext-regexp name))
-	(if offs
-	    (let ((lst c++-header-extension-list)
-		  (ok nil)
-		  ext)
-	      (setq file (substring name 0 offs))
-	      (while (and lst (not ok))
-		(setq ext (car lst))
-		(if (file-exists-p (concat file "." ext))
-		    (setq ok t))
-		(setq lst (cdr lst)))
-	      (if ok
-		  (cons (concat file "." ext)  name))))))))
+	(when offs
+          (let ((lst c++-header-extension-list)
+                (ok nil)
+                ext)
+            (setq file (substring name 0 offs))
+            (while (and lst (not ok))
+              (setq ext (car lst))
+              (cond ((file-exists-p (concat file "." ext))
+                     (setq ok t))
+                    ((file-exists-p (concat "../inc/" file "." ext))
+                     (setq file (concat "../inc/" file))
+                     (setq ok t))
+                    ((file-exists-p (concat "../include/" file "." ext))
+                     (setq file (concat "../include/" file))
+                     (setq ok t)))
+              (setq lst (cdr lst)))
+            (when ok
+              (cons (concat file "." ext)  name))))))))
 
 ; C++ member functions;
 (add-hook 'c++-mode-hook (lambda () (local-set-key "\C-cm" (lambda ()
                                                              (interactive)
-                                                             (let ((hc (header-source)))
-                                                               (expand-member-functions (car hc) (cdr hc)))))))
+                                                             (let ((hc (header-source))
+                                                                   (dir (file-name-directory (buffer-file-name))))
+                                                               (expand-member-functions (concat dir (car hc)) (concat dir (cdr hc))))))))
 
 ; activate glasses
 (add-hook 'c-mode-hook '(lambda ()

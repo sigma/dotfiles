@@ -1,25 +1,38 @@
 2004-06-20  Yann Hodique  <Yann.Hodique@lifl.fr>
 
-	* perso/patches.el (split-window-vertically): replaced by advice
+	* perso/mycode.el
+	(header-source): make it able to find files in other standard directories
+	(c++-mode-hook): call expand-member-functions with complete filenames
+
+	* perso/member-functions.el
+	(expand-member-functions): make it work with absolute path files
+
+	* perso/patches.el
+	(split-window-vertically): replaced by advice
 	(split-window-horizontally): replaced by advice
 	added some documentation
 	(switch-to-buffer): packed the previous implementation, made advices
 
-	* dotemacs.el: save place by default
+	* dotemacs.el:
+	save place by default
 
-	* perso/visible-mark-mode.el (visible-mark-move-overlay): fixed nullMarkerException ;)
+	* perso/visible-mark-mode.el
+	(visible-mark-move-overlay): fixed nullMarkerException ;)
 	(global-visible-mark-mode-exclude-alist): new list of exceptions for global mode
 	(visible-mark-mode-maybe): new check for global mode
 	(global-visible-mark-mode): use visible-mark-mode-maybe, fixed :group
 
 2004-06-19  Yann Hodique  <Yann.Hodique@lifl.fr>
 
-	* dotemacs.el (request): use global-visible-mark-mode
+	* dotemacs.el
+	(request): use global-visible-mark-mode
 	(add-change-log-entry): advice add-change-log-entry to use custom ChangeLog
 
-	* perso/visible-mark-mode.el: new module, by forcer and hacked by me
+	* perso/visible-mark-mode.el:
+	new module, by forcer and hacked by me
 
-	* erc-config.el: initial checkin
+	* erc-config.el:
+	initial checkin
 
 	* dotemacs.el:
 	(ediff): added ediff configuration
@@ -35,5 +48,6 @@
 
 2004-06-17  Yann Hodique  <Yann.Hodique@lifl.fr>
 
-	* patches.el (message): added advice to disable messages when using the minibuffer
+	* patches.el
+	(message): added advice to disable messages when using the minibuffer
 
