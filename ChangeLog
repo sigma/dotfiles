@@ -1,3 +1,18 @@
+2005-01-10  Yann Hodique  <Yann.Hodique@lifl.fr>
+
+	* dotgnus.el:
+	(gnus-agent): activated
+	(gnus-select-article-hook): activate caching...
+
+	* dotemacs-cust.el:
+	(custom-set-variables): gnus should cache anything it can
+
+	* config/muse-config.el:
+	(muse-mode-highlight-p): highlighting is too buggy to be useful. Maybe investigate this later
+
+	* config/fracc-config.el:
+	re-enabled fracc
+
 2005-01-07  Yann Hodique  <Yann.Hodique@lifl.fr>
 
 	* perso/patches.el:

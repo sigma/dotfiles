@@ -186,6 +186,7 @@
 			" \\)"
 			"[ \t]*([^)]*)[ \t\n]*[^ ;]" ; require something other than a ; after
 			))
+
   ;; Figure out this one later
 ;;  (setq outline-heading-end-regexp "^{\n")
 

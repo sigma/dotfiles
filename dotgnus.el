@@ -46,8 +46,11 @@
  gnus-gcc-mark-as-read t
  gnus-inhibit-startup-message t
  gnus-use-cache t
+ gnus-agent t
  ;; Split mails
  nnmail-split-methods 'nnmail-split-fancy)
+
+(add-hook 'gnus-select-article-hook 'gnus-agent-fetch-selected-article)
 
 (defun my-gnus-expiry-target (group)
   (concat my-archived-group-backend ":"
