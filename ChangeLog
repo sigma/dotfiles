@@ -1,7 +1,12 @@
 2004-09-15  Yann Hodique  <Yann.Hodique@lifl.fr>
 
+	* dotgnus.el
+	don't use newsrc
+	(gnus-add-configuration): try this config
+
 	* dotemacs.el:
 	(make-main-frame): make the current frame the main one
+	(chmod-file): remove useless function (see executable-chmod)
 
 	* dotgnus.el:
 	(server-start): start server automatically when using gnus

@@ -1,5 +1,5 @@
 ;; -*- mode: emacs-lisp; mode: hi-lock; mode: page-break; auto-compile-lisp: nil; -*-
-;; $Id: dotgnus.el,v 1.10 2004/09/15 15:01:47 sigma Exp $
+;; $Id: dotgnus.el,v 1.11 2004/09/15 17:19:20 sigma Exp $
 
 ;; Hi-lock: (("^;;; \\(.*\\)" (1 'hi-black-hb t)))
 ;; Hi-lock: (("^ +;;; \\(.*\\)" (1 'hi-black-b t)))
@@ -41,7 +41,8 @@
  gnus-check-new-newsgroups t
  gnus-read-active-file 'some
  gnus-save-killed-list t
- gnus-save-newsrc-file t
+ gnus-save-newsrc-file nil
+ gnus-read-newsrc-file nil
  gnus-subscribe-newsgroup-method 'gnus-subscribe-topics
  message-generate-headers-first t
  gnus-gcc-mark-as-read t
@@ -185,19 +186,61 @@
  gnus-article-mode-line-format "Gnus: %g [%r/%U] %m"
  gnus-topic-line-format "%i[ %u&topic-line; ] %v\n")
 
-;; (gnus-add-configuration
-;;  '(article
-;;    (horizontal 1.0
-;;                (vertical 25 (group 1.0))
-;;                (vertical 1.0
-;;                          (summary 0.16 point)
-;;                          (article 1.0)))))
+(if (eq window-system 'x)
+    (progn
+      (gnus-add-configuration
+       '(article
+	 (vertical 1.0
+		   (horizontal 0.25
+			       ("*BBDB*" 0.3)
+			       (summary 1.0 point))
+		   (horizontal 1.0
+			       (group 0.3)
+			       (article 1.0)))))
 
-;; (gnus-add-configuration
-;;  '(summary
-;;    (horizontal 1.0
-;;                (vertical 25 (group 1.0))
-;;                (vertical 1.0 (summary 1.0 point)))))
+      (gnus-add-configuration
+       '(reply-yank
+	 (vertical 1.0
+		   (horizontal 0.25
+			       ("*BBDB*" 0.3)
+			       (summary 1.0 point))
+		   (horizontal 1.0
+			       (group 0.3)
+			       (message 1.0)))))
+
+      (gnus-add-configuration
+       '(forward
+	 (vertical 1.0
+		   (horizontal 0.25
+			       ("*BBDB*" 0.3)
+			       (summary 1.0 point))
+		   (horizontal 1.0
+			       (group 0.3)
+			       (forward 1.0)))))
+
+      (gnus-add-configuration
+       '(summary
+	 (vertical 1.0
+		   (horizontal 0.25
+			       ("*BBDB*" 0.3)
+			       (summary 1.0 point))
+		   (horizontal 1.0
+			       (group 0.3)
+			       ("*scratch*" 1.0)))))
+
+      (gnus-add-configuration
+       '(reply
+	 (vertical 1.0
+                   (horizontal 0.25
+			       ("*BBDB*" 0.3)
+			       (summary 1.0 point))
+		   (horizontal 1.0
+			       (group 0.3)
+			       (vertical 1.0
+                                         (article 0.3)
+                                         (message 1.0 point))))))
+      )
+  )
 
 (setq
  nbc-gnus-visible-headers

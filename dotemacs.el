@@ -1,5 +1,5 @@
 ;; -*- mode: emacs-lisp; mode: hi-lock; mode: page-break; auto-compile-lisp: nil; -*-
-;; $Id: dotemacs.el,v 1.46 2004/09/15 15:01:47 sigma Exp $
+;; $Id: dotemacs.el,v 1.47 2004/09/15 17:19:20 sigma Exp $
 
 ;; Hi-lock: (("^;;; \\(.*\\)" (1 'hi-black-hb t)))
 ;; Hi-lock: (("^ +;;; \\(.*\\)" (1 'hi-black-b t)))
@@ -588,12 +588,6 @@ there are more than 1% of such letters then turn French accent mode on."
 
 ;; I also hate additional blank-lines (use with extreme caution)
 ;;(add-hook 'write-file-hooks 'simplify-blank-lines)
-
-;; apply chmod over the current file (usually a+x for scripts)
-(defun chmod-file ()
-  (interactive)
-  (when (require 'dired)
-    (call-process dired-chmod-program nil nil nil (read-from-minibuffer "Mode: " "a+x") (buffer-file-name))))
 
 ;; convert a buffer from dos ^M end of lines to unix end of lines
 (defun dos2unix ()
