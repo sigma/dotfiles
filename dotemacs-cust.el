@@ -61,6 +61,7 @@
  '(eshell-prefer-to-shell t nil (eshell))
  '(eshell-save-history-on-exit t)
  '(fill-column 79)
+ '(fill-nobreak-predicate (quote (fill-french-nobreak-p fill-single-word-nobreak-p)))
  '(flyspell-default-dictionary "francais")
  '(flyspell-issue-welcome-flag nil)
  '(glasses-face (quote bold))

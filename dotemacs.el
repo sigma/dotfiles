@@ -1,5 +1,5 @@
 ;; -*- mode: emacs-lisp; mode: hi-lock; mode: page-break; auto-compile-lisp: nil; -*-
-;; $Id: dotemacs.el,v 1.60 2004/10/13 17:10:02 sigma Exp $
+;; $Id: dotemacs.el,v 1.61 2004/10/27 09:23:12 sigma Exp $
 
 ;; Hi-lock: (("^;;; \\(.*\\)" (1 'hi-black-hb t)))
 ;; Hi-lock: (("^ +;;; \\(.*\\)" (1 'hi-black-b t)))
@@ -346,6 +346,8 @@
       (add-hook 'LaTeX-mode-hook 'LaTeX-preview-setup))
     ;; point my typos
     (add-hook 'LaTeX-mode-hook 'flyspell-mode)
+    ;; use abbrev
+    (add-hook 'LaTeX-mode-hook 'abbrev-mode)
     ;; Most people don't want that... I do
     ;; highlight *any* change, color rotation
     (add-hook 'LaTeX-mode-hook 'highlight-changes-mode)
@@ -669,6 +671,34 @@ there are more than 1% of such letters then turn French accent mode on."
       (progn
         (ecb-winman-winring-enable-support)
         (winring-initialize)))))
+
+(request 'server)
+(defun root-portal ()
+  (interactive)
+  ;; frame settings
+  (xterm-mouse-mode 1)
+  ;; prepare
+  (delete-other-windows)
+  ;; need to start this first for calendar buffer to end up lowest
+  (calendar)
+  ;; build window configuration
+  (other-window 1)
+  (split-window-horizontally)
+  (other-window 1)
+  ;; terminal window width
+  (enlarge-window-horizontally
+   (- 80 (window-width)))
+  (split-window-vertically)
+  (ansi-term "/bin/bash" "top")
+  (term-exec (current-buffer) "top" "top" nil nil)
+  (other-window -1)
+  (find-file (concat planner-directory "/" planner-default-page))
+  (split-window-vertically)
+  (set-window-text-height (selected-window) 72)
+  (other-window 1)
+  (eshell)
+  (other-window -1)
+)
 
 (make-main-frame)
 

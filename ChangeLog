@@ -1,3 +1,12 @@
+2004-10-27  Yann Hodique  <Yann.Hodique@lifl.fr>
+
+	* dotemacs.el:
+	(abbrev-mode): use it in LaTeX-mode
+	(server): in case one wants to use emacs on background
+
+	* dotemacs-cust.el:
+	(custom-set-variables): break lines in a smarter way
+
 2004-10-13  Yann Hodique  <Yann.Hodique@lifl.fr>
 
 	* dotemacs-cust.el:
