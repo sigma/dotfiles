@@ -1,5 +1,5 @@
 ;; -*- mode: emacs-lisp; mode: hi-lock; mode: page-break; auto-compile-lisp: nil; -*-
-;; $Id: dotgnus.el,v 1.16 2004/10/27 09:23:12 sigma Exp $
+;; $Id$
 
 ;; Hi-lock: (("^;;; \\(.*\\)" (1 'hi-black-hb t)))
 ;; Hi-lock: (("^ +;;; \\(.*\\)" (1 'hi-black-b t)))
@@ -10,8 +10,6 @@
 ;; Load site-specific stuff
 (if (file-exists-p (expand-file-name "~/.gnus-local.el"))
     (load-file (expand-file-name "~/.gnus-local.el")))
-
-(require 'nnir)
 
 (require 'message-x)
 
@@ -28,7 +26,7 @@
 (setq nbc-bbdb t)
 
 ;; use nnir
-(setq nbc-nnir t)
+(setq nbc-nnir nil)
 
 ;; global parameters
 (setq
