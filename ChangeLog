@@ -2,6 +2,8 @@
 
 	* perso/patches.el (split-window-vertically): replaced by advice
 	(split-window-horizontally): replaced by advice
+	added some documentation
+	(switch-to-buffer): packed the previous implementation, made advices
 
 	* dotemacs.el: save place by default
 

@@ -22,7 +22,9 @@
 
 ;;; Commentary:
 
-;;
+;; Some patches I cannot live without. Fix bad default behaviors, and provide
+;; missing basic features. Some code is by me, some is hacked by me, and some
+;; has nothing to do with me :-)
 
 ;;; Code:
 
@@ -30,6 +32,7 @@
 (fset 'yes-or-no-p 'y-or-n-p)
 
 ;; Made by Joe Casadonte (joc)
+;; Jump to corresponding paren-like character
 (defun joc-bounce-sexp ()
   "Will bounce between matching parens just like % in vi"
   (interactive)
@@ -55,52 +58,30 @@
 ;;
 ;; Steve Dodd
 ;; March 1998
+;; Re-hacked and dramatically packed by Yann Hodique (2004)
 
-(defun s-minibuffer-complete ()
-  "A shell around minibuffer-complete which removes the name of the current buffer from the buffer completion list.  The default behaviour doesn't make sense since there is no reason to ask to switch to the buffer you are already in!"
-  (interactive)
-  (if s-remove-first-completion
-      (progn (setq s-remove-first-completion nil)
-             (if (consp minibuffer-completion-table)
-                 (setq  minibuffer-completion-table
-                        (cdr minibuffer-completion-table)) ()))
-    ())
-  (minibuffer-complete))
+(defvar yh-remove-first-completion nil)
 
-(defun s-minibuffer-complete-word ()
-  "A shell around minibuffer-complete-word which removes the name of the current buffer from the buffer completion list.  The default behaviour doesn't make sense since there is no reason to ask to switch to the buffer you are already in!"
-  (interactive)
-  (if s-remove-first-completion
-      (progn (setq s-remove-first-completion nil)
-             (if (consp minibuffer-completion-table)
-                 (setq  minibuffer-completion-table
-                        (cdr minibuffer-completion-table)) ()))
-    ())
-  (minibuffer-complete-word)
-)
+(defun yh-clean-minibuffer-completion-table ()
+  "Suppress current buffer from completion list if needed"
+  (when yh-remove-first-completion
+    (progn (setq yh-remove-first-completion nil)
+           (when (consp minibuffer-completion-table)
+             (setq  minibuffer-completion-table
+                    (cdr minibuffer-completion-table))))))
 
-(defun s-minibuffer-complete-and-exit ()
-  "A shell around minibuffer-complete-and-exit which removes the name of the current buffer from the buffer completion list.  The default behaviour doesn't make sense since there is no reason to ask to switch to the buffer you are already in!"
-  (interactive)
-  (if s-remove-first-completion
-      (progn (setq s-remove-first-completion nil)
-             (if (consp minibuffer-completion-table)
-                 (setq  minibuffer-completion-table
-                        (cdr minibuffer-completion-table)) ()))
-    ())
-  (minibuffer-complete-and-exit))
+(defadvice minibuffer-complete (before ad-minibuffer-complete-before act)
+  (yh-clean-minibuffer-completion-table))
 
-(defun s-switch-to-buffer ()
-  "A shell around switch-to-buffer which removes the name of the current buffer from the buffer completion list.  The default behaviour doesn't make sense since there is no reason to ask to switch to the buffer you are already in!"
-  (interactive)
-  (setq s-remove-first-completion 't)
-  (switch-to-buffer (read-buffer "Switch to buffer: " (other-buffer))))
+(defadvice minibuffer-complete-word (before ad-minibuffer-complete-word-before act)
+  (yh-clean-minibuffer-completion-table))
 
-(setq s-remove-first-completion 'nil)
+(defadvice minibuffer-complete-and-exit (before ad-minibuffer-complete-and-exit-before act)
+  (yh-clean-minibuffer-completion-table))
 
-(global-set-key "\C-xb" 's-switch-to-buffer)
-(define-key minibuffer-local-completion-map "\t" 's-minibuffer-complete)
-(define-key minibuffer-local-must-match-map [return] 's-minibuffer-complete-and-exit)
+(defadvice switch-to-buffer (before ad-switch-to-buffer-before act)
+  "Activate first entry removal, in order to avoid completing the current buffer name"
+  (setq yh-remove-first-completion t))
 
 ;; ...never switch to overwrite mode, not even accidentally
 (global-set-key [insert]
@@ -130,7 +111,7 @@
 (setq auto-save-directory (expand-file-name "~/.autosaves/"))
 (require 'auto-save "auto-save.el" t)
 
-;; Don't ask whenever thoses functions are asked for.
+;; Why the hell should they be disabled?
 (put 'downcase-region 'disabled nil)
 (put 'upcase-region 'disabled nil)
 (put 'narrow-to-region 'disabled nil)
@@ -160,16 +141,14 @@
                       (vertical-motion diff)
                       (< wstart (point))))))
               (set-window-start window (point)))
-          (goto-char position)))
-))
+          (goto-char position)))))
 
 (defun set-scroll-margin (up down except)
   "Enable hacked scroll margin"
   (setq top-margin up
         bottom-margin down
         buffer-no-margin-alist except)
-  (add-hook    'post-command-hook 'check-margin)
-  )
+  (add-hook    'post-command-hook 'check-margin))
 
 ;; Color prefix in minibuffer
 ;; (let ((face (cdr (memq 'face minibuffer-prompt-properties))))
@@ -189,11 +168,13 @@
           (open-line (- var))))
     ad-do-it))
 
+;; Suppress annoying messages. Needs some work
 (defadvice message (around message-around act)
   "Don't let annoying messages popup while using the minibuffer"
   (unless (minibuffer-window-active-p (minibuffer-window))
       ad-do-it))
 
+;; Don't duplicate the current buffer in a new window
 (defadvice split-window-vertically (after ad-split-window-vertically-other-buffer act)
   "Open another buffer in the new window"
   (set-window-buffer (next-window) (other-buffer)))
