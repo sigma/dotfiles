@@ -171,7 +171,7 @@
     (((class grayscale) (background light)) (:foreground "LightGray" :bold t))
     (((class grayscale) (background dark)) (:foreground "DimGray" :bold t))
     (((class color) (background light)) (:background "yellow"))
-    (((class color) (background dark)) (:foreground "black" :background "yellow"))
+    (((class color) (background dark)) (:foreground "yellow"))
     (t (:italic t)))
   "blah"
   :group 'font-lock-highlighting-faces)
@@ -214,7 +214,6 @@
  '(font-lock-floatnumber-face ((((class color) (background dark)) (:foreground "yellow4"))))
  '(font-lock-function-name-face ((((class color) (min-colors 88) (background dark)) (:foreground "lightblue2"))))
  '(font-lock-hexnumber-face ((((class color) (background dark)) (:foreground "cyan"))))
- '(font-lock-keys-face ((((class color) (background dark)) (:foreground "yellow"))))
  '(font-lock-number-face ((t (:foreground "yellow3"))))
  '(font-lock-pvs-function-type-face ((t (:foreground "blue"))))
  '(font-lock-pvs-parens-face ((t (:foreground "yellow"))))

@@ -1,5 +1,5 @@
 ;; -*- mode: emacs-lisp; mode: hi-lock; mode: page-break; auto-compile-lisp: nil; -*-
-;; $Id: dotemacs.el,v 1.39 2004/09/07 09:42:41 sigma Exp $
+;; $Id: dotemacs.el,v 1.40 2004/09/08 10:21:46 sigma Exp $
 
 ;; Hi-lock: (("^;;; \\(.*\\)" (1 'hi-black-hb t)))
 ;; Hi-lock: (("^ +;;; \\(.*\\)" (1 'hi-black-b t)))
@@ -274,7 +274,8 @@
     (add-hook 'c-mode-common-hook 'doxymacs-mode)
     (defun my-doxymacs-font-lock-hook ()
       (if (or (eq major-mode 'c-mode) (eq major-mode 'c++-mode))
-          (doxymacs-font-lock)))
+          (font-lock-add-keywords nil doxymacs-doxygen-keywords)
+        ))
     (add-hook 'font-lock-mode-hook 'my-doxymacs-font-lock-hook)
 
     ;; hack of doxymacs : determines where documentation is from location of current_buffer
@@ -355,8 +356,8 @@
 ;;       ;; DWIM with quotes
 ;       (add-hook 'LaTeX-mode-hook 'typopunct-mode)
       (defun my-LaTeX-hook ()
-        (when (request 'longlines)
-          (longlines-mode-on))
+;;         (when (request 'longlines)
+;;           (longlines-mode-on))
         ;; I like to have my own verbatim contructions well indented
         (setq font-lock-defaults
               '((font-latex-keywords font-latex-keywords-1 font-latex-keywords-2)

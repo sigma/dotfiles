@@ -1,3 +1,15 @@
+2004-09-08  Yann Hodique  <Yann.Hodique@lifl.fr>
+
+	* dotemacs.el:
+	(doxymacs): workaround doxymacs-font-lock bug
+	(my-LaTeX-hook): longlines is annoying as is, fix it later
+
+	* dotemacs-cust.el:
+	(font-lock-keys-face): fix default foreground
+
+	* perso/xcscope.el:
+	initial checkin
+
 2004-09-07  Yann Hodique  <Yann.Hodique@lifl.fr>
 
 	* dotemacs.el:
