@@ -1,3 +1,17 @@
+2005-01-16  Yann Hodique  <Yann.Hodique@lifl.fr>
+
+	* dotemacs.el:
+	(minimal): use completion-config from now
+
+	* dotemacs-cust.el:
+	(custom-set-variables): use partial-completion-mode
+
+	* config/completion-config.el:
+	initial checkin, completion-related stuff
+
+	* SConstruct:
+	begin using scons to maintain my config
+
 2005-01-13  Yann Hodique  <Yann.Hodique@lifl.fr>
 
 	* perso/patches.el:

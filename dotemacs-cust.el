@@ -125,6 +125,7 @@
  '(osd-args (quote ("--delay=3" "--age=3" "--pos=bottom" "--offset=70" "--outline=5" "--outlinecolour=grey" "--font=-microsoft-verdana-medium-r-normal--10-*-*-*-*-*-*")))
  '(paren-dont-load-timer nil)
  '(parens-require-spaces nil)
+ '(partial-completion-mode t nil (complete))
  '(pcomplete-autolist t)
  '(pcomplete-cycle-completions nil)
  '(preview-default-option-list (quote ("displaymath" "floats" "graphics" "textmath" "footnotes")))

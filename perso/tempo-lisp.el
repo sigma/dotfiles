@@ -27,6 +27,7 @@
 ;;; Code:
 
 (require 'tempo)
+(require 'mycompletion)
 
 (defvar elisp-tempo-tags nil)
 (defvar elisp-tempo-keys-alist nil)

@@ -3,7 +3,7 @@
 
 (require 'font-lock)
 (global-font-lock-mode t)
-(require 'emacs-wiki)
+(request 'emacs-wiki)
 
 ;; Can't do lazy font lock support - <lisp> tags won't get interpreted properly.
 ;(unless (listp font-lock-support-mode)

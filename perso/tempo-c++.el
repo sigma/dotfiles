@@ -37,6 +37,7 @@
 
 ;;; C-Mode Templates and C++-Mode Templates (uses C-Mode Templates also)
 (require 'tempo)
+(require 'mycompletion)
 
 ;;; Preprocessor Templates (appended to c-tempo-tags)
 

@@ -29,10 +29,10 @@
 (provide 'erc-config)
 ;;; erc-config.el ends here
 
-(require 'erc)
-(require 'erc-auto)
+(request 'erc)
+(request 'erc-auto)
 
-(require 'erc-nicklist)
+(request 'erc-nicklist)
 
 (add-hook 'erc-after-connect
     	  '(lambda (SERVER NICK)
@@ -41,16 +41,16 @@
     	       (erc-message (concat "PRIVMSG" "NickServ identify " public-passwd)))
               )))
 
-(require 'erc-autojoin)
+(request 'erc-autojoin)
 (erc-autojoin-mode 1)
 (setq erc-autojoin-channels-alist
       '(("freenode.net" "#emacsfr")))
 
-(require 'erc-match)
+(request 'erc-match)
 (setq erc-keywords '("sigma"))
 (erc-match-mode)
 
-(require 'erc-track)
+(request 'erc-track)
 (erc-track-mode t)
 
 (add-hook 'erc-mode-hook
@@ -59,13 +59,13 @@
              (pcomplete-erc-setup)
              (erc-completion-mode 1)))
 
-(require 'erc-fill)
+(request 'erc-fill)
 (erc-fill-mode t)
 
-(require 'erc-ring)
+(request 'erc-ring)
 (erc-ring-mode t)
 
-(require 'erc-netsplit)
+(request 'erc-netsplit)
 (erc-netsplit-mode t)
 
 (erc-timestamp-mode t)

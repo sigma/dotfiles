@@ -3,7 +3,7 @@
 
 ;;;_+ Loading
 
-(require 'planner)
+(request 'planner)
 (planner-install-extra-task-keybindings)
 
 (define-key planner-mode-map "\C-c\C-t\C-e" 'planner-edit-task-description)
@@ -15,7 +15,7 @@
   '(progn
      (require 'planner-gnus)
      (planner-gnus-insinuate)))
-(require 'planner-id)
+(request 'planner-id)
 
 (planner-insinuate-calendar)
 

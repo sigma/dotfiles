@@ -176,7 +176,7 @@
   (request 'shell-config)
   (request 'mycode)
   (request 'project-config)
-  (request 'mycompletion)
+  (request 'completion-config)
   (request 'crontab-config)
   (request 'flashcard-config))
 
@@ -566,5 +566,7 @@
 (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
 (add-to-list 'auto-mode-alist '("\\.i\\'" . c++-mode))
 (add-to-list 'auto-mode-alist '("\\.pro\\'" . makefile-mode))
+(add-to-list 'auto-mode-alist '("SConstruct\\'" . python-mode))
+(add-to-list 'auto-mode-alist '("SConscript\\'" . python-mode))
 
 (message ".emacs loaded")

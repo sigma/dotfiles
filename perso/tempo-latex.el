@@ -53,6 +53,7 @@
 ;;; latex-mode-hook
 (require 'tempo)
 (require 'advice)
+(require 'mycompletion)
 
 (setq-default
  tempo-match-finder "\\b\\([^\b]+\\)\\=")  ;; The definition in tempo.el is false.

@@ -265,11 +265,6 @@ never prompted."
              (intern (concat "tempo-template-" (car arg)))))
           alist))
 
-
-(require 'tempo-c++)
-(require 'tempo-lisp)
-(require 'tempo-latex)
-
 ;; (require 'template)
 ;; (template-initialize)
 

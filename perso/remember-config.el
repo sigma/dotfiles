@@ -3,10 +3,10 @@
 ;; You can get remember.el from
 ;; http://sacha.free.net.ph/notebook/emacs/dev/remember
 
-(require 'remember)
-(require 'planner)
+(request 'remember)
+(request 'planner)
 ;; (require 'planner-rss)
-(require 'remember-planner)
+(request 'remember-planner)
 ;; (require 'remember-bibl)
 
 (setq remember-save-after-remembering t)
