@@ -9,4 +9,6 @@
 	(erc-config): new module
 	(request): replaced 'if by 'when when (or if :)) possible
 	(ediff-add-changelog): added the ability to create changelog from diffs
+	(yh-project-changelog-file): compute changelog file from project path
+	(ediff-add-changelog): override default changelog file
 
