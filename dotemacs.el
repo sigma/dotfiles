@@ -1,5 +1,5 @@
 ;; -*- mode: emacs-lisp; auto-compile-lisp: nil; -*-
-;; $Id: dotemacs.el,v 1.15 2004/06/20 16:29:42 sigma Exp $
+;; $Id: dotemacs.el,v 1.16 2004/06/21 07:08:25 sigma Exp $
 
 ;; Use this one instead of require to ignore errors
 (defun request (pack)
@@ -271,6 +271,7 @@
   ;;;;;;;;;;
   ;; CEDET
   ;;
+(setq semantic-load-turn-useful-things-on t)
 (require 'cedet)
 
   ;;;;;;;;;;;;;;;

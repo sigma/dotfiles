@@ -172,7 +172,7 @@
 (defadvice message (around message-around act)
   "Don't let annoying messages popup while using the minibuffer"
   (unless (minibuffer-window-active-p (minibuffer-window))
-      ad-do-it))
+    ad-do-it))
 
 ;; Don't duplicate the current buffer in a new window
 (defadvice split-window-vertically (after ad-split-window-vertically-other-buffer act)
