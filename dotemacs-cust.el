@@ -102,7 +102,7 @@
  '(recentf-exclude (quote (":")))
  '(recentf-mode t nil (recentf))
  '(recentf-save-file "~/.emacs-recentf")
- '(reftex-plug-into-AUCTeX t)
+ '(reftex-plug-into-AUCTeX t t)
  '(save-place-limit 100)
  '(sawfish-extra-keyword-list (quote ("add-frame-style" "call-after-load" "call-after-property-changed" "call-after-state-changed" "custom-set-property" "define" "define-structure" "export" "open")))
  '(sawfish-warning-keyword-list (quote ("fixme" "FIXME" "Fixme" "fix me" "Fix me" "!!!" "Grrr" "Bummer" "todo" "TODO" "Todo")))
@@ -127,6 +127,7 @@
  '(vc-make-backup-files t)
  '(view-diary-entries-initially t)
  '(visible-bell t)
+ '(wdired-allow-to-change-permissions (quote advanced))
  '(which-function-mode nil nil (which-func)))
 
 (custom-set-faces

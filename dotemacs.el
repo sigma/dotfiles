@@ -1,5 +1,5 @@
 ;; -*- mode: emacs-lisp; mode: hi-lock; mode: page-break; auto-compile-lisp: nil; -*-
-;; $Id: dotemacs.el,v 1.63 2004/10/27 21:45:17 sigma Exp $
+;; $Id: dotemacs.el,v 1.64 2004/11/19 10:18:50 sigma Exp $
 
 ;; Hi-lock: (("^;;; \\(.*\\)" (1 'hi-black-hb t)))
 ;; Hi-lock: (("^ +;;; \\(.*\\)" (1 'hi-black-b t)))
@@ -126,6 +126,8 @@
 
 (eval-after-load "buff-menu" '(request 'buff-menu+))
 (global-set-key (kbd "C-x C-b") 'buffer-menu)
+
+(define-key dired-mode-map (kbd "C-c C-c") 'wdired-change-to-wdired-mode)
 
 
 ;;; Packages configuration
@@ -776,7 +778,7 @@ there are more than 1% of such letters then turn French accent mode on."
 ;; cvs keys
 (global-set-key (kbd "<f12>") 'cvs-examine)
 (global-set-key (kbd "<C-f12>") 'cvs-status)
-(global-set-key (kbd "<M-f12>") 'cvs-udpate)
+(global-set-key (kbd "<M-f12>") 'cvs-update)
 
 
 ;;; Autoloads
@@ -906,6 +908,32 @@ Goes backward if ARG is negative; error if CHAR not found." t nil)
 
 
 ;;; Experimental
+(autoload 'graphviz-dot-mode "graphviz-dot-mode" "" t nil)
+(add-to-list 'auto-mode-alist '("\\.dot\\'" . graphviz-dot-mode))
+
+(when (request 'fold-dwim)
+  (unless (boundp 'folding-mode)
+    (setq folding-mode nil))
+  (setq fold-dwim-outline-style-default 'nested)
+  (global-set-key (kbd "<f7>")      'fold-dwim-toggle)
+  (global-set-key (kbd "<M-f7>")    'fold-dwim-hide-all)
+  (global-set-key (kbd "<S-M-f7>")  'fold-dwim-show-all))
+
+(request 'emms)
+(request 'emms-default)
+(emms-setup 'cvs "~/music" "~/mp3")
+;; Show the current track each time EMMS
+;; starts to play a track with "NP : "
+(add-hook 'emms-player-started-hook 'emms-show)
+(setq emms-show-format "NP: %s")
+
+;; When asked for emms-play-directory,
+;; always start from this one
+;;(setq emms-source-file-default-directory "~/music/")
+
+;; Want to use alsa with mpg321 ?
+;(setq emms-player-mpg321-parameters '("-o" "alsa"))
+
 
 ;; (setq sgml-warn-about-undefined-entities nil)
 
@@ -958,3 +986,4 @@ Goes backward if ARG is negative; error if CHAR not found." t nil)
   (add-hook 'sgml-mode-hook 'go-bind-markup-menu-to-mouse3))
 
 (message ".emacs loaded")
+

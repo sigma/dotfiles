@@ -1,8 +1,8 @@
 ;;; psvn.el --- Subversion interface for emacs
 ;; Copyright (C) 2002-2004 by Stefan Reichoer
 
-;; Author: Stefan Reichoer, <xsteve@nit.at>
-;; $Id: psvn.el,v 1.1 2004/06/15 16:27:57 sigma Exp $
+;; Author: Stefan Reichoer, <stefan@xsteve.at>
+;; $Id: psvn.el,v 1.2 2004/11/19 10:18:49 sigma Exp $
 
 ;; psvn.el is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -21,8 +21,8 @@
 
 ;;; Commentary
 
-;; psvn.el is tested with GNU Emacs 21.3 on windows, debian linux
-;; with svn 0.33
+;; psvn.el is tested with GNU Emacs 21.3 on windows, debian linux,
+;; freebsd5 with svn 1.05
 
 ;; psvn.el is an interface for the revision control tool subversion
 ;; (see http://subversion.tigris.org)
@@ -37,9 +37,11 @@
 ;; l     - svn-status-show-svn-log          run 'svn log'
 ;; i     - svn-status-info                  run 'svn info'
 ;; r     - svn-status-revert                run 'svn revert'
+;; V     - svn-status-resolved              run 'svn resolved'
 ;; U     - svn-status-update-cmd            run 'svn update'
 ;; c     - svn-status-commit-file           run 'svn commit'
-;; a     - svn-status-add-file              run 'svn add'
+;; a     - svn-status-add-file              run 'svn add --non-recursive'
+;; A     - svn-status-add-file-recursively  run 'svn add'
 ;; +     - svn-status-make-directory        run 'svn mkdir'
 ;; R     - svn-status-mv                    run 'svn mv'
 ;; C-d   - svn-status-rm                    run 'svn rm'
@@ -61,6 +63,8 @@
 ;; * ?   - svn-status-mark-unknown
 ;; * A   - svn-status-mark-added
 ;; * M   - svn-status-mark-modified
+;; * D   - svn-status-mark-deleted
+;; * *   - svn-status-mark-changed
 ;; .     - svn-status-goto-root-or-return
 ;; f     - svn-status-find-file
 ;; o     - svn-status-find-file-other-window
@@ -83,7 +87,7 @@
 ;; Start the svn interface with M-x svn-status
 
 ;; The latest version of psvn.el can be found at:
-;;   http://xsteve.nit.at/prg/emacs/psvn.el
+;;   http://www.xsteve.at/prg/emacs/psvn.el
 ;; Or you can check it out from the subversion repository:
 ;;   svn co http://svn.collab.net/repos/svn/trunk/contrib/client-side/psvn psvn
 
@@ -123,7 +127,7 @@
 ;; * propget (pget, pg)        used
 ;; * proplist (plist, pl)      implemented
 ;; * propset (pset, ps)        used
-;; * resolved
+;; * resolved                  implemented
 ;; * revert                    implemented
 ;; * status (stat, st)         implemented
 ;; * switch (sw)
@@ -138,14 +142,22 @@
 ;;; Code:
 
 ;;; user setable variables
-(defvar svn-log-edit-file-name "++svn-log++" "Name of a saved log file")
-(defvar svn-status-hide-unknown nil "Hide unknown files in *svn-status* buffer.")
-(defvar svn-status-hide-unmodified nil "Hide unmodified files in *svn-status* buffer.")
-(defvar svn-status-directory-history nil "List of visited svn working directories.")
+(defvar svn-log-edit-file-name "++svn-log++" "*Name of a saved log file.")
+(defvar svn-log-edit-insert-files-to-commit t "*Insert the filelist to commit in the *svn-log* buffer")
+(defvar svn-status-hide-unknown nil "*Hide unknown files in *svn-status* buffer.")
+(defvar svn-status-hide-unmodified nil "*Hide unmodified files in *svn-status* buffer.")
+(defvar svn-status-directory-history nil "*List of visited svn working directories.")
+(defvar svn-status-sort-status-buffer t "Sort the *svn-status* buffer.
+Setting this variable to nil speeds up M-x svn-status.
+However, it is possible, that the sorting is wrong in this case.")
+
+(defvar svn-status-unmark-files-after-list '(commit revert)
+  "*List of operations after which all user marks will be removed.
+Possible values are: commit, revert.")
 
 ;;; default arguments to pass to svn commands
 (defvar svn-status-default-log-arguments ""
-  "Arguments to pass to svn log
+  "*Arguments to pass to svn log.
 \(used in `svn-status-show-svn-log'; override these by giving prefixes\).")
 
 ;;; hooks
@@ -153,7 +165,7 @@
 
 (defvar svn-status-wash-control-M-in-process-buffers
   (eq system-type 'windows-nt)
-  "Remove any trailing ^M in the svn process buffers.")
+  "*Remove any trailing ^M from the *svn-process* buffer.")
 
 ;;; Customize group
 (defgroup psvn nil
@@ -166,10 +178,14 @@
 
 
 (eval-and-compile
+  (require 'cl)
   (defconst svn-xemacsp (featurep 'xemacs))
   (if svn-xemacsp
       (require 'overlay)
     (require 'overlay nil t)))
+
+;; Use the normally used mode for files ending in .~HEAD~, .~BASE~, ...
+(add-to-list 'auto-mode-alist '("\\.~?\\(HEAD\\|BASE\\|PREV\\)~?\\'" ignore t))
 
 ;;; internal variables
 (defvar svn-process-cmd nil)
@@ -203,6 +219,9 @@
 (defvar svn-temp-suffix (make-temp-name "."))
 (defvar svn-status-temp-file-to-remove nil)
 (defvar svn-status-temp-arg-file (concat svn-status-temp-dir "svn.arg" svn-temp-suffix))
+(defvar svn-status-options nil)
+(defvar svn-status-commit-rev-number nil)
+(defvar svn-status-operated-on-dot nil)
 
 ;;; faces
 (defface svn-status-marked-face
@@ -213,12 +232,20 @@
   "Face to highlight the mark for user marked files in svn status buffers."
   :group 'psvn-faces)
 
+(defface svn-status-marked-popup-face
+  '((((type tty) (class color)) (:foreground "green" :weight light))
+    (((class color) (background light)) (:foreground "green3"))
+    (((class color) (background dark)) (:foreground "palegreen2"))
+    (t (:weight bold)))
+  "Face to highlight the actual file, if a popup menu is activated."
+  :group 'psvn-faces)
+
 (defface svn-status-modified-external-face
   '((((type tty) (class color)) (:foreground "magenta" :weight light))
     (((class color) (background light)) (:foreground "magenta"))
     (((class color) (background dark)) (:foreground "yellow"))
     (t (:weight bold)))
-  "Face to highlight the externaly modified phrase in svn status buffers."
+  "Face to highlight the phrase \"externally modified\" in *svn-status* buffers."
   :group 'psvn-faces)
 
 ;based on cvs-filename-face
@@ -247,9 +274,11 @@ See `svn-status--line-info->directory-p' for what counts as a directory."
     ;; put (require 'cl) at the top but let's try to manage without.
     (add-text-properties 0 (length str)
                          `(face ,face
-                           ,@(when keymap
-                               `(mouse-face highlight
-                                 local-map ,keymap)))
+                                mouse-face highlight)
+;; 18.10.2004: the keymap parameter is not used (yet) in psvn.el
+;;                           ,@(when keymap
+;;                               `(mouse-face highlight
+;;                                 local-map ,keymap)))
                          str))
   str)
 
@@ -270,6 +299,7 @@ Else return TEXT unchanged."
 ; emacs 20
 (unless (fboundp 'point-at-eol) (defalias 'point-at-eol 'line-end-position))
 (unless (fboundp 'point-at-bol) (defalias 'point-at-bol 'line-beginning-position))
+(unless (functionp 'read-directory-name) (defalias 'read-directory-name 'read-file-name))
 
 (eval-when-compile
   (if (not (fboundp 'gethash))
@@ -277,12 +307,13 @@ Else return TEXT unchanged."
 (if (not (fboundp 'puthash))
     (defalias 'puthash 'cl-puthash))
 
+(defvar svn-status-display-new-status-buffer nil)
 ;;;###autoload
 (defun svn-status (dir &optional arg)
   "Examine the status of Subversion working copy in directory DIR.
 If ARG then pass the -u argument to `svn status'."
-  (interactive (list (read-file-name "SVN status directory: "
-                                     nil default-directory nil)))
+  (interactive (list (read-directory-name "SVN status directory: "
+                                          nil default-directory nil)))
   (unless (file-directory-p dir)
     (error "%s is not a directory" dir))
   (if (not (file-exists-p (concat dir "/.svn/")))
@@ -294,8 +325,10 @@ If ARG then pass the -u argument to `svn status'."
     (setq dir (file-name-as-directory dir))
     (setq svn-status-directory-history (delete dir svn-status-directory-history))
     (add-to-list 'svn-status-directory-history dir)
-    (unless (string= (buffer-name) "*svn-status*")
-      (message "psvn: Saving initial window configuration")
+    (if (string= (buffer-name) "*svn-status*")
+        (setq svn-status-display-new-status-buffer nil)
+      (setq svn-status-display-new-status-buffer t)
+      ;;(message "psvn: Saving initial window configuration")
       (setq svn-status-initial-window-configuration (current-window-configuration)))
     (let* ((status-buf (get-buffer-create "*svn-status*"))
            (proc-buf (get-buffer-create "*svn-process*")))
@@ -314,8 +347,9 @@ If ARG then pass the -u argument to `svn status'."
          (dir (read-from-minibuffer "svn-status on directory: "
                               (cadr svn-status-directory-history)
                               nil nil 'hist)))
-    (when (file-directory-p dir)
-      (svn-status dir))))
+    (if (file-directory-p dir)
+        (svn-status dir)
+      (error "%s is not a directory" dir))))
 
 (defun svn-run-svn (run-asynchron clear-process-buffer cmdtype &rest arglist)
   "Run svn with arguments ARGLIST.
@@ -376,7 +410,7 @@ for  example: '(\"revert\" \"file1\"\)"
            (cond ((eq svn-process-cmd 'status)
                   ;;(message "svn status finished")
                   (if (eq system-type 'windows-nt)
-                      ;; convert path separator as UNIX style
+                      ;; convert path separator to UNIX style
                       (save-excursion
                         (goto-char (point-min))
                         (while (search-forward "\\" nil t)
@@ -390,9 +424,21 @@ for  example: '(\"revert\" \"file1\"\)"
                     (insert "Output from svn command:\n")
                     (insert svn-status-update-previous-process-output)
                     (goto-char (point-min))
-                    (setq svn-status-update-previous-process-output nil)))
+                    (setq svn-status-update-previous-process-output nil))
+                  (when svn-status-display-new-status-buffer
+                    (set-window-configuration svn-status-initial-window-configuration)
+                    (switch-to-buffer "*svn-status*")))
                  ((eq svn-process-cmd 'log)
                   (svn-status-show-process-buffer-internal t)
+                  (pop-to-buffer "*svn-process*")
+                  (switch-to-buffer (get-buffer-create "*svn-log*"))
+                  (let ((buffer-read-only nil))
+                    (delete-region (point-min) (point-max))
+                    (insert-buffer-substring "*svn-process*"))
+                  (svn-log-view-mode)
+                  (goto-char (point-min))
+                  (forward-line 3)
+                  (font-lock-fontify-buffer)
                   (message "svn log finished"))
                  ((eq svn-process-cmd 'info)
                   (svn-status-show-process-buffer-internal t)
@@ -404,8 +450,12 @@ for  example: '(\"revert\" \"file1\"\)"
                   (message "svn blame finished"))
                  ((eq svn-process-cmd 'commit)
                   (svn-status-remove-temp-file-maybe)
-                  (svn-status-show-process-buffer-internal t)
-                  (svn-status-update)
+                  ;;(svn-status-show-process-buffer-internal t)
+                  (when (member 'commit svn-status-unmark-files-after-list)
+                    (svn-status-unset-all-usermarks))
+                  ;;(svn-status-update)
+                  ;;(svn-status-update), svn-status-show-process-buffer-internal should be no longer necessary!
+                  (svn-status-update-with-command-list (svn-status-parse-commit-output))
                   (message "svn commit finished"))
                  ((eq svn-process-cmd 'update)
                   (svn-status-show-process-buffer-internal t)
@@ -418,8 +468,13 @@ for  example: '(\"revert\" \"file1\"\)"
                   (svn-status-update)
                   (message "svn mkdir finished"))
                  ((eq svn-process-cmd 'revert)
+                  (when (member 'revert svn-status-unmark-files-after-list)
+                    (svn-status-unset-all-usermarks))
                   (svn-status-update)
                   (message "svn revert finished"))
+                 ((eq svn-process-cmd 'resolved)
+                  (svn-status-update)
+                  (message "svn resolved finished"))
                  ((eq svn-process-cmd 'mv)
                   (svn-status-update)
                   (message "svn mv finished"))
@@ -460,6 +515,8 @@ for  example: '(\"revert\" \"file1\"\)"
 
 
 (defun svn-parse-status-result ()
+  "Parse the *svn-process* buffer.
+The results are used to build the `svn-status-info' variable."
   (setq svn-status-head-revision nil)
   (save-excursion
     (let ((old-ui-information (svn-status-ui-information-hash-table))
@@ -474,19 +531,33 @@ for  example: '(\"revert\" \"file1\"\)"
           (author)
           (path)
           (user-elide nil)
-          (ui-status '(nil nil)) ; contains (user-mark user-elide)
+          (ui-status '(nil nil))     ; contains (user-mark user-elide)
           (revision-width svn-status-default-revision-width)
           (author-width svn-status-default-author-width))
       (set-buffer "*svn-process*")
       (setq svn-status-info nil)
       (goto-char (point-min))
-      (while (> (- (point-at-eol) (point-at-bol)) 0)
-        (if (or (looking-at "Head revision:[ ]+\\([0-9]+\\)") ;svn version < 0.29
-                (looking-at "Status against revision:[ ]+\\([0-9]+\\)")); svn version >= 0.29
-            (setq svn-status-head-revision (match-string 1))
+      (while (< (point) (point-max))
+        (cond
+         ((= (point-at-eol) (point-at-bol)) ;skip blank lines
+          nil)
+         ((looking-at "Status against revision:[ ]+\\([0-9]+\\)")
+          ;; the above message appears for the main listing plus once for each svn:externals entry
+          (unless svn-status-head-revision
+            (setq svn-status-head-revision (match-string 1))))
+         ((looking-at "Performing status on external item at '\(.*\)'")
+          ;; The *next* line has info about the directory named in svn:externals
+          ;; we should parse it, and merge the info with what we have already know
+          ;; but for now just ignore the line completely
+          (forward-line)
+          )
+         (t
           (setq svn-marks (buffer-substring (point) (+ (point) 8))
                 svn-file-mark (elt svn-marks 0) ; 1st column
                 svn-property-mark (elt svn-marks 1) ; 2nd column
+                ;;svn-locked-mark (elt svn-marks 2)            ; 3rd column
+                ;;svn-added-with-history-mark (elt svn-marks 3); 4th column
+                ;;svn-switched-mark (elt svn-marks 4)          ; 5th column
                 svn-update-mark (elt svn-marks 7)) ; 8th column
 
           (when (eq svn-property-mark ?\ ) (setq svn-property-mark nil))
@@ -503,7 +574,7 @@ for  example: '(\"revert\" \"file1\"\)"
             (setq path (match-string 1)
                   local-rev -1
                   last-change-rev -1
-                  author "?"))
+                  author (if (eq svn-file-mark 88) "" "?"))) ;clear author of svn:externals dirs
            (t
             (error "Unknown status line format")))
           (unless path (setq path "."))
@@ -517,11 +588,10 @@ for  example: '(\"revert\" \"file1\"\)"
                                             author
                                             svn-update-mark)
                                       svn-status-info))
-          (setq revision-width
-                (max revision-width
-                     (length (number-to-string local-rev))
-                     (length (number-to-string last-change-rev))))
-          (setq author-width (max author-width (length author))))
+          (setq revision-width (max revision-width
+                                    (length (number-to-string local-rev))
+                                    (length (number-to-string last-change-rev))))
+          (setq author-width (max author-width (length author)))))
         (forward-line 1))
       ;; With subversion 0.29.0 and above, `svn -u st' returns files in
       ;; a random order (especially if we have a mixed revision wc)
@@ -532,7 +602,9 @@ for  example: '(\"revert\" \"file1\"\)"
                                            revision-width
                                            revision-width
                                            author-width))
-      (setq svn-status-info (sort svn-status-info 'svn-status-sort-predicate)))))
+      (setq svn-status-info (nreverse svn-status-info))
+      (when svn-status-sort-status-buffer
+        (setq svn-status-info (sort svn-status-info 'svn-status-sort-predicate))))))
 
 ;;(string-lessp "." "%") => nil
 ;(svn-status-sort-predicate '(t t t ".") '(t t t "%")) => t
@@ -543,7 +615,7 @@ A and B must be line-info's."
                 (concat (svn-status-line-info->full-path b) "/")))
 
 (defun svn-status-remove-temp-file-maybe ()
-  "Remove temporary created files from during the operation from psvn.el."
+  "Remove any (no longer required) temporary files created by psvn.el."
   (when svn-status-temp-file-to-remove
     (when (file-exists-p svn-status-temp-file-to-remove)
       (delete-file svn-status-temp-file-to-remove))
@@ -566,73 +638,115 @@ A and B must be line-info's."
     (easy-menu-add-item nil '("tools") ["SVN Status" svn-status t])
   (error (message "psvn: could not install menu")))
 
-(defvar svn-status-mode-map () "Keymap used in svn-status-mode buffers.")
+(defvar svn-status-mode-map () "Keymap used in `svn-status-mode' buffers.")
 (defvar svn-status-mode-property-map ()
-  "Subkeymap used in svn-status-mode for property commands.")
+  "Subkeymap used in `svn-status-mode' for property commands.")
+(defvar svn-status-mode-options-map ()
+  "Subkeymap used in `svn-status-mode' for option commands.")
 
 (when (not svn-status-mode-map)
   (setq svn-status-mode-map (make-sparse-keymap))
   (suppress-keymap svn-status-mode-map)
-  (define-key svn-status-mode-map (kbd "<return>") 'svn-status-find-file-or-examine-directory)
+  ;; Don't use (kbd "<return>"); it's unreachable with GNU Emacs 21.3 on a TTY.
+  (define-key svn-status-mode-map (kbd "RET") 'svn-status-find-file-or-examine-directory)
+  (define-key svn-status-mode-map (kbd "<mouse-2>") 'svn-status-mouse-find-file-or-examine-directory)
   (define-key svn-status-mode-map (kbd "^") 'svn-status-examine-parent)
-  (define-key svn-status-mode-map [?s] 'svn-status-show-process-buffer)
-  (define-key svn-status-mode-map [?f] 'svn-status-find-file)
-  (define-key svn-status-mode-map [?o] 'svn-status-find-file-other-window)
-  (define-key svn-status-mode-map [?v] 'svn-status-view-file-other-window)
-  (define-key svn-status-mode-map [?e] 'svn-status-toggle-edit-cmd-flag)
-  (define-key svn-status-mode-map [?g] 'svn-status-update)
-  (define-key svn-status-mode-map [?q] 'svn-status-bury-buffer)
-  (define-key svn-status-mode-map [?h] 'svn-status-use-history)
-  (define-key svn-status-mode-map [?m] 'svn-status-set-user-mark)
-  (define-key svn-status-mode-map [?u] 'svn-status-unset-user-mark)
-  (define-key svn-status-mode-map "\M-DEL" 'svn-status-unset-all-user-mark)
-  (define-key svn-status-mode-map [(backspace)] 'svn-status-unset-user-mark-backwards)
-  (define-key svn-status-mode-map [?$] 'svn-status-toggle-elide)
-  (define-key svn-status-mode-map [?.] 'svn-status-goto-root-or-return)
-  (define-key svn-status-mode-map [?I] 'svn-status-parse-info)
-  (define-key svn-status-mode-map [??] 'svn-status-toggle-hide-unknown)
-  (define-key svn-status-mode-map [?_] 'svn-status-toggle-hide-unmodified)
-  (define-key svn-status-mode-map [?a] 'svn-status-add-file)
-  (define-key svn-status-mode-map [?+] 'svn-status-make-directory)
+  (define-key svn-status-mode-map (kbd "s") 'svn-status-show-process-buffer)
+  (define-key svn-status-mode-map (kbd "f") 'svn-status-find-files)
+  (define-key svn-status-mode-map (kbd "o") 'svn-status-find-file-other-window)
+  (define-key svn-status-mode-map (kbd "v") 'svn-status-view-file-other-window)
+  (define-key svn-status-mode-map (kbd "e") 'svn-status-toggle-edit-cmd-flag)
+  (define-key svn-status-mode-map (kbd "g") 'svn-status-update)
+  (define-key svn-status-mode-map (kbd "q") 'svn-status-bury-buffer)
+  (define-key svn-status-mode-map (kbd "h") 'svn-status-use-history)
+  (define-key svn-status-mode-map (kbd "m") 'svn-status-set-user-mark)
+  (define-key svn-status-mode-map (kbd "u") 'svn-status-unset-user-mark)
+  ;; This matches a binding of `dired-unmark-all-files' in `dired-mode-map'
+  ;; of both GNU Emacs and XEmacs.  It seems unreachable with XEmacs on
+  ;; TTY, but if that's a problem then its Dired needs fixing too.
+  ;; Or you could just use "*!".
+  (define-key svn-status-mode-map "\M-\C-?" 'svn-status-unset-all-usermarks)
+  ;; The key that normally deletes characters backwards should here
+  ;; instead unmark files backwards.  In GNU Emacs, that would be (kbd
+  ;; "DEL") aka [?\177], but XEmacs treats those as [(delete)] and
+  ;; would bind a key that normally deletes forwards.  [(backspace)]
+  ;; is unreachable with GNU Emacs on a tty.  Try to recognize the
+  ;; dialect and act accordingly.
+  ;;
+  ;; XEmacs has a `delete-forward-p' function that checks the
+  ;; `delete-key-deletes-forward' option.  We don't use those, for two
+  ;; reasons: psvn.el may be loaded before user customizations, and
+  ;; XEmacs allows simultaneous connections to multiple devices with
+  ;; different keyboards.
+  (define-key svn-status-mode-map
+              (if (member (kbd "DEL") '([(delete)] [delete]))
+                  [(backspace)]         ; XEmacs
+                (kbd "DEL"))            ; GNU Emacs
+              'svn-status-unset-user-mark-backwards)
+  (define-key svn-status-mode-map (kbd "$") 'svn-status-toggle-elide)
+  (define-key svn-status-mode-map (kbd ".") 'svn-status-goto-root-or-return)
+  (define-key svn-status-mode-map (kbd "I") 'svn-status-parse-info)
+  (define-key svn-status-mode-map (kbd "?") 'svn-status-toggle-hide-unknown)
+  (define-key svn-status-mode-map (kbd "_") 'svn-status-toggle-hide-unmodified)
+  (define-key svn-status-mode-map (kbd "a") 'svn-status-add-file)
+  (define-key svn-status-mode-map (kbd "A") 'svn-status-add-file-recursively)
+  (define-key svn-status-mode-map (kbd "+") 'svn-status-make-directory)
   (define-key svn-status-mode-map (kbd "R") 'svn-status-mv)
-  (define-key svn-status-mode-map "\C-d" 'svn-status-rm)
-  (define-key svn-status-mode-map [?c] 'svn-status-commit-file)
-  (define-key svn-status-mode-map [(meta ?c)] 'svn-status-cleanup)
-  (define-key svn-status-mode-map [?U] 'svn-status-update-cmd)
-  (define-key svn-status-mode-map [?r] 'svn-status-revert)
-  (define-key svn-status-mode-map [?l] 'svn-status-show-svn-log)
-  (define-key svn-status-mode-map [?i] 'svn-status-info)
-  (define-key svn-status-mode-map [?b] 'svn-status-blame)
-  (define-key svn-status-mode-map [?=] 'svn-status-show-svn-diff)
-  (define-key svn-status-mode-map [(control ?=)] 'svn-status-show-svn-diff-for-marked-files)
-  (define-key svn-status-mode-map [?~] 'svn-status-get-specific-revision)
-  (define-key svn-status-mode-map [?E] 'svn-status-ediff-with-revision)
-  (define-key svn-status-mode-map "\C-n" 'svn-status-next-line)
-  (define-key svn-status-mode-map "\C-p" 'svn-status-previous-line)
-  (define-key svn-status-mode-map [down] 'svn-status-next-line)
-  (define-key svn-status-mode-map [up] 'svn-status-previous-line)
+  (define-key svn-status-mode-map (kbd "D") 'svn-status-rm)
+  (define-key svn-status-mode-map (kbd "c") 'svn-status-commit-file)
+  (define-key svn-status-mode-map (kbd "M-c") 'svn-status-cleanup)
+  (define-key svn-status-mode-map (kbd "U") 'svn-status-update-cmd)
+  (define-key svn-status-mode-map (kbd "r") 'svn-status-revert)
+  (define-key svn-status-mode-map (kbd "l") 'svn-status-show-svn-log)
+  (define-key svn-status-mode-map (kbd "i") 'svn-status-info)
+  (define-key svn-status-mode-map (kbd "b") 'svn-status-blame)
+  (define-key svn-status-mode-map (kbd "=") 'svn-status-show-svn-diff)
+  ;; [(control ?=)] is unreachable on TTY, but you can use "*u" instead.
+  ;; (Is the "u" mnemonic for something?)
+  (define-key svn-status-mode-map (kbd "C-=") 'svn-status-show-svn-diff-for-marked-files)
+  (define-key svn-status-mode-map (kbd "~") 'svn-status-get-specific-revision)
+  (define-key svn-status-mode-map (kbd "E") 'svn-status-ediff-with-revision)
+  (define-key svn-status-mode-map (kbd "C-n") 'svn-status-next-line)
+  (define-key svn-status-mode-map (kbd "C-p") 'svn-status-previous-line)
+  (define-key svn-status-mode-map (kbd "<down>") 'svn-status-next-line)
+  (define-key svn-status-mode-map (kbd "<up>") 'svn-status-previous-line)
+  (define-key svn-status-mode-map [down-mouse-3] 'svn-status-popup-menu)
   (setq svn-status-mode-mark-map (make-sparse-keymap))
-  (define-key svn-status-mode-map "*" svn-status-mode-mark-map)
-  (define-key svn-status-mode-mark-map "!" 'svn-status-unset-all-usermarks)
-  (define-key svn-status-mode-mark-map "?" 'svn-status-mark-unknown)
-  (define-key svn-status-mode-mark-map "A" 'svn-status-mark-added)
-  (define-key svn-status-mode-mark-map "M" 'svn-status-mark-modified)
-  (define-key svn-status-mode-mark-map "u" 'svn-status-show-svn-diff-for-marked-files))
+  (define-key svn-status-mode-map (kbd "*") svn-status-mode-mark-map)
+  (define-key svn-status-mode-mark-map (kbd "!") 'svn-status-unset-all-usermarks)
+  (define-key svn-status-mode-mark-map (kbd "?") 'svn-status-mark-unknown)
+  (define-key svn-status-mode-mark-map (kbd "A") 'svn-status-mark-added)
+  (define-key svn-status-mode-mark-map (kbd "M") 'svn-status-mark-modified)
+  (define-key svn-status-mode-mark-map (kbd "D") 'svn-status-mark-deleted)
+  (define-key svn-status-mode-mark-map (kbd "*") 'svn-status-mark-changed)
+  (define-key svn-status-mode-mark-map (kbd "V") 'svn-status-resolved)
+  (define-key svn-status-mode-mark-map (kbd "u") 'svn-status-show-svn-diff-for-marked-files))
 (when (not svn-status-mode-property-map)
   (setq svn-status-mode-property-map (make-sparse-keymap))
-  (define-key svn-status-mode-property-map [?l] 'svn-status-property-list)
-  (define-key svn-status-mode-property-map [?s] 'svn-status-property-set)
-  (define-key svn-status-mode-property-map [?d] 'svn-status-property-delete)
-  (define-key svn-status-mode-property-map [?e] 'svn-status-property-edit-one-entry)
-  (define-key svn-status-mode-property-map [?i] 'svn-status-property-ignore-file)
-  (define-key svn-status-mode-property-map [?I] 'svn-status-property-ignore-file-extension)
+  (define-key svn-status-mode-property-map (kbd "l") 'svn-status-property-list)
+  (define-key svn-status-mode-property-map (kbd "s") 'svn-status-property-set)
+  (define-key svn-status-mode-property-map (kbd "d") 'svn-status-property-delete)
+  (define-key svn-status-mode-property-map (kbd "e") 'svn-status-property-edit-one-entry)
+  (define-key svn-status-mode-property-map (kbd "i") 'svn-status-property-ignore-file)
+  (define-key svn-status-mode-property-map (kbd "I") 'svn-status-property-ignore-file-extension)
+  ;; XEmacs 21.4.15 on TTY (vt420) converts `C-i' to `TAB',
+  ;; which [(control ?i)] won't match.  Handle it separately.
+  ;; On GNU Emacs, the following two forms bind the same key,
+  ;; reducing clutter in `where-is'.
   (define-key svn-status-mode-property-map [(control ?i)] 'svn-status-property-edit-svn-ignore)
-  (define-key svn-status-mode-property-map [?k] 'svn-status-property-set-keyword-list)
-  (define-key svn-status-mode-property-map [?y] 'svn-status-property-set-eol-style)
-  (define-key svn-status-mode-property-map [?p] 'svn-status-property-parse)
-  (define-key svn-status-mode-property-map [return] 'svn-status-select-line)
-  (define-key svn-status-mode-map [?P] svn-status-mode-property-map))
-
+  (define-key svn-status-mode-property-map (kbd "TAB") 'svn-status-property-edit-svn-ignore)
+  (define-key svn-status-mode-property-map (kbd "k") 'svn-status-property-set-keyword-list)
+  (define-key svn-status-mode-property-map (kbd "y") 'svn-status-property-set-eol-style)
+  (define-key svn-status-mode-property-map (kbd "p") 'svn-status-property-parse)
+  ;; TODO: Why is `svn-status-select-line' in `svn-status-mode-property-map'?
+  (define-key svn-status-mode-property-map (kbd "RET") 'svn-status-select-line)
+  (define-key svn-status-mode-map (kbd "P") svn-status-mode-property-map))
+(when (not svn-status-mode-options-map)
+  (setq svn-status-mode-options-map (make-sparse-keymap))
+  (define-key svn-status-mode-options-map (kbd "s") 'svn-status-save-state)
+  (define-key svn-status-mode-options-map (kbd "l") 'svn-status-load-state)
+  (define-key svn-status-mode-options-map (kbd "x") 'svn-status-toggle-sort-status-buffer)
+  (define-key svn-status-mode-map (kbd "O") svn-status-mode-options-map))
 
 (easy-menu-define svn-status-mode-menu svn-status-mode-map
   "'svn-status-mode' menu"
@@ -652,9 +766,11 @@ A and B must be line-info's."
     ["svn add" svn-status-add-file t]
     ["svn mkdir..." svn-status-make-directory t]
     ["svn mv..." svn-status-mv t]
+    ["svn rm..." svn-status-rm t]
     ["Up Directory" svn-status-examine-parent t]
     ["Elide Directory" svn-status-toggle-elide t]
     ["svn revert" svn-status-revert t]
+    ["svn resolved" svn-status-resolved t]
     ["svn cleanup" svn-status-cleanup t]
     ["Show Process Buffer" svn-status-show-process-buffer t]
     ("Property"
@@ -670,16 +786,25 @@ A and B must be line-info's."
      ["Set svn:keywords List" svn-status-property-set-keyword-list t]
      ["Set svn:eol-style" svn-status-property-set-eol-style t]
      )
+    ("Options"
+     ["Save Options" svn-status-save-state t]
+     ["Load Options" svn-status-load-state t]
+     ["Toggle sorting of *svn-status* buffer" svn-status-toggle-sort-status-buffer
+      :style toggle :selected svn-status-sort-status-buffer]
+     )
     "---"
     ["Edit Next SVN Cmd Line" svn-status-toggle-edit-cmd-flag t]
     ["Work Directory History..." svn-status-use-history t]
-    ["Mark" svn-status-set-user-mark t]
-    ["Unmark" svn-status-unset-user-mark t]
     ("Mark / Unmark"
+     ["Mark" svn-status-set-user-mark t]
+     ["Unmark" svn-status-unset-user-mark t]
      ["Unmark all" svn-status-unset-all-usermarks t]
+     "---"
      ["Mark/Unmark unknown" svn-status-mark-unknown t]
      ["Mark/Unmark added" svn-status-mark-added t]
      ["Mark/Unmark modified" svn-status-mark-modified t]
+     ["Mark/Unmark deleted" svn-status-mark-deleted t]
+     ["Mark/Unmark modified/added/deleted" svn-status-mark-changed t]
      )
     ["Hide Unknown" svn-status-toggle-hide-unknown
      :style toggle :selected svn-status-hide-unknown]
@@ -687,62 +812,47 @@ A and B must be line-info's."
      :style toggle :selected svn-status-hide-unmodified]
     ))
 
-(defun svn-status-mode ()
-  "Major mode for processing the svn status.
 
-  psvn.el is an interface for the revision control tool subversion
-  (see http://subversion.tigris.org).
-  psvn.el provides a similar interface for subversion as pcl-cvs for cvs.
-  At the moment the following commands are implemented:
+(defun svn-status-popup-menu (event)
+  (interactive "e")
+  (mouse-set-point event)
+  (let* ((line-info (svn-status-get-line-information))
+         (name (svn-status-line-info->filename line-info)))
+    (when line-info
+      (easy-menu-define svn-status-actual-popup-menu nil nil
+        (list name
+               ["svn diff" svn-status-show-svn-diff t]
+               ["svn commit" svn-status-commit-file t]
+               ["svn log" svn-status-show-svn-log t]
+               ["svn info" svn-status-info t]
+               ["svn blame" svn-status-blame t]))
+      (svn-status-face-set-temporary-during-popup
+       'svn-status-marked-popup-face (line-beginning-position) (line-end-position)
+       svn-status-actual-popup-menu))))
+
+(defun svn-status-face-set-temporary-during-popup (face begin end menu &optional prefix)
+  "Put FACE on BEGIN and END in the buffer during Popup MENU.
+PREFIX is passed to `popup-menu'."
+  (let (o)
+    (unwind-protect
+        (progn
+          (setq o (make-overlay begin end))
+          (overlay-put o 'face face)
+          (sit-for 0)
+          (popup-menu menu prefix))
+      (delete-overlay o))))
+
+(defun svn-status-mode ()
+  "Major mode used by  psvn.el to process the output of \"svn status\".
+
+psvn.el is an interface for the revision control tool subversion
+\(see http://subversion.tigris.org).
+psvn.el provides a similar interface for subversion as pcl-cvs does for cvs.
+At the moment the following commands are implemented:
   M-x svn-status: run 'svn -status -v'
   and show the result in the *svn-status* buffer, this buffer uses the
   svn-status mode. In this mode the following keys are defined:
-  g     - svn-status-update:               run 'svn status -v'
-  C-u g - svn-status-update:               run 'svn status -vu'
-  =     - svn-status-show-svn-diff         run 'svn diff'
-  l     - svn-status-show-svn-log          run 'svn log'
-  i     - svn-status-info                  run 'svn info'
-  r     - svn-status-revert                run 'svn revert'
-  U     - svn-status-update-cmd            run 'svn update'
-  c     - svn-status-commit-file           run 'svn commit'
-  a     - svn-status-add-file              run 'svn add'
-  +     - svn-status-make-directory        run 'svn mkdir'
-  R     - svn-status-mv                    run 'svn mv'
-  C-d   - svn-status-rm                    run 'svn rm'
-  M-c   - svn-status-cleanup               run 'svn cleanup'
-  b     - svn-status-blame                 run 'svn blame'
-  RET   - svn-status-find-file-or-examine-directory
-  ^     - svn-status-examine-parent
-  ~     - svn-status-get-specific-revision
-  E     - svn-status-ediff-with-revision
-  s     - svn-status-show-process-buffer
-  e     - svn-status-toggle-edit-cmd-flag
-  ?     - svn-status-toggle-hide-unknown
-  _     - svn-status-toggle-hide-unmodified
-  m     - svn-status-set-user-mark
-  u     - svn-status-unset-user-mark
-  $     - svn-status-toggle-elide
-  DEL   - svn-status-unset-user-mark-backwards
-  * !   - svn-status-unset-all-usermarks
-  * ?   - svn-status-mark-unknown
-  * A   - svn-status-mark-added
-  * M   - svn-status-mark-modified
-  .     - svn-status-goto-root-or-return
-  f     - svn-status-find-file
-  o     - svn-status-find-file-other-window
-  v     - svn-status-view-file-other-window
-  I     - svn-status-parse-info
-  P l   - svn-status-property-list
-  P s   - svn-status-property-set
-  P d   - svn-status-property-delete
-  P e   - svn-status-property-edit-one-entry
-  P i   - svn-status-property-ignore-file
-  P I   - svn-status-property-ignore-file-extension
-  P C-i - svn-status-property-edit-svn-ignore
-  P k   - svn-status-property-set-keyword-list
-  P y   - svn-status-property-set-eol-style
-  h     - svn-status-use-history
-  q     - svn-status-bury-buffer"
+\\{svn-status-mode-map}"
   (interactive)
   (kill-all-local-variables)
 
@@ -761,15 +871,21 @@ A and B must be line-info's."
   (force-mode-line-update))
 
 (defun svn-status-bury-buffer (arg)
-  "Bury the *svn-status* buffer.
-When called with a prefix argument, switch back to the window configuration that was
-used on startup of `svn-status'."
+  "Bury the buffers used by psvn.el
+Currently this is:
+  *svn-status*
+  *svn-log-edit*
+  *svn-property-edit*
+  *svn-log*
+  *svn-process*
+When called with a prefix argument, ARG, switch back to the window configuration that was
+in use before `svn-status' was called."
   (interactive "P")
   (cond (arg
          (when svn-status-initial-window-configuration
            (set-window-configuration svn-status-initial-window-configuration)))
         (t
-         (let ((bl '("*svn-log-edit*" "*svn-property-edit*" "*svn-process*")))
+         (let ((bl '("*svn-log-edit*" "*svn-property-edit*" "*svn-log*" "*svn-process*")))
            (while bl
              (when (get-buffer (car bl))
                (bury-buffer (car bl)))
@@ -777,20 +893,25 @@ used on startup of `svn-status'."
            (when (string= (buffer-name) "*svn-status*")
              (bury-buffer))))))
 
-(defun svn-status-find-file ()
+(defun svn-status-find-files ()
+  "Open selected file(s) for editing.
+See `svn-status-marked-files' for what counts as selected."
   (interactive)
-  (find-file (svn-status-line-info->filename
-      (svn-status-get-line-information))))
+  (let ((fnames (mapcar 'svn-status-line-info->full-path (svn-status-marked-files))))
+    (mapc 'find-file fnames)))
+
 
 (defun svn-status-find-file-other-window ()
   "Open the file in the other window for editing."
   (interactive)
+  (svn-status-ensure-cursor-on-file)
   (find-file-other-window (svn-status-line-info->filename
                            (svn-status-get-line-information))))
 
 (defun svn-status-view-file-other-window ()
   "Open the file in the other window for viewing."
   (interactive)
+  (svn-status-ensure-cursor-on-file)
   (view-file-other-window (svn-status-line-info->filename
                            (svn-status-get-line-information))))
 
@@ -798,6 +919,7 @@ used on startup of `svn-status'."
   "If point is on a directory, run `svn-status' on that directory.
 Otherwise run `find-file'."
   (interactive)
+  (svn-status-ensure-cursor-on-file)
   (let ((line-info (svn-status-get-line-information)))
     (if (svn-status-line-info->directory-p line-info)
         (svn-status (svn-status-line-info->full-path line-info))
@@ -807,6 +929,13 @@ Otherwise run `find-file'."
   "Run `svn-status' on the parent of the current directory."
   (interactive)
   (svn-status (expand-file-name "../")))
+
+(defun svn-status-mouse-find-file-or-examine-directory (event)
+  "Move point to where EVENT occurred, and do `svn-status-find-file-or-examine-directory'
+EVENT could be \"mouse clicked\" or similar."
+  (interactive "e")
+  (mouse-set-point event)
+  (svn-status-find-file-or-examine-directory))
 
 (defun svn-status-line-info->ui-status (line-info) (nth 0 line-info))
 
@@ -855,6 +984,19 @@ Otherwise run `find-file'."
 (defun svn-status-line-info->show-user-elide-continuation (line-info)
   (eq (svn-status-line-info->user-elide line-info) 'directory))
 
+;; modify the line-info
+(defun svn-status-line-info->set-filemark (line-info value)
+  (setcar (nthcdr 1 line-info) value))
+
+(defun svn-status-line-info->set-propmark (line-info value)
+  (setcar (nthcdr 2 line-info) value))
+
+(defun svn-status-line-info->set-localrev (line-info value)
+  (setcar (nthcdr 4 line-info) value))
+
+(defun svn-status-line-info->set-lastchangerev (line-info value)
+  (setcar (nthcdr 5 line-info) value))
+
 (defun svn-status-toggle-elide ()
   (interactive)
   (let ((st-info svn-status-info)
@@ -883,6 +1025,106 @@ Otherwise run `find-file'."
       (setq st-info (cdr st-info))))
   (svn-status-update-buffer))
 
+(defun svn-status-update-with-command-list (cmd-list)
+  (save-excursion
+    (set-buffer "*svn-status*")
+    (let ((st-info)
+          (found)
+          (action))
+      (setq cmd-list (sort cmd-list '(lambda (item1 item2) (string-lessp (car item1) (car item2)))))
+      (while cmd-list
+        (unless st-info (setq st-info svn-status-info))
+        ;;(message "%S" (caar cmd-list))
+        (setq found nil)
+        (while (and (not found) st-info)
+          (setq found (string= (caar cmd-list) (svn-status-line-info->filename (car st-info))))
+          ;;(message "found: %S" found)
+          (unless found (setq st-info (cdr st-info))))
+        (unless found
+          (message "continue to search for %s" (caar cmd-list))
+          (setq st-info svn-status-info)
+          (while (and (not found) st-info)
+            (setq found (string= (caar cmd-list) (svn-status-line-info->filename (car st-info))))
+            (unless found (setq st-info (cdr st-info)))))
+        (if found
+            ;;update the info line
+            (progn
+              (setq action (cadar cmd-list))
+              ;;(message "found %s, action: %S" (caar cmd-list) action)
+              (svn-status-annotate-status-buffer-entry action (car st-info)))
+          (message "did not find %s" (caar cmd-list)))
+        (setq cmd-list (cdr cmd-list))))))
+
+(defun svn-status-annotate-status-buffer-entry (action line-info)
+  (let ((tag-string))
+    (svn-status-goto-file-name (svn-status-line-info->filename line-info))
+    (cond ((equal action 'committed)
+           (when svn-status-commit-rev-number
+             (svn-status-line-info->set-localrev line-info svn-status-commit-rev-number))
+             (svn-status-line-info->set-lastchangerev line-info svn-status-commit-rev-number)
+             (setq tag-string " <committed>"))
+          ((equal action 'added)
+           (setq tag-string " <added>"))
+          ((equal action 'deleted)
+           (setq tag-string " <deleted>"))
+          (t
+           (message "Unknown action '%s for %s" action (svn-status-line-info->filename line-info))))
+    (when tag-string
+      (svn-status-line-info->set-filemark line-info ? )
+      (svn-status-line-info->set-propmark line-info ? )
+      (let ((buffer-read-only nil))
+        (delete-region (point-at-bol) (point-at-eol))
+        (svn-insert-line-in-status-buffer line-info)
+        (backward-char 1)
+        (insert tag-string)
+        (delete-char 1)))))
+
+
+
+;; (svn-status-update-with-command-list '(("++ideas" committed) ("a.txt" committed) ("alf")))
+;; (svn-status-update-with-command-list (svn-status-parse-commit-output))
+
+
+(defun svn-status-parse-commit-output ()
+  "Parse the output of svn commit.
+Return a list that is suitable for `svn-status-update-with-command-list'"
+  (save-excursion
+    (set-buffer "*svn-process*")
+    (let ((action)
+          (name)
+          (done)
+          (result))
+      (goto-char (point-min))
+      (setq svn-status-commit-rev-number nil)
+      (while (not done)
+        (cond ((looking-at "Sending")
+               (setq action 'committed))
+              ((looking-at "Adding")
+               (setq action 'added))
+              ((looking-at "Deleting")
+               (setq action 'deleted))
+              ((looking-at "Transmitting file data")
+               ;; perhaps parse next line also (Committed revision 96.)
+               (re-search-forward "Committed revision \\([0-9]+\\)")
+               (setq svn-status-commit-rev-number
+                     (string-to-number (match-string-no-properties 1)))
+               (setq done t))
+              (t
+               (setq action 'unknown)))
+        (unless done
+          (forward-char 15)
+          (when svn-status-operated-on-dot
+            ;; when the commit used . as argument, delete the trailing directory
+            ;; from the svn output
+            (search-forward "/" nil t))
+          (setq name (buffer-substring-no-properties (point) (point-at-eol)))
+          ;;(message "%S %S" action name)
+          (setq result (cons (list name action)
+                             result))
+          (forward-line 1)
+          (goto-char (point-at-bol))))
+      result)))
+;; (svn-status-parse-commit-output)
 
 (defun svn-status-line-info->directory-p (line-info)
   "Return t if LINE-INFO refers to a directory, nil otherwise.
@@ -946,9 +1188,10 @@ Symbolic links to directories count as directories (see `file-directory-p')."
   (interactive)
   ;(message (format "buffer-name: %s" (buffer-name)))
   (unless (string= (buffer-name) "*svn-status*")
-    (delete-other-windows)
-    (split-window-vertically)
-    (switch-to-buffer "*svn-status*"))
+    ;;(delete-other-windows)
+    ;;(split-window-vertically)
+    ;;(switch-to-buffer "*svn-status*")
+    (set-buffer "*svn-status*"))
   (svn-status-mode)
   (let ((st-info svn-status-info)
         (buffer-read-only nil)
@@ -965,7 +1208,10 @@ Symbolic links to directories count as directories (see `file-directory-p')."
     ;; Insert all files and directories
     (while st-info
       (setq start-pos (point))
-      (cond ((svn-status-line-info->hide-because-user-elide (car st-info))
+      (cond ((svn-status-line-info->has-usermark (car st-info))
+             ;; Show a marked file always
+             (svn-insert-line-in-status-buffer (car st-info)))
+            ((svn-status-line-info->hide-because-user-elide (car st-info))
              );(message "user wanted to hide %s" (svn-status-line-info->filename (car st-info))))
             ((svn-status-line-info->hide-because-unknown (car st-info))
              (setq unknown-count (+ unknown-count 1)))
@@ -1085,6 +1331,15 @@ The result may be parsed with the various `svn-status-line-info->...' functions.
     (when overlay
       (overlay-get overlay 'svn-info))))
 
+(defun svn-status-get-file-list (use-marked-files)
+  "Get either the marked files or the files, where the cursor is on."
+  (if use-marked-files
+      (svn-status-marked-files)
+    (list (svn-status-get-line-information))))
+
+(defun svn-status-get-file-list-names (use-marked-files)
+  (mapcar 'svn-status-line-info->filename (svn-status-get-file-list use-marked-files)))
+
 (defun svn-status-select-line ()
   (interactive)
   (let ((info (svn-status-get-line-information)))
@@ -1092,6 +1347,10 @@ The result may be parsed with the various `svn-status-line-info->...' functions.
         (message "%S %S %S" info (svn-status-line-info->hide-because-unknown info)
                                  (svn-status-line-info->hide-because-unmodified info))
       (message "No file on this line"))))
+
+(defun svn-status-ensure-cursor-on-file ()
+  (unless (svn-status-get-line-information)
+    (error "No file on the current line")))
 
 (defun svn-status-directory-containing-point (allow-self)
   "Find the (full path of) directory containing the file under point.
@@ -1161,6 +1420,8 @@ Then move to that line."
   (let* ((st-info svn-status-info)
          (line-info (svn-status-get-line-information))
          (file-name (svn-status-line-info->filename line-info))
+     (sub-file-regexp (concat "^" (regexp-quote
+                       (file-name-as-directory file-name))))
          (newcursorpos-fname)
          (i-fname)
          (current-line svn-start-of-file-list-line-number))
@@ -1168,8 +1429,8 @@ Then move to that line."
       (when (svn-status-line-info->is-visiblep (car st-info))
         (setq current-line (1+ current-line)))
       (setq i-fname (svn-status-line-info->filename (car st-info)))
-      (when (and (>= (length i-fname) (length file-name))
-                 (string= file-name (substring i-fname 0 (length file-name))))
+      (when (or (string= file-name i-fname)
+        (string-match sub-file-regexp i-fname))
         (when (svn-status-line-info->is-visiblep (car st-info))
           (when (or (not only-this-line) (string= file-name i-fname))
             (setq newcursorpos-fname i-fname)
@@ -1209,21 +1470,49 @@ used in the check."
 These are the files marked with '?' in the *svn-status* buffer.
 If the function is called with a prefix arg, unmark all these files."
   (interactive "P")
-  (svn-status-apply-usermark-checked '(lambda (info) (eq (svn-status-line-info->filemark info) ??)) (not arg)))
+  (svn-status-apply-usermark-checked
+   '(lambda (info) (eq (svn-status-line-info->filemark info) ??)) (not arg)))
 
 (defun svn-status-mark-added (arg)
   "Mark all added files.
 These are the files marked with 'A' in the *svn-status* buffer.
-If the function is called with a prefix arg, unmark all these files."
+If the function is called with a prefix ARG, unmark all these files."
   (interactive "P")
-  (svn-status-apply-usermark-checked '(lambda (info) (eq (svn-status-line-info->filemark info) ?A)) (not arg)))
+  (svn-status-apply-usermark-checked
+   '(lambda (info) (eq (svn-status-line-info->filemark info) ?A)) (not arg)))
 
 (defun svn-status-mark-modified (arg)
   "Mark all modified files.
 These are the files marked with 'M' in the *svn-status* buffer.
-If the function is called with a prefix arg, unmark all these files."
+If the function is called with a prefix ARG, unmark all these files."
   (interactive "P")
-  (svn-status-apply-usermark-checked '(lambda (info) (eq (svn-status-line-info->filemark info) ?M)) (not arg)))
+  (svn-status-apply-usermark-checked
+   '(lambda (info) (or (eq (svn-status-line-info->filemark info) ?M)
+                       (eq (svn-status-line-info->filemark info)
+                           svn-status-file-modified-after-save-flag)))
+   (not arg)))
+
+(defun svn-status-mark-deleted (arg)
+  "Mark all files scheduled for deletion.
+These are the files marked with 'D' in the *svn-status* buffer.
+If the function is called with a prefix ARG, unmark all these files."
+  (interactive "P")
+  (svn-status-apply-usermark-checked
+   '(lambda (info) (eq (svn-status-line-info->filemark info) ?D)) (not arg)))
+
+(defun svn-status-mark-changed (arg)
+  "Mark all files that could be committed.
+This means we mark
+* all modified files
+* all files scheduled for addition
+* all files scheduled for deletion
+
+The last two categories include all copied and moved files.
+If called with a prefix ARG, unmark all such files."
+  (interactive "P")
+  (svn-status-mark-added arg)
+  (svn-status-mark-modified arg)
+  (svn-status-mark-deleted arg))
 
 (defun svn-status-unset-all-usermarks ()
   (interactive)
@@ -1241,25 +1530,36 @@ If the function is called with a prefix arg, unmark all these files."
 
 (defun svn-status-goto-file-name (name)
   ;; (message "svn-status-goto-file-name: %s %d" name (point))
-  (let ((start-pos (point)))
-    (goto-char (point-min))
-    (while (< (point) (point-max))
+  (let ((start-pos (point))
+        (found))
+    ;; performance optimization: search from point to end of buffer
+    (while (and (not found) (< (point) (point-max)))
       (goto-char (next-overlay-change (point)))
       (when (string= name (svn-status-line-info->filename
                            (svn-status-get-line-information)))
-        (setq start-pos (+ (point) svn-status-default-column))))
+        (setq start-pos (+ (point) svn-status-default-column))
+        (setq found t)))
+    ;; search from buffer start to point
+    (goto-char (point-min))
+    (while (and (not found) (< (point) start-pos))
+      (goto-char (next-overlay-change (point)))
+      (when (string= name (svn-status-line-info->filename
+                           (svn-status-get-line-information)))
+        (setq start-pos (+ (point) svn-status-default-column))
+        (setq found t)))
+    (unless found
+      (message "Warning: svn-status-goto-file-name: %s not found" name))
     (goto-char start-pos)))
 
 (defun svn-status-find-info-for-file-name (name)
-  (save-excursion
-    (let ((info nil))
-      (goto-char (point-min))
-      (while (< (point) (point-max))
-        (goto-char (next-overlay-change (point)))
-        (when (string= name (svn-status-line-info->filename
-                             (svn-status-get-line-information)))
-          (setq info (svn-status-get-line-information))))
-      info)))
+  (let* ((st-info svn-status-info)
+         (info))
+    (while st-info
+      (when (string= name (svn-status-line-info->filename (car st-info)))
+        (setq info (car st-info))
+        (setq st-info nil)) ; terminate loop
+      (setq st-info (cdr st-info)))
+    info))
 
 (defun svn-status-marked-files ()
   "Return all files marked by `svn-status-set-user-mark',
@@ -1312,24 +1612,26 @@ or (if no files were marked) the file under point."
 
 (defun svn-status-show-svn-log (arg)
   "Run `svn log' on selected files.
-When called with a prefix argument add the following command switches:
- no prefix:              use whatever is in the string `svn-status-default-log-arguments'
- prefix argument of 0:   use the -q switch (quiet)
- other prefix arguments: use the -v switch (verbose)
+The output is put into the *svn-log* buffer
+The optional prefix argument ARG determines which switches are passed to `svn log':
+ no prefix               --- use whatever is in the string `svn-status-default-log-arguments'
+ prefix argument of -1   --- use no arguments
+ prefix argument of 0:   --- use the -q switch (quiet)
+ other prefix arguments: --- use the -v switch (verbose)
 
 See `svn-status-marked-files' for what counts as selected."
   (interactive "P")
   (let ((switch (cond ((eq arg 0) "-q")
+                      ((eq arg -1) "")
                       (arg        "-v")
                       (t          svn-status-default-log-arguments))))
-    ;;(message "show log info for: %S" (svn-status-marked-files))
     (svn-status-create-arg-file svn-status-temp-arg-file "" (svn-status-marked-files) "")
     (if (> (length switch) 0)
         (svn-run-svn t t 'log "log" "--targets" svn-status-temp-arg-file switch)
       (svn-run-svn t t 'log "log" "--targets" svn-status-temp-arg-file))
     (save-excursion
       (set-buffer "*svn-process*")
-      (log-view-mode))))
+      (svn-log-view-mode))))
 
 (defun svn-status-info ()
   "Run `svn info' on all selected files.
@@ -1351,6 +1653,7 @@ If there is a newer revision in the repository, the diff is done against HEAD, o
 compare the working copy with BASE.
 If ARG then prompt for revision to diff against."
   (interactive "P")
+  (svn-status-ensure-cursor-on-file)
   (svn-status-show-svn-diff-internal arg nil))
 
 (defun svn-status-show-svn-diff-for-marked-files (arg)
@@ -1384,13 +1687,26 @@ If ARG then prompt for revision to diff against, else compare working copy with 
   (interactive)
   (svn-status-show-process-buffer-internal))
 
-(defun svn-status-add-file ()
+(defun svn-status-add-file-recursively (arg)
   "Run `svn add' on all selected files.
-See `svn-status-marked-files' for what counts as selected."
-  (interactive)
-  (message "adding: %S" (svn-status-marked-file-names))
-  (svn-status-create-arg-file svn-status-temp-arg-file "" (svn-status-marked-files) "")
+When a directory is added, add files recursively.
+See `svn-status-marked-files' for what counts as selected.
+When this function is called with a prefix argument, use the actual file instead."
+  (interactive "P")
+  (message "adding: %S" (svn-status-get-file-list-names (not arg)))
+  (svn-status-create-arg-file svn-status-temp-arg-file "" (svn-status-get-file-list (not arg)) "")
   (svn-run-svn t t 'add "add" "--targets" svn-status-temp-arg-file))
+
+(defun svn-status-add-file (arg)
+  "Run `svn add' on all selected files.
+When a directory is added, don't add the files of the directory
+ (svn add --non-recursive <file-list> is called).
+See `svn-status-marked-files' for what counts as selected.
+When this function is called with a prefix argument, use the actual file instead."
+  (interactive "P")
+  (message "adding: %S" (svn-status-get-file-list-names (not arg)))
+  (svn-status-create-arg-file svn-status-temp-arg-file "" (svn-status-get-file-list (not arg)) "")
+  (svn-run-svn t t 'add "add" "--non-recursive" "--targets" svn-status-temp-arg-file))
 
 (defun svn-status-make-directory (dir)
   "Run `svn mkdir DIR'."
@@ -1419,8 +1735,7 @@ BUG: If we've marked some directory containging a file as well as the
 file itself, then we should just mv the directory, but this implementation
 doesn't check for that.
 SOLUTION: for each dir, umark all its contents (but not the dir
-itself) before running mv.
-"
+itself) before running mv."
   (interactive)
   (let* ((marked-files (svn-status-marked-files))
          (num-of-files (length marked-files))
@@ -1433,16 +1748,15 @@ itself) before running mv.
                                            (svn-status-line-info->filename (car marked-files)))
                                    (svn-status-directory-containing-point t)))
       ;;multiple files selected, so prompt for existing directory to mv them into.
-      ;;another place to use a putative `read-directory-name'
-      (setq dest (read-file-name (format "Move %d files to directory: " num-of-files)
-                                 (svn-status-directory-containing-point t) nil t))
+      (setq dest (read-directory-name (format "Move %d files to directory: " num-of-files)
+                                      (svn-status-directory-containing-point t) nil t))
       (unless (file-directory-p dest)
         (error "%s is not a directory" dest)))
     (when (string= dest "")
       (error "No destination entered; no files moved"))
     (unless (string-match "^[^:/]+://" dest) ; Is it a URI?
       (setq dest (file-relative-name dest)))
-
+;
     ;;do the move: svn mv only lets us move things once at a time, so
     ;;we need to run svn mv once for each file (hence second arg to
     ;;svn-run-svn is nil.)
@@ -1459,17 +1773,35 @@ itself) before running mv.
 ;;              ;; run  svn-status-set-user-mark   to remark dir
 ;;              ;; maybe check for local mods here, and unmark if user does't say --force?
 ;;              ))
-
-    (dolist (original marked-files)
-      (let ((original-name (svn-status-line-info->filename original)))
-        (if (eq (svn-status-line-info->filemark original) 32)
-            (svn-run-svn nil t 'mv "mv" "--" original-name dest)
-          ;;file has local mods so ask if user wants to --force the move:
+        (dolist (original marked-files)
+      (let ((original-name (svn-status-line-info->filename original))
+                        (original-filemarks (svn-status-line-info->filemark original))
+                        (original-propmarks (svn-status-line-info->propmark original)))
+        (cond
+         ((or (eq original-filemarks 77)  ;;original has local mods: maybe do `svn mv --force'
+              (eq original-propmarks 77)) ;;original has local prop mods: maybe do `svn mv --force'
           (if (yes-or-no-p (format "%s has local modifications; use `--force' to really move it? "
                                    original-name))
               (svn-run-svn nil t 'mv "mv" "--force" "--" original-name dest)
-            (message "Not moving %s" original-name)))))
-    (svn-status-update)))
+            (message "Not moving %s" original-name)))
+         ((eq original-filemarks 63) ;;original is unversioned: maybe do plain `mv'
+          (if (yes-or-no-p (format "%s is unversioned.  Use plain `mv -i %s %s'? "
+                                   original-name original-name dest))
+              (call-process "mv" nil (get-buffer-create "*svn-process*") nil "-i" original-name dest)
+            (message "Not moving %s" original-name)))
+
+         ((eq original-filemarks 65) ;;original has `A' mark (eg it was `svn add'ed, but not committed)
+          (message "Not moving %s (try committing it first)" original-name))
+
+         ((eq original-filemarks 32) ;;original is unmodified: can use `svn mv'
+          (svn-run-svn nil t 'mv "mv" "--" original-name dest))
+
+         ;;file is conflicted in some way?
+         (t
+          (if (yes-or-no-p (format "The status of %s looks scary.  Risk moving it anyway? " original-name))
+              (svn-run-svn nil t 'mv "mv" "--" original-name dest)
+            (message "Not moving %s" original-name))))))
+        (svn-status-update)))
 
 (defun svn-status-revert ()
   "Run `svn revert' on all selected files.
@@ -1512,7 +1844,9 @@ When called with a prefix argument add the command line switch --force."
   (let* ((marked-files (svn-status-marked-files)))
     (setq svn-status-files-to-commit marked-files)
     (svn-log-edit-show-files-to-commit)
-    (svn-status-pop-to-commit-buffer)))
+    (svn-status-pop-to-commit-buffer)
+    (when svn-log-edit-insert-files-to-commit
+      (svn-log-edit-insert-files-to-commit))))
 
 (defun svn-status-pop-to-commit-buffer ()
   (interactive)
@@ -1536,14 +1870,76 @@ When called with a prefix argument add the command line switch --force."
           (svn-run-svn t t 'cleanup (append (list "cleanup") file-names)))
       (message "No valid file selected - No status cleanup possible"))))
 
+(defun svn-status-resolved ()
+  "Run `svn resolved' on all selected files.
+See `svn-status-marked-files' for what counts as selected."
+  (interactive)
+  (let* ((marked-files (svn-status-marked-files))
+         (num-of-files (length marked-files)))
+    (when (yes-or-no-p
+           (if (= 1 num-of-files)
+               (format "Resolve %s? " (svn-status-line-info->filename (car marked-files)))
+             (format "Resolve %d files? " num-of-files)))
+      (message "resolving: %S" (svn-status-marked-file-names))
+      (svn-status-create-arg-file svn-status-temp-arg-file "" (svn-status-marked-files) "")
+      (svn-run-svn t t 'resolved "resolved" "--targets" svn-status-temp-arg-file))))
+
+;; --------------------------------------------------------------------------------
+;; Update the *svn-status* buffer, when a file is saved
+;; --------------------------------------------------------------------------------
+
+(defvar svn-status-file-modified-after-save-flag ?m
+  "Flag shown whenever a file is modified and saved in Emacs.
+The flag is shown in the *svn-status* buffer.
+Recommended values are ?m or ?M.")
+(defun svn-status-after-save-hook ()
+  "Set a modified indication, when a file is saved from a svn working copy."
+  (let* ((svn-dir (car-safe svn-status-directory-history))
+         (svn-dir (when svn-dir (expand-file-name svn-dir)))
+         (file-dir (file-name-directory (buffer-file-name)))
+         (svn-dir-len (length (or svn-dir "")))
+         (file-dir-len (length file-dir))
+         (file-name))
+    (when (and svn-dir
+               (>= file-dir-len svn-dir-len)
+               (string= (substring file-dir 0 svn-dir-len) svn-dir))
+      (setq file-name (substring (buffer-file-name) svn-dir-len))
+      ;;(message (format "In svn-status directory %S" file-name))
+      (let ((st-info svn-status-info)
+            (i-fname))
+        (while st-info
+          (setq i-fname (svn-status-line-info->filename (car st-info)))
+          ;;(message (format "i-fname=%S" i-fname))
+          (when (and (string= file-name i-fname)
+                     (not (eq (svn-status-line-info->filemark (car st-info)) ??)))
+            (svn-status-line-info->set-filemark (car st-info)
+                                                svn-status-file-modified-after-save-flag)
+            (save-excursion
+              (set-buffer "*svn-status*")
+              (svn-status-goto-file-name i-fname)
+              (let ((buffer-read-only nil))
+                (delete-region (point-at-bol) (point-at-eol))
+                (svn-insert-line-in-status-buffer (car st-info))
+                (delete-char 1))))
+          (setq st-info (cdr st-info))))))
+  nil)
+
+(add-hook 'after-save-hook 'svn-status-after-save-hook)
+
 ;; --------------------------------------------------------------------------------
 ;; Getting older revisions
 ;; --------------------------------------------------------------------------------
 
-(defun svn-status-get-specific-revision (&optional only-actual-file arg)
+(defun svn-status-get-specific-revision (arg)
   "Retrieve older revisions.
-The older revisions are stored in backup files named F.~REVISION~."
-  (interactive)
+The older revisions are stored in backup files named F.~REVISION~.
+
+When the function is called without a prefix argument: get all marked files.
+Otherwise get only the actual file."
+  (interactive "P")
+  (svn-status-get-specific-revision-internal (not arg) t))
+
+(defun svn-status-get-specific-revision-internal (&optional only-actual-file arg)
   (let* ((file-names (if only-actual-file
                          (list (svn-status-line-info->filename (svn-status-get-line-information)))
                        (svn-status-marked-file-names)))
@@ -1575,14 +1971,15 @@ The older revisions are stored in backup files named F.~REVISION~."
 
 
 (defun svn-status-ediff-with-revision (arg)
-  "Run ediff on the current file with a previous revision."
+  "Run ediff on the current file with a previous revision.
+If ARG then prompt for revision to diff against."
   (interactive "P")
-  (svn-status-get-specific-revision t arg)
+  (svn-status-get-specific-revision-internal t arg)
   (let* ((ediff-after-quit-destination-buffer (current-buffer))
-     (my-buffer (find-file-noselect (cdr (car svn-status-get-specific-revision-file-info))))
-     (base-buff (find-file-noselect (car (car svn-status-get-specific-revision-file-info))))
-     (svn-transient-buffers (list base-buff ))
-     (startup-hook '(svn-ediff-startup-hook)))
+         (my-buffer (find-file-noselect (caar svn-status-get-specific-revision-file-info)))
+         (base-buff (find-file-noselect (cdar svn-status-get-specific-revision-file-info)))
+         (svn-transient-buffers (list base-buff ))
+         (startup-hook '(svn-ediff-startup-hook)))
     (ediff-buffers my-buffer base-buff  startup-hook)))
 
 (defun svn-ediff-startup-hook ()
@@ -1882,7 +2279,7 @@ When called with a prefix argument, it is possible to enter a new property."
 ;; svn-prop-edit-mode:
 ;; --------------------------------------------------------------------------------
 
-(defvar svn-prop-edit-mode-map () "Keymap used in svn-prop-edit-mode buffers.")
+(defvar svn-prop-edit-mode-map () "Keymap used in `svn-prop-edit-mode' buffers.")
 
 (when (not svn-prop-edit-mode-map)
   (setq svn-prop-edit-mode-map (make-sparse-keymap))
@@ -1904,8 +2301,7 @@ When called with a prefix argument, it is possible to enter a new property."
 (defun svn-prop-edit-mode ()
   "Major Mode to edit file properties of files under svn control.
 Commands:
-\\{svn-prop-edit-mode-map}
-"
+\\{svn-prop-edit-mode-map}"
   (interactive)
   (kill-all-local-variables)
   (use-local-map svn-prop-edit-mode-map)
@@ -1962,16 +2358,18 @@ Commands:
 ;; svn-log-edit-mode:
 ;; --------------------------------------------------------------------------------
 
-(defvar svn-log-edit-mode-map () "Keymap used in svn-log-edit-mode buffers.")
+(defvar svn-log-edit-mode-map () "Keymap used in `svn-log-edit-mode' buffers.")
 
 (when (not svn-log-edit-mode-map)
   (setq svn-log-edit-mode-map (make-sparse-keymap))
-  (define-key svn-log-edit-mode-map [(control ?c) (control ?c)] 'svn-log-edit-done)
-  (define-key svn-log-edit-mode-map [(control ?c) (control ?d)] 'svn-log-edit-svn-diff)
-  (define-key svn-log-edit-mode-map [(control ?c) (control ?s)] 'svn-log-edit-save-message)
-  (define-key svn-log-edit-mode-map [(control ?c) (control ?i)] 'svn-log-edit-svn-status)
-  (define-key svn-log-edit-mode-map [(control ?c) (control ?l)] 'svn-log-edit-svn-log)
-  (define-key svn-log-edit-mode-map [(control ?c) (control ?q)] 'svn-log-edit-abort))
+  (define-key svn-log-edit-mode-map (kbd "C-c C-c") 'svn-log-edit-done)
+  (define-key svn-log-edit-mode-map (kbd "C-c C-d") 'svn-log-edit-svn-diff)
+  (define-key svn-log-edit-mode-map (kbd "C-c C-s") 'svn-log-edit-save-message)
+  (define-key svn-log-edit-mode-map (kbd "C-c C-i") 'svn-log-edit-svn-status)
+  (define-key svn-log-edit-mode-map (kbd "C-c C-l") 'svn-log-edit-svn-log)
+  (define-key svn-log-edit-mode-map (kbd "C-c C-?") 'svn-log-edit-show-files-to-commit)
+  (define-key svn-log-edit-mode-map (kbd "C-c C-z") 'svn-log-edit-erase-edit-buffer)
+  (define-key svn-log-edit-mode-map (kbd "C-c C-q") 'svn-log-edit-abort))
 
 (easy-menu-define svn-log-edit-mode-menu svn-log-edit-mode-map
 "'svn-log-edit-mode' menu"
@@ -1982,19 +2380,20 @@ Commands:
                     ["Show Status" svn-log-edit-svn-status t]
                     ["Show Log" svn-log-edit-svn-log t]
                     ["Show files to commit" svn-log-edit-show-files-to-commit t]
+                    ["Erase buffer" svn-log-edit-erase-edit-buffer]
                     ["Abort" svn-log-edit-abort t]))
 
 (defun svn-log-edit-mode ()
   "Major Mode to edit svn log messages.
 Commands:
-\\{svn-log-edit-mode-map}
-"
+\\{svn-log-edit-mode-map}"
   (interactive)
   (kill-all-local-variables)
   (use-local-map svn-log-edit-mode-map)
   (easy-menu-add svn-log-edit-mode-menu)
   (setq major-mode 'svn-log-edit-mode)
   (setq mode-name "svn-log-edit")
+  (setq svn-log-edit-update-log-entry nil)
   (run-hooks 'svn-log-edit-mode-hook))
 
 (defun svn-log-edit-abort ()
@@ -2007,21 +2406,36 @@ Commands:
   (message "svn-log editing done")
   (save-excursion
     (set-buffer (get-buffer "*svn-log-edit*"))
+    (when svn-log-edit-insert-files-to-commit
+      (svn-log-edit-remove-comment-lines))
     (set-buffer-file-coding-system 'undecided-unix nil)
-    (write-region (point-min) (point-max)
-                  (concat svn-status-temp-dir "svn-log-edit.txt" svn-temp-suffix) nil 1))
-  (when svn-status-files-to-commit ; there are files to commit
-    (svn-status-create-arg-file svn-status-temp-arg-file ""
-                                svn-status-files-to-commit "")
-    (setq svn-status-files-to-commit nil)
-    (setq svn-status-temp-file-to-remove (concat svn-status-temp-dir "svn-log-edit.txt" svn-temp-suffix))
-    (svn-run-svn t t 'commit "commit" "--targets" svn-status-temp-arg-file
-                 "-F" svn-status-temp-file-to-remove))
-  (set-window-configuration svn-status-pre-commit-window-configuration))
+    (when (or svn-log-edit-update-log-entry svn-status-files-to-commit)
+      (setq svn-status-temp-file-to-remove
+            (concat svn-status-temp-dir "svn-log-edit.txt" svn-temp-suffix))
+      (write-region (point-min) (point-max) svn-status-temp-file-to-remove nil 1)))
+  (if svn-log-edit-update-log-entry
+      (when (y-or-n-p "Update the log entry? ")
+        ;;   svn propset svn:log --revprop -r11672 -F file
+        (svn-run-svn nil t 'propset "propset" "svn:log" "--revprop"
+                     (concat "-r" svn-log-edit-update-log-entry)
+                     "-F" svn-status-temp-file-to-remove)
+        (save-excursion
+          (set-buffer "*svn-process*")
+          (message (buffer-substring (point-min) (- (point-max) 1)))))
+    (when svn-status-files-to-commit ; there are files to commit
+      (setq svn-status-operated-on-dot
+            (and (= 1 (length svn-status-files-to-commit))
+                 (string= "." (svn-status-line-info->filename (car svn-status-files-to-commit)))))
+      (svn-status-create-arg-file svn-status-temp-arg-file ""
+                                  svn-status-files-to-commit "")
+      (setq svn-status-files-to-commit nil)
+      (svn-run-svn t t 'commit "commit" "--targets" svn-status-temp-arg-file
+                   "-F" svn-status-temp-file-to-remove)))
+    (set-window-configuration svn-status-pre-commit-window-configuration))
 
 (defun svn-log-edit-svn-diff (arg)
   "Show the diff we are about to commit.
-If ARG then show diff between some other vesion of the selected files."
+If ARG then show diff between some other version of the selected files."
   (interactive "P")
   (set-buffer "*svn-status*")
   (svn-status-show-svn-diff-for-marked-files arg))
@@ -2042,8 +2456,187 @@ If ARG then show diff between some other vesion of the selected files."
            (mapcar 'svn-status-line-info->filename svn-status-files-to-commit)))
 
 (defun svn-log-edit-save-message ()
-  "Save the current log message to the file svn-log-edit-file-name"
+  "Save the current log message to the file `svn-log-edit-file-name'."
   (interactive)
   (write-region (point-min) (point-max) svn-log-edit-file-name))
 
+(defun svn-log-edit-erase-edit-buffer ()
+  "Delete everything in the *svn-log-edit* buffer."
+  (interactive)
+  (set-buffer "*svn-log-edit*")
+  (erase-buffer))
+
+(defun svn-log-edit-insert-files-to-commit ()
+  (interactive)
+  (svn-log-edit-remove-comment-lines)
+  (let ((buf-size (- (point-max) (point-min))))
+    (save-excursion
+      (goto-char (point-min))
+      (insert "## Lines starting with '## ' will be removed from the log message.\n")
+      (insert "## File(s) to commit:\n")
+      (let ((file-list svn-status-files-to-commit))
+        (while file-list
+          (insert (concat "## " (svn-status-line-info->filename (car file-list)) "\n"))
+          (setq file-list (cdr file-list)))))
+    (when (= 0 buf-size)
+      (goto-char (point-max)))))
+
+(defun svn-log-edit-remove-comment-lines ()
+  (interactive)
+  (save-excursion
+    (goto-char (point-min))
+    (flush-lines "^## .*")))
+
+
+;; --------------------------------------------------------------------------------
+;; svn-log-view-mode:
+;; --------------------------------------------------------------------------------
+
+(defvar svn-log-view-mode-map () "Keymap used in `svn-log-view-mode' buffers.")
+
+(when (not svn-log-view-mode-map)
+  (setq svn-log-view-mode-map (make-sparse-keymap))
+  (define-key svn-log-view-mode-map (kbd "p") 'svn-log-view-prev)
+  (define-key svn-log-view-mode-map (kbd "n") 'svn-log-view-next)
+  (define-key svn-log-view-mode-map (kbd "=") 'svn-log-view-diff)
+  (define-key svn-log-view-mode-map (kbd "e") 'svn-log-edit-log-entry)
+  (define-key svn-log-view-mode-map (kbd "q") 'bury-buffer))
+
+(easy-menu-define svn-log-view-mode-menu svn-log-view-mode-map
+"'svn-log-view-mode' menu"
+                  '("SVN-LogView"
+                    ["Show Changeset" svn-log-view-diff t]
+                    ["Edit log message" svn-log-edit-log-entry t]))
+
+(defvar svn-log-view-font-lock-keywords
+  '(("^r.+" . font-lock-keyword-face)
+  "Keywords in svn-log-view-mode."))
+
+(define-derived-mode svn-log-view-mode log-view-mode "svn-log-view"
+  "Major Mode to show the output from svn log.
+Commands:
+\\{svn-log-view-mode-map}
+"
+  (use-local-map svn-log-view-mode-map)
+  (easy-menu-add svn-log-view-mode-menu)
+  (set (make-local-variable 'font-lock-defaults) '(svn-log-view-font-lock-keywords t)))
+
+(defun svn-log-view-next ()
+  (interactive)
+  (when (re-search-forward "^r[0-9]+" nil t)
+    (beginning-of-line 3)))
+
+(defun svn-log-view-prev ()
+  (interactive)
+  (when (re-search-backward "^r[0-9]+" nil t 2)
+    (beginning-of-line 3)))
+
+(defun svn-log-revision-at-point ()
+  (save-excursion
+    (re-search-backward "^r\\([0-9]+\\)")
+    (match-string-no-properties 1)))
+
+(defun svn-log-view-diff (arg)
+  "Show the changeset for a given log entry.
+When called with a prefix argument, ask the user for the revision."
+  (interactive "P")
+  (let* ((upper-rev (svn-log-revision-at-point))
+        (lower-rev (number-to-string (- (string-to-number upper-rev) 1)))
+        (rev-arg (concat lower-rev ":" upper-rev)))
+    (when arg
+      (setq rev-arg (read-string "Revision for changeset: " rev-arg)))
+    (svn-run-svn nil t 'diff "diff" (concat "-r" rev-arg))
+    (svn-status-show-process-buffer-internal t)
+    (save-excursion
+      (set-buffer "*svn-process*")
+      (diff-mode)
+      (font-lock-fontify-buffer))))
+
+(defun svn-log-edit-log-entry ()
+  "Edit the given log entry."
+  (interactive)
+  (let ((rev (svn-log-revision-at-point))
+        (log-message))
+    (svn-run-svn nil t 'propget-parse "propget" "--revprop" (concat "-r" rev) "svn:log")
+    (save-excursion
+      (set-buffer "*svn-process*")
+      (setq log-message (if (> (point-max) 1)
+                            (buffer-substring (point-min) (- (point-max) 1))
+                          "")))
+    (svn-status-pop-to-commit-buffer)
+    (delete-region (point-min) (point-max))
+    (insert log-message)
+    (goto-char (point-min))
+    (setq svn-log-edit-update-log-entry rev)))
+
+;; --------------------------------------------------------------------------------
+;; svn status persistent options
+;; --------------------------------------------------------------------------------
+
+(defun svn-status-base-dir ()
+  (let ((base-dir default-directory)
+        (dot-svn-dir)
+        (dir-below default-directory))
+    (setq dot-svn-dir (concat base-dir ".svn"))
+    (while (when (file-exists-p dot-svn-dir)
+             (setq base-dir (file-name-directory dot-svn-dir))
+             (string-match "\\(.+/\\).+/" dir-below)
+             (setq dir-below (match-string 1 dir-below))
+             (setq dot-svn-dir (concat dir-below ".svn"))))
+    base-dir))
+
+(defun svn-status-save-state ()
+  (interactive)
+  (let ((buf (find-file (concat (svn-status-base-dir) "++psvn.state"))))
+    (delete-region (point-min) (point-max))
+    (setq svn-status-options
+          (list
+           (list "sort-status-buffer" svn-status-sort-status-buffer)))
+    (insert (pp-to-string svn-status-options))
+    (save-buffer)
+    (kill-buffer buf)))
+
+(defun svn-status-load-state ()
+  (interactive)
+  (let ((file (concat (svn-status-base-dir) "++psvn.state")))
+    (if (file-readable-p file)
+        (with-temp-buffer
+          (insert-file-contents file)
+          (setq svn-status-options (read (current-buffer)))
+          (setq svn-status-sort-status-buffer
+                (nth 1 (assoc "sort-status-buffer" svn-status-options))))
+      (error "%s is not readable." file))
+    (message "Loaded %s" file)))
+
+(defun svn-status-toggle-sort-status-buffer ()
+  "If you turn off sorting, you can speed up M-x svn-status.
+However, the buffer is not correct sorted then.
+This function will be removed again, when a faster parsing and
+display routine for svn-status is available."
+  (interactive)
+  (setq svn-status-sort-status-buffer (not svn-status-sort-status-buffer))
+  (message (concat "The *svn-status* buffer will be"
+                   (if svn-status-sort-status-buffer "" " not")
+                   " sorted.")))
+
+;; --------------------------------------------------------------------------------
+;; svn status profiling
+;; --------------------------------------------------------------------------------
+;;; Note about profiling psvn:
+;;  (load-library "elp")
+;;  M-x elp-reset-all
+;;  (elp-instrument-package "svn-")
+;;  M-x svn-status
+;;  M-x elp-results
+
+(defun svn-status-elp-init ()
+  (interactive)
+  (require 'elp)
+  (elp-reset-all)
+  (elp-instrument-package "svn-")
+  (message "Run the desired svn command (e.g. M-x svn-status), then use M-x elp-results."))
+
+
 (provide 'psvn)
+
+;;; psvn.el ends here
