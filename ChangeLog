@@ -1,3 +1,12 @@
+2004-09-26  Yann Hodique  <Yann.Hodique@lifl.fr>
+
+	* dotemacs.el:
+	(muse-mode): autoload it
+	(project): properly request it
+
+	* dotemacs-cust.el:
+	(custom-set-variables): reuse sections for ChangeLogs
+
 2004-09-22  Yann Hodique  <Yann.Hodique@lifl.fr>
 
 	* perso/patches.el:

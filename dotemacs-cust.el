@@ -11,6 +11,7 @@
  '(LaTeX-verbatim-regexp "\\(verbatim\\*?\\|sigmalog\\)")
  '(Man-notify-method (quote bully))
  '(TeX-command-list (quote (("TeX" "tex '\\nonstopmode\\input %t'" TeX-run-TeX nil t) ("TeX Interactive" "tex %t" TeX-run-interactive nil t) ("LaTeX" "%l '\\nonstopmode\\input{%t}'" TeX-run-LaTeX nil t) ("LaTeX Interactive" "%l %t" TeX-run-interactive nil t) ("Omega" "lambda '\\nonstopmode\\input{%t}'" TeX-run-LaTeX nil "nil") ("Omega Interactive" "lambda %t" TeX-run-interactive nil "nil") ("LaTeX2e" "latex2e '\\nonstopmode\\input{%t}'" TeX-run-LaTeX nil t) ("View" "%v " TeX-run-silent t nil) ("Print" "%p %r " TeX-run-command t nil) ("Queue" "%q" TeX-run-background nil nil) ("File" "dvips %d -o %f " TeX-run-command t nil) ("BibTeX" "bibtex %s" TeX-run-BibTeX nil nil) ("Index" "makeindex %s" TeX-run-command nil t) ("Check" "lacheck %s" TeX-run-compile nil t) ("Spell" "<ignored>" TeX-run-ispell-on-document nil nil) ("Other" "" TeX-run-command t t) ("LaTeX PDF" "pdflatex '\\nonstopmode\\input{%t}'" TeX-run-LaTeX nil t) ("Makeinfo" "makeinfo %t" TeX-run-compile nil t) ("Makeinfo HTML" "makeinfo --html %t" TeX-run-compile nil t) ("AmSTeX" "amstex '\\nonstopmode\\input %t'" TeX-run-TeX nil t) ("Generate Preview" "See `preview-LaTeX-command'" TeX-inline-preview nil t))))
+ '(add-log-keep-changes-together t)
  '(ange-ftp-ftp-program-args (quote ("-i" "-n" "-g" "-v" "-u")))
  '(auto-insert nil)
  '(auto-insert-mode nil nil (autoinsert))

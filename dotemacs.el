@@ -1,5 +1,5 @@
 ;; -*- mode: emacs-lisp; mode: hi-lock; mode: page-break; auto-compile-lisp: nil; -*-
-;; $Id: dotemacs.el,v 1.52 2004/09/22 09:01:45 sigma Exp $
+;; $Id: dotemacs.el,v 1.53 2004/09/26 19:59:10 sigma Exp $
 
 ;; Hi-lock: (("^;;; \\(.*\\)" (1 'hi-black-hb t)))
 ;; Hi-lock: (("^ +;;; \\(.*\\)" (1 'hi-black-b t)))
@@ -132,27 +132,29 @@
 
   ;;; Muse
 
-(when (request 'muse-mode)
-  (request 'muse-html)
-  (request 'muse-latex)
-  (request 'muse-texinfo)
-  (request 'muse-docbook))
+(autoload 'muse-mode "muse-mode")
+(eval-after-load "muse-mode"
+  (progn
+    (request 'muse-html)
+    (request 'muse-latex)
+    (request 'muse-texinfo)
+    (request 'muse-docbook)))
 
   ;;; Changelog
 
-(require 'project)
+(when (request 'project)
+  (defun yh/project-changelog-file ()
+    (let ((rep (file-name-directory (buffer-file-name)))
+          (projects (delete-if 'not (mapcar (lambda (p) (yh/project-get p 'root)) (yh/project-list)))))
+      (mapcond (lambda (s) (string-match (expand-file-name s) rep))
+               (lambda (s) (expand-file-name (concat s "/Changelog")))
+               projects)))
 
-(defun yh/project-changelog-file ()
-  (let ((rep (file-name-directory (buffer-file-name)))
-        (projects (delete-if 'not (mapcar (lambda (p) (yh/project-get p 'root)) (yh/project-list)))))
-    (mapcond (lambda (s) (string-match (expand-file-name s) rep))
-             (lambda (s) (expand-file-name (concat s "/Changelog")))
-             projects)))
-
-(defadvice add-change-log-entry (around ad-add-change-log-entry act)
-  "Override default ChangeLog file according to project directory"
-  (let ((change-log-default-name (yh/project-changelog-file)))
-    ad-do-it))
+  (defadvice add-change-log-entry (around ad-add-change-log-entry act)
+    "Override default ChangeLog file according to project directory"
+    (let ((change-log-default-name (yh/project-changelog-file)))
+      ad-do-it))
+  )
 
 (add-hook 'change-log-mode-hook
           (lambda () (local-set-key (kbd "C-c C-c")
@@ -456,6 +458,7 @@ there are more than 1% of such letters then turn French accent mode on."
 
   ;;; pmwiki
 
+;; TODO: more features!!!
 (defun mywiki-open (name)
   (interactive "sName (default Main.WikiSandbox): ")
   (if (request 'pmwiki-mode)
@@ -502,12 +505,13 @@ there are more than 1% of such letters then turn French accent mode on."
 ;; see inside for more details...
 (request 'mycode)
 
-(add-hook 'c-mode-common-hook (lambda ()
-                                (let ((rep (when (buffer-file-name) (file-name-directory (buffer-file-name)))))
-                                  (when rep
-                                    (mapcond (lambda (s) (string-match (expand-file-name (yh/project-get s 'root)) rep))
-                                             (lambda (s) (c-set-style (or (yh/project-get s 'style) "personal")))
-                                             (yh/project-list))))))
+(when (request 'project)
+  (add-hook 'c-mode-common-hook (lambda ()
+                                  (let ((rep (when (buffer-file-name) (file-name-directory (buffer-file-name)))))
+                                    (when rep
+                                      (mapcond (lambda (s) (string-match (expand-file-name (yh/project-get s 'root)) rep))
+                                               (lambda (s) (c-set-style (or (yh/project-get s 'style) "personal")))
+                                               (yh/project-list)))))))
 
   ;;; Completion
 
