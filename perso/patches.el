@@ -289,5 +289,9 @@ activate-mark-hook"
 (ad-activate 'exchange-point-and-mark)
 (add-hook 'activate-mark-hook 'pg-show-mark)
 
+(require 'uniquify)
+(setq uniquify-buffer-name-style 'forward
+      uniquify-strip-common-suffix nil)
+
 (provide 'patches)
 ;;; patches.el ends here
