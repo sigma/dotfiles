@@ -224,10 +224,10 @@
 			(offs_new 0) (len_new 0)
 			type1 type2 type3 ref
 			(all t)
-			(args_reg "\\(\\([a-zA-Z]+\\)[ \t]+\\)?"
-				  "\\(\\([a-zA-Z]+\\)[ \t]+\\)?"
-				  "\\(\\([a-zA-Z]+\\)[ \t]+\\)?"
-				  "\\([&*]\\)?[ \t]*\\([a-zA-Z_][a-zA-Z_]*\\)?\\([ \t]*=[^,]+\\)?"))
+			(args_reg (concat "\\(\\([a-zA-Z]+\\)[ \t]+\\)?"
+                                          "\\(\\([a-zA-Z]+\\)[ \t]+\\)?"
+                                          "\\(\\([a-zA-Z]+\\)[ \t]+\\)?"
+                                          "\\([&*]\\)?[ \t]*\\([a-zA-Z_][a-zA-Z_]*\\)?\\([ \t]*=[^,]+\\)?")))
 		    (setq args_new (match-string 1))
 		    (yes-or-no-p "match")
 		    (while (and (not offs_org) (not offs_new))
@@ -249,9 +249,9 @@
 			(setq ref_reg "")
 		      (setq ref_reg (concat ref)))
 		    (if (not (bolp))
-			(insert-string "\n"))
+			(insert "\n"))
 					;		(yes-or-no-p "h")
-		    (insert-string (concat "\n/*!\n  \n*/\n\n"
+		    (insert (concat "\n/*!\n  \n*/\n\n"
 					   type1_reg type2_reg type3_reg ref_reg
 					   classname "::" name "(" args ")"
 					   "\n{\n}\n"))))
@@ -305,22 +305,6 @@ it is automaticly created from the list specified in `project-autoinsert-alist'"
       (setq autoinsert-list (append autoinsert-list (eval item)))
       (setq lst (cdr lst)))
     autoinsert-list))
-
-;; Make sure revive resumes on init
-(defun resume-try()
-  "Tries to resume a buffer if the file exists and adds `save-current-configuration' if it is loaded"
-  (if (file-exists-p revive:configuration-file)
-      (let ()
-	(resume)
-	(add-hook 'kill-emacs-hook 'save-current-configuration))))
-
-;; Make sure revive don't save it's configuration on exit when wiping
-(defun wipe-try()
-  "Wipes the revive configuration and removes the `save-current-configuration' from the exit hook"
-  (wipe)
-  (if (file-exists-p revive:configuration-file)
-      (delete-file revive:configuration-file))
-  (remove-hook 'kill-emacs-hook 'save-current-configuration))
 
 ;; Will align c/c++ variable declarations in the selected region
 ;; Example:
@@ -377,7 +361,7 @@ it is automaticly created from the list specified in `project-autoinsert-alist'"
 	       (abs-pos (car pos)))
 	  (goto-char abs-pos)
 	  (delete-region abs-pos col-end)
-	  (insert-string (make-string (+ (+ (- max-col col) 1) col-end-name) 32)))
+	  (insert (make-string (+ (+ (- max-col col) 1) col-end-name) 32)))
 	(setq curpos (cdr curpos))))))
 
 ;; Use the align package from ... instead
@@ -427,10 +411,6 @@ it is automaticly created from the list specified in `project-autoinsert-alist'"
 ;; Enable rectangle selection with highlighting, Author: Rick Sladkey
 (if option-package-load-rect-mark
      (option-load-package option-package-rect-mark))
-
-;; Enable revive mode, allows for saving editing status and window properties, Author: HIROSE Yuuji
-(if option-package-load-revive
-    (option-load-package option-package-revive))
 
 ;; Enable advanced scrolling, Author: Eric Eide
 (if (emacs-type-is-regular)
@@ -748,8 +728,6 @@ it is automaticly created from the list specified in `project-autoinsert-alist'"
   ;; c-mode-base-map because c-mode-map, c++-mode-map, objc-mode-map,
   ;; java-mode-map, and idl-mode-map inherit from it.
 
-  ;;Newline and indent source for enter.
-  (define-key c-mode-base-map "\C-m" 'newline-and-indent)
   (local-set-key [S-f4] 'align)
   (outline-minor-mode)
   (define-key esc-map "\t" 'project-expand-symbol)
@@ -787,7 +765,6 @@ it is automaticly created from the list specified in `project-autoinsert-alist'"
   (c-toggle-hungry-state t)
 
   ;;Newline and indent source for enter.
-  (define-key c-mode-base-map "\C-m" 'newline-and-indent)
   (local-set-key [RET] 'newline-and-indent)
   (c-set-style "ezphp")
 )
@@ -1072,23 +1049,6 @@ and LOADED is the name of the loaded variable."
 (defun option-package-end-blank-mode ()
   (blank-mode-off))
 
-(defun option-package-start-revive ()
-  (autoload 'save-current-configuration "revive" "Save status" t)
-  (autoload 'resume "revive" "Resume Emacs;; " t)
-  (autoload 'wipe "revive" "Wipe Emacs" t)
-  ;; Make sure the configuration is saved in a local directory
-  (setq revive:configuration-file ".revive.el")
-  ;; This is needed to avoid that the save-history buffer is revived as well
-  (setq revive:ignore-buffer-pattern "^\\( \\*\\)\\|\\(\\.emacs-histories\\)")
-  ;; Save on exit is optional, uncomment to always enable
-  ;; (add-hook 'kill-emacs-hook 'save-current-configuration)
-  (add-hook 'after-init-hook 'resume-try)
-  (option-enable-keys 'option-keys-revive-alist))
-
-(defun option-package-end-revive ()
-  (remove-hook 'after-init-hook 'resume-try)
-  (option-disable-keys 'option-keys-revive-alist))
-
 (defun option-save-history-toggle ()
   "Toggles the automatic saving of history between sessions"
   (if option-save-history-flag
@@ -1206,7 +1166,7 @@ in the Options menu and then selecting save global\)") '("OK" . t) '("Cancel" . 
 		  (beginning-of-buffer)
 		  (search-forward-regexp "\\(\\(\\(//[^\n]*\n\\)\\|\\(/\\*[^\\*]*\\*/[^\n]*\n\\)\\)*\\)[ \t]*\n")
 		  (goto-char (match-end 1))))
-	      (insert-string "\n"))))
+	      (insert "\n"))))
       (setq pos (point)))
     pos))
 
@@ -1245,7 +1205,7 @@ in the Options menu and then selecting save global\)") '("OK" . t) '("Cancel" . 
 		(if (not already-present)
 		    (save-excursion
 		      (goto-char (end-of-include-place))
-		      (insert-string (concat "#include " include-file "\n"))))))
+		      (insert (concat "#include " include-file "\n"))))))
 	  (setq includes (cdr includes))))))
 
 (defun project-looking-at-include()
@@ -2003,9 +1963,9 @@ print a message in the minibuffer with the result."
 					     "\\([ \t]*[a-zA-Z\.\-/]+\\([ \t]*\\\\[ \t]*[\n]\\)?\\)*")
 				     nil t)
 	      (save-restriction
-		(insert-string " \\\n")
+		(insert " \\\n")
 		(indent-relative)
-		(insert-string (file-relative-name file))))))))
+		(insert (file-relative-name file))))))))
 
 ;; Removes a file from the project
 (defun project-remove-file (project file keyword)
@@ -2141,9 +2101,6 @@ in normal, downcase and upcase letters, in BUFFER."
 	(setq mainbuf (find-file-noselect "main.cpp"))
 	(project-replace-class-name mainbuf "main" "")
 	(save-buffer)
-;; Use revive instead
-	(if option-package-available-revive
-	    (save-current-configuration))
 	(shell-command (concat "tmake -o Makefile " projectfile))
 	(project-update-menu)))))
 
@@ -2457,13 +2414,6 @@ in normal, downcase and upcase letters, in BUFFER."
 	     :style toggle
 	     :active option-package-available-rect-mark
 	     :selected option-package-load-rect-mark]
-	    ["Revive"
-	     (if option-package-load-revive
-		 (option-unload-package option-package-revive)
-	       (option-load-package option-package-revive))
-	     :style toggle
-	     :active option-package-available-revive
-	     :selected option-package-load-revive]
 	    ["Java Development Enviroment"
 	     (if option-package-load-jde
 		 (option-unload-package option-package-jde)
@@ -2515,16 +2465,6 @@ in normal, downcase and upcase letters, in BUFFER."
  	     :selected recentf-mode]
  	    )
 	   "---"
-	   ("Session"
-	    ["Save"
-	     (save-current-configuration)
-	     :active option-package-load-revive]
-	    ["Restore"
-	     (resume-try)
-	     :active option-package-load-revive]
-	    ["Wipe"
-	     (wipe-try)
-	     :active option-package-load-revive])
 	   ["ibuffer"
 	    (ibuffer)
 	    :active option-package-load-ibuffer]
@@ -2999,7 +2939,7 @@ in normal, downcase and upcase letters, in BUFFER."
 					     "[ \t\n]*{")
 				     nil t)
 	      (if (not (looking-at "[ \t\n]*\\(Q_OBJECT\\)"))
-		  (insert-string "\n\tQ_OBJECT"))
+		  (insert "\n\tQ_OBJECT"))
 	    (ding))))))
 
 ;(add-hook 'write-file-hooks '(lambda ()
@@ -3053,29 +2993,10 @@ in normal, downcase and upcase letters, in BUFFER."
 (if (file-exists-p ".emacs-extras")
     (load-file ".emacs-extras"))
 
-;; returns t if the current buffer is an emacs-client file
-(defun is-buffer-a-client ()
-  (interactive)
-  (let ((cls server-clients)
-	cl
-	bufs
-	buf
-	(ok nil))
-    (while cls
-      (setq cl (car cls))
-      (setq bufs (cdr cl))
-      (while bufs
-	(setq buf (car bufs))
-	(if (eq buf (current-buffer))
-	    (setq ok t))
-	(setq bufs (cdr bufs)))
-      (setq cls (cdr cls)))
-    ok))
-
 ;; If non-nil each line of text is exactly one screen line, else wrap text.
 (setq-default truncate-lines nil)
 
-(setq imenu-always-use-completion-buffer-p t)
+(setq imenu-use-popup-menu t)
 
 (defun change-var-in-file( var file val )
   "Changes the variable named var in the given file with the given val and saves it"

@@ -1,7 +1,10 @@
 2004-06-20  Yann Hodique  <Yann.Hodique@lifl.fr>
 
+	* perso/mycode.el:
+	useless code suppression
+
 	* perso/visible-mark-mode.el
-	(visible-mark-move-overlay): fixed functino when visible-mark-overlay is null
+	(visible-mark-move-overlay): fixed function when visible-mark-overlay is null
 
 	* dotemacs.el
 	(find-file-guessing): new function to wrap find-file
