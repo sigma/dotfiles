@@ -1,3 +1,11 @@
+2005-04-02  Yann Hodique  <Yann.Hodique@lifl.fr>
+
+	* config/changelog-config.el:
+	(yh/project-changelog-file): usual name is ChangeLog
+
+	* dotemacs.el:
+	(de-context-kill): don't throw an error, return to label instead
+
 2005-04-01  Yann Hodique  <Yann.Hodique@lifl.fr>
 
 	* perso/patches.el: suppress annoying advice

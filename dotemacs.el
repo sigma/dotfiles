@@ -458,23 +458,26 @@ Returns nil if no differences found, 't otherwise."
 (defun de-context-kill (arg)
   "Kill buffer, taking gnuclient into account."
   (interactive "p")
-  (when (and (buffer-modified-p)
-             buffer-file-name
-             (not (string-match "\\*.*\\*" (buffer-name)))
-             ;; erc buffers will be automatically saved
-             (not (eq major-mode 'erc-mode))
-             (= 1 arg))
-    (let ((differences 't))
-    (when (file-exists-p buffer-file-name)
-      (setq differences (diff-buffer-with-associated-file)))
-    (error (if differences
-               "Buffer has unsaved changes"
-             "Buffer has unsaved changes, but no differences wrt. the file"))))
-  (if (and (boundp 'gnuserv-minor-mode)
+  (catch 'return
+    (when (and (buffer-modified-p)
+               buffer-file-name
+               (not (string-match "\\*.*\\*" (buffer-name)))
+               ;; erc buffers will be automatically saved
+               (not (eq major-mode 'erc-mode))
+               (= 1 arg))
+      (let ((differences 't))
+        (when (file-exists-p buffer-file-name)
+          (setq differences (diff-buffer-with-associated-file)))
+        (message (if differences
+                   "Buffer has unsaved changes"
+                 "Buffer has unsaved changes, but no differences wrt. the file"))
+        (throw 'return nil)
+        ))
+    (if (and (boundp 'gnuserv-minor-mode)
              gnuserv-minor-mode)
-      (gnuserv-edit)
-    (set-buffer-modified-p nil)
-    (kill-buffer (current-buffer))))
+        (gnuserv-edit)
+      (set-buffer-modified-p nil)
+      (kill-buffer (current-buffer)))))
 
 
 ;;; Global key bindings

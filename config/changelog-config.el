@@ -35,7 +35,7 @@
     (let ((rep (file-name-directory (buffer-file-name)))
           (projects (delete-if 'not (mapcar (lambda (p) (yh/project-get p 'root)) (yh/project-list)))))
       (mapcond (lambda (s) (string-match (expand-file-name s) rep))
-               (lambda (s) (expand-file-name (concat s "/Changelog")))
+               (lambda (s) (expand-file-name (concat s "/ChangeLog")))
                projects)))
 
   (defadvice add-change-log-entry (around ad-add-change-log-entry act)
