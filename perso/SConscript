@@ -2,7 +2,9 @@ import glob
 
 Import('env')
 
+loc = env.Copy()
+
 src_files = glob.glob("*.el")
 
 for file in src_files:
-    env.Elisp(file)
+    loc.Elisp(file)

@@ -4,6 +4,6 @@ elisp = Builder(action = EMACS + ' $EFLAGS $SOURCE',
                 suffix = '.elc',
                 src_suffix = '.el')
 
-env = Environment(BUILDERS = {'Elisp' : elisp}, EFLAGS = '-batch -f batch-byte-compile')
+env = Environment(BUILDERS = {'Elisp' : elisp}, EFLAGS = '-L perso -batch -f batch-byte-compile')
 
 SConscript(['config/SConscript', 'perso/SConscript'], exports='env')
