@@ -1,5 +1,5 @@
 ;; -*- mode: emacs-lisp; auto-compile-lisp: nil; -*-
-;; $Id: dotemacs.el,v 1.20 2004/07/12 06:18:40 sigma Exp $
+;; $Id: dotemacs.el,v 1.21 2004/07/12 08:11:37 sigma Exp $
 
 ;; Use this one instead of require to ignore errors
 (defun request (pack)
@@ -429,10 +429,12 @@ there are more than 1% of such letters then turn French accent mode on."
 
 (defmacro make-double-command (name args doc-string interactive
                                       first-form second-form)
-    (let ((int-form (if (not interactive)
-                        '(interactive)
-                      (list 'interactive interactive))))
-      `(progn
+  "define a new command from 2 behaviors"
+  (declare (indent 2))
+  (let ((int-form (if (not interactive)
+                      '(interactive)
+                    (list 'interactive interactive))))
+    `(progn
        (defun ,name ,args ,doc-string
          ,int-form
          (if (eq last-command this-command)
@@ -440,13 +442,18 @@ there are more than 1% of such letters then turn French accent mode on."
                   (cons 'progn second-form)
                 second-form)
            ,first-form)))))
-(put 'make-double-command 'lisp-indent-function 2)
-;; See DefMacro for an explanation of this call to put
-;; (make-double-command my-home ()
-;;     "Go to beginning of line, or beginning of buffer."
-;;     nil
-;;     (beginning-of-line)
-;;     (beginning-of-buffer))
+
+(make-double-command my-home ()
+  "Go to beginning of line, or beginning of buffer."
+  nil
+  (beginning-of-line)
+  (beginning-of-buffer))
+
+(make-double-command my-end ()
+  "Go to end of line, or end of buffer."
+  nil
+  (end-of-line)
+  (end-of-buffer))
 
 (defun yh-c-rearrange-electrics ()
   "Rearrange electric chars according to current c-style"
@@ -652,8 +659,10 @@ there are more than 1% of such letters then turn French accent mode on."
 ;; These were traditional bindings, why did they change??
 (global-set-key [home] 'beginning-of-buffer)
 (global-set-key [end] 'end-of-buffer)
-(global-set-key [\C-home] 'beginning-of-line)
-(global-set-key [\C-end] 'end-of-line)
+
+;; "intelligent" home and end
+(global-set-key [\C-home] 'my-home)
+(global-set-key [\C-end] 'my-end)
 
 ;; mouse scrolling
 (unless (featurep 'mwheel)
@@ -674,9 +683,9 @@ there are more than 1% of such letters then turn French accent mode on."
 (global-set-key (kbd "C-x k") (lambda (arg) (interactive "P")
                                 (if (null arg)
                                     (kill-this-buffer)
-                                  (kill-some-buffers))))
+                                  (mapcar (lambda (buf) (kill-buffer buf)) (buffer-list)))))
 (global-set-key [(f4)] 'speedbar-get-focus)
-(global-set-key (kbd "H-c m") (lambda () (interactive) (gnus 4)))
+(global-set-key (kbd "H-c m") (lambda () (interactive) (gnus 2)))
 (global-set-key (kbd "H-c x") 'chmod-file)
 (global-set-key (kbd "H-c i") 'init)
 (global-set-key (kbd "H-c h") 'auto-insert)

@@ -1,5 +1,10 @@
 2004-07-12  Yann Hodique  <Yann.Hodique@lifl.fr>
 
+	* dotemacs.el
+	(make-double-command): use (declare) in macro
+	(my-home): new command, bound to C-Home
+	(my-end): new command, bound to C-End
+
 	* perso/patches.el
 	(yank-rpop): go forward in kill ring for yanking (bound to M-Y)
 
