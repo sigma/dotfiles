@@ -39,6 +39,7 @@
                                                                          page-break-string-char)))))
     table))
 
+;;;###autoload
 (define-minor-mode page-break-mode
     "Toggle Page Break mode.
 

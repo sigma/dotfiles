@@ -1,5 +1,5 @@
 ;; -*- mode: emacs-lisp; auto-compile-lisp: nil; -*-
-;; $Id: dotemacs.el,v 1.29 2004/07/20 15:21:33 sigma Exp $
+;; $Id: dotemacs.el,v 1.30 2004/07/27 09:11:52 sigma Exp $
 
 ;; Load site-specific stuff
 (if (file-exists-p (expand-file-name "~/.emacs-local"))
@@ -105,8 +105,7 @@
 ;;
 
 ;; Load default classes
-(if (file-exists-p (expand-file-name "~/.emacs.d/emacs-d-vars.el"))
-    (load-file (expand-file-name "~/.emacs.d/emacs-d-vars.el")))
+(request 'emacs-d-vars)
 
 ;; open compressed files
 (request 'jka-compr)
@@ -337,7 +336,7 @@
       (add-hook 'LaTeX-mode-hook 'outline-minor-mode)
       ;; preview-latex is great
       (when (request 'preview)
-          (add-hook 'LaTeX-mode-hook #'LaTeX-preview-setup))
+          (add-hook 'LaTeX-mode-hook 'LaTeX-preview-setup))
       ;; point my typos
       (add-hook 'LaTeX-mode-hook 'flyspell-mode)
       ;; Most people don't want that... I do
@@ -412,12 +411,6 @@ there are more than 1% of such letters then turn French accent mode on."
       (add-hook 'LaTeX-mode-hook 'install-french-accent-mode-if-needed)
       (add-hook 'text-mode-hook 'install-french-accent-mode-if-needed)
       ))
-
-  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-  ;; Boxquotes : nice boxes for quotations
-  ;;
-
-(request 'boxquote)
 
   ;;;;;;;;;;;;;;;;;;
   ;; Various hacks
@@ -503,7 +496,6 @@ there are more than 1% of such letters then turn French accent mode on."
                            (2 font-lock-constant-face nil t))))
 
 (request 'mycompletion)
-(request 'page-break)
 
 
 ;;;;;;;;;;;;;;;;;;;;
@@ -533,7 +525,7 @@ there are more than 1% of such letters then turn French accent mode on."
 (add-hook 'after-save-hook 'byte-compile-elisp)
 
 ;; I hate trailing whitespaces (use with caution)
-(add-hook 'write-file-hooks 'delete-trailing-whitespace)
+;;(add-hook 'write-file-hooks 'delete-trailing-whitespace)
 
 ;; apply chmod over the current file (usually a+x for scripts)
 (defun chmod-file ()
@@ -562,29 +554,6 @@ there are more than 1% of such letters then turn French accent mode on."
   (insert (format "ASCII characters up to number %d.\n" 254))  (let ((i 0))
     (while (< i 254)      (setq i (+ i 1))
       (insert (format "%4d %c\n" i i))))  (beginning-of-buffer))
-
-;; explicit name :-)
-(defun gpl-header ()
-  "Includes a header in the edited file."
-  (let ((name (buffer-name)))
-    (with-temp-buffer
-      (insert (format "/*\n%-75s\n" (concat " *  File: " name)))
-      (insert (format "%-75s\n" (concat " *  Created: " (calendar-date-string (calendar-current-date)))))
-      (insert (format "%-75s\n" " *  Time-stamp: <>"))
-      (insert (format "%-75s\n" (concat " *  Copyright: " user-full-name)))
-      (insert (format "%-75s\n */\n" (concat " *  Email: " user-mail-address)))
-      (insert (format "
-/************************************************************************
- *                                                                      *
- * This program is free software; you can redistribute it and/or modify *
- * it under the terms of the GNU General Public License as published by *
- * the Free Software Foundation; either version 2 of the License, or    *
- * (at your option) any later version.                                  *
- *                                                                      *
- ************************************************************************/
-
-"))
-      (buffer-string))))
 
 (defun yank-and-forward-line ()
   (interactive)
@@ -705,13 +674,17 @@ there are more than 1% of such letters then turn French accent mode on."
 	 (ecb-deactivate)
        (ecb-activate)))))
 
+(global-set-key [(hyper z)]               'zap-upto-char)
+(global-set-key [(hyper meta z)]          'zap-to-char)
+(global-set-key [(shift hyper z)]         'zap-following-char)
+(global-set-key [(shift hyper meta z)]    'zap-from-char)
+
 ;;;;;;;;;;;;;;
 ;; Autoloads
 ;;
 (autoload 'expand-member-functions "member-functions" "Expand C++ member function declarations" t)
 (autoload 'mode-compile "mode-compile" "Command to compile current buffer file based on the major mode" t)
 (autoload 'mode-compile-kill "mode-compile" "Command to kill a compilation launched by `mode-compile'" t)
-;; Rectangles operations
 (autoload 'rm-set-mark "rect-mark" "Set mark for rectangle." t)
 (autoload 'rm-exchange-point-and-mark "rect-mark" "Exchange point and mark for rectangle." t)
 (autoload 'rm-kill-region "rect-mark" "Kill a rectangular region and save it in the kill ring." t)
@@ -719,16 +692,15 @@ there are more than 1% of such letters then turn French accent mode on."
 (autoload 'gnuserv-start "gnuserv-compat" "Allow this Emacs process to be a server for client processes." t)
 (autoload 'speedbar-frame-mode "speedbar" "Popup a speedbar frame" t)
 (autoload 'speedbar-get-focus "speedbar" "Jump to speedbar frame" t)
-(autoload 'trivial-cite "tc" t t)
 (autoload 'teyjus "teyjus" "Run an inferior Teyjus process." t)
 (autoload 'teyjus-edit-mode "teyjus" "Syntax Highlighting, etc. for Lambda Prolog" t)
 (autoload 'sawfish-mode "sawfish" "sawfish-mode" t)
 (autoload 'map-lines "map-lines" "Map COMMAND over lines matching REGEX." t)
-(autoload 'htmlize-buffer "htmlize" "" t nil)
-(autoload 'htmlize-region "htmlize" "" t nil)
-(autoload 'htmlize-file "htmlize" "" t nil)
-(autoload 'htmlize-many-files "htmlize" "" t nil)
-(autoload 'htmlize-many-files-dired "htmlize" "" t nil)
+(autoload 'htmlize-buffer "htmlize" "Provide an html page from the current buffer" t nil)
+(autoload 'htmlize-region "htmlize" "Provide an html page from the current region" t nil)
+(autoload 'htmlize-file "htmlize" "Provide an html page from the current file" t nil)
+(autoload 'htmlize-many-files "htmlize" "Provide an html page from files" t nil)
+(autoload 'htmlize-many-files-dired "htmlize" "Provide an html page from files marked in dired" t nil)
 (autoload 'make-regexp "make-regexp" "Return a regexp to match a string item in STRINGS.")
 (autoload 'make-regexps "make-regexp" "Return a regexp to REGEXPS.")
 (autoload 'camelCase-mode "camelCase-mode" nil t)
@@ -736,6 +708,31 @@ there are more than 1% of such letters then turn French accent mode on."
 (autoload 'turn-on-eldoc-mode "eldoc" "Activate eldoc" t nil)
 (autoload 'isearchb-activate "isearchb" "Activate isearchb" t nil)
 (autoload 'ecb-activate "ecb" "Emacs Code Browser" t nil)
+(autoload 'page-break-mode "page-break" "Visible page markers" t nil)
+(autoload 'boxquote-title "boxquote" "" t nil)
+(autoload 'boxquote-region "boxquote" "" t nil)
+(autoload 'boxquote-buffer "boxquote" "" t nil)
+(autoload 'boxquote-insert-file "boxquote" "" t nil)
+(autoload 'boxquote-kill-ring-save "boxquote" "" t nil)
+(autoload 'boxquote-yank "boxquote" "" t nil)
+(autoload 'boxquote-defun "boxquote" "" t nil)
+(autoload 'boxquote-paragraph "boxquote" "" t nil)
+(autoload 'boxquote-boxquote "boxquote" "" t nil)
+(autoload 'boxquote-describe-function "boxquote" "" t nil)
+(autoload 'boxquote-describe-variable "boxquote" "" t nil)
+(autoload 'boxquote-describe-key "boxquote" "" t nil)
+(autoload 'boxquote-shell-command "boxquote" "" t nil)
+(autoload 'boxquote-text "boxquote" "" t nil)
+(autoload 'boxquote-narrow-to-boxquote "boxquote" "" t nil)
+(autoload 'boxquote-narrow-to-boxquote-content "boxquote" "" t nil)
+(autoload 'boxquote-kill "boxquote" "" t nil)
+(autoload 'boxquote-fill-paragraph "boxquote" "" t nil)
+(autoload 'boxquote-unbox-region "boxquote" "" t nil)
+(autoload 'boxquote-unbox "boxquote" "" t nil)
+(autoload 'zap-upto-char "zap-char" "" t nil)
+(autoload 'zap-to-char "zap-char" "" t nil)
+(autoload 'zap-following-char "zap-char" "" t nil)
+(autoload 'zap-from-char "zap-char" "" t nil)
 
 ;; (require 'planner-config)
 (request 'emacs-wiki-config)
@@ -744,18 +741,9 @@ there are more than 1% of such letters then turn French accent mode on."
   (xterm-extra-keys))
 
 (when (request 'multi-region)
-  (define-key global-map (kbd "C-M-m") multi-region-map))
-
-(when (request 'zap-char)
-  (progn
-    (global-set-key [(hyper z)]               'zap-upto-char)
-    (global-set-key [(hyper meta z)]          'zap-to-char)
-    (global-set-key [(shift hyper z)]         'zap-following-char)
-    (global-set-key [(shift hyper meta z)]    'zap-from-char)))
+ (global-set-key (kbd "C-M-m") multi-region-map))
 
 (request 'elscreen)
-;(require 'url)
-;(require 'w3)
 
 (request 'w3m-load)
 

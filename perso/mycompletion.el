@@ -26,6 +26,28 @@
 
 ;;; Code:
 
+;; explicit name :-)
+(defun gpl-header ()
+  "Includes a header in the edited file."
+  (let ((name (buffer-name)))
+    (with-temp-buffer
+      (insert (format "/*\n%-75s\n" (concat " *  File: " name)))
+      (insert (format "%-75s\n" (concat " *  Created: " (calendar-date-string (calendar-current-date)))))
+      (insert (format "%-75s\n" " *  Time-stamp: <>"))
+      (insert (format "%-75s\n" (concat " *  Copyright: " user-full-name)))
+      (insert (format "%-75s\n */\n" (concat " *  Email: " user-mail-address)))
+      (insert (format "
+/************************************************************************
+ *                                                                      *
+ * This program is free software; you can redistribute it and/or modify *
+ * it under the terms of the GNU General Public License as published by *
+ * the Free Software Foundation; either version 2 of the License, or    *
+ * (at your option) any later version.                                  *
+ *                                                                      *
+ ************************************************************************/
+
+"))
+      (buffer-string))))
 
   ;;;;;;;;;;;;;;;;
   ;; Auto-insert
@@ -137,7 +159,6 @@
 (require 'hippie-exp)
 (setq hippie-expand-try-functions-list
       '(
-;	try-complete-tempo-tag
         tempo-complete-tag
 	try-expand-dabbrev
 	try-expand-dabbrev-all-buffers

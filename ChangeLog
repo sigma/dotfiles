@@ -1,3 +1,29 @@
+2004-07-27  Yann Hodique  <Yann.Hodique@lifl.fr>
+
+	* perso/tempo-c++.el 
+	("c-include"): fix template basis
+	("c-ifdef"): fix template basis
+	("c-ifndef"): fix template basis
+
+	* perso/patches.el 
+	(add-mhook): add same hook to multiple modes
+
+	* perso/page-break.el: 
+	(page-break-mode): add autoload
+
+	* perso/mycompletion.el: 
+	(gpl-header): move here, where it is needed
+
+	* emacs.d/emacs-d-vars.el
+	suppress useless code
+	(provide): allow require 
+
+	* dotemacs.el 
+	(emacs-d-vars): use request instead of load-file
+	(request): remove useless #
+	disable delete-trailing-whitespace
+	more autoloads
+
 2004-07-23  Yann Hodique  <Yann.Hodique@lifl.fr>
 
 	* perso/patches.el

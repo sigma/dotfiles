@@ -137,6 +137,8 @@
                               ,@body)) flist)))
     `(progn ,@defs)))
 
+(defun add-mhook (mlist func) (dolist (m mlist) (add-hook m func)))
+
 (defmadvice (dframe-handle-make-frame-visible dframe-handle-iconify-frame dframe-handle-delete-frame)
   (around dframe act)
   "Inhibit message function"

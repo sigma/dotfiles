@@ -44,7 +44,7 @@
                           "# i"
                           'c-tempo-keys-alist
                           '("#include <" r ".h>" > n)
-                          "include"
+                          "#include"
                           "Insert a #include <> statement"
                           'c-tempo-tags)
 
@@ -54,7 +54,7 @@
                           '("#ifdef " (p "ifdef-clause: " clause) > n> p n
                             "#else /* !(" (s clause) ") */" n> p n
                             "#endif /* " (s clause)" */" n>)
-                          "ifdef"
+                          "#ifdef"
                           "Insert a #ifdef #else #endif statement"
                           'c-tempo-tags)
 
@@ -64,7 +64,7 @@
                           '("#ifndef " (p "ifndef-clause: " clause) > n
                             "#define " (s clause) n> n ~ n n
                             "#endif /* " (s clause)" */" n>)
-                          "ifndef"
+                          "#ifndef"
                           "Insert a #ifndef #define #endif statement"
                           'c-tempo-tags)
 

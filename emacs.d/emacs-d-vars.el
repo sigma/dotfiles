@@ -177,11 +177,6 @@ each ITEM looks like (FUNCTION BODY). If FUNCTION is non-nil the
 BODY is evaluated and stored, if FUNCTION is nil the BODY is
 expected to be variable and it's content is stored.")
 
-(if (emacs-type-is-regular)
-    (append (list 'resize-minibuffer-window-max-height
-		  'resize-minibuffer-mode)
-	    option-save-alist))
-
 (defvar option-config-file "~/.emacs-options"
   "The global file to save options to.")
 (if (not (emacs-type-is-regular))
@@ -341,4 +336,5 @@ don't set this directly but rather use `option-config-validate' or `option-confi
     option-package-autorevert
     option-package-line-highlight))
 
+(provide 'emacs-d-vars)
 ;;; emacs-d-vars.el ends here
