@@ -1,3 +1,8 @@
+2004-07-28  Yann Hodique  <Yann.Hodique@lifl.fr>
+
+	* dotemacs.el
+	suppress useless bindings
+
 2004-07-27  Yann Hodique  <Yann.Hodique@lifl.fr>
 
 	* perso/mycode.el: 
