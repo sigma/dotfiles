@@ -301,7 +301,7 @@ for template arguments lists."
             (t (push el (car sub-expr-stack)))))))
 
 (let ((current-template-spec nil))
-(defun mf--next-class (blockified-list)
+  (defun mf--next-class (blockified-list)
     "Find the next occurance of \"class\" in a blockified token list.
 The returned list is the start of a complete class declaration."
     (let ((position (position-if #'(lambda (el)
@@ -320,7 +320,7 @@ The returned list is the start of a complete class declaration."
               (mf--next-class (cdr result))))
         nil)))
 
-(defun mf--attach-template-spec (decl)
+  (defun mf--attach-template-spec (decl)
     "Hook the current-template-spec onto the given decl, if there is one."
     (if current-template-spec
         (cons current-template-spec decl)
@@ -495,7 +495,7 @@ The blockified list must begin with a complete class declaration."
 (defun mf--list-member-fn-decls-buffer (buffer-name)
   "Extract a list of member function declarations from a .h file"
   (let ((tl (mf--blockify (mf--remove-preproc-dirs
-                       (mf--tokenize-buffer buffer-name))))
+                           (mf--tokenize-buffer buffer-name))))
         (result (list)))
     (while (setq tl (mf--next-class (mf--template-specify tl)))
       (let ((mf--class-name (mf--class-name tl))
@@ -522,7 +522,7 @@ Matching element is discarded."
        (right list (cdr right)))
       ((null right) (list (nreverse left)))
     (if (funcall test (car right))
-          (return-from nil (list
+        (return-from nil (list
                           (nreverse left)
                           (cdr right))))))
 
@@ -541,24 +541,24 @@ Matching element is discarded."
          ((and (eq (car a1) 'identifier)
                (eq (car a2) 'identifier))
           (equal (nthcdr (+ 1 where) d1) ; check that the rest of the list is the same.
-                  (nthcdr (+ 1 where) d2)))
+                 (nthcdr (+ 1 where) d2)))
          ;; 2. one or the other argument list is missing an identifier
          ;; at the point where the mismatch occurs.
          ((eq (car a1) 'identifier)
           (equal (nthcdr (+ 1 where) d1)
-                  (nthcdr where d2)))   ; check that the rest of the list is the same.
+                 (nthcdr where d2))) ; check that the rest of the list is the same.
          ((eq (car a2) 'identifier)
           (equal (nthcdr (+ 1 where) d2)
-                  (nthcdr where d1)))   ; check that the rest of the list is the same.
+                 (nthcdr where d1))) ; check that the rest of the list is the same.
          ;; anything else means not equal.
          (t nil))))))
 
 (defun mf--equal-args (args1 args2)
   "Compare two argument lists."
   (labels ((comma-op-p (el) (and
-                          (eq (car el) 'operator)
-                          (string-equal (second el) ","))))
-    (or (equal args1 args2)            ; identical args
+                             (eq (car el) 'operator)
+                             (string-equal (second el) ","))))
+    (or (equal args1 args2)             ; identical args
         ;; Split the args lists into individual argument declarations
         ;; at comma operators.
         ;; Compare the individual declarations; they must be in the same
@@ -566,15 +566,15 @@ Matching element is discarded."
         ;; pairwise.
         (every #'(lambda (a b) (mf--equal-param-decl a b))
                (mf--split-at (cdr args1)
-                #'(lambda (x) (comma-op-p x)))
+                             #'(lambda (x) (comma-op-p x)))
                (mf--split-at (cdr args2)
-                #'(lambda (x) (comma-op-p x)))))))
+                             #'(lambda (x) (comma-op-p x)))))))
 
 (defun mf--equal-decls (decl1 decl2)
   "Compare two decls.
 Decls are the same even if they differ in the names, but
 not the types, of their formal parameters."
-  (or (equal decl1 decl2)              ; identical decls.
+  (or (equal decl1 decl2)               ; identical decls.
       (do* ((d1 decl1 (cdr d1))
             (d2 decl2 (cdr d2))
             (el1 (car d1) (car d1))
@@ -654,14 +654,14 @@ also needed for gcc."
   "Format a comment string for a member function definition."
   (if mf--insert-commentary
       (format (concat "%s\n// CLASS NAME: %s\n"
-                  "// MEMBER NAME: %s \n"
-                  "// DESCRIPTION:\n//\n//\n"
-                  "// HISTORY: \n//\t%s\t%s\tCreated\n//\n")
-          (make-string 70 ?/)
-          (mf--class-name-decl decl)
-          (mf--function-name-decl decl)
-          date-string
-          (funcall mf--user-name-function))
+                      "// MEMBER NAME: %s \n"
+                      "// DESCRIPTION:\n//\n//\n"
+                      "// HISTORY: \n//\t%s\t%s\tCreated\n//\n")
+              (make-string 70 ?/)
+              (mf--class-name-decl decl)
+              (mf--function-name-decl decl)
+              date-string
+              (funcall mf--user-name-function))
     ""))
 
 (defun mf--format-empty-template-definition (decl)
@@ -772,7 +772,7 @@ also needed for gcc."
         (if (string-match "//.*$" this-line)
             t
           (progn
-            (goto-char where)           ; check for potentially multi-line c style comment
+            (goto-char where) ; check for potentially multi-line c style comment
             (search-backward-regexp "/\\*" (point-min) t)
             (let ((comment-end (search-forward-regexp "\\*/" (point-max) t)))
               (if comment-end
@@ -801,7 +801,7 @@ definitions with large bodies.
 Returns the name of a temporary buffer.  The caller should delete the
 temp buffer when he is done with it."
   (let ((buffer-name (make-temp-name cfile))
-        (contents (buffer-substring (point-min) (point-max))))  ; Assumes cfile is already current buffer.
+        (contents (buffer-substring (point-min) (point-max)))) ; Assumes cfile is already current buffer.
     (save-excursion
       (find-file-noselect buffer-name t) ; t means don't warn.
       (set-buffer buffer-name)
@@ -848,9 +848,9 @@ implementation file."
               (set-buffer c-buffer)
               (setq mf--saved-string (mf--format-undefined-decls-from-files (file-name-nondirectory header) temp-file))
               (set-buffer c-buffer)
-	    (insert mf--saved-string)
-	    (set-buffer (get-buffer temp-file))
-	    (set-buffer-modified-p nil))
+              (insert mf--saved-string)
+              (set-buffer (get-buffer temp-file))
+              (set-buffer-modified-p nil))
             (kill-buffer temp-file)))))))
 
 (provide 'member-function)
