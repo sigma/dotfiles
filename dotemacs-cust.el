@@ -16,7 +16,6 @@
  '(auto-insert-mode nil nil (autoinsert))
  '(auto-insert-query (quote function))
  '(auto-revert-check-vc-info t)
- '(backup-directory-alist (quote (("." . "~/.backups"))))
  '(bbdb-complete-name-allow-cycling t)
  '(bbdb-dwim-net-address-allow-redundancy t)
  '(blink-cursor nil)

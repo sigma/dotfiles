@@ -62,6 +62,7 @@
        (not (string-match "/News/" filename))))
 
 (setq backup-enable-predicate 'ecm-backup-enable-predicate)
+(setq backup-directory-alist '(("." . "~/.backups")))
 
 ;; Put autosaves files in a single directory too
 (setq auto-save-directory (expand-file-name "~/.autosaves/"))
