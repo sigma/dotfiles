@@ -1,3 +1,8 @@
+2004-09-20  Yann Hodique  <Yann.Hodique@lifl.fr>
+
+	* dotgnus.el:
+	(bbdb/send-hook): use it
+
 2004-09-19  Yann Hodique  <Yann.Hodique@lifl.fr>
 
 	* perso/planner-config.el:

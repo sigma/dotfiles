@@ -1,5 +1,5 @@
 ;; -*- mode: emacs-lisp; mode: hi-lock; mode: page-break; auto-compile-lisp: nil; -*-
-;; $Id: dotgnus.el,v 1.13 2004/09/16 08:04:33 sigma Exp $
+;; $Id: dotgnus.el,v 1.14 2004/09/20 10:09:12 sigma Exp $
 
 ;; Hi-lock: (("^;;; \\(.*\\)" (1 'hi-black-hb t)))
 ;; Hi-lock: (("^ +;;; \\(.*\\)" (1 'hi-black-b t)))
@@ -762,7 +762,10 @@ Must be called from the `gnus-select-group-hook'."
 (require 'gnus-sum)
 (require 'nntodo)
 
-(require 'moy-bbdb)
+(autoload 'bbdb/send-hook "moy-bbdb"
+  "Function to be added to `message-send-hook' to notice records when sending messages" t)
+
+(add-hook 'message-send-hook 'bbdb/send-hook)
 
 (autoload 'trivial-cite "tc" t t)
 
