@@ -1,5 +1,5 @@
 ;; -*- mode: emacs-lisp; auto-compile-lisp: nil; -*-
-;; Time-stamp: <15/06/2004 19:13:31 Yann Hodique>
+;; Time-stamp: <16/06/2004 11:12:10 Yann Hodique>
 
 ;; Use this one instead of require to ignore errors
 (defun request (pack)
@@ -55,8 +55,15 @@
 ;; Load the emacs type verifier first (gnu emacs, xemacs, ...)
 (request 'emacs-type)
 
-;;;;;;;;;;;;;
-;; Charsets
+(if (request 'desktop)
+    (progn
+      (desktop-load-default)
+      (desktop-read)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Charsets & languages
+
+(add-to-list 'ispell-dictionary-alist '("latin" "[A-Za-z]" "[^A-Za-z]" "[']" nil nil "~tex" iso-8859-1))
 
 (set-language-environment 'latin-1)
 (prefer-coding-system 'latin-1)
@@ -64,9 +71,10 @@
 (setq unibyte-display-via-language-environment t)
 (setq-default ctl-arrow 'latin-9)
 
-(require 'ucs-tables)
-(unify-8859-on-encoding-mode 1)
-(unify-8859-on-decoding-mode 1)
+(if (request 'ucs-tables)
+    (progn
+      (unify-8859-on-encoding-mode 1)
+      (unify-8859-on-decoding-mode 1)))
 
 (defun sk-insert-euro (&optional arg) "Insert Euro ISO 8859-15."
   (interactive "*P")
@@ -93,7 +101,7 @@
     (load-file (expand-file-name "~/.emacs.d/emacs-d-vars.el")))
 
 ;; open compressed files
-(autoload 'jka-compr-installed-p "jka-compr")
+(request 'jka-compr)
 (if (not (jka-compr-installed-p)) (auto-compression-mode))
 
 
@@ -179,18 +187,7 @@
   ;;;;;;;;;;
   ;; CEDET
   ;;
-(require 'eldoc)
-(load-file "~/.emacs.d/cedet/common/cedet.el")
-
-  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-  ;; Ecb : Emacs Code Browser
-  ;;
-
-(if (request 'ecb)
-    (progn
-      (add-hook 'ecb-activate-hook
-                (lambda ()
-                  (ecb-toggle-compile-window -1)))))
+(require 'cedet)
 
   ;;;;;;;;;;;;;;;
   ;; Completion
@@ -238,8 +235,8 @@
   ;; Latex
   ;;
 
-(request 'typopunct)
-(typopunct-change-language 'francais t)
+;; (request 'typopunct)
+;; (typopunct-change-language 'francais t)
 (eval-after-load "latex"
   '(add-to-list 'LaTeX-style-list '("prosper")))
 
@@ -336,12 +333,6 @@ there are more than 1% of such letters then turn French accent mode on."
 
 (request 'boxquote)
 
-  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-  ;; Keytable : browse keybindings
-  ;;
-
-(request 'keytable)
-
   ;;;;;;;;;;;;;;;;;;
   ;; Various hacks
   ;;
@@ -385,6 +376,10 @@ there are more than 1% of such letters then turn French accent mode on."
                                         (t
                                          (c-set-style "personal")))
                                   )) t)
+
+(add-hook 'emacs-lisp-mode-hook 'turn-on-eldoc-mode)
+(add-hook 'lisp-interaction-mode-hook 'turn-on-eldoc-mode)
+(add-hook 'ielm-mode-hook 'turn-on-eldoc-mode)
 
 (request 'mycompletion)
 (request 'page-break)
@@ -552,6 +547,8 @@ there are more than 1% of such letters then turn French accent mode on."
 (global-set-key (kbd "H-c h") 'auto-insert)
 (global-set-key (kbd "H-x H-f") (lambda () (interactive) (require 'ffap) (find-file (ffap-guesser))))
 
+(define-key global-map (kbd "H-s") 'isearchb-activate)
+
 (define-key-after (lookup-key global-map [menu-bar tools])
       [speedbar] '("Speedbar" . speedbar-frame-mode) [calendar])
 
@@ -600,8 +597,12 @@ there are more than 1% of such letters then turn French accent mode on."
 (autoload 'make-regexps "make-regexp"
   "Return a regexp to REGEXPS.")
 (autoload 'camelCase-mode "camelCase-mode" nil t)
+(autoload 'keytable "keytable" "Browse key bindings" t nil)
+(autoload 'turn-on-eldoc-mode "eldoc" "Activate eldoc" t nil)
+(autoload 'isearchb-activate "isearchb" "Activate isearchb" t nil)
+(autoload 'ecb-activate "ecb" "Emacs Code Browser" t nil)
 
-(require 'planner-config)
+;; (require 'planner-config)
 (require 'emacs-wiki-config)
 
 (when (string= "xterm" (getenv "TERM"))
@@ -610,9 +611,6 @@ there are more than 1% of such letters then turn French accent mode on."
 
 (require 'multi-region)
 (define-key global-map (kbd "C-M-m") multi-region-map)
-
-(require 'isearchb)
-(define-key global-map [(hyper ?s)] 'isearchb-activate)
 
 (require 'zap-char)
 (global-set-key [(hyper z)]               'zap-upto-char)
@@ -632,7 +630,5 @@ there are more than 1% of such letters then turn French accent mode on."
 
 (require 'color-moccur)
 (require 'moccur-edit)
-
-(add-to-list 'ispell-dictionary-alist '("latin" "[A-Za-z]" "[^A-Za-z]" "[']" nil nil "~tex" iso-8859-1))
 
 (message ".emacs loaded")
