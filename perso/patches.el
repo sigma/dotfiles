@@ -111,13 +111,8 @@
 (setq auto-save-directory (expand-file-name "~/.autosaves/"))
 (require 'auto-save "auto-save.el" t)
 
-;; Why the hell should they be disabled?
-(put 'downcase-region 'disabled nil)
-(put 'upcase-region 'disabled nil)
-(put 'narrow-to-region 'disabled nil)
-(put 'narrow-to-page 'disabled nil)
-(put 'set-goal-column 'disabled nil)
-(put 'erase-buffer 'disabled nil)
+;; Why the hell should some commands be disabled?
+(setq disabled-command-hook nil)
 
 ;; scroll-margin does not work with hl-line :-(
 (defvar top-margin)
