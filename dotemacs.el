@@ -91,6 +91,10 @@
 
 (windmove-default-keybindings 'alt)
 
+(setq special-display-buffer-names
+      (nconc '("*Backtrace*" "*VC-log*" "*compilation*" "*grep*")
+  	     special-display-buffer-names))
+
 
 ;;; Charsets & languages
 
@@ -739,6 +743,13 @@ there are more than 1% of such letters then turn French accent mode on."
 
 (make-main-frame)
 
+(defun my-occur ()
+      "Switch to *Occur* buffer, or run `occur'."
+      (interactive)
+      (if (get-buffer "*Moccur*")
+          (switch-to-buffer "*Moccur*")
+        (call-interactively 'moccur)))
+
 
 ;;; Global key bindings
 
@@ -746,8 +757,11 @@ there are more than 1% of such letters then turn French accent mode on."
 ;; Depending on your keyboard you may want another one binding
 (global-set-key (kbd "C-x ~") 'previous-error)
 (global-set-key (kbd "C-c s") 'eshell)
-(global-set-key (kbd "C-c c") 'mode-compile)
+(global-set-key (kbd "C-c c") 'compile)
 (global-set-key (kbd "C-c k") 'mode-compile-kill)
+(global-set-key (kbd "C-c g") 'goto-line)
+(global-set-key (kbd "C-c o") 'my-occur)
+
 (global-set-key [\C-tab] 'other-window)
 
 ;; These were traditional bindings, why did they change??
