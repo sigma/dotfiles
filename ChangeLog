@@ -1,5 +1,9 @@
 2004-10-13  Yann Hodique  <Yann.Hodique@lifl.fr>
 
+	* dotemacs-cust.el:
+	(fill-column): set it to 79, you idiot! :)
+	(custom-set-faces): modify tabbar faces
+
 	* dotemacs.el:
 	perform debug on error
 	(sh-mode): more colors
