@@ -2062,19 +2062,26 @@ Otherwise get only the actual file."
     (setq svn-status-get-specific-revision-file-info nil)
     (while file-names
       (setq file-name (car file-names))
-      (setq file-name-with-revision (concat file-name ".~" revision "~"))
+      (setq file-name-with-revision (make-temp-file (file-name-nondirectory (concat file-name ".~" revision "~"))))
       (add-to-list 'svn-status-get-specific-revision-file-info
                    (cons file-name file-name-with-revision))
       (save-excursion
-        (find-file file-name-with-revision)
-        (setq buffer-read-only nil)
-        (delete-region (point-min) (point-max))
-        (svn-run-svn nil t 'cat (append (list "cat" "-r" revision) (list file-name)))
-        ;;todo: error processing
-        ;;svn: Filesystem has no item
-        ;;svn: file not found: revision `15', path `/trunk/file.txt'
-        (insert-buffer-substring "*svn-process*")
-        (save-buffer))
+        (let ((content
+               (with-temp-buffer
+                 (if (string= revision "BASE")
+                     (insert-file-contents (concat (file-name-directory file-name) ".svn/text-base/" (file-name-nondirectory file-name) ".svn-base"))
+                   (progn
+                     (svn-run-svn nil t 'cat (append (list "cat" "-r" revision) (list file-name)))
+                     ;;todo: error processing
+                     ;;svn: Filesystem has no item
+                     ;;svn: file not found: revision `15', path `/trunk/file.txt'
+                     (insert-buffer-substring "*svn-process*")))
+                 (buffer-string))))
+          (find-file file-name-with-revision)
+          (setq buffer-read-only nil)
+          (delete-region (point-min) (point-max))
+          (insert content)
+          (save-buffer)))
       (setq file-names (cdr file-names)))
     (setq svn-status-get-specific-revision-file-info
       (nreverse svn-status-get-specific-revision-file-info))
@@ -2106,7 +2113,9 @@ If ARG then prompt for revision to diff against."
   (dolist (tb tmp-bufs)
     (when (and tb (buffer-live-p tb) (not (buffer-modified-p tb)))
       (let ((win (get-buffer-window tb t)))
-    (when win (delete-window win))
+    (condition-case nil
+        (when win (delete-window win))
+      (error nil))
     (kill-buffer tb))))
   ;; switch back to the *svn* buffer
   (when (and svn-buf (buffer-live-p svn-buf)

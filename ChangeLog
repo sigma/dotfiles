@@ -1,3 +1,12 @@
+2005-03-28  Yann Hodique  <Yann.Hodique@lifl.fr>
+
+	* perso/psvn-hacked.el:
+	(svn-status-get-specific-revision-internal): "svn cat -r BASE" should really be a local operation. I don't want files to be created in my working directories.
+	(svn-ediff-exit-hook): don't emit errors at this point, since it causes buffers not to be deleted
+
+	* config/ediff-config.el:
+	(yh/install-ediff-changelog-keys): anonymous lambda expressions seems to be troublesome
+
 2005-03-20  Yann Hodique  <Yann.Hodique@lifl.fr>
 
 	* perso/tempo-c++.el: new macros for c++ "for iterator"

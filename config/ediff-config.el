@@ -73,10 +73,12 @@
        (ediff-char-to-buftype (or key last-command-char)))
     (add-change-log-entry-other-window)))
 
-(add-hook 'ediff-keymap-setup-hook (lambda ()
-                                     (define-key ediff-mode-map ".a" 'ediff-add-changelog)
-                                     (define-key ediff-mode-map ".b" 'ediff-add-changelog)
-                                     (define-key ediff-mode-map ".c" 'ediff-add-changelog)))
+(defun yh/install-ediff-changelog-keys ()
+  (define-key ediff-mode-map ".a" 'ediff-add-changelog)
+  (define-key ediff-mode-map ".b" 'ediff-add-changelog)
+  (define-key ediff-mode-map ".c" 'ediff-add-changelog))
+
+(add-hook 'ediff-keymap-setup-hook 'yh/install-ediff-changelog-keys)
 
 (provide 'ediff-config)
 ;;; ediff-config.el ends here
