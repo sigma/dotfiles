@@ -51,60 +51,11 @@
 
 (global-set-key [(control =)] 'joc-bounce-sexp)
 
-;; BUFFER SWITCHING FIX
-;;
-;; This changes the behaviour of the switch-to-buffer completion functions so
-;; that the current buffer is NOT in the completion list.
-;;
-;; i.e. say you're working in "temp.c", and you want to visit "temp.h"; so you
-;; type "C-xb", then "t<TAB>" which then presents you with a completion list of
-;; temp.c and temp.h, so you then must type "h<RET>".  This is annoying since
-;; why would you want to switch back to the buffer you're in?!?
-;; Using this fix would remove "temp.c" from the completion lits so that when
-;; you had typed "t<TAB>" the name would be completed as "temp.h" as desired.
-;;
-;; Steve Dodd
-;; March 1998
-;; Re-hacked and dramatically packed by Yann Hodique (2004)
-
-(defvar yh-remove-first-completion nil)
-
-(defun yh-clean-minibuffer-completion-table ()
-  "Suppress current buffer from completion list if needed"
-  (when yh-remove-first-completion
-    (progn (setq yh-remove-first-completion nil)
-           (when (consp minibuffer-completion-table)
-             (setq  minibuffer-completion-table
-                    (cdr minibuffer-completion-table))))))
-
-(defadvice minibuffer-complete (before ad-minibuffer-complete-before act)
-  (yh-clean-minibuffer-completion-table))
-
-(defadvice minibuffer-complete-word (before ad-minibuffer-complete-word-before act)
-  (yh-clean-minibuffer-completion-table))
-
-(defadvice minibuffer-complete-and-exit (before ad-minibuffer-complete-and-exit-before act)
-  (yh-clean-minibuffer-completion-table))
-
-(defadvice switch-to-buffer (before ad-switch-to-buffer-before act)
-  "Activate first entry removal, in order to avoid completing the current buffer name"
-  (setq yh-remove-first-completion t))
-
 ;; ...never switch to overwrite mode, not even accidentally
 (global-set-key [insert]
   (function
    (lambda () (interactive)
      (message "Sorry, overwrite mode has been disabled forever."))))
-
-;; make backup files in ~/.backups/ rather than scattered around all
-;; over the filesystem.
-(defun make-backup-file-name (file-name)
-  "Create the non-numeric backup file name for `file-name'."
-  (require 'dired)
-  (if (file-exists-p (expand-file-name "~/.backups/"))
-      (concat (expand-file-name "~/.backups/")
-	      (dired-replace-in-string "/" "|" file-name))
-    (concat file-name (expand-file-name "~/"))))
 
 ;; disable backups for files in /tmp or in my Mail or News directories.
 (defun ecm-backup-enable-predicate (filename)
@@ -180,20 +131,59 @@
 ;; Many thanks to utis (Oliver Scholz)
 (defmacro defmadvice (flist spec &rest body)
   (let ((defs (mapcar
-               (lambda (f) `(defadvice ,f ,(append (list (car spec) (intern (format "%s-%s" (symbol-name f) (car spec)))) (cdr spec)) ,@body))
+               (lambda (f) `(defadvice ,f ,(append (list (car spec) (intern (format "ad-%s-%s-%s"
+                                                                                    (symbol-name f)
+                                                                                    (symbol-name (cadr spec))
+                                                                                    (car spec)))) (cddr spec))
+                              ,@body))
                flist)))
     `(progn ,@defs)))
 
 (defmadvice (dframe-handle-make-frame-visible dframe-handle-iconify-frame dframe-handle-delete-frame)
-  (around act)
+  (around dframe act)
   "Inhibit message function"
   (flet ((message (&rest args) nil))
     ad-do-it))
 
 (defmadvice (split-window-vertically split-window-horizontally)
-  (after act)
+  (after split act)
   "Open another buffer in the new window"
   (set-window-buffer (next-window) (other-buffer)))
+
+;; BUFFER SWITCHING FIX
+;;
+;; This changes the behaviour of the switch-to-buffer completion functions so
+;; that the current buffer is NOT in the completion list.
+;;
+;; i.e. say you're working in "temp.c", and you want to visit "temp.h"; so you
+;; type "C-xb", then "t<TAB>" which then presents you with a completion list of
+;; temp.c and temp.h, so you then must type "h<RET>".  This is annoying since
+;; why would you want to switch back to the buffer you're in?!?
+;; Using this fix would remove "temp.c" from the completion lits so that when
+;; you had typed "t<TAB>" the name would be completed as "temp.h" as desired.
+;;
+;; Steve Dodd
+;; March 1998
+;; Re-hacked and dramatically packed by Yann Hodique (2004)
+
+(defvar yh-remove-first-completion nil)
+
+(defun yh-clean-minibuffer-completion-table ()
+  "Suppress current buffer from completion list if needed"
+  (when yh-remove-first-completion
+    (progn (setq yh-remove-first-completion nil)
+           (when (consp minibuffer-completion-table)
+             (setq  minibuffer-completion-table
+                    (cdr minibuffer-completion-table))))))
+
+(defmadvice (minibuffer-complete minibuffer-complete-word minibuffer-complete-and-exit)
+  (before complete act)
+  "Suppress current buffer from completion list if needed"
+  (yh-clean-minibuffer-completion-table))
+
+(defadvice switch-to-buffer (before ad-switch-to-buffer-before act)
+  "Activate first entry removal, in order to avoid completing the current buffer name"
+  (setq yh-remove-first-completion t))
 
 (defun yank-rpop (arg)
   (interactive "*p")

@@ -1,3 +1,13 @@
+2004-07-19  Yann Hodique  <Yann.Hodique@lifl.fr>
+
+	* perso/patches.el:
+	suppress backups hack
+	(defmadvice): customize advice name
+	reimplement buffer switching fix with defmadvice
+
+	* dotemacs-cust.el
+	(custom-set-variables): customized backup directory
+
 2004-07-15  Yann Hodique  <Yann.Hodique@lifl.fr>
 
 	* dotemacs.el
