@@ -27,7 +27,7 @@
 ;;; Code:
 
 ;;; CEDET
-(setq semantic-load-turn-useful-things-on t)
+;(setq semantic-load-turn-useful-things-on t)
 (request 'cedet)
 
 (provide 'cedet-config)
