@@ -1,5 +1,9 @@
 2004-06-19  Yann Hodique  <Yann.Hodique@lifl.fr>
 
+	* erc-config.el: initial checkin
+
+2004-06-19  Yann Hodique  <Yann.Hodique@lifl.fr>
+
 	* dotemacs.el:
 	(ediff): added ediff configuration
 	(request): preview-latex fix
@@ -11,4 +15,8 @@
 	(ediff-add-changelog): added the ability to create changelog from diffs
 	(yh-project-changelog-file): compute changelog file from project path
 	(ediff-add-changelog): override default changelog file
+
+2004-06-17  Yann Hodique  <Yann.Hodique@lifl.fr>
+
+	* patches.el (message): added advice to disable messages when using the minibuffer
 
