@@ -8,4 +8,5 @@
 	(init): added winring support for ecb
 	(erc-config): new module
 	(request): replaced 'if by 'when when (or if :)) possible
+	(ediff-add-changelog): added the ability to create changelog from diffs
 

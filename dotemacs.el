@@ -1,5 +1,5 @@
 ;; -*- mode: emacs-lisp; auto-compile-lisp: nil; -*-
-;; Time-stamp: <19/06/2004 17:12:36 Yann Hodique>
+;; Time-stamp: <19/06/2004 18:32:33 Yann Hodique>
 
 ;; Use this one instead of require to ignore errors
 (defun request (pack)
@@ -156,6 +156,29 @@
 (add-hook 'ediff-before-setup-hook 'my-ediff-bsh)
 (add-hook 'ediff-after-setup-windows-hook 'my-ediff-ash)
 (add-hook 'ediff-quit-hook 'my-ediff-qh)
+
+(defun ediff-add-changelog  (&optional key)
+  (interactive)
+  (setq changelog-restore-buffer (current-buffer))
+  (with-current-buffer
+      (ediff-get-buffer
+       (ediff-char-to-buftype (or key last-command-char)))
+    (add-change-log-entry-other-window)))
+
+(add-hook 'ediff-keymap-setup-hook (lambda ()
+                                     (define-key ediff-mode-map "Ca" 'ediff-add-changelog)
+                                     (define-key ediff-mode-map "Cb" 'ediff-add-changelog)))
+
+  ;;;;;;;;;;;;;;
+  ;; Changelog
+  ;;
+
+(add-hook 'change-log-mode-hook
+          (lambda () (local-set-key (kbd "C-c C-c")
+                                    (lambda ()
+                                      (interactive)
+                                      (save-buffer)
+                                      (kill-this-buffer)))))
 
   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
   ;; Tramp : transparent remote editing
