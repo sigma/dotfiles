@@ -27,7 +27,7 @@
 (defun visible-mark-move-overlay ()
   "Move the overlay in `visible-mark-overlay' to a new position."
   (let ((m (mark)))
-    (when m (move-overlay visible-mark-overlay m (1+ m)))))
+    (when (and m visible-mark-overlay) (move-overlay visible-mark-overlay m (1+ m)))))
 
 (require 'easy-mmode)
 

@@ -1,5 +1,8 @@
 2004-06-20  Yann Hodique  <Yann.Hodique@lifl.fr>
 
+	* perso/visible-mark-mode.el
+	(visible-mark-move-overlay): fixed functino when visible-mark-overlay is null
+
 	* dotemacs.el
 	(find-file-guessing): new function to wrap find-file
 	(kbd): use find-file-guessing with C-x C-f, suppress H-x H-f
