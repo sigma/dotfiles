@@ -1,5 +1,11 @@
 2004-09-22  Yann Hodique  <Yann.Hodique@lifl.fr>
 
+	* perso/planner-config.el:
+	(planner-publishing-directory): don't trash my public_html
+
+	* dotgnus.el:
+	(gnus-add-configuration): info buffers
+
 	* dotemacs.el:
 	(set-scroll-margin): do not scroll in *Calendar*
 

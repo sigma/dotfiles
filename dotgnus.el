@@ -1,5 +1,5 @@
 ;; -*- mode: emacs-lisp; mode: hi-lock; mode: page-break; auto-compile-lisp: nil; -*-
-;; $Id: dotgnus.el,v 1.14 2004/09/20 10:09:12 sigma Exp $
+;; $Id: dotgnus.el,v 1.15 2004/09/22 09:13:59 sigma Exp $
 
 ;; Hi-lock: (("^;;; \\(.*\\)" (1 'hi-black-hb t)))
 ;; Hi-lock: (("^ +;;; \\(.*\\)" (1 'hi-black-b t)))
@@ -197,6 +197,16 @@
 		   (horizontal 1.0
 			       (group 0.3 point)
 			       (,planner-default-page 1.0)))))
+
+      (gnus-add-configuration
+       '(info
+         (vertical 1.0
+                   (horizontal 9
+                               ("*BBDB*" 0.3)
+                               ("*Calendar*" 1.0))
+                   (horizontal 1.0
+                               (group 0.3 point)
+                               (info 1.0)))))
 
       (gnus-add-configuration
        '(article

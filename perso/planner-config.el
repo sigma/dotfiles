@@ -54,7 +54,7 @@
 (setq planner-directory "~/Plans")
 (setq planner-carry-tasks-forward t)
 (setq planner-expand-name-favor-future-p t)
-(setq planner-publishing-directory "~/public_html/")
+(setq planner-publishing-directory "~/Published/")
 
 ;; Do not automatically add task IDs. I used to set this to non-nil,
 ;; but realized that I didn't edit my task descriptions that often. If
