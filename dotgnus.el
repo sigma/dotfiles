@@ -1,5 +1,5 @@
 ;; -*- mode: emacs-lisp; mode: hi-lock; mode: page-break; auto-compile-lisp: nil; -*-
-;; $Id: dotgnus.el,v 1.9 2004/09/06 17:36:43 sigma Exp $
+;; $Id: dotgnus.el,v 1.10 2004/09/15 15:01:47 sigma Exp $
 
 ;; Hi-lock: (("^;;; \\(.*\\)" (1 'hi-black-hb t)))
 ;; Hi-lock: (("^ +;;; \\(.*\\)" (1 'hi-black-b t)))
@@ -712,3 +712,5 @@ Must be called from the `gnus-select-group-hook'."
 (require 'moy-bbdb)
 
 (autoload 'trivial-cite "tc" t t)
+
+(server-start)

@@ -1,3 +1,11 @@
+2004-09-15  Yann Hodique  <Yann.Hodique@lifl.fr>
+
+	* dotemacs.el:
+	(make-main-frame): make the current frame the main one
+
+	* dotgnus.el:
+	(server-start): start server automatically when using gnus
+
 2004-09-14  Yann Hodique  <Yann.Hodique@lifl.fr>
 
 	* dotemacs.el

@@ -1,5 +1,5 @@
 ;; -*- mode: emacs-lisp; mode: hi-lock; mode: page-break; auto-compile-lisp: nil; -*-
-;; $Id: dotemacs.el,v 1.45 2004/09/14 10:04:51 sigma Exp $
+;; $Id: dotemacs.el,v 1.46 2004/09/15 15:01:47 sigma Exp $
 
 ;; Hi-lock: (("^;;; \\(.*\\)" (1 'hi-black-hb t)))
 ;; Hi-lock: (("^ +;;; \\(.*\\)" (1 'hi-black-b t)))
@@ -655,13 +655,14 @@ there are more than 1% of such letters then turn French accent mode on."
 ;; My init function for main window
 (defun init ()
   (interactive)
-  (make-main-frame)
   (let ((act (request 'winring)))
     (ecb-activate)
     (when act
       (progn
         (ecb-winman-winring-enable-support)
         (winring-initialize)))))
+
+(make-main-frame)
 
 
 ;;; Global key bindings
