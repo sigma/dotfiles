@@ -88,6 +88,7 @@
  '(indent-tabs-mode nil)
  '(inhibit-startup-message t)
  '(line-number-mode t)
+ '(log-edit-common-indent -7)
  '(mark-diary-entries-in-calendar t)
  '(max-lisp-eval-depth 500)
  '(max-specpdl-size 1000)

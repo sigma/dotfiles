@@ -1,5 +1,8 @@
 2005-01-06  Yann Hodique  <Yann.Hodique@lifl.fr>
 
+	* dotemacs-cust.el:
+	(custom-set-variables): suppress changelog indentation
+
 	* config/fracc-config.el:
 	autoload problem. let it work now, investigate later
 
