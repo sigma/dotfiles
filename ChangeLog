@@ -6,6 +6,7 @@
 
 	* perso/member-functions.el
 	(expand-member-functions): make it work with absolute path files
+	fixed indentation :)
 
 	* perso/patches.el
 	(split-window-vertically): replaced by advice
