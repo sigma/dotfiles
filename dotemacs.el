@@ -1,5 +1,5 @@
 ;; -*- mode: emacs-lisp; mode: hi-lock; mode: page-break; auto-compile-lisp: nil; -*-
-;; $Id: dotemacs.el,v 1.44 2004/09/14 09:50:27 sigma Exp $
+;; $Id: dotemacs.el,v 1.45 2004/09/14 10:04:51 sigma Exp $
 
 ;; Hi-lock: (("^;;; \\(.*\\)" (1 'hi-black-hb t)))
 ;; Hi-lock: (("^ +;;; \\(.*\\)" (1 'hi-black-b t)))
@@ -44,7 +44,8 @@
 ;; We don't want to insert newlines when reaching end of buffer
 ;; and we want to kill the whole line when doing a Ctrl-k
 (setq next-line-add-newlines nil
-      kill-whole-line t)
+      kill-whole-line t
+      kill-read-only-ok t)
 
 ;; Auto-reload file when modified from external app
 (global-auto-revert-mode 1)

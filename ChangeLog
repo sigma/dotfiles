@@ -1,6 +1,7 @@
 2004-09-14  Yann Hodique  <Yann.Hodique@lifl.fr>
 
 	* dotemacs.el
+	(kill-read-only-ok): don't beep when "killing" in read-only
 	(tramp): use the correct package
 
 2004-09-10  Yann Hodique  <Yann.Hodique@lifl.fr>
