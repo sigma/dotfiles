@@ -109,7 +109,7 @@
     (unify-8859-on-encoding-mode 1)
     (unify-8859-on-decoding-mode 1)))
 
-(defun sk-insert-euro (&optional arg) "Insert Euro ISO 8859-15."
+(defun sk-insert-euro (&optional arg) "Insert €"
   (interactive "*P")
   (if arg
       (insert (make-char 'mule-unicode-0100-24ff 116 76))
@@ -117,7 +117,7 @@
 
 (global-set-key (kbd "H-5") 'sk-insert-euro)
 
-(defun sk-insert-oe (&optional arg) "Insert oe"
+(defun sk-insert-oe (&optional arg) "Insert œ"
   (interactive "*P")
   (insert (make-char 'latin-iso8859-15 #xBD)))
 
@@ -155,7 +155,7 @@
             (dired-omit-mode 1)
             ))
 
-(eval-after-load "icomplete" '(progn (require 'icomplete+)))
+(eval-after-load "icomplete" '(progn (request 'icomplete+)))
 (when (request 'icomplete) (icomplete-mode 1))
 (when (request 'iswitchb) (iswitchb-mode 1))
 
@@ -979,7 +979,7 @@ Goes backward if ARG is negative; error if CHAR not found." t nil)
 ;; configure HTML editing
 ;;************************************************************
 
-(request 'php-mode)
+(autoload 'php-mode "php-mode" "" t nil)
 
 (add-to-list 'auto-mode-alist '("\\.css\\'" . css-mode))
 (setq cssm-indent-function #'cssm-c-style-indenter)
