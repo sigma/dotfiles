@@ -1,5 +1,15 @@
 2004-06-21  Yann Hodique  <Yann.Hodique@lifl.fr>
 
+	* dotemacs.el
+	(request): 'saveplace has to be explicitely loaded
+	(c-mode-common-hook): fixed some bug when using conflict resolution on c++
+
+	* dotemacs-cust.el
+	(custom): set limit to 100 saved places
+
+	* dotemacs.el
+	(request): load saveplace
+
 	* perso/undo-browse.el:
 	initial checkin
 

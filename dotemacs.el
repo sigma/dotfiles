@@ -1,5 +1,5 @@
 ;; -*- mode: emacs-lisp; auto-compile-lisp: nil; -*-
-;; $Id: dotemacs.el,v 1.16 2004/06/21 07:08:25 sigma Exp $
+;; $Id: dotemacs.el,v 1.17 2004/06/21 16:07:01 sigma Exp $
 
 ;; Use this one instead of require to ignore errors
 (defun request (pack)
@@ -64,7 +64,8 @@
   (global-visible-mark-mode 1))
 
 ;; Save place by default
-(setq-default save-place t)
+(when (request 'saveplace)
+  (setq-default save-place t))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Charsets & languages
@@ -475,13 +476,14 @@ there are more than 1% of such letters then turn French accent mode on."
       (delete-blank-lines))))
 
 (add-hook 'c-mode-common-hook (lambda ()
-                                (let ((rep (file-name-directory (buffer-file-name))))
-                                  (cond ((string-match (expand-file-name "~/Projects/bassist") rep)
-                                         (c-set-style "bassist"))
-                                        ((string-match (expand-file-name "~/cvs/Camille") rep)
-                                         (c-set-style "camille"))
-                                        (t
-                                         (c-set-style "personal")))
+                                (let ((rep (when (buffer-file-name) (file-name-directory (buffer-file-name)))))
+                                  (when rep
+                                    (cond ((string-match (expand-file-name "~/Projects/bassist") rep)
+                                           (c-set-style "bassist"))
+                                          ((string-match (expand-file-name "~/cvs/Camille") rep)
+                                           (c-set-style "camille"))
+                                          (t
+                                           (c-set-style "personal"))))
                                   )) t)
 
 (add-hook 'emacs-lisp-mode-hook 'turn-on-eldoc-mode)
