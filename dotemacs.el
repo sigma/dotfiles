@@ -1,10 +1,12 @@
 ;; -*- mode: emacs-lisp; mode: hi-lock; mode: page-break; auto-compile-lisp: nil; -*-
-;; $Id: dotemacs.el,v 1.59 2004/10/09 12:09:58 sigma Exp $
+;; $Id: dotemacs.el,v 1.60 2004/10/13 17:10:02 sigma Exp $
 
 ;; Hi-lock: (("^;;; \\(.*\\)" (1 'hi-black-hb t)))
 ;; Hi-lock: (("^ +;;; \\(.*\\)" (1 'hi-black-b t)))
 ;; Hi-lock: ((";; \\(.*\\)" (1 'italic append)))
 ;; Hi-lock: end
+
+(toggle-debug-on-error)
 
 ;;; Basis
 ;; Load site-specific stuff: paths, accounts, projects...
@@ -473,6 +475,14 @@ there are more than 1% of such letters then turn French accent mode on."
                            (1 font-lock-keyword-face)
                            (2 font-lock-constant-face nil t))
                           ))
+
+;;; Shell
+
+(font-lock-add-keywords 'sh-mode '(
+                                   ("\\<--\\w+\\>" (0 font-lock-keyword-face))
+                                   ("[-{}()<>=;:+[.]\\|\\]" (0 font-lock-keys-face))
+                                   ("\\\\$" (0 font-lock-warning-face))
+                                   ))
 
 ;;; C/C++/PHP
 
