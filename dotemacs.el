@@ -1,5 +1,5 @@
 ;; -*- mode: emacs-lisp; mode: hi-lock; mode: page-break; auto-compile-lisp: nil; -*-
-;; $Id: dotemacs.el,v 1.43 2004/09/10 10:14:41 sigma Exp $
+;; $Id: dotemacs.el,v 1.44 2004/09/14 09:50:27 sigma Exp $
 
 ;; Hi-lock: (("^;;; \\(.*\\)" (1 'hi-black-hb t)))
 ;; Hi-lock: (("^ +;;; \\(.*\\)" (1 'hi-black-b t)))
@@ -208,7 +208,9 @@
 
   ;;; Tramp : transparent remote editing
 
-(request 'tramp2)
+(when (request 'tramp)
+  (setq tramp-default-method "ssh"))
+
 
   ;;; Lispy : client for telnet-based chat server
 
