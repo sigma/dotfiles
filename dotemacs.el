@@ -1,5 +1,5 @@
 ;; -*- mode: emacs-lisp; auto-compile-lisp: nil; -*-
-;; $Id: dotemacs.el,v 1.21 2004/07/12 08:11:37 sigma Exp $
+;; $Id: dotemacs.el,v 1.22 2004/07/12 08:17:54 sigma Exp $
 
 ;; Use this one instead of require to ignore errors
 (defun request (pack)
@@ -496,6 +496,8 @@ there are more than 1% of such letters then turn French accent mode on."
 (add-hook 'emacs-lisp-mode-hook 'turn-on-eldoc-mode)
 (add-hook 'lisp-interaction-mode-hook 'turn-on-eldoc-mode)
 (add-hook 'ielm-mode-hook 'turn-on-eldoc-mode)
+
+(define-key emacs-lisp-mode-map (kbd "C-c C-c") 'emacs-lisp-byte-compile)
 
 (request 'mycompletion)
 (request 'page-break)
