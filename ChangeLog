@@ -1,3 +1,11 @@
+2004-06-30  Yann Hodique  <Yann.Hodique@lifl.fr>
+
+	* dotgnus.el
+	(fortune-program): set to /usr/games/fortune
+
+	* perso/patches.el
+	(erase-buffer): re-enabled command
+
 2004-06-23  Yann Hodique  <Yann.Hodique@lifl.fr>
 
 	* perso/dabbrev-hover.el:

@@ -1,5 +1,5 @@
 ;; -*- mode: emacs-lisp; auto-compile-lisp: nil; -*-
-;; $Id: dotgnus.el,v 1.4 2004/06/20 10:06:08 sigma Exp $
+;; $Id: dotgnus.el,v 1.5 2004/06/30 15:29:40 sigma Exp $
 
 ;; Load site-specific stuff
 (if (file-exists-p (expand-file-name "~/.gnus-local.el"))
@@ -434,6 +434,7 @@
 (defvar fortune-switches nil
   "*List of extra arguments when `fortune-program' is invoked.")
 
+(setq fortune-program "/usr/games/fortune")
 (add-to-list 'fortune-switches "chapterhouse-dune")
 (add-to-list 'fortune-switches "children-of-dune")
 (add-to-list 'fortune-switches "dune")

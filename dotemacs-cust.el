@@ -41,6 +41,7 @@
  '(ecb-compilation-buffer-names (quote (("*Calculator*") ("*vc*") ("*vc-diff*") ("*Backtrace*") ("*shell*") ("*eshell*") ("*compilation*") ("*bsh*") ("*grep*") ("*Compile-Log*"))))
  '(ecb-compile-window-height 10)
  '(ecb-compile-window-temporally-enlarge nil)
+ '(ecb-enlarged-compilation-window-max-height 10)
  '(ecb-eshell-auto-activate t)
  '(ecb-eshell-enlarge-when-eshell nil)
  '(ecb-eshell-enlarge-when-selecting nil)

@@ -117,6 +117,7 @@
 (put 'narrow-to-region 'disabled nil)
 (put 'narrow-to-page 'disabled nil)
 (put 'set-goal-column 'disabled nil)
+(put 'erase-buffer 'disabled nil)
 
 ;; scroll-margin does not work with hl-line :-(
 (defvar top-margin)
