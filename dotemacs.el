@@ -89,7 +89,10 @@
 ;; ignore case for finding files
 (setq read-file-name-completion-ignore-case t)
 
+;; modifier for navigating through windows with arrow keys
 (windmove-default-keybindings 'alt)
+
+(request 'autoloads)
 
 (setq special-display-buffer-names
       (nconc '("*Backtrace*" "*VC-log*" "*compilation*" "*grep*")
@@ -128,427 +131,59 @@
 (global-set-key (kbd "H-o H-e") 'sk-insert-oe)
 
 
-;;; Buffers
-
-(eval-after-load "buff-menu" '(request 'buff-menu+))
-(global-set-key (kbd "C-x C-b") 'buffer-menu)
-
-(add-hook 'dired-load-hook
-          (lambda ()
-            (require 'dired-aux)
-            (require 'dired-x)
-
-            ;; use ediff for diffing
-            (defadvice dired-diff (around ad-dired-diff-ediff act)
-              (flet ((diff (old new switches) (ediff old new)))
-                ad-do-it))
-            (defadvice dired-backup-diff (around ad-dired-backup-diff-ediff act)
-              (flet ((diff-backup (old switches) (ediff-backup old)))
-                ad-do-it))
-
-            ;; Set dired-x global variables here.  For example:
-            (setq dired-x-hands-off-my-keys nil
-                  dired-find-subdir nil)
-
-            (define-key dired-mode-map (kbd "C-c C-c") 'wdired-change-to-wdired-mode)
-            ))
-
-(add-hook 'dired-mode-hook
-          (lambda ()
-            ;; Set dired-x buffer-local variables here.  For example:
-            (dired-omit-mode 1)
-            ))
-
-(eval-after-load "icomplete" '(progn (request 'icomplete+)))
-(when (request 'icomplete) (icomplete-mode 1))
-(when (request 'iswitchb) (iswitchb-mode 1))
-
-
 ;;; Packages configuration
 
-;;; Calendar
+(defun current-configuration ()
+  (if (member "gnus" command-line-args)
+      'mail
+    'code))
+
+(defmacro when-configuration (config &rest body)
+  "run BODY when in given configuration"
+  (declare (indent 1))
+  `(when (equal ,config (current-configuration))
+     ,@body))
+
+(defmacro unless-configuration (config &rest body)
+  "run BODY unless in given configuration"
+  (declare (indent 1))
+  `(unless (equal ,config (current-configuration))
+     ,@body))
+
+;; common
+(request 'buffer-config)
+
+;; unless minimal
+(unless-configuration 'minimal
+  (request 'muse-config)
+  (request 'tramp-config)
+  (request 'eshell-config)
+  (request 'paren-config)
+  (request 'moccur-config)
+  (request 'changelog-config)
+  (request 'ediff-config)
+  (request 'lispy-config)
+  (request 'speedbar-config)
+  (request 'cedet-config)
+  (request 'tabbar-config)
+  (request 'doxymacs-config)
+  (request 'sawfish-config)
+  (request 'highlight-changes-config)
+  (request 'latex-config)
+  (request 'fracc-config)
+  (request 'pmwiki-config)
+  (request 'lisp-config)
+  (request 'shell-config)
+  (request 'mycode)
+  (request 'project-config)
+  (request 'mycompletion)
+  (request 'crontab-config)
+  (request 'flashcard-config))
+
+;; mail only
+(when-configuration 'mail
+  (request 'calendar-config))
 
-(when (request 'calendar)
-  (setq european-calendar-style t))
-
-;;; Muse
-
-(when (request 'muse-mode)
-  (progn
-    (request 'muse-html)
-    (request 'muse-latex)
-    (request 'muse-texinfo)
-    (request 'muse-docbook)))
-
-(add-to-list 'auto-mode-alist '("\\.muse$"  . muse-mode))
-
-;;; Changelog
-
-(when (request 'project)
-  (defun yh/project-changelog-file ()
-    (let ((rep (file-name-directory (buffer-file-name)))
-          (projects (delete-if 'not (mapcar (lambda (p) (yh/project-get p 'root)) (yh/project-list)))))
-      (mapcond (lambda (s) (string-match (expand-file-name s) rep))
-               (lambda (s) (expand-file-name (concat s "/Changelog")))
-               projects)))
-
-  (defadvice add-change-log-entry (around ad-add-change-log-entry act)
-    "Override default ChangeLog file according to project directory"
-    (let ((change-log-default-name (yh/project-changelog-file)))
-      ad-do-it))
-  )
-
-(add-hook 'change-log-mode-hook
-          (lambda () (local-set-key (kbd "C-c C-c")
-                                    (lambda () (interactive) (save-buffer) (kill-this-buffer)))))
-
-;;; Ediff
-
-(setq ediff-window-setup-function 'ediff-setup-windows-plain)
-(setq ediff-split-window-function 'split-window-horizontally)
-
-;; Some custom configuration to ediff
-(defvar my-ediff-bwin-config nil "Window configuration before ediff.")
-
-(defcustom my-ediff-bwin-reg ?b
-  "*Register to be set up to hold `my-ediff-bwin-config'
-    configuration.")
-
-(defvar my-ediff-awin-config nil "Window configuration after ediff.")
-
-(defcustom my-ediff-awin-reg ?e
-  "*Register to be used to hold `my-ediff-awin-config' window
-    configuration.")
-
-(defun my-ediff-bsh ()
-  "Function to be called before any buffers or window setup for
-    ediff."
-  (setq my-ediff-bwin-config (current-window-configuration))
-  (set-register my-ediff-bwin-reg
-                (list my-ediff-bwin-config (point-marker))))
-
-(defun my-ediff-ash ()
-  "Function to be called after buffers and window setup for ediff."
-  (setq my-ediff-awin-config (current-window-configuration))
-  (set-register my-ediff-awin-reg
-                (list my-ediff-awin-config (point-marker))))
-
-(defun my-ediff-qh ()
-  "Function to be called when ediff quits."
-  (when my-ediff-bwin-config
-    (set-window-configuration my-ediff-bwin-config)))
-
-(add-hook 'ediff-before-setup-hook 'my-ediff-bsh)
-(add-hook 'ediff-after-setup-windows-hook 'my-ediff-ash)
-(add-hook 'ediff-quit-hook 'my-ediff-qh)
-
-(defun ediff-add-changelog (&optional key)
-  (interactive)
-  (with-current-buffer
-      (ediff-get-buffer
-       (ediff-char-to-buftype (or key last-command-char)))
-    (add-change-log-entry-other-window)))
-
-(add-hook 'ediff-keymap-setup-hook (lambda ()
-                                     (define-key ediff-mode-map ".a" 'ediff-add-changelog)
-                                     (define-key ediff-mode-map ".b" 'ediff-add-changelog)
-                                     (define-key ediff-mode-map ".c" 'ediff-add-changelog)))
-
-;;; Tramp : transparent remote editing
-
-(when (request 'tramp)
-  (setq tramp-default-method "ssh"))
-
-
-;;; Lispy : client for telnet-based chat server
-
-(autoload 'lispy "lispy-session" "" t nil)
-(eval-after-load "lispy"
-  '(progn
-     (request 'lispy-commands)
-     (request 'lispy-history)
-     (request 'lispy-font-lock)
-     (request 'lispy-occur)
-     (request 'lispy-h4x0r)
-     (request 'lispy-osd)
-     (request 'lispy-autoreconnect)
-     (request 'lispy-limit)
-     ))
-
-;;; Eshell : Emacs shell
-
-(add-hook 'eshell-post-command-hook 'eshell-show-maximum-output)
-
-;;; Speed bar : usefull for displaying various informations
-
-(request 'speedbar)
-;; Texinfo fancy chapter tags
-(add-hook 'texinfo-mode-hook (lambda () (request 'sb-texinfo)))
-
-;; HTML fancy chapter tags
-(add-hook 'html-mode-hook (lambda () (request 'sb-html)))
-
-;;; Tabbar
-
-(when (request 'tabbar)
-  (tabbar-mode)
-  (global-set-key '[(shift right)] 'tabbar-forward-tab)
-  (global-set-key '[(shift left)]  'tabbar-backward-tab)
-  (global-set-key '[(shift up)]    'tabbar-forward-group)
-  (global-set-key '[(shift down)]  'tabbar-backward-group))
-
-;;; CEDET
-(setq semantic-load-turn-useful-things-on t)
-(request 'cedet)
-
-;;; Doxymacs : great documentation system
-
-(add-hook 'c-mode-common-hook 'doxymacs-mode)
-(eval-after-load "doxymacs"
-  '(progn
-     (setq doxymacs-relative-path "Doc/html"
-           doxymacs-use-external-xml-parser t)
-     (defun my-doxymacs-font-lock-hook ()
-       (if (or (eq major-mode 'c-mode) (eq major-mode 'c++-mode))
-           (font-lock-add-keywords nil doxymacs-doxygen-keywords)
-         ))
-     (add-hook 'font-lock-mode-hook 'my-doxymacs-font-lock-hook)))
-
-;;; Sawfish : the ultimate window manager
-
-;; Open sawfish-realted files with the proper mode
-(setq auto-mode-alist (append '(("\\.sawfishrc$"  . sawfish-mode)
-                                ("\\.jl$"         . sawfish-mode)
-                                ("\\.sawfish/rc$" . sawfish-mode)) auto-mode-alist))
-
-;; TODO: investigate why this code is not loaded from sawfish.el
-(eval-after-load "sawfish"
-  '(font-lock-add-keywords 'sawfish-mode
-                           (list
-                            ;; highlight define-*
-                            (list
-                             sawfish-defines-regexp
-                             '(1 font-lock-keyword-face)
-                             `(,(regexp-opt-depth sawfish-defines-regexp)
-                               font-lock-variable-name-face nil t))
-                            ;; extra keywords
-                            (if sawfish-extra-keyword-list
-                                (list (concat "\\<"
-                                              `,(regexp-opt sawfish-extra-keyword-list)
-                                              "\\>")
-                                      '(0 font-lock-keyword-face)))
-                            ;; highlight warnings
-                            (if sawfish-warning-keyword-list
-                                (list (concat "\\<"
-                                              `,(regexp-opt sawfish-warning-keyword-list)
-                                              "\\>")
-                                      '(0 font-lock-warning-face prepend))))))
-
-;;; Highlight-changes
-(add-hook 'highlight-changes-enable-hook
-          (lambda ()
-            (local-set-key "\C-c+" 'highlight-changes-next-change)
-            (local-set-key "\C-c-" 'highlight-changes-previous-change)
-            (local-set-key (kbd "C-c DEL")
-                           (lambda ()
-                             (interactive)
-                             (let ((mod (buffer-modified-p)))
-                               (highlight-changes-remove-highlight (point-min) (point-max))
-                               (restore-buffer-modified-p mod))))
-            (local-set-key "\C-c_" 'highlight-changes-rotate-faces)))
-
-;;; LaTeX
-
-;; (request 'typopunct)
-;; (typopunct-change-language 'francais t)
-(eval-after-load "latex"
-  '(add-to-list 'LaTeX-style-list '("prosper")))
-
-(setq reftex-plug-into-AUCTeX t)
-(setq reftex-enable-partial-scans t)
-(setq reftex-save-parse-info t)
-(setq reftex-use-multiple-selection-buffers t)
-
-(when (request 'tex-site)
-  (progn
-    (setq-default TeX-master t)
-    ;; reftex helps managing references, toc, ...
-    (add-hook 'LaTeX-mode-hook 'reftex-mode)
-    ;; show/hide parts of your document
-    (add-hook 'LaTeX-mode-hook 'outline-minor-mode)
-    ;; preview-latex is great
-    (when (request 'preview)
-      (add-hook 'LaTeX-mode-hook 'LaTeX-preview-setup))
-    ;; point my typos
-    (add-hook 'LaTeX-mode-hook 'flyspell-mode)
-    ;; use abbrev
-    (add-hook 'LaTeX-mode-hook 'abbrev-mode)
-    ;; Most people don't want that... I do
-    ;; highlight *any* change, color rotation
-    (add-hook 'LaTeX-mode-hook 'highlight-changes-mode)
-    ;;       ;; DWIM with quotes
-                                        ;       (add-hook 'LaTeX-mode-hook 'typopunct-mode)
-    (defun my-LaTeX-hook ()
-      ;; I like to have my own verbatim contructions well indented
-      (setq font-lock-defaults
-            '((font-latex-keywords font-latex-keywords-1 font-latex-keywords-2)
-              nil nil
-              ((40 . ".")
-               (41 . ".")
-               (36 . "\""))
-              nil
-              (font-lock-comment-start-regexp . "%")
-              (font-lock-mark-block-function . mark-paragraph)
-              (font-lock-syntactic-keywords
-               ("^\\\\begin *{verbatim\\*?}\\(.?\\).*\\(\n\\)"
-                (1 "<")
-                (2 "|"))
-               ("\\(\n\\)\\\\end *{verbatim\\*?}\\(.?\\)"
-                (1 "|")
-                (2 "<"))
-               ("^\\\\begin *{sigmalog\\*?}\\(.?\\).*\\(\n\\)"
-                (1 "<")
-                (2 "|"))
-               ("\\(\n\\)\\\\end *{sigmalog\\*?}\\(.?\\)"
-                (1 "|")
-                (2 "<"))
-               ("\\\\verb\\*?\\([^a-z@]\\).*?\\(\\1\\)"
-                (1 "\"")
-                (2 "\""))))))
-
-    (add-hook 'LaTeX-mode-hook 'my-LaTeX-hook)
-    ))
-
-;;; Parenthesis
-
-;; Use mic-paren in replacement of standard paren.el
-(when (and (or (string-match "XEmacs\\|Lucid" emacs-version) window-system)
-           (request 'mic-paren))
-  (paren-activate)                      ; activating
-  (add-hook 'c-mode-common-hook
-            (function (lambda ()
-                        (paren-toggle-open-paren-context 1))))
-  ;; In LaTeX-mode we want this
-  (add-hook 'LaTeX-mode-hook
-            (function (lambda ()
-                        (paren-toggle-matching-quoted-paren 1)
-                        (paren-toggle-matching-paired-delimiter 1)))))
-
-;; Fancy paren highlighting
-(when (request 'cparen)
-  (cparen-activate))
-
-;;; Moccur
-
-;; use colored and editable moccur
-(when (request 'color-moccur)
-  (request 'moccur-edit))
-
-;;; Fracc : french accent mode
-
-(autoload 'fracc-mode "fracc" "" t nil)
-(defun install-french-accent-mode-if-needed ()
-  "Install French accent mode if the buffer seems to contain French text.
-The guess is made by computing the proportion of letters with accents. If
-there are more than 1% of such letters then turn French accent mode on."
-  (save-excursion
-    (goto-char (point-min))
-    (let ((n 0)(size (- (point-max) (point-min))))
-      (while (re-search-forward "\\\\['^`][eauo]" (point-max) t)
-        (setq n (+ n 1)) )
-      (while (re-search-forward "[éèàùçêë]" (point-max) t)
-        (setq n (+ n 1)) )
-      (message "diacritic/normal ratio = %d/%d" n size)
-      (cond ((> (* n 100) size)
-             (fracc-mode fracc-8bits-tex-encoding))))))
-
-(add-hook 'tex-mode-hook 'install-french-accent-mode-if-needed)
-(add-hook 'LaTeX-mode-hook 'install-french-accent-mode-if-needed)
-(add-hook 'text-mode-hook 'install-french-accent-mode-if-needed)
-
-;;; pmwiki
-
-;; TODO: more features!!!
-(defun mywiki-open (name)
-  (interactive "sName (default Main.WikiSandbox): ")
-  (if (request 'pmwiki-mode)
-      (if (pmwiki-URIp name)
-          (pmwiki-edit (pmwiki-loc 'link name) (pmwiki-loc 'base name))
-        (pmwiki-edit (pmwiki-name-to-link
-                      (pmwiki-default-string name "Main.WikiSandbox"))
-                     (pmwiki-loc 'base mywiki-sandbox-uri)))
-    (message "pmwiki-mode not found")))
-
-;;; Lisp
-
-(request 'color-eldoc)
-(add-hook 'emacs-lisp-mode-hook 'turn-on-eldoc-mode)
-(add-hook 'lisp-interaction-mode-hook 'turn-on-eldoc-mode)
-(add-hook 'ielm-mode-hook 'turn-on-eldoc-mode)
-
-(define-key emacs-lisp-mode-map (kbd "C-c C-c") 'emacs-lisp-byte-compile)
-(font-lock-add-keywords 'emacs-lisp-mode
-                        `((,(concat "\\<" (regexp-opt '("add-hook" "add-mhook"
-                                                        "autoload" "defmadvice"
-                                                        "aset" "set" "fset"
-                                                        "remove-hook" "clear-hook"
-                                                        "request" "make-double-command") t)
-                                    "\\>[ 	']*\\(\\sw+\\)?")
-                           (1 font-lock-keyword-face)
-                           (2 font-lock-constant-face nil t))
-                          ))
-
-(add-hook 'c-mode-common-hook
-          (lambda ()
-            (when (request 'guile-c)
-              (define-key c-mode-map "\C-c\C-g\C-p" 'guile-c-insert-define)
-              (define-key c-mode-map "\C-c\C-g\C-e" 'guile-c-edit-docstring)
-              (define-key c-mode-map "\C-c\C-g\C-d" 'guile-c-deprecate-region)
-              )))
-
-(font-lock-add-keywords 'guile-scheme-mode
-                        `((,(concat "\\<" (regexp-opt '("defun" "defvar" "defmacro" "defmacro*") t)
-                                    "\\>[ 	']*\\(\\sw+\\)?")
-                           (1 font-lock-keyword-face)
-                           (2 font-lock-constant-face nil t))
-                          ))
-
-;;; Shell
-
-(font-lock-add-keywords 'sh-mode '(
-                                   ("\\<--\\w+\\>" (0 font-lock-keyword-face))
-                                   ("[-{}()<>=;:+[.]\\|\\]" (0 font-lock-keys-face))
-                                   ("\\\\$" (0 font-lock-warning-face))
-                                   ))
-
-;;; C/C++/PHP
-
-;; see inside for more details...
-(request 'mycode)
-
-(when (request 'project)
-  (add-hook 'c-mode-common-hook
-            (lambda ()
-              (let ((rep (when (buffer-file-name) (file-name-directory (buffer-file-name)))))
-                (when rep
-                  (mapcond (lambda (s) (string-match (expand-file-name (yh/project-get s 'root)) rep))
-                           (lambda (s) (c-set-style (or (yh/project-get s 'style) "personal")))
-                           (yh/project-list)))))))
-
-;;; Completion
-
-(request 'mycompletion)
-
-;;; Crontab
-(autoload 'crontab-mode "crontab-mode" "" t nil)
-(setq auto-mode-alist
-      (cons '("crontab\\'" . crontab-mode) auto-mode-alist))
-
-;;; FlashCard
-(autoload 'flashcard-mode "flashcard" "" t nil)
-(add-to-list 'auto-mode-alist '("\\.deck\\'" . flashcard-mode))
-
-
 ;;; Utils/Functions
 
 (make-double-command my-home ()
@@ -826,124 +461,12 @@ there are more than 1% of such letters then turn French accent mode on."
   (global-set-key (kbd "<H-return>") multi-region-map))
 
 ;; versioning keys
-(request 'psvn)
+(request 'psvn-hacked)
 (global-set-key (kbd "<f12>") 'cvs-examine)
 (global-set-key (kbd "<C-f12>") 'cvs-status)
 (global-set-key (kbd "<M-f12>") 'cvs-update)
 
-
-;;; Autoloads
-(autoload 'boxquote-boxquote "boxquote" "Apply `boxquote-region' to the current boxquote." t nil)
-(autoload 'boxquote-buffer "boxquote" "Apply `boxquote-region' to a whole buffer." t nil)
-(autoload 'boxquote-defun "boxquote" "Apply `boxquote-region' the current defun." t nil)
-(autoload 'boxquote-describe-function "boxquote" "Call `describe-function' and boxquote the output into the current buffer." t nil)
-(autoload 'boxquote-describe-key "boxquote" "Call `describe-key' and boxquote the output into the current buffer." t nil)
-(autoload 'boxquote-describe-variable "boxquote" "Call `describe-variable' and boxquote the output into the current buffer." t nil)
-(autoload 'boxquote-fill-paragraph "boxquote" "Perform a `fill-paragraph' inside a boxquote." t nil)
-(autoload 'boxquote-insert-file "boxquote" "Insert the contents of a file, boxed with `boxquote-region'.
-
-If `boxquote-title-files' is non-nil the boxquote will be given a title that
-is the result applying `boxquote-file-title-funciton' to FILENAME." t nil)
-(autoload 'boxquote-kill "boxquote" "Kill the boxquote and its contents." t nil)
-(autoload 'boxquote-kill-ring-save "boxquote" "Like `kill-ring-save' but remembers a title if possible.
-
-The title is acquired by calling `boxquote-kill-ring-save-title'. The title
-will be used by `boxquote-yank'." t nil)
-(autoload 'boxquote-narrow-to-boxquote "boxquote" "Narrow the buffer to the current boxquote." t nil)
-(autoload 'boxquote-narrow-to-boxquote-content "boxquote" "Narrow the buffer to the content of the current boxquote." t nil)
-(autoload 'boxquote-paragraph "boxquote" "Apply `boxquote-region' to the current paragraph." t nil)
-(autoload 'boxquote-region "boxquote" "Draw a box around the left hand side of a region bounding START and END." t nil)
-(autoload 'boxquote-shell-command "boxquote" "Call `shell-command' with COMMAND and boxquote the output." t nil)
-(autoload 'boxquote-text "boxquote" "Insert TEXT, boxquoted." t nil)
-(autoload 'boxquote-title "boxquote" "Set the title of the current boxquote to TITLE.
-
-If TITLE is an empty string the title is removed. Note that the title will
-be formatted using `boxquote-title-format'." t nil)
-(autoload 'boxquote-unbox "boxquote" "Remove the boxquote that contains `point'." t nil)
-(autoload 'boxquote-unbox-region "boxquote" "Remove a box created with `boxquote-region'." t nil)
-(autoload 'boxquote-yank "boxquote" "Do a `yank' and box it in with `boxquote-region'.
-
-If the yanked entry was placed on the kill ring with
-`boxquote-kill-ring-save' the resulting boxquote will be titled with
-whatever `boxquote-kill-ring-save-title' returned at the time." t nil)
-(autoload 'camelCase-mode "camelCase-mode" "Minor mode which overrides word command keys for editing camelCase words.
-
- Word boundaries in a camelCase name are marked only by letter case.
- For example lowerCapitalUPPERCase has four words.  A word may be
- lowercase, Capitalized, UPPERCASE, or a sequence of digits.  Besides
- non-letter to letter and letter to non-letter word boundaries,
- word boundaries in the middle of a sequence of letters are located at
- lowercaseCapital, CapitalCapital, lowercaseUPPERCASE,
- CapitalUPPERCASE, and UPPERCASECapital boundaries.
-
- Rebound keys:
-   M-f, M-right*,  C-right      camelCase-forward-word
-   M-b, M-left*,   C-left       camelCase-backward-word
-   M-d, M-delete*, C-delete*    camelCase-forward-kill-word
-   M-backspace,    C-backspace* camelCase-backward-kill-word
-   M-t                          camelCase-transpose-words
-   M-c                          camelCase-capitalize-word
-   M-u                          camelCase-upcase-word
-   M-l                          camelCase-downcase-word
- (* means only in Gnu Emacs, not in XEMacs; the original binding is not
-  to the word command in XEmacs, so it is not overridden)
-
- camelCase-mode prefix ARG:  0 turns off, 1 turns on, nil toggles mode." t nil)
-(autoload 'css-mode "css-mode" "Major mode for editing CSS style sheets.
-\\{cssm-mode-map}" t nil)
-(autoload 'doxymacs-mode "doxymacs" "mode help" t nil)
-(autoload 'ecb-activate "ecb" "Emacs Code Browser" t nil)
-(autoload 'expand-member-functions "member-functions" "Expand C++ member function declarations" t)
-(autoload 'gnuserv-start "gnuserv-compat" "Allow this Emacs process to be a server for client processes." t)
-(autoload 'guile-scheme-mode "guile-scheme" "" t nil)
-(autoload 'h4x0r-string "h4x0r" "" t nil)
-(autoload 'htmlize-buffer "htmlize" "Provide an html page from the current buffer" t nil)
-(autoload 'htmlize-file "htmlize" "Provide an html page from the current file" t nil)
-(autoload 'htmlize-many-files "htmlize" "Provide an html page from files" t nil)
-(autoload 'htmlize-many-files-dired "htmlize" "Provide an html page from files marked in dired" t nil)
-(autoload 'htmlize-region "htmlize" "Provide an html page from the current region" t nil)
-(autoload 'isearchb-activate "isearchb" "Activate isearchb" t nil)
-(autoload 'keytable "keytable" "Browse key bindings" t nil)
-(autoload 'make-regexp "make-regexp" "Return a regexp to match a string item in STRINGS.")
-(autoload 'make-regexps "make-regexp" "Return a regexp to REGEXPS.")
-(autoload 'map-lines "map-lines" "Map COMMAND over lines matching REGEX." t)
-(autoload 'mode-compile "mode-compile" "Command to compile current buffer file based on the major mode" t)
-(autoload 'mode-compile-kill "mode-compile" "Command to kill a compilation launched by `mode-compile'" t)
-(autoload 'page-break-mode "page-break" "Visible page markers" t nil)
-(autoload 'replace-recent-character "rrc" "Replace-recent-character is interactive function for quick corrections of
-recenlty typed text. It first prompts for character to search backwards. If
-such character is found, following options are shown:
-1, repeat the character to search in previous text.
-2, M-r for delete of the found character.
-3, C-t for trasposition of the found and the following character.
-4, TAB for promt for character to insert after the found character.
-5, ESC for no operation.
-6, Any other insertable character will replace found character." t nil)
-(autoload 'rm-exchange-point-and-mark "rect-mark" "Exchange point and mark for rectangle." t)
-(autoload 'rm-kill-region "rect-mark" "Kill a rectangular region and save it in the kill ring." t)
-(autoload 'rm-kill-ring-save "rect-mark" "Copy a rectangular region to the kill ring." t)
-(autoload 'rm-set-mark "rect-mark" "Set mark for rectangle." t)
-(autoload 'rpm "sb-rpm" "Rpm package listing in speedbar.")
-(autoload 'sawfish-mode "sawfish" "sawfish-mode" t)
-(autoload 'speedbar-frame-mode "speedbar" "Popup a speedbar frame" t)
-(autoload 'speedbar-get-focus "speedbar" "Jump to speedbar frame" t)
-(autoload 'teyjus "teyjus" "Run an inferior Teyjus process." t)
-(autoload 'teyjus-edit-mode "teyjus" "Syntax Highlighting, etc. for Lambda Prolog" t)
-(autoload 'turn-on-eldoc-mode "eldoc" "Activate eldoc" t nil)
-(autoload 'w3-speedbar-buttons "sb-w3" "s3 specific speedbar button generator.")
-(autoload 'zap-following-char "zap-char" "Kill following ARG'th occurrence of CHAR.
-Case is ignored if `case-fold-search' is non-nil in the current buffer.
-Goes backward if ARG is negative; error if CHAR not found." t nil)
-(autoload 'zap-from-char "zap-char" "Kill from ARG'th occurrence of CHAR.
-Case is ignored if `case-fold-search' is non-nil in the current buffer.
-Goes backward if ARG is negative; error if CHAR not found." t nil)
-(autoload 'zap-to-char "zap-char" "Kill up to and including ARG'th occurrence of CHAR.
-Case is ignored if `case-fold-search' is non-nil in the current buffer.
-Goes backward if ARG is negative; error if CHAR not found." t nil)
-(autoload 'zap-upto-char "zap-char" "Kill up to ARG'th occurrence of CHAR.
-Case is ignored if `case-fold-search' is non-nil in the current buffer.
-Goes backward if ARG is negative; error if CHAR not found." t nil)
-
+;; xterm settings
 (when (and (string= "xterm" (getenv "TERM"))
            (request 'xterm-extras))
   (xterm-extra-keys))
@@ -1038,5 +561,8 @@ Goes backward if ARG is negative; error if CHAR not found." t nil)
   ;;
   (add-hook 'sgml-mode-hook 'go-bind-markup-menu-to-mouse3))
 
-(message ".emacs loaded")
+(add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
+(add-to-list 'auto-mode-alist '("\\.i\\'" . c++-mode))
+(add-to-list 'auto-mode-alist '("\\.pro\\'" . makefile-mode))
 
+(message ".emacs loaded")

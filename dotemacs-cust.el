@@ -166,7 +166,7 @@
  '(font-lock-pvs-record-parens-face ((t (:foreground "red"))))
  '(font-lock-pvs-set-brace-face ((t (:foreground "darkred"))))
  '(font-lock-pvs-table-face ((t (:foreground "black"))))
- '(font-lock-qt-face ((((class color) (background dark)) (:foreground "green4"))))
+ '(font-lock-qt-face ((((class color) (background dark)) (:foreground "green2" :weight bold))))
  '(font-lock-string-face ((((class color) (min-colors 88) (background dark)) (:foreground "green3"))))
  '(font-lock-variable-name-face ((((class color) (min-colors 88) (background dark)) (:foreground "LightSkyBlue"))))
  '(gnus-group-mail-low-empty-face ((((class color) (background dark)) (:foreground "aquamarine3"))))
