@@ -1,3 +1,23 @@
+2005-01-02  Yann Hodique  <Yann.Hodique@lifl.fr>
+
+	* dotemacs.el:
+	more experimental stuff
+
+	* dotemacs-cust.el:
+	(custom-set-faces): make faces more usable on dark background
+
+	* config/:
+	initial checkin, new directory for configuration code
+
+	* perso/psvn-hacked.el:
+	initial checkin, new version of psvn for log-edit usage
+
+	* perso/elect-mbuf.el:
+	initial checkin
+
+	* perso/autoloads.el:
+	separate autoloads for byte-compilation
+
 2004-12-04  Yann Hodique  <Yann.Hodique@lifl.fr>
 
 	* dotgnus.el:
