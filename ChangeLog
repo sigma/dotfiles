@@ -1,6 +1,9 @@
 2004-11-21  Yann Hodique  <Yann.Hodique@lifl.fr>
 
 	* dotemacs.el:
+	(dired-mode-map): delay binding
+
+	* dotemacs.el:
 	(dired-load-hook): use ediff from dired
 
 	* dotemacs-cust.el:

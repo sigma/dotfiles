@@ -1,5 +1,5 @@
 ;; -*- mode: emacs-lisp; mode: hi-lock; mode: page-break; auto-compile-lisp: nil; -*-
-;; $Id: dotemacs.el,v 1.65 2004/11/21 11:02:10 sigma Exp $
+;; $Id$
 
 ;; Hi-lock: (("^;;; \\(.*\\)" (1 'hi-black-hb t)))
 ;; Hi-lock: (("^ +;;; \\(.*\\)" (1 'hi-black-b t)))
@@ -143,6 +143,8 @@
             ;; Set dired-x global variables here.  For example:
             (setq dired-x-hands-off-my-keys nil
                   dired-find-subdir nil)
+
+            (define-key dired-mode-map (kbd "C-c C-c") 'wdired-change-to-wdired-mode)
             ))
 
 (add-hook 'dired-mode-hook
@@ -151,7 +153,6 @@
             (dired-omit-mode 1)
             ))
 
-(define-key dired-mode-map (kbd "C-c C-c") 'wdired-change-to-wdired-mode)
 
 ;;; Packages configuration
 
@@ -798,7 +799,8 @@ there are more than 1% of such letters then turn French accent mode on."
 (when (request 'multi-region)
   (global-set-key (kbd "<H-return>") multi-region-map))
 
-;; cvs keys
+;; versioning keys
+(request 'psvn)
 (global-set-key (kbd "<f12>") 'cvs-examine)
 (global-set-key (kbd "<C-f12>") 'cvs-status)
 (global-set-key (kbd "<M-f12>") 'cvs-update)
@@ -942,21 +944,21 @@ Goes backward if ARG is negative; error if CHAR not found." t nil)
   (global-set-key (kbd "<M-f7>")    'fold-dwim-hide-all)
   (global-set-key (kbd "<S-M-f7>")  'fold-dwim-show-all))
 
-(request 'emms)
-(request 'emms-default)
-(emms-setup 'cvs "~/music" "~/mp3")
-;; Show the current track each time EMMS
-;; starts to play a track with "NP : "
-(add-hook 'emms-player-started-hook 'emms-show)
-(setq emms-show-format "NP: %s")
+(when (request 'emms)
+  (request 'emms-default)
+  (emms-setup 'cvs "~/music" "~/mp3")
+  ;; Show the current track each time EMMS
+  ;; starts to play a track with "NP : "
+  (add-hook 'emms-player-started-hook 'emms-show)
+  (setq emms-show-format "NP: %s")
 
-;; When asked for emms-play-directory,
-;; always start from this one
-;;(setq emms-source-file-default-directory "~/music/")
+  ;; When asked for emms-play-directory,
+  ;; always start from this one
+  ;;(setq emms-source-file-default-directory "~/music/")
 
-;; Want to use alsa with mpg321 ?
-;(setq emms-player-mpg321-parameters '("-o" "alsa"))
-
+  ;; Want to use alsa with mpg321 ?
+  ;;(setq emms-player-mpg321-parameters '("-o" "alsa"))
+  )
 
 (add-to-list 'auto-mode-alist '("\\.hlal\\'" . c-mode))
 
