@@ -29,10 +29,10 @@
 ;;; Code:
 
 ;; Use this one instead of require to ignore errors
-(defun request (pack)
+(defun request (feature)
   "Fail to require silently"
   (condition-case nil
-    (require pack)
+    (require feature)
   (error nil)))
 
 ;; Map a condition/action on a list
@@ -125,7 +125,7 @@
   (setq auto-save-directory (expand-file-name "~/.autosaves/")))
 
 ;; Why the hell should some commands be disabled?
-(setq disabled-command-hook nil)
+(setq disabled-command-function nil)
 
 ;; scroll-margin does not work with hl-line :-(
 (defvar top-margin)
