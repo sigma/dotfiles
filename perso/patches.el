@@ -267,10 +267,10 @@ select the completion near point.\n\n")))))
 (add-hook 'completion-setup-hook 'yh/completion-setup-function)
 
 ;; Suppress annoying messages. Needs some work
-(defadvice message (around message-around act)
-  "Don't let annoying messages popup while using the minibuffer"
-  (unless (minibuffer-window-active-p (minibuffer-window))
-    ad-do-it))
+;; (defadvice message (around message-around act)
+;;   "Don't let annoying messages popup while using the minibuffer"
+;;   (unless (minibuffer-window-active-p (minibuffer-window))
+;;     ad-do-it))
 
 ;; Author: Patrick Gundlach
 ;; nice mark - shows mark as a highlighted 'cursor' so user 'always'
