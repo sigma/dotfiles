@@ -7,6 +7,9 @@
 	(muse): make it work (find better later)
 	(yh/tabbar-inhibit-function): new inhibition function for tabbar
 	replace mtorus by tabbar
+	(lispy): autoload
+	(fracc-mode): autoload
+	(crontab-mode): autoload
 
 	* dotemacs-cust.el:
 	(custom-set-variables): set tramp-default-method-alist in a better way for ftp

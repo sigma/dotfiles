@@ -1,5 +1,5 @@
 ;; -*- mode: emacs-lisp; mode: hi-lock; mode: page-break; auto-compile-lisp: nil; -*-
-;; $Id: dotemacs.el,v 1.56 2004/09/29 18:33:26 sigma Exp $
+;; $Id: dotemacs.el,v 1.57 2004/09/29 22:50:41 sigma Exp $
 
 ;; Hi-lock: (("^;;; \\(.*\\)" (1 'hi-black-hb t)))
 ;; Hi-lock: (("^ +;;; \\(.*\\)" (1 'hi-black-b t)))
@@ -224,18 +224,18 @@
 
 ;;; Lispy : client for telnet-based chat server
 
-(if (request 'lispy)
-    (progn
-      (request 'lispy-commands)
-      (request 'lispy-history)
-      (request 'lispy-font-lock)
-      (request 'lispy-occur)
-      (request 'lispy-session)
-      (request 'lispy-h4x0r)
-      (request 'lispy-osd)
-      (request 'lispy-autoreconnect)
-      (request 'lispy-limit)
-      ))
+(autoload 'lispy "lispy-session" "" t nil)
+(eval-after-load "lispy"
+  '(progn
+     (request 'lispy-commands)
+     (request 'lispy-history)
+     (request 'lispy-font-lock)
+     (request 'lispy-occur)
+     (request 'lispy-h4x0r)
+     (request 'lispy-osd)
+     (request 'lispy-autoreconnect)
+     (request 'lispy-limit)
+     ))
 
 ;;; Eshell : Emacs shell
 
@@ -406,27 +406,25 @@
 
 ;;; Fracc : french accent mode
 
-(when (request 'fracc)
-  (progn
-    (defun install-french-accent-mode-if-needed ()
-      "Install French accent mode if the buffer seems to contain French text.
+(autoload 'fracc-mode "fracc" "" t nil)
+(defun install-french-accent-mode-if-needed ()
+  "Install French accent mode if the buffer seems to contain French text.
 The guess is made by computing the proportion of letters with accents. If
 there are more than 1% of such letters then turn French accent mode on."
-      (save-excursion
-        (goto-char (point-min))
-        (let ((n 0)(size (- (point-max) (point-min))))
-          (while (re-search-forward "\\\\['^`][eauo]" (point-max) t)
-            (setq n (+ n 1)) )
-          (while (re-search-forward "[יטאשחךכ]" (point-max) t)
-            (setq n (+ n 1)) )
-          (message "diacritic/normal ratio = %d/%d" n size)
-          (cond ((> (* n 100) size)
-                 (fracc-mode fracc-8bits-tex-encoding) ) ) ) ) )
-    ;; and install it
-    (add-hook 'tex-mode-hook 'install-french-accent-mode-if-needed)
-    (add-hook 'LaTeX-mode-hook 'install-french-accent-mode-if-needed)
-    (add-hook 'text-mode-hook 'install-french-accent-mode-if-needed)
-    ))
+  (save-excursion
+    (goto-char (point-min))
+    (let ((n 0)(size (- (point-max) (point-min))))
+      (while (re-search-forward "\\\\['^`][eauo]" (point-max) t)
+        (setq n (+ n 1)) )
+      (while (re-search-forward "[יטאשחךכ]" (point-max) t)
+        (setq n (+ n 1)) )
+      (message "diacritic/normal ratio = %d/%d" n size)
+      (cond ((> (* n 100) size)
+             (fracc-mode fracc-8bits-tex-encoding))))))
+
+(add-hook 'tex-mode-hook 'install-french-accent-mode-if-needed)
+(add-hook 'LaTeX-mode-hook 'install-french-accent-mode-if-needed)
+(add-hook 'text-mode-hook 'install-french-accent-mode-if-needed)
 
 ;;; pmwiki
 
@@ -494,9 +492,9 @@ there are more than 1% of such letters then turn French accent mode on."
 (request 'mycompletion)
 
 ;;; Crontab
-(when (request 'crontab-mode)
-  (setq auto-mode-alist
-        (cons '("crontab\\'" . crontab-mode) auto-mode-alist)))
+(autoload 'crontab-mode "crontab-mode" "" t nil)
+(setq auto-mode-alist
+      (cons '("crontab\\'" . crontab-mode) auto-mode-alist))
 
 
 ;;; Utils/Functions
@@ -852,9 +850,9 @@ Goes backward if ARG is negative; error if CHAR not found." t nil)
 ;;************************************************************
 ;; configure HTML editing
 ;;************************************************************
-;;
+
 (request 'php-mode)
-;;
+
 (add-to-list 'auto-mode-alist '("\\.css\\'" . css-mode))
 (setq cssm-indent-function #'cssm-c-style-indenter)
 (setq cssm-indent-level '2)
