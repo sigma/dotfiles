@@ -117,5 +117,9 @@
 (if (> emacs-major-version 20) (set-scroll-bar-mode nil))
 (menu-bar-mode -1)
 
+(setq-default
+ even-window-heights nil
+ resize-mini-windows nil)
+
 (provide 'visual)
 ;;; visual.el ends here

@@ -54,6 +54,8 @@
       kill-whole-line t
       kill-read-only-ok t)
 
+(setq-default comment-style 'extra-line)
+
 ;; Auto-reload file when modified from external app
 (global-auto-revert-mode 1)
 
@@ -591,10 +593,8 @@
   ;;
   (add-hook 'sgml-mode-hook 'go-bind-markup-menu-to-mouse3))
 
-(add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
-(add-to-list 'auto-mode-alist '("\\.i\\'" . c++-mode))
+(add-to-list 'auto-mode-alist '("\\.[hi]\\'" . c++-mode))
 (add-to-list 'auto-mode-alist '("\\.pro\\'" . makefile-mode))
-(add-to-list 'auto-mode-alist '("SConstruct\\'" . python-mode))
-(add-to-list 'auto-mode-alist '("SConscript\\'" . python-mode))
+(add-to-list 'auto-mode-alist '("SCons\\(cript\\|truct\\)\\'" . python-mode))
 
 (message ".emacs loaded")
