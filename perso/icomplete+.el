@@ -1,6 +1,6 @@
 ;;; icomplete-plus.el --- Extensions to `icomplete.el'.
 ;;; FILE SHOULD BE NAMED icomplete+.el, but EmacsWiki doesn't like that.
-;; 
+;;
 ;; Emacs Lisp Archive Entry
 ;; Filename: icomplete+.el
 ;; Description: Extensions to `icomplete.el'.
@@ -14,9 +14,9 @@
 ;;     Update #: 310
 ;; Keywords: help, abbrev, internal, extensions, local
 ;; Compatibility: GNU Emacs 21.x, GNU Emacs 20.x
-;; 
+;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; 
+;;
 ;;; Commentary:
 ;;
 ;;    Extensions to `icomplete.el'.
@@ -39,7 +39,7 @@
 ;;
 ;;  `read-from-minibuffer' -
 ;;     Resets `minibuffer-completion-table' to avoid icompletion.
-;;  `read-no-blanks-input' - 
+;;  `read-no-blanks-input' -
 ;;     Resets `minibuffer-completion-table' to avoid icompletion.
 ;;  `read-string' -
 ;;     Resets `minibuffer-completion-table' to avoid icompletion.
@@ -50,9 +50,9 @@
 ;;  (eval-after-load "icomplete" '(progn (require 'icomplete+)))
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; 
+;;
 ;;; Change log:
-;; 
+;;
 ;; 2004/09/21 dadams
 ;;     Removed (icomplete-mode 99) at end.
 ;; 2004/04/13 dadams
@@ -70,9 +70,9 @@
 ;;     1) Added icomplete-choices-face and icomplete-determined-face.
 ;;     2) Redefined icomplete-exhibit: Doesn't insert if input
 ;;        begins with `('  (e.g. repeat-complex-command).
-;; 
+;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; 
+;;
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
 ;; the Free Software Foundation; either version 2, or (at your option)
@@ -89,8 +89,8 @@
 ;; Boston, MA 02111-1307, USA.
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; 
-;;; Code: 
+;;
+;;; Code:
 
 (require 'icomplete)
 (and (< emacs-major-version 20)(eval-and-compile (require 'cl))) ;; when, unless
@@ -291,7 +291,7 @@ Fifth arg INHERIT-INPUT-METHOD, if non-nil, means the minibuffer
 ;; Resets `minibuffer-completion-table' to avoid icompletion.
 (defsubst read-from-minibuffer
   (prompt
-   &optional initial-contents keymap read hist default-value inherit-input-method)
+   &optional initial-contents keymap read hist default-value inherit-input-method keep-all)
   "Read a string from the minibuffer, prompting with string PROMPT.
 The optional second arg INITIAL-CONTENTS is an obsolete alternative to
   DEFAULT-VALUE.  It normally should be nil in new code, except when
@@ -311,7 +311,7 @@ Fifth arg HIST, if non-nil, specifies a history list and optionally
   element of the history as the value of INITIAL-CONTENTS.
   Positions are counted starting from 1 at the beginning of the list.
 Sixth arg DEFAULT-VALUE is the default value.  If non-nil, it is
-  available for history commands; but, unless READ is non-nil, 
+  available for history commands; but, unless READ is non-nil,
   `read-from-minibuffer' does NOT return DEFAULT-VALUE if the user
   enters empty input!  It returns the empty string.
 Seventh arg INHERIT-INPUT-METHOD, if non-nil, means the minibuffer
@@ -334,7 +334,7 @@ in `completing-read' and some related functions, which use
 zero-indexing for POSITION."
   (setq minibuffer-completion-table nil) ; So won't icomplete by default.
   (old-read-from-minibuffer
-   prompt initial-contents keymap read hist default-value inherit-input-method))
+   prompt initial-contents keymap read hist default-value inherit-input-method keep-all))
 
 
 (or (fboundp 'old-read-no-blanks-input)
@@ -344,7 +344,7 @@ zero-indexing for POSITION."
 ;; Resets `minibuffer-completion-table' to avoid icompletion.
 (defsubst read-no-blanks-input (prompt &optional initial-contents inherit-input-method)
   "Read a string from the minibuffer, not allowing blanks.
-Arg PROMPT is a prompt string. Whitespace terminates the input.  
+Arg PROMPT is a prompt string. Whitespace terminates the input.
 
 If optional second arg INITIAL-CONTENTS is non-nil, it should be a
 string, which is used as initial input, with point positioned at the
@@ -354,7 +354,7 @@ treated as in `read-from-minibuffer', but are normally not useful in
 this function.
 
 Third arg INHERIT-INPUT-METHOD, if non-nil, means the minibuffer
-inherits the current input method and the setting of 
+inherits the current input method and the setting of
 `enable-multibyte-characters'."
   (setq minibuffer-completion-table nil) ; So won't icomplete by default.
   (old-read-no-blanks-input prompt initial-contents inherit-input-method))

@@ -1,5 +1,5 @@
 ;;; undo-browse.el --- Powerful Undo system. Browser/movie/redo/hilit
-;; Time-stamp: <17/06/2004 15:57:12 Yann Hodique>
+;; Time-stamp: <12/12/2004 11:20:52 Yann Hodique>
 ;; Copyright (C) 2004 D. Goel
 ;; Copyright (C) 2004 FSF (*)
 ;; Emacs Lisp Archive entry
@@ -1268,7 +1268,7 @@ This removes all saved change information."
   (interactive)
   (global-set-key "\C-_" 'undo))
 
-(provide 'ub)
+(provide 'undo-browse)
 (run-hooks 'ub-after-load-hook)
 
 ;;; ub.el ends here

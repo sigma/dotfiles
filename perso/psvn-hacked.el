@@ -2,7 +2,7 @@
 ;; Copyright (C) 2002-2004 by Stefan Reichoer
 
 ;; Author: Stefan Reichoer, <stefan@xsteve.at>
-;; $Id$
+;; $Id: psvn.el 106 2004-11-21 18:19:20Z yann $
 
 ;; psvn.el is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -160,9 +160,6 @@ Possible values are: commit, revert.")
   "*Arguments to pass to svn log.
 \(used in `svn-status-show-svn-log'; override these by giving prefixes\).")
 
-;;; hooks
-(defvar svn-log-edit-mode-hook nil "Hook run when entering `svn-log-edit-mode'.")
-
 (defvar svn-status-wash-control-M-in-process-buffers
   (eq system-type 'windows-nt)
   "*Remove any trailing ^M from the *svn-process* buffer.")
@@ -179,6 +176,7 @@ Possible values are: commit, revert.")
 
 (eval-and-compile
   (require 'cl)
+  (require 'ediff)
   (defconst svn-xemacsp (featurep 'xemacs))
   (if svn-xemacsp
       (require 'overlay)
@@ -223,6 +221,10 @@ Possible values are: commit, revert.")
 (defvar svn-status-commit-rev-number nil)
 (defvar svn-status-operated-on-dot nil)
 (defvar svn-status-elided-list nil)
+
+(defvar svn-ediff-windows nil)
+(defvar svn-ediff-result nil)
+(defvar svn-status-get-specific-revision-file-info nil)
 
 ;;; faces
 (defface svn-status-marked-face
@@ -1104,20 +1106,22 @@ The result will be nil or \"S\"."
     (while st-info
       (setq fname (svn-status-line-info->filename (car st-info)))
       (setq len-fname (length fname))
-      (setq elided-list svn-status-elided-list)
       (setq elide-mark nil)
-      (while elided-list
-        (setq test (car elided-list))
-        (when (string= test ".")
-          (setq test ""))
-        (setq len-test (length test))
-        (when (and (>= len-fname len-test)
-                   (string= (substring fname 0 len-test) test))
-          (setq elide-mark t)
-          (when (or (string= fname ".")
-                    (and (= len-fname len-test) (svn-status-line-info->directory-p (car st-info))))
-            (setq elide-mark 'directory)))
-        (setq elided-list (cdr elided-list)))
+
+      (let ((elided-list svn-status-elided-list))
+        (while elided-list
+          (setq test (car elided-list))
+          (when (string= test ".")
+            (setq test ""))
+          (setq len-test (length test))
+          (when (and (>= len-fname len-test)
+                     (string= (substring fname 0 len-test) test))
+            (setq elide-mark t)
+            (when (or (string= fname ".")
+                      (and (= len-fname len-test) (svn-status-line-info->directory-p (car st-info))))
+              (setq elide-mark 'directory)))
+          (setq elided-list (cdr elided-list))))
+
       ;;(message "fname: %s elide-mark: %S" fname elide-mark)
       (setcar (nthcdr 1 (svn-status-line-info->ui-status (car st-info))) elide-mark)
       (setq st-info (cdr st-info))))
@@ -1966,7 +1970,7 @@ When called with a prefix argument add the command line switch --force."
     (setq default-directory dir)
     (unless use-existing-buffer
       (when (and svn-log-edit-file-name (file-readable-p svn-log-edit-file-name))
-        (insert-file svn-log-edit-file-name)))
+        (insert-file-contents svn-log-edit-file-name)))
     (svn-log-edit)))
 
 (defun svn-status-cleanup ()
@@ -2466,46 +2470,40 @@ Commands:
 ;; svn-log-edit-mode:
 ;; --------------------------------------------------------------------------------
 
+(require 'log-edit)
+
 (defun svn-log-edit ()
-  (svn-log-edit-mode))
+  (let ((parent (current-buffer)))
+    (svn-log-edit-mode)
+    (set (make-local-variable 'log-edit-callback) 'svn-log-edit-done)
+    (set (make-local-variable 'log-edit-listfun) 'svn-log-edit-files-to-commit)
+    (set (make-local-variable 'log-edit-initial-files) (log-edit-files))
+    (goto-char (point-min)) (push-mark (point-max))
+    (message (substitute-command-keys
+	      "Press \\[log-edit-done] when you are done editing."))))
 
-(defvar svn-log-edit-mode-map () "Keymap used in `svn-log-edit-mode' buffers.")
+(define-derived-mode svn-log-edit-mode log-edit-mode "Svn-Log-Edit"
+  "Wrapper around `log-edit-mode'"
+  (easy-menu-add svn-log-edit-mode-menu)
+  (setq svn-log-edit-update-log-entry nil))
 
-(when (not svn-log-edit-mode-map)
-  (setq svn-log-edit-mode-map (make-sparse-keymap))
-  (define-key svn-log-edit-mode-map (kbd "C-c C-c") 'svn-log-edit-done)
-  (define-key svn-log-edit-mode-map (kbd "C-c C-d") 'svn-log-edit-svn-diff)
-  (define-key svn-log-edit-mode-map (kbd "C-c C-s") 'svn-log-edit-save-message)
-  (define-key svn-log-edit-mode-map (kbd "C-c C-i") 'svn-log-edit-svn-status)
-  (define-key svn-log-edit-mode-map (kbd "C-c C-l") 'svn-log-edit-svn-log)
-  (define-key svn-log-edit-mode-map (kbd "C-c C-?") 'svn-log-edit-show-files-to-commit)
-  (define-key svn-log-edit-mode-map (kbd "C-c C-z") 'svn-log-edit-erase-edit-buffer)
-  (define-key svn-log-edit-mode-map (kbd "C-c C-q") 'svn-log-edit-abort))
+(define-key svn-log-edit-mode-map (kbd "C-c C-d") 'svn-log-edit-svn-diff)
+(define-key svn-log-edit-mode-map (kbd "C-c C-s") 'svn-log-edit-save-message)
+(define-key svn-log-edit-mode-map (kbd "C-c C-i") 'svn-log-edit-svn-status)
+(define-key svn-log-edit-mode-map (kbd "C-c C-l") 'svn-log-edit-svn-log)
+(define-key svn-log-edit-mode-map (kbd "C-c C-z") 'svn-log-edit-erase-edit-buffer)
+(define-key svn-log-edit-mode-map (kbd "C-c C-q") 'svn-log-edit-abort)
 
 (easy-menu-define svn-log-edit-mode-menu svn-log-edit-mode-map
-"'svn-log-edit-mode' menu"
-                  '("SVN-Log"
-                    ["Save to disk" svn-log-edit-save-message t]
-                    ["Commit" svn-log-edit-done t]
-                    ["Show Diff" svn-log-edit-svn-diff t]
-                    ["Show Status" svn-log-edit-svn-status t]
-                    ["Show Log" svn-log-edit-svn-log t]
-                    ["Show files to commit" svn-log-edit-show-files-to-commit t]
-                    ["Erase buffer" svn-log-edit-erase-edit-buffer]
-                    ["Abort" svn-log-edit-abort t]))
-
-(defun svn-log-edit-mode ()
-  "Major Mode to edit svn log messages.
-Commands:
-\\{svn-log-edit-mode-map}"
-  (interactive)
-  (kill-all-local-variables)
-  (use-local-map svn-log-edit-mode-map)
-  (easy-menu-add svn-log-edit-mode-menu)
-  (setq major-mode 'svn-log-edit-mode)
-  (setq mode-name "svn-log-edit")
-  (setq svn-log-edit-update-log-entry nil)
-  (run-hooks 'svn-log-edit-mode-hook))
+  "'svn-log-edit-mode' menu"
+  '("SVN-Log"
+    ["Save to disk" svn-log-edit-save-message t]
+    ["Show Diff" svn-log-edit-svn-diff t]
+    ["Show Status" svn-log-edit-svn-status t]
+    ["Show Log" svn-log-edit-svn-log t]
+    ["Show files to commit" log-edit-show-files t]
+    ["Erase buffer" svn-log-edit-erase-edit-buffer]
+    ["Abort" svn-log-edit-abort t]))
 
 (defun svn-log-edit-abort ()
   (interactive)
@@ -2561,10 +2559,12 @@ If ARG then show diff between some other version of the selected files."
   (pop-to-buffer "*svn-status*")
   (other-window 1))
 
+(defun svn-log-edit-files-to-commit ()
+  (mapcar 'svn-status-line-info->filename svn-status-files-to-commit))
+
 (defun svn-log-edit-show-files-to-commit ()
   (interactive)
-  (message "Files to commit: %S"
-           (mapcar 'svn-status-line-info->filename svn-status-files-to-commit)))
+  (message "Files to commit: %S" (svn-log-edit-files-to-commit)))
 
 (defun svn-log-edit-save-message ()
   "Save the current log message to the file `svn-log-edit-file-name'."
@@ -2843,14 +2843,14 @@ The conflicts must be marked with rcsmerge conflict markers."
 ;;  M-x svn-status
 ;;  M-x elp-results
 
-(defun svn-status-elp-init ()
-  (interactive)
-  (require 'elp)
-  (elp-reset-all)
-  (elp-instrument-package "svn-")
-  (message "Run the desired svn command (e.g. M-x svn-status), then use M-x elp-results."))
+;; (defun svn-status-elp-init ()
+;;   (interactive)
+;;   (require 'elp)
+;;   (elp-reset-all)
+;;   (elp-instrument-package "svn-")
+;;   (message "Run the desired svn command (e.g. M-x svn-status), then use M-x elp-results."))
 
 
-(provide 'psvn)
+(provide 'psvn-hacked)
 
 ;;; psvn.el ends here

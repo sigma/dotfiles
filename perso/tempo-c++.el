@@ -41,7 +41,7 @@
 ;;; Preprocessor Templates (appended to c-tempo-tags)
 
 (yh/tempo-define-template "c-include"
-                          "# i"
+                          "#i"
                           'c-tempo-keys-alist
                           '("#include <" r ".h>" > n)
                           "#include"
@@ -49,7 +49,7 @@
                           'c-tempo-tags)
 
 (yh/tempo-define-template "c-ifdef"
-                          "# f"
+                          "#f"
                           'c-tempo-keys-alist
                           '("#ifdef " (p "ifdef-clause: " clause) > n> p n
                             "#else /* !(" (s clause) ") */" n> p n
@@ -59,7 +59,7 @@
                           'c-tempo-tags)
 
 (yh/tempo-define-template "c-ifndef"
-                          "# n"
+                          "#n"
                           'c-tempo-keys-alist
                           '("#ifndef " (p "ifndef-clause: " clause) > n
                             "#define " (s clause) n> n ~ n n
