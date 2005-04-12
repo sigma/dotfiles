@@ -59,9 +59,6 @@ a new page - simply return nil."
       (message "No planner file for %s." date))
     nil))
 
-(require 'planner-log-edit)
-(add-to-list 'planner-log-edit-flush-lines-list "^## .*")
-
 (provide 'planner-config)
 
 
