@@ -4,6 +4,7 @@
 
 	* config/planner-config.el:
 	(planner-log-edit): use planner-log-edit to track commits
+	(planner-log-edit-flush-lines-list): flush svn comments before commit
 
 	* config/muse-config.el:
 	(muse-mode-highlight-p): re-enable colors in muse files

@@ -179,6 +179,7 @@ a new page - simply return nil."
     nil))
 
 (require 'planner-log-edit)
+(add-to-list 'planner-log-edit-flush-lines-list "^## .*")
 
 (provide 'planner-config)
 
