@@ -1,5 +1,7 @@
 2005-04-12  Yann Hodique  <Yann.Hodique@lifl.fr>
 
+	* config/ediff-config.el: differ some initializations
+
 	* config/planner-config.el:
 	(planner-log-edit): use planner-log-edit to track commits
 

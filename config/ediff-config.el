@@ -28,8 +28,10 @@
 
 ;;; Ediff
 
-(setq ediff-window-setup-function 'ediff-setup-windows-plain)
-(setq ediff-split-window-function 'split-window-horizontally)
+(eval-after-load "ediff-wind"
+  '(progn
+     (setq ediff-window-setup-function 'ediff-setup-windows-plain)
+     (setq ediff-split-window-function 'split-window-horizontally)))
 
 ;; Some custom configuration to ediff
 (defvar my-ediff-bwin-config nil "Window configuration before ediff.")
@@ -62,10 +64,6 @@
   (when my-ediff-bwin-config
     (set-window-configuration my-ediff-bwin-config)))
 
-(add-hook 'ediff-before-setup-hook 'my-ediff-bsh)
-(add-hook 'ediff-after-setup-windows-hook 'my-ediff-ash)
-(add-hook 'ediff-quit-hook 'my-ediff-qh)
-
 (defun ediff-add-changelog (&optional key)
   (interactive)
   (with-current-buffer
@@ -78,7 +76,12 @@
   (define-key ediff-mode-map ".b" 'ediff-add-changelog)
   (define-key ediff-mode-map ".c" 'ediff-add-changelog))
 
-(add-hook 'ediff-keymap-setup-hook 'yh/install-ediff-changelog-keys)
+(eval-after-load "ediff-init"
+  '(progn
+     (add-hook 'ediff-before-setup-hook 'my-ediff-bsh)
+     (add-hook 'ediff-after-setup-windows-hook 'my-ediff-ash)
+     (add-hook 'ediff-quit-hook 'my-ediff-qh)
+     (add-hook 'ediff-keymap-setup-hook 'yh/install-ediff-changelog-keys)))
 
 (provide 'ediff-config)
 ;;; ediff-config.el ends here
