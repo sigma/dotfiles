@@ -36,7 +36,7 @@
     (request 'muse-docbook)))
 
 (add-to-list 'auto-mode-alist '("\\.muse$"  . muse-mode))
-(setq muse-mode-highlight-p nil)
+(setq muse-mode-highlight-p t)
 
 (provide 'muse-config)
 ;;; muse-config.el ends here

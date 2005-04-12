@@ -1,3 +1,11 @@
+2005-04-12  Yann Hodique  <Yann.Hodique@lifl.fr>
+
+	* config/planner-config.el:
+	(planner-log-edit): use planner-log-edit to track commits
+
+	* config/muse-config.el:
+	(muse-mode-highlight-p): re-enable colors in muse files
+
 2005-04-05  Yann Hodique  <Yann.Hodique@lifl.fr>
 
 	* perso/patches.el: use generic-x for common configuration files

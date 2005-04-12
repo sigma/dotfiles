@@ -15,6 +15,7 @@
   '(progn
      (require 'planner-gnus)
      (planner-gnus-insinuate)))
+
 (request 'planner-id)
 
 (planner-insinuate-calendar)
@@ -176,6 +177,8 @@ a new page - simply return nil."
     (when (interactive-p)
       (message "No planner file for %s." date))
     nil))
+
+(require 'planner-log-edit)
 
 (provide 'planner-config)
 
