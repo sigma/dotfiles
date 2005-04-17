@@ -1,3 +1,17 @@
+2005-04-17  Yann Hodique  <Yann.Hodique@lifl.fr>
+
+	* config/planner-config.el:
+	removed buggy hacks
+	(planner-log-edit): re-enable, with flush hack
+
+	* dotemacs.el:
+	(global-set-key): some keys for task creation
+
+	* dotgnus.el:
+	(planner-directory): set planner-directory since it has been dropped from planner-config
+
+	* perso/psvn-hacked.el: updated to latest version from xsteve
+
 2005-04-12  Yann Hodique  <Yann.Hodique@lifl.fr>
 
 	* config/ediff-config.el: differ some initializations

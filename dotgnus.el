@@ -782,4 +782,5 @@ Must be called from the `gnus-select-group-hook'."
 
 ;; (server-start)
 ;(calendar)
+(setq planner-directory "~/Plans")
 (find-file (concat planner-directory "/" planner-default-page))

@@ -567,6 +567,9 @@ Returns nil if no differences found, 't otherwise."
 ;; (request 'remember-config)
 (request 'planner-config)
 
+(global-set-key (kbd "C-c t") 'planner-create-task)
+(global-set-key (kbd "C-c T") 'planner-create-task-from-buffer)
+
 
 ;;; Experimental
 
