@@ -616,6 +616,8 @@ Returns nil if no differences found, 't otherwise."
 
 (add-to-list 'auto-mode-alist '("\\.hlal\\'" . c-mode))
 
+(request 'xtla)
+
 ;; (setq sgml-warn-about-undefined-entities nil)
 
 ;;************************************************************

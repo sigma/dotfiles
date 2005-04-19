@@ -1,3 +1,19 @@
+2005-04-19  Yann Hodique  <Yann.Hodique@lifl.fr>
+
+	* perso/patches.el:
+	(yh/collapse-home-directory): new util function
+
+	* dotemacs.el:
+	(xtla): use xtla for arch repositories
+
+	* dotemacs-cust.el:
+	(custom-set-variables): use w3m as default browser
+	(custom-set-variables): close planner files automatically, some xtla settings
+
+	* config/planner-config.el:
+	(planner-annotation-format-local-file-name): use the new yh/collapse-home-directory
+	(planner-w3m): use w3m for web url handling
+
 2005-04-18  Yann Hodique  <Yann.Hodique@lifl.fr>
 
 	* dotemacs-cust.el:

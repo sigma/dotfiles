@@ -272,6 +272,12 @@ select the completion near point.\n\n")))))
 ;;   (unless (minibuffer-window-active-p (minibuffer-window))
 ;;     ad-do-it))
 
+(defun yh/collapse-home-directory (filename)
+  "When possible, transform an absolute path into its ~ prefixed form"
+  (if (string-match (concat "^" (regexp-quote home-directory)) filename)
+      (concat "~/" (file-relative-name filename home-directory))
+    filename))
+
 ;; Author: Patrick Gundlach
 ;; nice mark - shows mark as a highlighted 'cursor' so user 'always'
 ;; sees where the mark is. Especially nice for killing a region.

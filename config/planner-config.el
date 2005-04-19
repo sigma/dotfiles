@@ -5,6 +5,7 @@
 
 (request 'planner)
 (planner-install-extra-task-keybindings)
+(setq planner-annotation-format-local-file-name 'yh/collapse-home-directory)
 
 (define-key planner-mode-map "\C-c\C-t\C-e" 'planner-edit-task-description)
 
@@ -23,6 +24,8 @@
 (request 'planner-log-edit)
 
 (add-to-list 'planner-log-edit-flush-regexp-list "^##.*$")
+
+(request 'planner-w3m)
 
 (provide 'planner-config)
 
