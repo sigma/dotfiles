@@ -1,3 +1,8 @@
+2005-04-20  Yann Hodique  <Yann.Hodique@lifl.fr>
+
+	* dotemacs-cust.el:
+	(custom-set-variables): dot should generate .ps files by default, read quoted char in hex
+
 2005-04-19  Yann Hodique  <Yann.Hodique@lifl.fr>
 
 	* perso/patches.el:

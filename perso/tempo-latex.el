@@ -39,10 +39,6 @@
 ;;   completion in the buffer, running auctex functions both for command and
 ;;   environment ).
 
-
-
-
-
 (defvar latex-tempo-env-tags nil
   "List of LaTeX environments tags.")
 
