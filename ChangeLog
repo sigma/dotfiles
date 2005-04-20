@@ -1,5 +1,12 @@
 2005-04-20  Yann Hodique  <Yann.Hodique@lifl.fr>
 
+	* dotemacs.el:
+	(increment-number-at-point): new function, based on a version from Alex Schröder
+
+	* config/planner-config.el:
+	(planner-bibtex): use it
+	(planner-xtla): use it
+
 	* dotemacs-cust.el:
 	(custom-set-variables): dot should generate .ps files by default, read quoted char in hex
 
