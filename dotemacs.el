@@ -475,10 +475,21 @@ Returns nil if no differences found, 't otherwise."
       (set-buffer-modified-p nil)
       (kill-buffer (current-buffer)))))
 
+(defun increment-number-at-point ()
+  (interactive)
+  (skip-chars-backward "0123456789xABCDEFabcdef")
+  (cond ((looking-at "0x\\([0123456789ABCDEFabcdef]+\\)")
+         (replace-match (format "0x%x" (1+ (string-to-number (match-string 1) 16)))))
+        ((looking-at "[0123456789]+")
+         (replace-match (number-to-string (1+ (string-to-number (match-string 0))))))
+      (error "No number at point")))
+
 
 ;;; Global key bindings
 
 (global-set-key (kbd "<C-backspace>") 'kill-syntax-backward)
+
+(global-set-key (kbd "C-c +") 'increment-number-at-point)
 
 (global-set-key (kbd "<f3>") 'ecb-toggle-compile-window)
 ;; Depending on your keyboard you may want another one binding
@@ -617,6 +628,8 @@ Returns nil if no differences found, 't otherwise."
 (add-to-list 'auto-mode-alist '("\\.hlal\\'" . c-mode))
 
 (request 'xtla)
+
+(request 'bookmark)
 
 ;; (setq sgml-warn-about-undefined-entities nil)
 

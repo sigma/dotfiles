@@ -17,6 +17,7 @@
      (require 'planner-gnus)
      (planner-gnus-insinuate)))
 
+(request 'planner-bibtex)
 (request 'planner-id)
 
 (planner-insinuate-calendar)
@@ -26,6 +27,10 @@
 (add-to-list 'planner-log-edit-flush-regexp-list "^##.*$")
 
 (request 'planner-w3m)
+
+(request 'planner-xtla)
+
+(request 'planner-bookmark)
 
 (provide 'planner-config)
 
