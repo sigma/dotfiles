@@ -573,7 +573,6 @@ Returns nil if no differences found, 't otherwise."
 
 (request 'w3m-load)
 
-;; (request 'erc-config)
 (request 'emacs-wiki-config)
 ;; (request 'remember-config)
 (request 'planner-config)
@@ -685,5 +684,10 @@ Returns nil if no differences found, 't otherwise."
 (add-to-list 'auto-mode-alist '("\\.djava\\'" . java-mode))
 (add-to-list 'auto-mode-alist '("\\.pro\\'" . makefile-mode))
 (add-to-list 'auto-mode-alist '("SCons\\(cript\\|truct\\)\\'" . python-mode))
+
+(require 'type-break)
+(setq type-break-file-name nil)
+(type-break-mode 1)
+
 
 (message ".emacs loaded")

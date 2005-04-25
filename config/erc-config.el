@@ -34,20 +34,23 @@
 
 (request 'erc-nicklist)
 
-(add-hook 'erc-after-connect
-    	  '(lambda (SERVER NICK)
-    	     (cond
-    	      ((string-match "freenode\\.net" SERVER)
-    	       (erc-message (concat "PRIVMSG" "NickServ identify " public-passwd)))
-              )))
 
 (request 'erc-autojoin)
 (erc-autojoin-mode 1)
-(setq erc-autojoin-channels-alist
-      '(("freenode.net" "#emacsfr")))
+
+(defvar my-erc-autojoin-channels-alist nil)
+
+;; This function overrides the default one to allow autojoining password
+;; protected chans
+(defun erc-autojoin-channels (server nick)
+  (dolist (l my-erc-autojoin-channels-alist)
+    (when (string-match (car l) server)
+      (dolist (chan (cdr l))
+        (if (consp chan)
+            (erc-send-command (concat "join " (car chan) " " (cdr chan)))
+	(erc-send-command (concat "join " chan)))))))
 
 (request 'erc-match)
-(setq erc-keywords '("sigma"))
 (erc-match-mode)
 
 (request 'erc-track)
@@ -73,13 +76,9 @@
 
 (erc-button-mode nil)                   ;slow
 
-(setq erc-user-full-name "Yann Hodique")
-(setq erc-email-userid "y_hodique@yahoo.fr")
-
 ;; logging:
 (setq erc-log-insert-log-on-open nil)
 (setq erc-log-channels t)
-(setq erc-log-channels-directory "~/.irclogs/")
 (setq erc-save-buffer-on-part t)
 (setq erc-hide-timestamps nil)
 
@@ -104,7 +103,9 @@
   (erc-modified-channels-update))
 (global-set-key (kbd "C-c r") 'reset-erc-track-mode)
 
-;;; Finally, connect to the networks.
+(defvar my-erc-networks nil)
+
 (defun irc ()
   (interactive)
-  (erc "irc.freenode.net" 6667 "Sigma[Mtp]" "Yann Hodique" t ""))
+  (dolist (net my-erc-networks)
+    (apply 'erc net)))

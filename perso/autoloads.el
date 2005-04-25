@@ -137,6 +137,7 @@ Goes backward if ARG is negative; error if CHAR not found." t nil)
 (autoload 'zap-upto-char "zap-char" "Kill up to ARG'th occurrence of CHAR.
 Case is ignored if `case-fold-search' is non-nil in the current buffer.
 Goes backward if ARG is negative; error if CHAR not found." t nil)
+(autoload 'irc "erc-config" "" t nil)
 
 (provide 'autoloads)
 ;;; autoloads.el ends here

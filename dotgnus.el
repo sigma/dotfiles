@@ -383,8 +383,6 @@
 
   (bbdb-insinuate-message)
 
-  (setq bbdb-file (concat nbc-gnus-dir "bbdb"))
-
   (add-hook 'mail-setup-hook 'bbdb-insinuate-sendmail)
   (add-hook 'message-setup-hook 'bbdb-define-all-aliases)
 
