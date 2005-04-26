@@ -175,7 +175,8 @@
   (request 'completion-config)
   (request 'crontab-config)
   (request 'flashcard-config)
-  (request 'vc-config))
+  (request 'vc-config)
+  (request 'planner-config))
 
 ;; mail only
 (when-configuration 'mail
@@ -560,7 +561,6 @@ Returns nil if no differences found, 't otherwise."
   (global-set-key (kbd "<H-return>") multi-region-map))
 
 ;; versioning keys
-(request 'psvn-hacked)
 (global-set-key (kbd "<M-f12>") 'svn-status)
 (global-set-key (kbd "<C-f12>") 'cvs-update)
 
@@ -572,10 +572,6 @@ Returns nil if no differences found, 't otherwise."
 (request 'elscreen)
 
 (request 'w3m-load)
-
-(request 'emacs-wiki-config)
-;; (request 'remember-config)
-(request 'planner-config)
 
 (global-set-key (kbd "C-c t") 'planner-create-task)
 (global-set-key (kbd "C-c T") 'planner-create-task-from-buffer)
@@ -625,8 +621,6 @@ Returns nil if no differences found, 't otherwise."
   )
 
 (add-to-list 'auto-mode-alist '("\\.hlal\\'" . c-mode))
-
-(request 'xtla)
 
 (request 'bookmark)
 

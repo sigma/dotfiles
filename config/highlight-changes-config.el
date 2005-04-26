@@ -39,5 +39,5 @@
                                (restore-buffer-modified-p mod))))
             (local-set-key "\C-c_" 'highlight-changes-rotate-faces)))
 
-(provide 'highlight-changes--config)
+(provide 'highlight-changes-config)
 ;;; highlight-changes--config.el ends here

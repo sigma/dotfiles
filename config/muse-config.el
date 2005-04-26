@@ -33,10 +33,10 @@
     (request 'muse-html)
     (request 'muse-latex)
     (request 'muse-texinfo)
-    (request 'muse-docbook)))
+    (request 'muse-docbook)
+    (setq muse-mode-highlight-p t)))
 
 (add-to-list 'auto-mode-alist '("\\.muse$"  . muse-mode))
-(setq muse-mode-highlight-p t)
 
 (provide 'muse-config)
 ;;; muse-config.el ends here

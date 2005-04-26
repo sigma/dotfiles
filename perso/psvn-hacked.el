@@ -2855,10 +2855,12 @@ If ARG then show diff between some other version of the selected files."
   (pop-to-buffer "*svn-status*")
   (other-window 1))
 
+(defun svn-log-edit-files-to-commit ()
+  (mapcar 'svn-status-line-info->filename svn-status-files-to-commit))
+
 (defun svn-log-edit-show-files-to-commit ()
   (interactive)
-  (message "Files to commit: %S"
-           (mapcar 'svn-status-line-info->filename svn-status-files-to-commit)))
+  (message "Files to commit: %S" (svn-log-edit-files-to-commit)))
 
 (defun svn-log-edit-save-message ()
   "Save the current log message to the file `svn-log-edit-file-name'."

@@ -138,6 +138,8 @@ Goes backward if ARG is negative; error if CHAR not found." t nil)
 Case is ignored if `case-fold-search' is non-nil in the current buffer.
 Goes backward if ARG is negative; error if CHAR not found." t nil)
 (autoload 'irc "erc-config" "" t nil)
+(autoload 'xtla "xtla" "" t nil)
+(autoload 'svn-status "psvn-hacked" "" t nil)
 
 (provide 'autoloads)
 ;;; autoloads.el ends here

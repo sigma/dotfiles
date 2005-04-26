@@ -1,3 +1,22 @@
+2005-04-26  Yann Hodique  <Yann.Hodique@lifl.fr>
+
+	* perso/psvn-hacked.el:
+	(svn-log-edit-files-to-commit): restore previously existing function
+
+	* perso/autoloads.el: more autoloads
+
+	* dotemacs.el:
+	(minimal): request planner-config here
+
+	* config/muse-config.el:
+	(request): only set options if possible
+
+	* config/highlight-changes-config.el:
+	(highlight-changes-config): fixed typo
+
+	* config/fracc-config.el:
+	(install-french-accent-mode-if-needed): require fracc inside the function
+
 2005-04-25  Yann Hodique  <Yann.Hodique@lifl.fr>
 
 	* perso/autoloads.el:

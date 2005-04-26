@@ -28,11 +28,11 @@
 
 ;;; Fracc : french accent mode
 
-(require 'fracc)
 (defun install-french-accent-mode-if-needed ()
   "Install French accent mode if the buffer seems to contain French text.
 The guess is made by computing the proportion of letters with accents. If
 there are more than 1% of such letters then turn French accent mode on."
+  (require 'fracc)
   (save-excursion
     (goto-char (point-min))
     (let ((n 0)(size (- (point-max) (point-min))))
