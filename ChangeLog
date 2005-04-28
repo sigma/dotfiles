@@ -1,3 +1,11 @@
+2005-04-28  Yann Hodique  <Yann.Hodique@lifl.fr>
+
+	* perso/visual.el:
+	(jit-lock): replaces deprecated lazy-lock
+
+	* dotemacs.el:
+	(fc-eval-and-replace): new function from forcer. bind it to C-c e
+
 2005-04-26  Yann Hodique  <Yann.Hodique@lifl.fr>
 
 	* perso/psvn-hacked.el:

@@ -94,9 +94,9 @@
 
 (file-name-shadow-mode 1)
 
-(setq font-lock-support-mode 'lazy-lock-mode)
-(setq lazy-lock-stealth-time    1
-      lazy-lock-stealth-verbose nil)
+(require 'jit-lock)
+(setq font-lock-support-mode 'jit-lock-mode)
+(setq jit-lock-stealth-time 1)
 
 (request 'dircolors)
 

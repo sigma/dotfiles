@@ -485,6 +485,13 @@ Returns nil if no differences found, 't otherwise."
          (replace-match (number-to-string (1+ (string-to-number (match-string 0))))))
       (error "No number at point")))
 
+(defun fc-eval-and-replace ()
+  "Replace the preceding sexp with its value."
+  (interactive)
+  (backward-kill-sexp)
+  (prin1 (eval (read (current-kill 0)))
+         (current-buffer)))
+
 
 ;;; Global key bindings
 
@@ -500,6 +507,7 @@ Returns nil if no differences found, 't otherwise."
 (global-set-key (kbd "C-c k") 'mode-compile-kill)
 (global-set-key (kbd "C-c g") 'goto-line)
 (global-set-key (kbd "C-c o") 'my-occur)
+(global-set-key (kbd "C-c e") 'fc-eval-and-replace)
 
 (global-set-key (kbd "<C-tab>") 'other-window)
 
