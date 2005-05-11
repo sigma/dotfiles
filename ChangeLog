@@ -1,3 +1,14 @@
+2005-05-11  Yann Hodique  <Yann.Hodique@lifl.fr>
+
+	* dotemacs.el:
+	(allout): use it
+	(anchored-transpose): use it
+
+	* config/lisp-config.el:
+	(guile-scheme-mode): more keywords
+
+	* perso/anchored-transpose.el: initial checkin
+
 2005-04-28  Yann Hodique  <Yann.Hodique@lifl.fr>
 
 	* perso/visual.el:

@@ -691,5 +691,10 @@ Returns nil if no differences found, 't otherwise."
 (setq type-break-file-name nil)
 (type-break-mode 1)
 
+(require 'allout)
+(allout-init t)
+
+(global-set-key (kbd "C-x t") 'anchored-transpose)
+(autoload 'anchored-transpose "anchored-transpose" nil t)
 
 (message ".emacs loaded")

@@ -58,6 +58,8 @@
                                     "\\>[ 	']*\\(\\sw+\\)?")
                            (1 font-lock-keyword-face)
                            (2 font-lock-constant-face nil t))
+                          (,(concat "\\<" (regexp-opt '("export") t) "\\>")
+                           (1 font-lock-keyword-face))
                           ))
 
 (add-to-list 'auto-mode-alist '("\\.scm\\'" . guile-scheme-mode))
