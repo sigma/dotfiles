@@ -476,14 +476,15 @@ Returns nil if no differences found, 't otherwise."
       (set-buffer-modified-p nil)
       (kill-buffer (current-buffer)))))
 
-(defun increment-number-at-point ()
-  (interactive)
-  (skip-chars-backward "0123456789xABCDEFabcdef")
-  (cond ((looking-at "0x\\([0123456789ABCDEFabcdef]+\\)")
-         (replace-match (format "0x%x" (1+ (string-to-number (match-string 1) 16)))))
-        ((looking-at "[0123456789]+")
-         (replace-match (number-to-string (1+ (string-to-number (match-string 0))))))
-      (error "No number at point")))
+(defun increment-number-at-point (arg)
+  (interactive "p")
+  (let ((inc (or arg 1)))
+    (skip-chars-backward "0123456789xABCDEFabcdef")
+    (cond ((looking-at "0x\\([0123456789ABCDEFabcdef]+\\)")
+           (replace-match (format "0x%x" (+ inc (string-to-number (match-string 1) 16)))))
+          ((looking-at "[0123456789]+")
+           (replace-match (number-to-string (+ inc (string-to-number (match-string 0))))))
+          (error "No number at point"))))
 
 (defun fc-eval-and-replace ()
   "Replace the preceding sexp with its value."
