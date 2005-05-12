@@ -1,5 +1,10 @@
 2005-05-12  Yann Hodique  <Yann.Hodique@lifl.fr>
 
+	* perso/psvn.el: updated to latest version from xsteve
+
+	* perso/autoloads.el:
+	(svn-status): switch back to original psvn.el since my hacks are accepted
+
 	* dotemacs.el:
 	(increment-number-at-point): allow prefix increment
 
