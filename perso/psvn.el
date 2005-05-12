@@ -167,7 +167,7 @@
 (defvar svn-status-verbose t "*Add '-v' to svn status call.")
 (defvar svn-log-edit-file-name "++svn-log++" "*Name of a saved log file.")
 (defvar svn-log-edit-insert-files-to-commit t "*Insert the filelist to commit in the *svn-log* buffer")
-(defvar svn-log-edit-use-log-edit-mode (and (ignore-errors (require 'log-edit)) t) "*Use log-edit-mode as base for svn-log-edit-mode")
+(defvar svn-log-edit-use-log-edit-mode (and (condition-case nil (require 'log-edit) (error nil)) t) "*Use log-edit-mode as base for svn-log-edit-mode")
 (defvar svn-status-hide-unknown nil "*Hide unknown files in `svn-status-buffer-name' buffer.")
 (defvar svn-status-hide-unmodified nil "*Hide unmodified files in `svn-status-buffer-name' buffer.")
 (defvar svn-status-directory-history nil "*List of visited svn working directories.")
@@ -2378,7 +2378,10 @@ Otherwise get only the actual file."
         (let ((content
                (with-temp-buffer
                  (if (string= revision "BASE")
-                     (insert-file-contents (concat (file-name-directory file-name) ".svn/text-base/" (file-name-nondirectory file-name) ".svn-base"))
+                     (insert-file-contents (concat (file-name-directory file-name)
+                                                   ".svn/text-base/"
+                                                   (file-name-nondirectory file-name)
+                                                   ".svn-base"))
                    (progn
                      (svn-run-svn nil t 'cat (append (list "cat" "-r" revision) (list file-name)))
                      ;;todo: error processing
@@ -2408,7 +2411,7 @@ If ARG then prompt for revision to diff against."
          (base-buff (find-file-noselect (cdar svn-status-get-specific-revision-file-info)))
          (svn-transient-buffers (list base-buff ))
          (startup-hook '(svn-ediff-startup-hook)))
-    (ediff-buffers base-buff my-buffer  startup-hook)))
+    (ediff-buffers base-buff my-buffer startup-hook)))
 
 (defun svn-ediff-startup-hook ()
   (add-hook 'ediff-after-quit-hook-internal
@@ -3203,12 +3206,12 @@ The conflicts must be marked with rcsmerge conflict markers."
 ;;  M-x svn-status
 ;;  M-x elp-results
 
-;; (defun svn-status-elp-init ()
-;;   (interactive)
-;;   (require 'elp)
-;;   (elp-reset-all)
-;;   (elp-instrument-package "svn-")
-;;   (message "Run the desired svn command (e.g. M-x svn-status), then use M-x elp-results."))
+(defun svn-status-elp-init ()
+  (interactive)
+  (require 'elp)
+  (elp-reset-all)
+  (elp-instrument-package "svn-")
+  (message "Run the desired svn command (e.g. M-x svn-status), then use M-x elp-results."))
 
 
 (provide 'psvn)
