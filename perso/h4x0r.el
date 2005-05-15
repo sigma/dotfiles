@@ -1,5 +1,5 @@
 ; h4x0r.el 0.13
-; Time-stamp: <02/07/2004 20:05:57 Yann Hodique>
+; Time-stamp: <14/05/2005 14:49:18 Yann Hodique>
 
 ; by Charles Sebold <csebold@livingtorah.org>
 ;
@@ -54,6 +54,7 @@
 
 (defvar h4x0r-replace-with-symbols-p nil)
 
+;;;###autoload
 (defun h4x0r-region (beg end)
   "Convert region to h4x0r-talk."
   (interactive "r")
@@ -104,12 +105,14 @@
           (nth (random (length h4-tmp)) h4-tmp))
       normal-char)))
 
+;;;###autoload
 (defun h4x0r-buffer ()
   "Convert entire buffer to h4x0r-talk."
   (interactive)
   (save-excursion
     (h4x0r-region (point-max) (point-min))))
 
+;;;###autoload
 (defun h4x0r-word-at-point ()
   (interactive)
   (save-excursion
@@ -117,6 +120,7 @@
     (insert (h4x0r-string (current-word)))
     (kill-word 1)))
 
+;;;###autoload
 (defun h4x0r-string (h4-input-string)
   (save-excursion
     (let ((starting-buffer (current-buffer)))

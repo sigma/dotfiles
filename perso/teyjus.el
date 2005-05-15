@@ -102,10 +102,10 @@
 
 
 
-
+;;;###autoload
 (defun teyjus-mode ()
   "Major mode for interacting with an inferior teyjus process.
-Return after the end of the process' output sends the text from the 
+Return after the end of the process' output sends the text from the
     end of process to the end of the current line.
 Return before end of process output copies rest of line to end (skipping
     the prompt) and sends it.
@@ -130,7 +130,7 @@ to continue it."
   (run-hooks 'teyjus-mode-hook)
 )
 
-
+;;;###autoload
 (defun teyjus-edit-mode ()
   "Mode for editing Lambda Prolog Files"
   (interactive)
@@ -151,6 +151,7 @@ to continue it."
   (run-hooks 'teyjus-mode-hook)
 )
 
+;;;###autoload
 (defun teyjus ()
   "Run an inferior Prolog, with I/O through buffer *teyjus*.
 If buffer exists but prolog process is not running, make new prolog.
@@ -263,7 +264,7 @@ See also variable lprolog-prompt-pattern.
   (setq teyjus-top-error (point))
   (setq string (expand-file-name string))
   (setq filepath (file-name-directory string))
-  (save-some-buffers)  
+  (save-some-buffers)
   ;; Add the directory of the file to Teyjus' search path
   (send-string "*teyjus*"
 	       (concat "#search " filepath
@@ -279,7 +280,7 @@ See also variable lprolog-prompt-pattern.
   (teyjus)
   (send-string "*teyjus*" "stop.\n")
   (send-string "*teyjus*" "#query.\n"))
-  
+
 
 
 ;; Function to query a module.  It loads the module,

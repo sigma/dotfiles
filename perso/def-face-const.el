@@ -1,5 +1,5 @@
 ;;; def-face-const.el --- Macro for defining faces & their variables.
-;; 
+;;
 ;; Emacs Lisp Archive Entry
 ;; Filename: def-face-const.el
 ;; Description: Macro for defining faces & their variables.
@@ -7,27 +7,27 @@
 ;; Maintainer: Drew Adams
 ;; Copyright (C) 1999-2004, Drew Adams, all rights reserved.
 ;; Created: Fri Apr  2 09:08:55 1999
-;; Version: $Id: def-face-const.el,v 1.1 2004/09/07 09:42:41 sigma Exp $
+;; Version: $Id$
 ;; Last-Updated: Wed Apr 28 22:35:18 2004
 ;;           By: dradams
 ;;     Update #: 65
 ;; Keywords: faces
 ;; Compatibility: GNU Emacs 20.x
-;; 
+;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; 
-;;; Commentary: 
-;; 
+;;
+;;; Commentary:
+;;
 ;;    A macro for defining faces and their (constant) variables.
-;; 
+;;
 ;;  Macro `define-face-const' can be used to define faces
 ;;  and constant variables having the faces as values,
 ;;  given the face foreground and/or background names (strings).
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; 
+;;
 ;;; Change log:
-;; 
+;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
 ;; This program is free software; you can redistribute it and/or modify
@@ -44,9 +44,9 @@
 ;; along with this program; see the file COPYING.  If not, write to the
 ;; Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 ;; Boston, MA 02111-1307, USA.
-;; 
+;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; 
+;;
 ;;; Code:
 
 (and (< emacs-major-version 20)(eval-and-compile (require 'cl))) ;; when, unless
@@ -56,7 +56,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-
+;;;###autoload
 (defmacro define-face-const (foreground background)
   "Define a constant variable (via `defconst') naming a new face.
 FOREGROUND is either nil or a string naming the new face's foreground color.
@@ -75,7 +75,7 @@ If both FOREGROUND and BACKGROUND are strings: FOREGROUND-on-BACKGROUND-face
 If only FOREGROUND is a string:                FOREGROUND-foreground-face
 If only BACKGROUND is a string:                BACKGROUND-background-face
 
-Examples of use: 
+Examples of use:
 
  (define-face-const \"Blue\" \"Thistle\") => (defconst 'blue-on-thistle-face)
        where (face-foreground 'blue-on-thistle-face) = \"Blue\"

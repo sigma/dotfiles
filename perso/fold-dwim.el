@@ -148,6 +148,7 @@
                  (const :tag "Nested (nest headings hierarchically)" nested))
   :group 'fold-dwim)
 
+;;;###autoload
 (defun fold-dwim-hide-all ()
   "Hide all folds of various kinds in the buffer"
   (interactive)
@@ -166,6 +167,7 @@
       (folding-whole-buffer)))
   (recenter))
 
+;;;###autoload
 (defun fold-dwim-show-all ()
   "Show all folds of various kinds in the buffer"
   (interactive)
@@ -181,6 +183,7 @@
     (when folding-mode
       (folding-open-buffer))))
 
+;;;###autoload
 (defun fold-dwim-hide ()
   "Hide one item"
   (save-excursion
@@ -211,6 +214,7 @@
               (hide-subtree)
             (hide-entry))))))
 
+;;;###autoload
 (defun fold-dwim-show ()
   "If point is in a closed or temporarily open fold,
   open it.  Returns nil if nothing was done"
@@ -260,6 +264,7 @@
                        (setq stop t))))))
       stop)))
 
+;;;###autoload
 (defun fold-dwim-toggle ()
   "Try fold-dwim-show to show any hidden text at point; if no
 hidden fold is found, try fold-dwim-hide to hide the construction

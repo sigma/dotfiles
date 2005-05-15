@@ -1,6 +1,65 @@
+2005-05-14  Yann Hodique  <Yann.Hodique@lifl.fr>
+
+	* perso/zap-char.el: more autoloads
+
+	* perso/teyjus.el: more autoloads
+
+	* perso/perso-loaddefs.el: newly generated file for defining autoloads for this directory
+
+	* perso/misc.el: moved utils functions here, to be autoloaded
+
+	* perso/member-functions.el: more autoloads
+
+	* perso/map-lines.el: more autoloads
+
+	* perso/keytable.el: more autoloads
+
+	* perso/h4x0r.el: more autoloads
+
+	* perso/fold-dwim.el: more autoloads
+
+	* perso/cparen.el: more autoloads
+
+	* perso/camelCase-mode.el: more autoloads
+
+	* perso/bf.el: more autoloads
+
+	* perso/autoloads.el:
+	(perso-loaddefs): load this file prior to manual autoloads
+
+	* perso/autoloads+.el: new package: util functions for generating custom loaddefs
+
+	* dotemacs.el:
+	(current-configuration): define 'minimal configuration
+	(unless-configuration): more exclusion when under mailer instance
+	moved util functions to autoload
+
+	* config/compile-config.el: new config package
+
 2005-05-13  Yann Hodique  <Yann.Hodique@lifl.fr>
 
-	* perso/psvn.el: updated to latest version (after my changes were incorporated)
+	* perso/autoloads.el:
+	(svn-status): load psvn-config instead
+
+	* config/psvn-config.el: initial checkin
+
+	* perso/patches.el:
+	(temporary-file-directory): set it inside home directory
+
+	* dotemacs.el:
+	(byte-compile-elisp): don't compile backup files
+
+	* dotemacs-cust.el:
+	(custom-set-variables): don't ask before saving abbrevs
+
+	* config/ediff-config.el:
+	(ediff-quit-hook): install my-ediff-qh at the end of hooks (fixes incorrect buffer deletion)
+
+	* perso/psvn.el:
+	updated to latest version (after my changes were incorporated)
+	(svn-log-edit-mode-map): don't bind C-c C-c when using log-edit-mode
+	(svn-status-get-specific-revision-internal): set temp file name in such a way that it is fontified
+	(svn-status-temp-dir): expand-file-name to avoid troubles
 
 2005-05-12  Yann Hodique  <Yann.Hodique@lifl.fr>
 

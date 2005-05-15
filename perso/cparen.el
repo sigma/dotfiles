@@ -94,7 +94,7 @@
 ;;;  '(font-lock-builtin-face ((((class color) (background light)) (:bold t :foreground "RoyalBlue")))))
 
 ;;; Change Log:
-;;; $Id: cparen.el,v 1.1 2004/06/15 16:27:57 sigma Exp $
+;;; $Id$
 ;;;
 ;;; Version 1.0 (March 27th, 2001)
 ;;;  * Initial release.
@@ -278,6 +278,7 @@ Uses `cparen-get-face-internal'."
 
 ;;;; Installation
 
+;;;###autoload
 (defun cparen-activate ()
   "Activate coloured parentheses in Lisp modes.
 You should also enable `font-lock-mode'.

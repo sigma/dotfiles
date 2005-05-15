@@ -56,9 +56,10 @@
 	(read-command "Other command (takes no args and returns a string): ")
       command)))
 
+;;;###autoload
 (defun map-lines (command-c regex)
   "Map COMMAND over lines matching REGEX."
-  (interactive "cCommand (Kill, Copy, Other) [kco]: 
+  (interactive "cCommand (Kill, Copy, Other) [kco]:
 sRegular Expression: ")
   (save-excursion
     (let ((command (mapl-lookup-command command-c))

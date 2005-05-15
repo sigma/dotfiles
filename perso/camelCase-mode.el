@@ -89,6 +89,7 @@
 (make-variable-buffer-local 'camelCase-mode)
 (put 'camelCase-mode 'permanent-local t)
 
+;;;###autoload
 (defun camelCase-mode (&optional arg)
   "Minor mode which overrides word command keys for editing camelCase words.
 

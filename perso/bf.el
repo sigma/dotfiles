@@ -48,6 +48,7 @@ and executes it at run-time.  It is much slower than the compiled version."
     (bf-execute string)
     (message "%S instructions executed" ic)))
 
+;;;###autoload
 (defun bf-execute (string)
   "BrainFuck interpreter.
 This is a internal function which assumes the necessary variables for
@@ -119,6 +120,7 @@ a BrainFuck machine are already bound and initialized."
 
 (defvar bf-cache (make-hash-table :test 'equal))
 
+;;;###autoload
 (defun bf-compile (string &optional no-cache)
   "BrainFuck compiler.
 STRING is the BrainFuck code to be compiled.
@@ -138,14 +140,14 @@ To run the code, simply `funcall' the return value of this function."
       (message "Compiling bf-code...done")
       result)))
 
-
-	  
+;;;###autoload
 (defun bf-run (string)
   (interactive "sBrainFuck code: ")
   (let ((mem (make-vector 30000 0))
 	(p 0))
     (funcall (bf-compile string))))
 
+;;;###autoload
 (defun bf-test ()
   "A test for the BrainFuck compiler.
 This function compiles a Brainfuck interpreter written in BrainFuck

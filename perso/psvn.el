@@ -292,10 +292,11 @@ It is an experimental feature.")
 (defvar svn-status-edit-svn-command nil)
 (defvar svn-status-update-previous-process-output nil)
 (defvar svn-status-temp-dir
-  (or
-   (when (boundp 'temporary-file-directory) temporary-file-directory) ;emacs
-   (when (boundp 'temp-directory) temp-directory)                     ;xemacs
-   "/tmp/"))
+  (expand-file-name
+   (or
+    (when (boundp 'temporary-file-directory) temporary-file-directory) ;emacs
+    (when (boundp 'temp-directory) temp-directory)                     ;xemacs
+    "/tmp/")))
 (defvar svn-temp-suffix (make-temp-name "."))
 (defvar svn-status-temp-file-to-remove nil)
 (defvar svn-status-temp-arg-file (concat svn-status-temp-dir "svn.arg" svn-temp-suffix))
@@ -2371,7 +2372,7 @@ Otherwise get only the actual file."
     (setq svn-status-get-specific-revision-file-info nil)
     (while file-names
       (setq file-name (car file-names))
-      (setq file-name-with-revision (make-temp-file (file-name-nondirectory (concat file-name ".~" revision "~"))))
+      (setq file-name-with-revision (make-temp-file "__" nil (concat "__" (file-name-nondirectory (concat file-name ".~" revision "~")))))
       (add-to-list 'svn-status-get-specific-revision-file-info
                    (cons file-name file-name-with-revision))
       (save-excursion
@@ -2815,7 +2816,8 @@ Commands:
 
 (when (not svn-log-edit-mode-map)
   (setq svn-log-edit-mode-map (make-sparse-keymap))
-  (define-key svn-log-edit-mode-map (kbd "C-c C-c") 'svn-log-edit-done)
+  (unless svn-log-edit-use-log-edit-mode
+    (define-key svn-log-edit-mode-map (kbd "C-c C-c") 'svn-log-edit-done))
   (define-key svn-log-edit-mode-map (kbd "C-c C-d") 'svn-log-edit-svn-diff)
   (define-key svn-log-edit-mode-map (kbd "C-c C-s") 'svn-log-edit-save-message)
   (define-key svn-log-edit-mode-map (kbd "C-c C-i") 'svn-log-edit-svn-status)

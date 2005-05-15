@@ -52,6 +52,7 @@
   (interactive)
   (set-variable 'zap-char-case-fold-search (not zap-char-case-fold-search)))
 
+;;;###autoload
 (defun zap-from-char (arg char)
   "Kill from ARG'th occurrence of CHAR.
 Case is ignored if `case-fold-search' is non-nil in the current buffer.
@@ -61,6 +62,7 @@ Goes backward if ARG is negative; error if CHAR not found."
                          (search-backward (char-to-string char) nil nil arg)
                          (point))))
 
+;;;###autoload
 (defun zap-following-char (arg char)
   "Kill following ARG'th occurrence of CHAR.
 Case is ignored if `case-fold-search' is non-nil in the current buffer.
@@ -71,6 +73,7 @@ Goes backward if ARG is negative; error if CHAR not found."
                          (forward-char)
                          (point))))
 
+;;;###autoload
 (defun zap-upto-char (arg char)
   "Kill up to ARG'th occurrence of CHAR.
 Case is ignored if `case-fold-search' is non-nil in the current buffer.
@@ -82,6 +85,7 @@ Goes backward if ARG is negative; error if CHAR not found."
 			     (backward-char)
 			     (point))))
 
+;;;###autoload
 (defun zap-to-char (arg char)
   "Kill to ARG'th occurrence of CHAR.
 Case is ignored if `case-fold-search' is non-nil in the current buffer.

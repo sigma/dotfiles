@@ -90,6 +90,7 @@ point."
      (t    ; be circular
       (goto-char (point-max)))))))
 
+;;;###autoload
 (defun keytable (&optional prefix buffer)
   "Display key table."
   (interactive)

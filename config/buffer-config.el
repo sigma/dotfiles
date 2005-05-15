@@ -59,7 +59,154 @@
 
 (eval-after-load "icomplete" '(progn (request 'icomplete+)))
 (when (request 'icomplete) (icomplete-mode 1))
-(when (request 'iswitchb) (iswitchb-mode 1))
+;(when (request 'iswitchb) (iswitchb-mode 1))
+
+;; (defadvice ido-file-internal (around around-io-file-internal activate)
+;;   (flet ((ffap-string-at-point (&optional mode) (ffap-guesser)))
+;;     ad-do-it))
+
+(defun ido-file-internal (method &optional fallback default prompt item initial switch-cmd)
+  ;; Internal function for ido-find-file and friends
+  (unless item
+    (setq item 'file))
+  (let* ((ido-current-directory (ido-expand-directory default))
+	 (ido-directory-nonreadable (ido-nonreadable-directory-p ido-current-directory))
+	 (ido-directory-too-big (and (not ido-directory-nonreadable)
+				     (ido-directory-too-big-p ido-current-directory)))
+	 (ido-context-switch-command switch-cmd)
+	 filename)
+
+    (cond
+     ((or (not ido-mode) (ido-is-slow-ftp-host))
+      (setq filename t
+	    ido-exit 'fallback))
+
+     ((and (eq item 'file)
+	   (or ido-use-url-at-point ido-use-filename-at-point))
+      (let (fn d)
+	(require 'ffap)
+	;; Duplicate code from ffap-guesser as we want different behaviour for files and URLs.
+	(cond
+	 ((and ido-use-url-at-point
+	       ffap-url-regexp
+	       (ffap-fixup-url (or (ffap-url-at-point)
+				   (ffap-gopher-at-point))))
+	  (setq ido-exit 'ffap
+		filename t))
+
+	 ((and ido-use-filename-at-point
+	       (setq fn (ffap-guesser))
+	       (not (string-match "^http:/" fn))
+	       (setq d (file-name-directory fn))
+	       (file-directory-p d))
+	  (setq ido-current-directory d)
+	  (setq initial (file-name-nondirectory fn)))))))
+
+    (let (ido-saved-vc-hb
+	  (vc-handled-backends (and (boundp 'vc-handled-backends) vc-handled-backends))
+	  (ido-work-directory-index -1)
+	  (ido-work-file-index -1)
+       	  (ido-find-literal nil))
+
+      (unless filename
+	(setq ido-saved-vc-hb vc-handled-backends)
+	(setq filename (ido-read-internal item
+					  (or prompt "Find file: ")
+					  'ido-file-history nil nil initial)))
+
+      ;; Choose the file name: either the text typed in, or the head
+      ;; of the list of matches
+
+      (cond
+       ((eq ido-exit 'fallback)
+	;; Need to guard setting of default-directory here, since
+	;; we don't want to change directory of current buffer.
+	(let ((default-directory ido-current-directory)
+	      (read-file-name-function nil))
+	  (call-interactively (or fallback 'find-file))))
+
+       ((eq ido-exit 'switch-to-buffer)
+	(ido-buffer-internal ido-default-buffer-method nil nil nil ido-text))
+
+       ((eq ido-exit 'insert-buffer)
+	(ido-buffer-internal 'insert 'insert-buffer "Insert buffer: " nil ido-text 'ido-enter-insert-file))
+
+       ((eq ido-exit 'dired)
+	(dired (concat ido-current-directory (or ido-text ""))))
+
+       ((eq ido-exit 'ffap)
+	(find-file-at-point))
+
+       ((eq method 'alt-file)
+	(ido-record-work-file filename)
+	(setq default-directory ido-current-directory)
+	(ido-record-work-directory)
+	(find-alternate-file filename))
+
+       ((memq method '(dired list-directory))
+	(if (equal filename ".")
+	    (setq filename ""))
+	(let* ((dirname (ido-final-slash (concat ido-current-directory filename) t))
+	       (file (substring dirname 0 -1)))
+	  (cond
+	   ((file-directory-p dirname)
+	    (ido-record-command method dirname)
+	    (ido-record-work-directory dirname)
+	    (funcall method dirname))
+	   ((file-directory-p ido-current-directory)
+	    (cond
+	     ((file-exists-p file)
+	      (ido-record-command method ido-current-directory)
+	      (ido-record-work-directory)
+	      (funcall method ido-current-directory)
+	      (if (eq method 'dired)
+		  (dired-goto-file (expand-file-name file))))
+	     ((string-match "[[*?]" filename)
+	      (setq dirname (concat ido-current-directory filename))
+	      (ido-record-command method dirname)
+	      (ido-record-work-directory)
+	      (funcall method dirname))
+	     ((y-or-n-p (format "Directory %s does not exist. Create it " filename))
+	      (ido-record-command method dirname)
+	      (ido-record-work-directory dirname)
+	      (make-directory-internal dirname)
+	      (funcall method dirname))
+	     (t
+	      ;; put make-directory command on history
+	      (ido-record-command 'make-directory dirname))))
+	   (t (error "No such directory")))))
+
+       ((eq method 'write)
+	(ido-record-work-file filename)
+	(setq default-directory ido-current-directory)
+	(ido-record-command 'write-file (concat ido-current-directory filename))
+	(ido-record-work-directory)
+	(write-file filename))
+
+       ((eq method 'read-only)
+	(ido-record-work-file filename)
+	(setq filename (concat ido-current-directory filename))
+	(ido-record-command fallback filename)
+	(ido-record-work-directory)
+	(funcall fallback filename))
+
+       ((eq method 'insert)
+	(ido-record-work-file filename)
+	(setq filename (concat ido-current-directory filename))
+	(ido-record-command
+	 (if ido-find-literal 'insert-file-literally 'insert-file)
+	 filename)
+	(ido-record-work-directory)
+	(if ido-find-literal
+	    (insert-file-contents-literally filename)
+	  (insert-file-contents filename)))
+
+       (filename
+	(ido-record-work-file filename)
+	(setq filename (concat ido-current-directory filename))
+	(ido-record-command 'find-file filename)
+	(ido-record-work-directory)
+	(ido-visit-buffer (find-file-noselect filename nil ido-find-literal) method))))))
 
 (provide 'buffer-config)
 ;;; buffer-config.el ends here

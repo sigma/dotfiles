@@ -138,6 +138,8 @@
 (when (request 'auto-save)
   (setq auto-save-directory (expand-file-name "~/.autosaves/")))
 
+(setq temporary-file-directory "~/tmp/")
+
 ;; Why the hell should some commands be disabled?
 (setq disabled-command-function nil)
 

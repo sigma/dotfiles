@@ -80,7 +80,7 @@
   '(progn
      (add-hook 'ediff-before-setup-hook 'my-ediff-bsh)
      (add-hook 'ediff-after-setup-windows-hook 'my-ediff-ash)
-     (add-hook 'ediff-quit-hook 'my-ediff-qh)
+     (add-hook 'ediff-quit-hook 'my-ediff-qh t)
      (add-hook 'ediff-keymap-setup-hook 'yh/install-ediff-changelog-keys)))
 
 (provide 'ediff-config)

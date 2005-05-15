@@ -814,6 +814,7 @@ temp buffer when he is done with it."
 
 (defvar mf--saved-string nil)
 
+;;;###autoload
 (defun expand-member-functions (header c-file)
   "Expand C++ member function declarations into member function definitions, where needed.
 
