@@ -61,10 +61,6 @@
 (when (request 'icomplete) (icomplete-mode 1))
 ;(when (request 'iswitchb) (iswitchb-mode 1))
 
-;; (defadvice ido-file-internal (around around-io-file-internal activate)
-;;   (flet ((ffap-string-at-point (&optional mode) (ffap-guesser)))
-;;     ad-do-it))
-
 (defun ido-file-internal (method &optional fallback default prompt item initial switch-cmd)
   ;; Internal function for ido-find-file and friends
   (unless item

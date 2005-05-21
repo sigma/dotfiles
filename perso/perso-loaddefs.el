@@ -502,7 +502,7 @@ Minor mode which overrides word command keys for editing camelCase words.
 
 ;;;***
 
-;;;### (autoloads (cparen-activate) "cparen" "cparen.el" (17029 64653))
+;;;### (autoloads (cparen-activate) "cparen" "cparen.el" (17031 46603))
 ;;; Generated autoloads from cparen.el
 
 (autoload (quote cparen-activate) "cparen" "\
@@ -540,7 +540,7 @@ Not documented
 ;;;***
 
 ;;;### (autoloads (define-face-const) "def-face-const" "def-face-const.el"
-;;;;;;  (17030 5790))
+;;;;;;  (17031 46603))
 ;;; Generated autoloads from def-face-const.el
 
 (autoload (quote define-face-const) "def-face-const" "\
@@ -1881,7 +1881,7 @@ With prefix argument ARG, restart the Prolog process if running before.
 
 ;;;***
 
-;;;### (autoloads (svn-status) "psvn" "psvn.el" (17028 47154))
+;;;### (autoloads (svn-status) "psvn" "psvn.el" (17031 46603))
 ;;; Generated autoloads from psvn.el
 
 (autoload (quote svn-status) "psvn" "\
@@ -1894,14 +1894,13 @@ If ARG then pass the -u argument to `svn status'.
 
 ;;;### (autoloads (rm-mouse-drag-region rm-kill-ring-save rm-kill-region
 ;;;;;;  rm-exchange-point-and-mark rm-set-mark rm-example-picture-mode-bindings)
-;;;;;;  "rect-mark" "rect-mark.el" (16944 35476))
+;;;;;;  "rect-mark" "rect-mark.el" (17037 41968))
 ;;; Generated autoloads from rect-mark.el
  (define-key ctl-x-map "r\C-@" 'rm-set-mark)
  (define-key ctl-x-map [?r ?\C-\ ] 'rm-set-mark)
  (define-key ctl-x-map "r\C-x" 'rm-exchange-point-and-mark)
  (define-key ctl-x-map "r\C-w" 'rm-kill-region)
  (define-key ctl-x-map "r\M-w" 'rm-kill-ring-save)
- (define-key global-map [S-down-mouse-1] 'rm-mouse-drag-region)
 
 (autoload (quote rm-example-picture-mode-bindings) "rect-mark" "\
 Example rect-mark keyboard and mouse bindings for picture mode.
@@ -2594,7 +2593,7 @@ Goes backward if ARG is negative; error if CHAR not found.
 ;;;;;;  "patches.el" "post.el" "project.el" "setnu.el" "sig.el" "tempo-c++.el"
 ;;;;;;  "tempo-latex.el" "tempo-lisp.el" "todl-mode.el" "todoo.el"
 ;;;;;;  "typopunct.el" "visible-mark-mode.el" "visual.el" "xcscope.el"
-;;;;;;  "xterm-extras.el") (17030 6375 776625))
+;;;;;;  "xterm-extras.el") (17037 41983 335563))
 
 ;;;***
 

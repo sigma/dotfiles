@@ -96,7 +96,6 @@
 ;;;###autoload (define-key ctl-x-map "r\C-x" 'rm-exchange-point-and-mark)
 ;;;###autoload (define-key ctl-x-map "r\C-w" 'rm-kill-region)
 ;;;###autoload (define-key ctl-x-map "r\M-w" 'rm-kill-ring-save)
-;;;###autoload (define-key global-map [S-down-mouse-1] 'rm-mouse-drag-region)
 
 ;; Our state variables, each internal and buffer local.
 (defvar rm-mark-active nil)

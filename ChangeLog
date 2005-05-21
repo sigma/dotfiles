@@ -1,3 +1,14 @@
+2005-05-21  Yann Hodique  <Yann.Hodique@lifl.fr>
+
+	* perso/rect-mark.el: don't bind S-mouse-1
+
+	* perso/ll-debug.el: initial checkin
+
+	* perso/grade.el: initial checkin
+
+	* dotemacs-cust.el:
+	(custom-set-variables): ido configuration. fix ignored files/directories. Use ido-read-directory-name for eddif commands
+
 2005-05-14  Yann Hodique  <Yann.Hodique@lifl.fr>
 
 	* perso/zap-char.el: more autoloads
