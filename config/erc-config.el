@@ -109,3 +109,58 @@
   (interactive)
   (dolist (net my-erc-networks)
     (apply 'erc net)))
+
+;;; This section is shamelessly stolen from bojohan's config
+;;; ERC...err...prompt -----------------------------------------
+(defun my-erc-prompt-magic-time-string ()
+  (let ((string "00:00"))
+    (propertize
+     "$$:$$"
+     'display `(when (store-substring ,string 0 (format-time-string "%H:%M"))
+		 . ,string))))
+
+(defun my-erc-prompt-color-erc ()
+  (let ((string "ERC"))
+    (dolist (props `((0 1 (face ((:foreground "red"))))
+		     (1 2 (face ((:foreground "blue"))))
+		     (2 3 (face ((:foreground "yellow"))))))
+      (apply 'add-text-properties (append props (list string))))
+    string))
+
+(defun my-erc-prompt-dashes-1 (&optional col)
+  (make-string (- (window-width)
+		  (or col (save-excursion
+			    (goto-char buffer-position)
+			    (current-column)))
+		  2)
+	       ?-))
+
+(defun display-spec-hack (form)
+  (let ((spec (list '(margin) "")))
+    `(when (progn (setcdr ',spec ,form) t) . ,spec)))
+
+(defun my-erc-prompt-dashes (len)
+  (let ((form `(my-erc-prompt-dashes-1 ,len)))
+    (propertize "$" 'display (display-spec-hack form))))
+
+(defun my-erc-prompt ()
+  (if (boundp 'cb)
+      (erc-command-indicator)	; ?
+    (let* ((str1
+	    ;;(erc-prepare-mode-line-format '("[ ERC : " target " ] " "\n"))
+	    (format "  %s          (%s)--------------------------------------[%s]"
+		    (propertize (erc-format-target)
+				'face '((:weight bold :foreground "white")))
+		    (my-erc-prompt-magic-time-string)
+		    (my-erc-prompt-color-erc)))
+	   (string (concat str1 (my-erc-prompt-dashes (length str1)) "\n")))
+
+      (dolist (props '((face ((:background "magenta"
+			       :box (:line-width 2 :style released-button))))
+		       (field erc-prompt)))
+	(apply 'font-lock-append-text-property
+	       0 (length string) (append props (list string))))
+      string)))
+
+(setq erc-prompt 'my-erc-prompt
+      erc-command-indicator "ERC>")

@@ -1,3 +1,10 @@
+2005-05-23  Yann Hodique  <Yann.Hodique@lifl.fr>
+
+	* dotemacs-cust.el:
+	(custom-set-variables): more erc customizations
+
+	* config/erc-config.el: custom erc prompt from bojohan
+
 2005-05-21  Yann Hodique  <Yann.Hodique@lifl.fr>
 
 	* perso/rect-mark.el: don't bind S-mouse-1
