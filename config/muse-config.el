@@ -34,9 +34,45 @@
     (request 'muse-latex)
     (request 'muse-texinfo)
     (request 'muse-docbook)
+    (request 'muse-wiki)
     (setq muse-mode-highlight-p t)))
 
 (add-to-list 'auto-mode-alist '("\\.muse$"  . muse-mode))
+
+(defvar xtla-transform-alist
+  '(("hodique@lifl.fr--2005" . "http://www.lifl.fr/~hodique/archives")))
+
+(defun xtla-url-transform (target)
+  (tla--archive-tree-build-archives t)
+  (let ((reg (concat "^xtla://\\("
+                     (mapconcat 'car tla--archive-tree "\\|")
+                     "\\)/\\(.*\\)$")))
+    (save-match-data
+      (if (string-match reg target)
+          (let ((subst (or (cdr (assoc (match-string 1 target) xtla-transform-alist))
+                           (cadr (assoc (match-string 1 target) tla--archive-tree)))))
+            (concat subst "/"
+                    (replace-regexp-in-string "--" "/" (match-string 2 target))))
+        target))))
+
+(add-to-list 'muse-publish-url-transforms 'xtla-url-transform)
+
+(defun local-file-url-transform (target)
+  (if (and (string-match muse-file-regexp target)
+           (not (or (string-match muse-url-regexp target)
+                    (string-match muse-image-regexp target))))
+      (expand-file-name target)
+    target))
+
+(add-to-list 'muse-publish-url-transforms 'local-file-url-transform)
+
+(defun gnus-url-transform (target)
+  (save-match-data
+    (if (string-match "^gnus://" target)
+        ""
+      target)))
+
+;(add-to-list 'muse-publish-url-transforms 'gnus-url-transform)
 
 (provide 'muse-config)
 ;;; muse-config.el ends here

@@ -164,3 +164,5 @@
 
 (setq erc-prompt 'my-erc-prompt
       erc-command-indicator "ERC>")
+
+(define-key erc-mode-map [remap font-lock-fontify-block] 'undefined)

@@ -1,3 +1,16 @@
+2005-06-24  Yann Hodique  <Yann.Hodique@lifl.fr>
+
+	* dotemacs-cust.el:  various settings
+
+	* config/planner-config.el: new bindings
+
+	* config/muse-config.el: some experimental hacks
+
+	* config/latex-config.el:
+	(LaTeX-env-sigmalog): new environment
+
+	* config/erc-config.el: font-lock-fontify-block breaks fontification in erc buffers
+
 2005-05-23  Yann Hodique  <Yann.Hodique@lifl.fr>
 
 	* dotemacs-cust.el:

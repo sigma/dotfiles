@@ -20,9 +20,13 @@
     (load-file (expand-file-name "~/.emacs-cust")))
 
 ;; Hacked scroll margin
-(set-scroll-margin 5 5 '("*eshell*" "*compile*" "*Calendar*"))
-(setq scroll-step 1
-      scroll-conservatively 15)
+;; (set-scroll-margin 5 5 '("*eshell*" "*compile*" "*Calendar*"))
+;; (setq scroll-step 1
+;;       scroll-conservatively 15)
+(setq scroll-margin 5
+      scroll-conservatively 50
+      scroll-step 1)
+
 
 ;; Save minibuffer history between sessions
 (require 'save-history)
@@ -480,8 +484,8 @@
 (setq type-break-file-name nil)
 (type-break-mode 1)
 
-(require 'allout)
-(allout-init t)
+;(require 'allout)
+;(allout-init t)
 
 (global-set-key (kbd "C-x t") 'anchored-transpose)
 (autoload 'anchored-transpose "anchored-transpose" nil t)

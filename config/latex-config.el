@@ -32,7 +32,6 @@
 ;; (typopunct-change-language 'francais t)
 
 (defun LaTeX-env-slide (environment)
-  "Insert ENVIRONMENT with label for bibitem."
   (LaTeX-insert-environment environment
 			    (concat TeX-grop
 				    (read-string "Title: ")
@@ -43,11 +42,17 @@
   (newline-and-indent))
 
 (defun LaTeX-env-overlays (environment)
-  "Insert ENVIRONMENT with label for bibitem."
   (LaTeX-insert-environment environment
 			    (concat TeX-grop
 				    (read-string "Number: " "2")
 				    TeX-grcl))
+  (end-of-line 0)
+  (delete-char 1)
+  (delete-horizontal-space)
+  (newline-and-indent))
+
+(defun LaTeX-env-sigmalog (environment)
+  (LaTeX-insert-environment environment)
   (end-of-line 0)
   (delete-char 1)
   (delete-horizontal-space)
@@ -89,7 +94,8 @@
 
       (LaTeX-add-environments
        '("slide" LaTeX-env-slide)
-       '("overlays" LaTeX-env-overlays))
+       '("overlays" LaTeX-env-overlays)
+       '("sigmalog" LaTeX-env-sigmalog))
       )
 
 (when (request 'tex-site)
