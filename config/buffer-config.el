@@ -57,7 +57,6 @@
             (dired-omit-mode 1)
             ))
 
-(eval-after-load "icomplete" '(progn (request 'icomplete+)))
 (when (request 'icomplete) (icomplete-mode 1))
 ;(when (request 'iswitchb) (iswitchb-mode 1))
 

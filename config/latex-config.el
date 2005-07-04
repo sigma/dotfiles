@@ -58,11 +58,6 @@
   (delete-horizontal-space)
   (newline-and-indent))
 
-(setq reftex-plug-into-AUCTeX t)
-(setq reftex-enable-partial-scans t)
-(setq reftex-save-parse-info t)
-(setq reftex-use-multiple-selection-buffers t)
-
 (defun my-LaTeX-hook ()
       ;; I like to have my own verbatim contructions well indented
       (setq font-lock-defaults
@@ -119,6 +114,12 @@
                                         ;       (add-hook 'LaTeX-mode-hook 'typopunct-mode)
     (add-hook 'LaTeX-mode-hook 'my-LaTeX-hook)
     ))
+
+(require 'reftex)
+(setq reftex-plug-into-AUCTeX t)
+(setq reftex-enable-partial-scans t)
+(setq reftex-save-parse-info t)
+(setq reftex-use-multiple-selection-buffers t)
 
 (provide 'latex-config)
 ;;; latex-config.el ends here
