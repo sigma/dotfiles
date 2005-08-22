@@ -1,4 +1,4 @@
-;;; ediff-config.el ---
+;;; ediff-config.el --- Configuration for ediff
 
 ;; Copyright (C) 2004  Free Software Foundation, Inc.
 
@@ -36,13 +36,13 @@
 ;; Some custom configuration to ediff
 (defvar my-ediff-bwin-config nil "Window configuration before ediff.")
 
-(defcustom my-ediff-bwin-reg ?b
+(defvar my-ediff-bwin-reg ?b
   "*Register to be set up to hold `my-ediff-bwin-config'
     configuration.")
 
 (defvar my-ediff-awin-config nil "Window configuration after ediff.")
 
-(defcustom my-ediff-awin-reg ?e
+(defvar my-ediff-awin-reg ?e
   "*Register to be used to hold `my-ediff-awin-config' window
     configuration.")
 

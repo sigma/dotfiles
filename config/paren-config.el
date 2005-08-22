@@ -1,4 +1,4 @@
-;;; paren-config.el ---
+;;; paren-config.el --- Configuration for paren
 
 ;; Copyright (C) 2004  Free Software Foundation, Inc.
 

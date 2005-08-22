@@ -137,9 +137,6 @@
 (defun dircolors()
   (interactive)
   (make-local-variable 'font-lock-defaults)
-  (make-local-variable 'lazy-lock-minimum-size)
-  ; quite fast with this
-  (setq lazy-lock-minimum-size 10) ;dont know why, but put this in global and all is slow
   (setq font-lock-defaults
 	'(dircolors-font-lock-keywords
 	  t ; KEYWORDS-ONLY, dont want fontification of comment/strings ?

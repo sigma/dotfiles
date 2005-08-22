@@ -1,4 +1,4 @@
-;;; lisp-config.el ---
+;;; lisp-config.el --- Configuration for lisp
 
 ;; Copyright (C) 2004  Free Software Foundation, Inc.
 
@@ -63,6 +63,12 @@
                           ))
 
 (add-to-list 'auto-mode-alist '("\\.scm\\'" . guile-scheme-mode))
+
+(defun define-lisp-indent-function (sym val)
+  (put sym 'lisp-indent-function val))
+
+(put 'define-lisp-indent-function 'safe-local-eval-function t)
+(put 'font-lock-add-keywords 'safe-local-eval-function t)
 
 ;; (require 'slime)
 ;; (add-hook 'lisp-mode-hook (lambda () (slime-mode t)))

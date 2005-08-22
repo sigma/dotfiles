@@ -280,7 +280,7 @@ Fourth arg DEFAULT-VALUE is the default value.  If non-nil, it is used
 Fifth arg INHERIT-INPUT-METHOD, if non-nil, means the minibuffer
     inherits the current input method and setting of
     `enable-multibyte-characters'."
-  (setq minibuffer-completion-table nil) ; So won't icomplete by default.
+;  (setq minibuffer-completion-table nil) ; So won't icomplete by default.
   (old-read-string prompt initial-input history default-value inherit-input-method))
 
 
@@ -332,7 +332,7 @@ less than or equal to one puts point at the beginning of the string.
 *Note* that this behavior differs from the way such arguments are used
 in `completing-read' and some related functions, which use
 zero-indexing for POSITION."
-  (setq minibuffer-completion-table nil) ; So won't icomplete by default.
+;  (setq minibuffer-completion-table nil) ; So won't icomplete by default.
   (old-read-from-minibuffer
    prompt initial-contents keymap read hist default-value inherit-input-method keep-all))
 
@@ -356,7 +356,7 @@ this function.
 Third arg INHERIT-INPUT-METHOD, if non-nil, means the minibuffer
 inherits the current input method and the setting of
 `enable-multibyte-characters'."
-  (setq minibuffer-completion-table nil) ; So won't icomplete by default.
+;  (setq minibuffer-completion-table nil) ; So won't icomplete by default.
   (old-read-no-blanks-input prompt initial-contents inherit-input-method))
 
 

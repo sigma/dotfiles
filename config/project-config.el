@@ -1,4 +1,4 @@
-;;; project-config.el ---
+;;; project-config.el --- Configuration for project
 
 ;; Copyright (C) 2004  Free Software Foundation, Inc.
 

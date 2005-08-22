@@ -1,4 +1,4 @@
-;;; shell-config.el ---
+;;; shell-config.el --- Configuration for shell
 
 ;; Copyright (C) 2004  Free Software Foundation, Inc.
 

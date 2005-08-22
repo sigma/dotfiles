@@ -1,4 +1,4 @@
-;;; erc-config.el ---
+;;; erc-config.el --- Configuration for erc
 
 ;; Copyright (C) 2004  Free Software Foundation, Inc.
 
@@ -34,27 +34,26 @@
 
 (request 'erc-nicklist)
 
+(when (request 'erc-autojoin)
+  (erc-autojoin-mode 1)
 
-(request 'erc-autojoin)
-(erc-autojoin-mode 1)
+  (defvar my-erc-autojoin-channels-alist nil)
 
-(defvar my-erc-autojoin-channels-alist nil)
+  ;; This function overrides the default one to allow autojoining password
+  ;; protected chans
+  (defun erc-autojoin-channels (server nick)
+    (dolist (l my-erc-autojoin-channels-alist)
+      (when (string-match (car l) server)
+        (dolist (chan (cdr l))
+          (if (consp chan)
+              (erc-send-command (concat "join " (car chan) " " (cdr chan)))
+            (erc-send-command (concat "join " chan))))))))
 
-;; This function overrides the default one to allow autojoining password
-;; protected chans
-(defun erc-autojoin-channels (server nick)
-  (dolist (l my-erc-autojoin-channels-alist)
-    (when (string-match (car l) server)
-      (dolist (chan (cdr l))
-        (if (consp chan)
-            (erc-send-command (concat "join " (car chan) " " (cdr chan)))
-	(erc-send-command (concat "join " chan)))))))
+(when (request 'erc-match)
+  (erc-match-mode))
 
-(request 'erc-match)
-(erc-match-mode)
-
-(request 'erc-track)
-(erc-track-mode t)
+(when (request 'erc-track)
+  (erc-track-mode t))
 
 (add-hook 'erc-mode-hook
           '(lambda ()
@@ -62,19 +61,22 @@
              (pcomplete-erc-setup)
              (erc-completion-mode 1)))
 
-(request 'erc-fill)
-(erc-fill-mode t)
+(when (request 'erc-fill)
+  (erc-fill-mode t)
+  (setq erc-fill-column 150))
 
-(request 'erc-ring)
-(erc-ring-mode t)
+(when (request 'erc-ring)
+  (erc-ring-mode t))
 
-(request 'erc-netsplit)
-(erc-netsplit-mode t)
+(when (request 'erc-netsplit)
+  (erc-netsplit-mode t))
 
-(erc-timestamp-mode t)
-(setq erc-timestamp-format "[%R-%m/%d]")
+(when (request 'erc-timestamp)
+  (erc-timestamp-mode t)
+  (setq erc-timestamp-format "[%R-%m/%d]"))
 
-(erc-button-mode nil)                   ;slow
+(when (request 'erc-button)
+  (erc-button-mode nil))
 
 ;; logging:
 (setq erc-log-insert-log-on-open nil)

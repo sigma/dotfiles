@@ -1,4 +1,4 @@
-;;; changelog-config.el ---
+;;; changelog-config.el --- Configuration for changelog
 
 ;; Copyright (C) 2004  Free Software Foundation, Inc.
 

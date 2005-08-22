@@ -1,4 +1,4 @@
-;;; crontab-config.el ---
+;;; crontab-config.el --- Configuration for crontab
 
 ;; Copyright (C) 2004  Free Software Foundation, Inc.
 

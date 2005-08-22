@@ -1,6 +1,6 @@
-;;; cedet-config.el --- Configuration for cedet
+;;; help-config.el --- Configuration for help
 
-;; Copyright (C) 2004  Free Software Foundation, Inc.
+;; Copyright (C) 2005  Free Software Foundation, Inc.
 
 ;; Author: Yann Hodique <Yann.Hodique@lifl.fr>
 ;; Keywords:
@@ -26,9 +26,8 @@
 
 ;;; Code:
 
-;;; CEDET
-;(setq semantic-load-turn-useful-things-on t)
-(request 'cedet)
+(eval-after-load 'help-mode
+  '(define-key help-mode-map (kbd "l") 'help-go-back))
 
-(provide 'cedet-config)
-;;; cedet-config.el ends here
+(provide 'help-config)
+;;; help-config.el ends here

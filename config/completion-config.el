@@ -1,4 +1,4 @@
-;;; completion-config.el ---
+;;; completion-config.el --- Configuration for completion
 
 ;; Copyright (C) 2005  Free Software Foundation, Inc.
 

@@ -1,4 +1,4 @@
-;;; sawfish-config.el ---
+;;; sawfish-config.el --- Configuration for sawfish
 
 ;; Copyright (C) 2004  Free Software Foundation, Inc.
 

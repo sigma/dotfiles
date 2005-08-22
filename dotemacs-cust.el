@@ -5,15 +5,11 @@
   ;; If you edit it by hand, you could mess it up, so be careful.
   ;; Your init file should contain only one such instance.
   ;; If there is more than one, they won't work right.
- '(Info-additional-directory-list (quote ("/usr/share/info" "~/info")))
- '(LaTeX-command-style (quote (("omega" "lambda") ("." "latex"))))
- '(LaTeX-section-label nil)
- '(LaTeX-verbatim-regexp "\\(verbatim\\*?\\|sigmalog\\)")
  '(Man-notify-method (quote bully))
- '(TeX-command-list (quote (("TeX" "tex '\\nonstopmode\\input %t'" TeX-run-TeX nil t) ("TeX Interactive" "tex %t" TeX-run-interactive nil t) ("LaTeX" "%l '\\nonstopmode\\input{%t}'" TeX-run-LaTeX nil t) ("LaTeX Interactive" "%l %t" TeX-run-interactive nil t) ("Omega" "lambda '\\nonstopmode\\input{%t}'" TeX-run-LaTeX nil "nil") ("Omega Interactive" "lambda %t" TeX-run-interactive nil "nil") ("LaTeX2e" "latex2e '\\nonstopmode\\input{%t}'" TeX-run-LaTeX nil t) ("View" "%v " TeX-run-silent t nil) ("Print" "%p %r " TeX-run-command t nil) ("Queue" "%q" TeX-run-background nil nil) ("File" "dvips %d -o %f " TeX-run-command t nil) ("BibTeX" "bibtex %s" TeX-run-BibTeX nil nil) ("Index" "makeindex %s" TeX-run-command nil t) ("Check" "lacheck %s" TeX-run-compile nil t) ("Spell" "<ignored>" TeX-run-ispell-on-document nil nil) ("Other" "" TeX-run-command t t) ("LaTeX PDF" "pdflatex '\\nonstopmode\\input{%t}'" TeX-run-LaTeX nil t) ("Makeinfo" "makeinfo %t" TeX-run-compile nil t) ("Makeinfo HTML" "makeinfo --html %t" TeX-run-compile nil t) ("AmSTeX" "amstex '\\nonstopmode\\input %t'" TeX-run-TeX nil t) ("Generate Preview" "See `preview-LaTeX-command'" TeX-inline-preview nil t))))
- '(TeX-newline-function (quote newline-and-indent))
  '(add-log-keep-changes-together t)
  '(ange-ftp-ftp-program-args (quote ("-i" "-n" "-g" "-v" "-u")))
+ '(apropos-do-all t)
+ '(apropos-sort-by-scores t)
  '(auto-insert nil)
  '(auto-insert-mode nil)
  '(auto-insert-query (quote function))
@@ -67,12 +63,8 @@
  '(enable-multibyte-characters t)
  '(erc-bbdb-auto-create-on-whois-p t)
  '(erc-echo-timestamps t)
- '(erc-fill-column 150)
- '(erc-hide-timestamps t)
  '(erc-input-line-position -2)
  '(erc-modules (quote (autojoin bbdb fill irccontrols netsplit noncommands pcomplete completion ring scrolltobottom services stamp track)))
- '(erc-nickserv-alist (quote ((DALnet "NickServ!service@dal.net" "/msg\\s-NickServ@services.dal.net\\s-IDENTIFY\\s-<password>" "NickServ@services.dal.net" "IDENTIFY" nil nil) (freenode "NickServ!NickServ@services." "/msg\\s-NickServ\\s-IDENTIFY\\s-<password>" "NickServ" "IDENTIFY" nil nil) (GalaxyNet "NS!nickserv@galaxynet.org" "Please\\s-change\\s-nicks\\s-or\\s-authenticate." "NS@services.galaxynet.org" "AUTH" t nil) (SlashNET "NickServ!services@services.slashnet.org" "/msg\\s-NickServ\\s-IDENTIFY\\s-password" "NickServ@services.slashnet.org" "IDENTIFY" nil nil) (iip "Trent@anon.iip" "type\\s-/squery\\s-Trent\\s-identify\\s-<password>" "Trent@anon.iip" "IDENTIFY" nil "SQUERY") (BRASnet "NickServ!services@brasnet.org" "/NickServ\\s-IDENTIFY\\s-senha" "NickServ" "IDENTIFY" nil "") (Austnet "NickOP!service@austnet.org" "/msg\\s-NickOP@austnet.org\\s-identify\\s-<password>" "nickop@austnet.org" "identify" nil nil) (Epiknet "NickServ!services@olympe.epiknet.org" "/Themis\\s-IDENTIFY\\s-motdepasse" "NickServ" "IDENTIFY" nil ""))))
- '(erc-nickserv-passwords (quote ((freenode (("Sigma[Mtp]" . "MarionK"))) (Epiknet (("Sig" . "MarionK"))))))
  '(erc-track-exclude-types (quote ("JOIN" "KICK" "NICK" "PART" "QUIT" "MODE")))
  '(erc-track-shorten-start 2)
  '(erc-track-showcount t)
@@ -88,7 +80,8 @@
  '(glasses-separate-parentheses-p nil)
  '(glasses-separator "")
  '(global-font-lock-mode t nil (font-lock))
- '(global-hl-line-hack-mode t nil (hl-line-hack))
+ '(global-hl-line-hack-mode t)
+ '(global-hl-line-mode t)
  '(global-semantic-decoration-mode t nil (semantic-decorate-mode))
  '(global-semantic-highlight-by-attribute-mode t nil (semantic-util-modes))
  '(global-semantic-highlight-edits-mode nil nil (semantic-util-modes))
@@ -108,12 +101,7 @@
  '(htmlize-head-tags "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=ISO-8859-1\">")
  '(htmlize-html-major-mode (quote html-mode))
  '(ido-everywhere t)
- '(ido-ignore-directories (quote ("\\`\\.\\./" "\\`\\./")))
- '(ido-ignore-files (quote ("\\`#" "\\`.#" "\\`\\.\\./" "\\`\\./")))
  '(ido-mode (quote both) nil (ido))
- '(ido-read-file-name-as-directory-commands (quote (ediff-directories ediff-directories3)))
- '(ido-use-filename-at-point t)
- '(ido-use-url-at-point t)
  '(indent-tabs-mode nil)
  '(inhibit-startup-message t)
  '(line-number-mode t)
@@ -126,49 +114,25 @@
  '(mouse-avoidance-threshold 15)
  '(mouse-drag-copy-region nil)
  '(mouse-yank-at-point t)
- '(muse-html-charset-default "utf-8")
- '(muse-html-encoding-default (quote utf-8))
- '(muse-latex-header "\\documentclass{article}
-
-\\usepackage[english]{babel}
-\\usepackage[utf8]{inputenc}
-\\usepackage[T1]{fontenc}
-\\usepackage{hyperref}
-\\usepackage[pdftex]{graphicx}
-
-\\begin{document}
-
-\\title{<lisp>(muse-publishing-directive \"title\")</lisp>}
-\\author{<lisp>(muse-publishing-directive \"author\")</lisp>}
-\\date{<lisp>(muse-publishing-directive \"date\")</lisp>}
-
-\\maketitle
-
-<lisp>(and muse-publish-generate-contents
-	   \"\\\\tableofcontents
-\\\\newpage\")</lisp>
-
-")
  '(next-line-add-newlines nil)
  '(osd-args (quote ("--delay=3" "--age=3" "--pos=bottom" "--offset=70" "--outline=5" "--outlinecolour=grey" "--font=-microsoft-verdana-medium-r-normal--10-*-*-*-*-*-*")))
  '(paren-dont-load-timer nil)
  '(parens-require-spaces nil)
+ '(partial-completion-mode t)
  '(pcomplete-autolist t)
  '(pcomplete-cycle-completions nil)
+ '(planner-backend (quote muse))
  '(planner-multi-copy-tasks-to-page "TaskPool")
  '(planner-tasks-file-behavior (quote (quote close)))
  '(planner-use-other-window nil)
+ '(planner-xtla-log-edit-include-files-flag nil)
  '(planner-xtla-log-edit-notice-commit-function t)
  '(preview-default-option-list (quote ("displaymath" "floats" "graphics" "textmath" "footnotes")))
  '(prolog-system (quote swi))
  '(read-quoted-char-radix 16)
- '(recentf-exclude (quote (":")))
+ '(recentf-exclude (quote (":\\|#")))
  '(recentf-mode t)
  '(recentf-save-file "~/.emacs-recentf")
- '(reftex-extra-bindings nil)
- '(reftex-index-follow-mode t)
- '(reftex-plug-into-AUCTeX t)
- '(reftex-toc-follow-mode t)
  '(save-abbrevs (quote silently))
  '(save-place-limit 100)
  '(sawfish-extra-keyword-list (quote ("add-frame-style" "call-after-load" "call-after-property-changed" "call-after-state-changed" "custom-set-property" "define" "define-structure" "export" "open")))
@@ -176,12 +140,15 @@
  '(scroll-bar-mode nil)
  '(semanticdb-global-mode t nil (semanticdb))
  '(show-paren-mode t)
+ '(size-indication-mode t)
+ '(slime-header-line-p nil)
+ '(slime-kill-without-query-p t)
  '(speedbar-frame-parameters (quote ((width . 20) (border-width . 0) (menu-bar-lines . 0) (tool-bar-lines . 0) (unsplittable . t))))
  '(speedbar-use-images nil)
  '(tabbar-inhibit-functions (quote (tabbar-default-inhibit-function yh/tabbar-inhibit-function)))
  '(tc-make-attribution (quote kai-tc-simple-attribution))
  '(tc-mouse-overlays t)
- '(template-auto-insert nil)
+ '(temp-buffer-resize-mode t)
  '(tempo-insert-region nil)
  '(tempo-interactive t)
  '(tla-number-of-dead-process-buffer 0)
@@ -214,6 +181,7 @@
  '(cparen-around-andor-face ((t (:foreground "red" :weight bold))))
  '(cparen-around-begin-face ((t (:foreground "red"))))
  '(cparen-around-define-face ((t (:foreground "lightblue" :weight bold))))
+ '(cparen-around-quote-face ((t (:foreground "brown"))))
  '(cursor ((t (:background "yellow"))) t)
  '(dircolors-face-objet ((t (:foreground "Gray"))) t)
  '(ecb-default-highlight-face ((((class color) (background dark)) (:inherit ecb-default-general-face :background "slateblue"))))
@@ -229,6 +197,7 @@
  '(font-latex-italic-face ((t (:inherit italic))))
  '(font-latex-math-face ((((class color) (background dark)) (:inherit font-lock-number-face))))
  '(font-latex-string-face ((((class color) (background dark)) (:inherit font-lock-string-face))))
+ '(font-latex-verbatim-face ((((class color) (background dark)) (:foreground "burlywood"))))
  '(font-lock-builtin-face ((((class color) (min-colors 88) (background dark)) (:foreground "lightsteelblue"))))
  '(font-lock-comment-face ((((class color) (min-colors 88) (background dark)) (:foreground "gray"))))
  '(font-lock-doc-face ((t (:foreground "lightgreen"))))
@@ -248,7 +217,7 @@
  '(gnus-group-mail-low-face ((t (:foreground "aquamarine3" :weight bold))))
  '(gnus-header-content-face ((t (:foreground "green" :slant italic))))
  '(gnus-header-name-face ((((class color) (background dark)) (:foreground "LightGreen"))))
- '(highlight ((((class color) (background dark) (type x)) (:background "slateblue")) (((class color) (background dark) (type nil)) (:background "blue"))))
+ '(highlight ((((class color) (background dark) (type x)) (:background "#223939"))))
  '(italic ((((supports :slant italic)) (:foreground "Orchid" :slant italic))))
  '(menu ((((type x-toolkit)) (:background "lightgrey" :foreground "black" :box (:line-width 1 :style released-button)))))
  '(message-header-name-face ((((class color) (background dark)) (:foreground "green3"))))
@@ -256,9 +225,14 @@
  '(mmm-code-submode-face ((t (:background "darkgreen"))))
  '(mmm-default-submode-face ((t (:background "black"))))
  '(mode-line ((t (:background "lightgrey" :foreground "black" :box (:line-width 1 :style released-button)))))
- '(region ((t (:background "slategrey"))))
- '(show-paren-match-face ((t (:background "black" :foreground "red" :weight bold))) t)
- '(show-paren-mismatch-face ((t (:background "magenta" :foreground "white" :weight bold))) t)
+ '(muse-header-1 ((t (:foreground "green" :weight bold))))
+ '(muse-header-2 ((t (:foreground "lightblue" :weight bold))))
+ '(muse-header-3 ((t (:foreground "grey" :weight bold))))
+ '(muse-header-4 ((t (:weight bold))))
+ '(planner-note-headline-face ((t (:foreground "turquoise" :weight bold))))
+ '(region ((t (:background "#3b6363"))))
+ '(show-paren-match ((t (:background "black" :foreground "red" :weight bold))))
+ '(show-paren-mismatch ((t (:background "magenta" :foreground "white" :weight bold))))
  '(tabbar-default-face ((t (:inherit variable-pitch :background "gray72" :foreground "gray30" :height 0.8))))
  '(tabbar-selected-face ((t (:inherit tabbar-default-face :foreground "blue" :box (:line-width 2 :color "white" :style pressed-button)))))
  '(tabbar-unselected-face ((t (:inherit tabbar-default-face :box (:line-width 2 :color "white" :style released-button)))))

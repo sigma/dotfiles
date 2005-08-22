@@ -1,6 +1,6 @@
-;;; cedet-config.el --- Configuration for cedet
+;;; sigmalog.el ---
 
-;; Copyright (C) 2004  Free Software Foundation, Inc.
+;; Copyright (C) 2005  Free Software Foundation, Inc.
 
 ;; Author: Yann Hodique <Yann.Hodique@lifl.fr>
 ;; Keywords:
@@ -26,9 +26,28 @@
 
 ;;; Code:
 
-;;; CEDET
-;(setq semantic-load-turn-useful-things-on t)
-(request 'cedet)
+(defun LaTeX-env-sigmalog (environment)
+  (LaTeX-insert-environment environment)
+  (end-of-line 0)
+  (delete-char 1)
+  (delete-horizontal-space)
+  (newline-and-indent))
 
-(provide 'cedet-config)
-;;; cedet-config.el ends here
+(defun LaTeX-sigmalog-install-syntactic-keywords ()
+  (add-to-list 'font-latex-verbatim-environments-local
+               "sigmalog")
+  (font-latex-set-syntactic-keywords))
+
+(TeX-add-style-hook
+ "sigmalog"
+ (lambda ()
+   (LaTeX-sigmalog-install-syntactic-keywords)
+   (LaTeX-add-environments
+    '("sigmalog" LaTeX-env-sigmalog))))
+
+(provide 'sigmalog)
+;;; sigmalog.el ends here
+
+;; Local Variables:
+;; no-byte-compile: t
+;; End:

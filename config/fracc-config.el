@@ -1,4 +1,4 @@
-;;; fracc-config.el ---
+;;; fracc-config.el --- Configuration for fracc
 
 ;; Copyright (C) 2004  Free Software Foundation, Inc.
 

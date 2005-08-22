@@ -1,4 +1,4 @@
-;;; calendar-config.el ---
+;;; calendar-config.el --- Configuration for calendar
 
 ;; Copyright (C) 2004  Free Software Foundation, Inc.
 

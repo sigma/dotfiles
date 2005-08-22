@@ -1,4 +1,4 @@
-;;; latex-config.el ---
+;;; latex-config.el --- Configuration for latex
 
 ;; Copyright (C) 2004  Free Software Foundation, Inc.
 
@@ -31,95 +31,52 @@
 ;; (request 'typopunct)
 ;; (typopunct-change-language 'francais t)
 
-(defun LaTeX-env-slide (environment)
-  (LaTeX-insert-environment environment
-			    (concat TeX-grop
-				    (read-string "Title: ")
-				    TeX-grcl))
-  (end-of-line 0)
-  (delete-char 1)
-  (delete-horizontal-space)
-  (newline-and-indent))
+(defun turn-on-reftex-if-available ()
+  (when (request 'reftex)
+    (turn-on-reftex)))
 
-(defun LaTeX-env-overlays (environment)
-  (LaTeX-insert-environment environment
-			    (concat TeX-grop
-				    (read-string "Number: " "2")
-				    TeX-grcl))
-  (end-of-line 0)
-  (delete-char 1)
-  (delete-horizontal-space)
-  (newline-and-indent))
-
-(defun LaTeX-env-sigmalog (environment)
-  (LaTeX-insert-environment environment)
-  (end-of-line 0)
-  (delete-char 1)
-  (delete-horizontal-space)
-  (newline-and-indent))
-
-(defun my-LaTeX-hook ()
-      ;; I like to have my own verbatim contructions well indented
-      (setq font-lock-defaults
-            '((font-latex-keywords font-latex-keywords-1 font-latex-keywords-2)
-              nil nil
-              ((40 . ".")
-               (41 . ".")
-               (36 . "\""))
-              nil
-              (font-lock-comment-start-regexp . "%")
-              (font-lock-mark-block-function . mark-paragraph)
-              (font-lock-syntactic-keywords
-               ("^\\\\begin *{verbatim\\*?}\\(.?\\).*\\(\n\\)"
-                (1 "<")
-                (2 "|"))
-               ("\\(\n\\)\\\\end *{verbatim\\*?}\\(.?\\)"
-                (1 "|")
-                (2 "<"))
-               ("^\\\\begin *{sigmalog\\*?}\\(.?\\).*\\(\n\\)"
-                (1 "<")
-                (2 "|"))
-               ("\\(\n\\)\\\\end *{sigmalog\\*?}\\(.?\\)"
-                (1 "|")
-                (2 "<"))
-               ("\\\\verb\\*?\\([^a-z@]\\).*?\\(\\1\\)"
-                (1 "\"")
-                (2 "\"")))))
-      (add-to-list 'LaTeX-style-list '("prosper"))
-
-      (LaTeX-add-environments
-       '("slide" LaTeX-env-slide)
-       '("overlays" LaTeX-env-overlays)
-       '("sigmalog" LaTeX-env-sigmalog))
-      )
+(defun LaTeX-preview-setup-if-available ()
+  (when (request 'preview)
+    (LaTeX-preview-setup)))
 
 (when (request 'tex-site)
   (progn
     (setq-default TeX-master t)
     ;; reftex helps managing references, toc, ...
-    (add-hook 'LaTeX-mode-hook 'reftex-mode)
+    (add-hook 'LaTeX-mode-hook 'turn-on-reftex-if-available)
     ;; show/hide parts of your document
     (add-hook 'LaTeX-mode-hook 'outline-minor-mode)
     ;; preview-latex is great
-    (when (request 'preview)
-      (add-hook 'LaTeX-mode-hook 'LaTeX-preview-setup))
+    (add-hook 'LaTeX-mode-hook 'LaTeX-preview-setup-if-available)
     ;; point my typos
     (add-hook 'LaTeX-mode-hook 'flyspell-mode)
     ;; use abbrev
     (add-hook 'LaTeX-mode-hook 'abbrev-mode)
-    ;; Most people don't want that... I do
-    ;; highlight *any* change, color rotation
-    (add-hook 'LaTeX-mode-hook 'highlight-changes-mode)
     ;;       ;; DWIM with quotes
                                         ;       (add-hook 'LaTeX-mode-hook 'typopunct-mode)
-    (add-hook 'LaTeX-mode-hook 'my-LaTeX-hook)
     ))
 
-(require 'reftex)
-(setq reftex-plug-into-AUCTeX t)
-(setq reftex-enable-partial-scans t)
-(setq reftex-save-parse-info t)
-(setq reftex-use-multiple-selection-buffers t)
+(eval-after-load 'tex
+  '(progn
+     (setq TeX-auto-save t
+           TeX-newline-function 'newline-and-indent
+           TeX-parse-self t)))
+
+(eval-after-load 'latex
+  '(progn
+     (add-to-list 'LaTeX-command-style '("omega" "lambda"))))
+
+(eval-after-load 'reftex
+  '(setq reftex-plug-into-AUCTeX t
+         reftex-enable-partial-scans t
+         reftex-save-parse-info t
+         reftex-use-multiple-selection-buffers t
+         reftex-extra-bindings nil
+         reftex-index-follow-mode t
+         reftex-toc-follow-mode t))
+
+(eval-after-load 'font-latex
+  '(setq font-latex-fontify-script nil))
 
 (provide 'latex-config)
 ;;; latex-config.el ends here

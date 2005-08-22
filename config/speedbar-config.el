@@ -1,4 +1,4 @@
-;;; speedbar-config.el ---
+;;; speedbar-config.el --- Configuration for speedbar
 
 ;; Copyright (C) 2004  Free Software Foundation, Inc.
 

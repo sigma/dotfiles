@@ -92,8 +92,6 @@
   (defface minibuffer-face '((t (:bold t :foreground "LightBlue")))
     "Face used to color the minibuffer."))
 
-(file-name-shadow-mode 1)
-
 (require 'jit-lock)
 (setq font-lock-support-mode 'jit-lock-mode)
 (setq jit-lock-stealth-time 1)

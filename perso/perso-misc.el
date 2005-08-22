@@ -222,12 +222,15 @@ Returns nil if no differences found, 't otherwise."
           (error "No number at point"))))
 
 ;;;###autoload
-(defun fc-eval-and-replace ()
+(defun fc-eval-and-replace (arg)
   "Replace the preceding sexp with its value."
+  (interactive "P")
   (interactive)
   (backward-kill-sexp)
-  (prin1 (eval (read (current-kill 0)))
-         (current-buffer)))
+  (let ((res (eval (read (current-kill 0)))))
+    (unless arg
+      (prin1 res
+             (current-buffer)))))
 
 (provide 'perso-misc)
 ;;; misc.el ends here

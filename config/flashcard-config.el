@@ -1,4 +1,4 @@
-;;; flashcard-config.el ---
+;;; flashcard-config.el --- Configuration for flashcard
 
 ;; Copyright (C) 2004  Free Software Foundation, Inc.
 

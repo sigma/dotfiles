@@ -1,4 +1,4 @@
-;;; highlight-changes--config.el ---
+;;; highlight-changes--config.el --- Configuration for highlight
 
 ;; Copyright (C) 2004  Free Software Foundation, Inc.
 

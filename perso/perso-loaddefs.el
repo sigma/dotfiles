@@ -1098,7 +1098,7 @@ use `decode-coding-region' and get the coding system to use from
 ;;;***
 
 ;;;### (autoloads (icomplete-completions icomplete-exhibit) "icomplete+"
-;;;;;;  "icomplete+.el" (16944 35476))
+;;;;;;  "icomplete+.el" (17107 65027))
 ;;; Generated autoloads from icomplete+.el
 
 (unless (boundp (quote darkgoldenrod-foreground-face)) (define-face-const "DarkGoldenrod" nil))
@@ -2584,16 +2584,17 @@ Goes backward if ARG is negative; error if CHAR not found.
 
 ;;;***
 
-;;;### (autoloads nil nil ("auto-save.el" "autoloads.el" "c-font-lock-keywords.el"
-;;;;;;  "color-eldoc.el" "color-moccur.el" "color-mode.el" "dircolors.el"
-;;;;;;  "dired-details.el" "elscreen.el" "escreen.el" "flashcard.el"
-;;;;;;  "fracc.el" "highlight-current-line.el" "http-post.el" "longlines.el"
-;;;;;;  "message-x.el" "moccur-edit.el" "mtorus.el" "multi-region.el"
-;;;;;;  "mutt.el" "mycode.el" "mycompletion.el" "nntodo.el" "osd.el"
-;;;;;;  "patches.el" "post.el" "project.el" "setnu.el" "sig.el" "tempo-c++.el"
-;;;;;;  "tempo-latex.el" "tempo-lisp.el" "todl-mode.el" "todoo.el"
-;;;;;;  "typopunct.el" "visible-mark-mode.el" "visual.el" "xcscope.el"
-;;;;;;  "xterm-extras.el") (17037 41983 335563))
+;;;### (autoloads nil nil ("action-lock.el" "auto-save.el" "autoloads.el"
+;;;;;;  "c-font-lock-keywords.el" "cheat-font-lock.el" "color-eldoc.el"
+;;;;;;  "color-moccur.el" "color-mode.el" "dircolors.el" "dired-details.el"
+;;;;;;  "elscreen.el" "escreen.el" "flashcard.el" "fracc.el" "grade.el"
+;;;;;;  "highlight-current-line.el" "http-post.el" "ll-debug.el"
+;;;;;;  "longlines.el" "message-x.el" "moccur-edit.el" "mtorus.el"
+;;;;;;  "multi-region.el" "mutt.el" "mycode.el" "mycompletion.el"
+;;;;;;  "nntodo.el" "osd.el" "patches.el" "post.el" "project.el"
+;;;;;;  "setnu.el" "sig.el" "tempo-c++.el" "tempo-latex.el" "tempo-lisp.el"
+;;;;;;  "todl-mode.el" "todoo.el" "typopunct.el" "visible-mark-mode.el"
+;;;;;;  "visual.el" "xcscope.el" "xterm-extras.el") (17108 1724 627287))
 
 ;;;***
 

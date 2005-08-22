@@ -1,4 +1,4 @@
-;;; doxymacs-config.el ---
+;;; doxymacs-config.el --- Configuration for doxymacs
 
 ;; Copyright (C) 2004  Free Software Foundation, Inc.
 

@@ -1,4 +1,4 @@
-;;; tramp-config.el ---
+;;; tramp-config.el --- Configuration for tramp
 
 ;; Copyright (C) 2004  Free Software Foundation, Inc.
 

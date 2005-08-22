@@ -1,4 +1,4 @@
-;;; muse-config.el ---
+;;; muse-config.el --- Configuration for muse
 
 ;; Copyright (C) 2004  Free Software Foundation, Inc.
 
@@ -28,18 +28,44 @@
 
 ;;; Muse
 
+(defconst muse-config-latex-header "\\documentclass{article}
+
+\\usepackage[english]{babel}
+\\usepackage[utf8]{inputenc}
+\\usepackage[T1]{fontenc}
+\\usepackage{hyperref}
+\\usepackage[pdftex]{graphicx}
+
+\\begin{document}
+
+\\title{<lisp>(muse-publishing-directive \"title\")</lisp>}
+\\author{<lisp>(muse-publishing-directive \"author\")</lisp>}
+\\date{<lisp>(muse-publishing-directive \"date\")</lisp>}
+
+\\maketitle
+
+<lisp>(and muse-publish-generate-contents
+	   \"\\\\tableofcontents
+\\\\newpage\")</lisp>
+
+")
+
 (when (request 'muse-mode)
   (progn
-    (request 'muse-html)
-    (request 'muse-latex)
+    (when (request 'muse-html)
+      (setq muse-html-charset-default "utf-8"
+            muse-html-encoding-default (quote utf-8)))
+
+    (when (request 'muse-latex)
+      (setq muse-latex-header muse-config-latex-header))
+
     (request 'muse-texinfo)
     (request 'muse-docbook)
-    (request 'muse-wiki)
-    (setq muse-mode-highlight-p t)))
+    (request 'muse-wiki)))
 
 (add-to-list 'auto-mode-alist '("\\.muse$"  . muse-mode))
 
-(defun local-file-url-transform (target)
+(defun local-file-url-transform (target &rest ignored)
   (if (and (string-match muse-file-regexp target)
            (not (or (string-match muse-url-regexp target)
                     (string-match muse-image-regexp target))))

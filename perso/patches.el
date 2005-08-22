@@ -36,20 +36,28 @@
   (error nil)))
 
 ;; Map a condition/action on a list
+;; (defun mapcond (test result list &optional default)
+;;   "Map a TEST function over LIST and return the application of
+;;   the RESULT function over the first positive answer. If DEFAULT
+;;   is not nil, then in case of no success, this value is returned"
+;;   (or (let ((ex t)
+;;             (res nil))
+;;         (while (and ex list)
+;;           (if (funcall test (car list))
+;;               (progn
+;;                 (setq ex nil
+;;                       res (funcall result (car list))))
+;;             (setq list (cdr list))))
+;;         res)
+;;       default))
+
 (defun mapcond (test result list &optional default)
   "Map a TEST function over LIST and return the application of
-  the RESULT function over the first positive answer. If DEFAULT
-  is not nil, then in case of no success, this value is returned"
-  (or (let ((ex t)
-            (res nil))
-        (while (and ex list)
-          (if (funcall test (car list))
-              (progn
-                (setq ex nil
-                      res (funcall result (car list))))
-            (setq list (cdr list))))
-        res)
-      default))
+the RESULT function over the first positive answer. If DEFAULT
+is not nil, then in case of no success, this value is returned"
+  (loop for n in list
+        if (funcall test n) return (funcall result n)
+        finally return default))
 
 (defmacro make-double-command (name args doc-string interactive
                                       first-form second-form)
@@ -144,36 +152,36 @@
 (setq disabled-command-function nil)
 
 ;; scroll-margin does not work with hl-line :-(
-;; (defvar top-margin)
-;; (defvar bottom-margin)
-;; (defvar buffer-no-margin-alist)
+(defvar top-margin)
+(defvar bottom-margin)
+(defvar buffer-no-margin-alist)
 
-;; (defun check-margin ()
-;;   (let ((window (selected-window)))
-;;     (if (not (or (window-minibuffer-p window) (member (buffer-name (window-buffer)) buffer-no-margin-alist)))
-;;         (let* ((position (progn (set-buffer (window-buffer)) (point)))
-;;                (wstart (window-start))
-;;                (wbottl (- (window-height) 4))
-;;                (topshift (- (max 0 (min top-margin (- wbottl 1)))))
-;;                (diff (- (min topshift (- bottom-margin wbottl)) topshift)))
-;;           (vertical-motion topshift)
-;;           (if (cond
-;;                ((> wstart (point)))
-;;                ((= wstart (point)) nil)
-;;                ((or (= diff 0)
-;;                     (save-restriction
-;;                       (narrow-to-region wstart (point-max))
-;;                       (vertical-motion diff)
-;;                       (< wstart (point))))))
-;;               (set-window-start window (point)))
-;;           (goto-char position)))))
+(defun check-margin ()
+  (let ((window (selected-window)))
+    (if (not (or (window-minibuffer-p window) (member (buffer-name (window-buffer)) buffer-no-margin-alist)))
+        (let* ((position (progn (set-buffer (window-buffer)) (point)))
+               (wstart (window-start))
+               (wbottl (- (window-height) 4))
+               (topshift (- (max 0 (min top-margin (- wbottl 1)))))
+               (diff (- (min topshift (- bottom-margin wbottl)) topshift)))
+          (vertical-motion topshift)
+          (if (cond
+               ((> wstart (point)))
+               ((= wstart (point)) nil)
+               ((or (= diff 0)
+                    (save-restriction
+                      (narrow-to-region wstart (point-max))
+                      (vertical-motion diff)
+                      (< wstart (point))))))
+              (set-window-start window (point)))
+          (goto-char position)))))
 
-;; (defun set-scroll-margin (up down except)
-;;   "Enable hacked scroll margin"
-;;   (setq top-margin up
-;;         bottom-margin down
-;;         buffer-no-margin-alist except)
-;;   (add-hook 'post-command-hook 'check-margin))
+(defun set-scroll-margin (up down except)
+  "Enable hacked scroll margin"
+  (setq top-margin up
+        bottom-margin down
+        buffer-no-margin-alist except)
+  (add-hook 'post-command-hook 'check-margin))
 
 ;; Scroll up then down should go back to the start point
 (setq scroll-preserve-screen-position t)

@@ -1,4 +1,4 @@
-;;; vc-config.el ---
+;;; vc-config.el --- Configuration for vc
 
 ;; Copyright (C) 2005  Free Software Foundation, Inc.
 

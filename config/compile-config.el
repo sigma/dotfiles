@@ -33,20 +33,23 @@
                              ("^SConstruct$" . "scons"))
   "Association list between filename patterns and building method")
 
+(defconst compile-default-command "make")
+
 (defun dwim-compile-check (motif)
   "Test a regexp against every file in the current directory. Tries to be smart about what \"current directory\" is."
   (let* ((filename (buffer-file-name (current-buffer)))
          (dir (if filename
                   (file-name-directory filename)
-                default-directory))
-         (l (directory-files dir)))
-    (mapcond (lambda (f) (string-match motif f))
-             'identity
-             l)))
+                default-directory)))
+    (loop for f in (directory-files dir)
+          if (string-match motif f) return f)))
 
-;; Use previous function to adapt compile-command value
-(setq compile-command '(or (mapcond (lambda (e) (dwim-compile-check (car e))) 'cdr dwim-compile-alist)
-                           "make"))
+(defun dwim-compile-command ()
+  (loop for choice in dwim-compile-alist
+        if (dwim-compile-check (car choice)) return (cdr choice)
+        finally return compile-default-command))
+
+(setq compile-command '(dwim-compile-command))
 
 ;; I hate to mix different compilations contexts (see make -C.. for example...)
 (make-variable-buffer-local 'compile-history)

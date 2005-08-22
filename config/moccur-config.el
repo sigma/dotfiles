@@ -1,4 +1,4 @@
-;;; moccur-config.el ---
+;;; moccur-config.el --- Configuration for moccur
 
 ;; Copyright (C) 2004  Free Software Foundation, Inc.
 

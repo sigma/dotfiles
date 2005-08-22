@@ -1,4 +1,4 @@
-;;; eshell-config.el ---
+;;; eshell-config.el --- Configuration for eshell
 
 ;; Copyright (C) 2004  Free Software Foundation, Inc.
 

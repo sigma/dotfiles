@@ -20,12 +20,12 @@
     (load-file (expand-file-name "~/.emacs-cust")))
 
 ;; Hacked scroll margin
-;; (set-scroll-margin 5 5 '("*eshell*" "*compile*" "*Calendar*"))
-;; (setq scroll-step 1
-;;       scroll-conservatively 15)
-(setq scroll-margin 5
-      scroll-conservatively 50
-      scroll-step 1)
+(set-scroll-margin 5 5 '("*eshell*" "*compile*" "*Calendar*"))
+(setq scroll-step 1
+      scroll-conservatively 15)
+;; (setq scroll-margin 5
+;;       scroll-conservatively 50
+;;       scroll-step 1)
 
 
 ;; Save minibuffer history between sessions
@@ -149,6 +149,7 @@
 
 ;; common
 (request 'buffer-config)
+(request 'ido-config)
 (request 'cedet-config)
 
 ;; unless minimal
@@ -157,11 +158,13 @@
   (request 'muse-config)
   (request 'tramp-config)
   (request 'eshell-config)
+  (request 'help-config)
   (request 'moccur-config)
   (request 'lispy-config)
   (request 'tabbar-config)
   (request 'sawfish-config)
-  (request 'pmwiki-config))
+  (request 'pmwiki-config)
+  (request 'psvn-config))
 
 (unless-configuration 'minimal
   (unless-configuration 'mail
@@ -215,6 +218,8 @@
 
 ;; make sure modifs are taken into account (use with caution)
 (add-hook 'after-save-hook 'byte-compile-elisp)
+
+(add-hook 'after-save-hook 'executable-make-buffer-file-executable-if-script-p)
 
 ;; I hate trailing whitespaces (use with caution)
 (add-hook 'write-file-hooks 'delete-trailing-whitespace)
@@ -302,6 +307,8 @@
 (global-set-key (kbd "C-c g") 'goto-line)
 (global-set-key (kbd "C-c o") 'my-occur)
 (global-set-key (kbd "C-c e") 'fc-eval-and-replace)
+(global-set-key (kbd "C-c f") 'find-function)
+(global-set-key (kbd "C-c F") 'find-function-on-key)
 
 (global-set-key (kbd "<C-tab>") 'other-window)
 
@@ -331,7 +338,7 @@
 (global-set-key (kbd "C-x 5 3") 'make-main-frame)
 (global-set-key (kbd "C-c d") 'diff-buffer-with-associated-file)
 (global-set-key (kbd "C-x k") 'de-context-kill)
-(global-set-key (kbd "C-x K") (lambda () (interactive) (dolist (buf (buffer-list)) (kill-buffer buf))))
+(global-set-key (kbd "C-x K") (lambda () (interactive) (dolist (buf (buffer-list)) (when (buffer-file-name buf) (kill-buffer buf)))))
 
 (global-set-key (kbd "C-c m") (lambda () (interactive) (gnus 2)))
 (global-set-key (kbd "C-c x") 'chmod-file)
@@ -489,5 +496,11 @@
 
 (global-set-key (kbd "C-x t") 'anchored-transpose)
 (autoload 'anchored-transpose "anchored-transpose" nil t)
+
+(autoload 'run-acl2 "top-start-inferior-acl2" "Begin ACL2 in an inferior ACL2 mode buffer." t)
+
+(require 'slime)
+(setq inferior-lisp-program "clisp -q")
+(slime-setup)
 
 (message ".emacs loaded")

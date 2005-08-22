@@ -1,4 +1,4 @@
-;;; lispy-config.el ---
+;;; lispy-config.el --- Configuration for lispy
 
 ;; Copyright (C) 2004  Free Software Foundation, Inc.
 

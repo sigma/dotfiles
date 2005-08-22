@@ -26,9 +26,8 @@
 
 ;;; Code:
 
-(require 'psvn)
-
-(setq svn-status-use-header-line 'inline)
+(eval-after-load 'psvn
+  '(setq svn-status-use-header-line 'inline))
 
 (provide 'psvn-config)
 ;;; psvn-config.el ends here

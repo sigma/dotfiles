@@ -1,3 +1,42 @@
+2005-08-22  Yann Hodique  <Yann.Hodique@lifl.fr>
+
+	* config/ido-config.el: initial checkin
+
+	* perso/perso-misc.el (fc-eval-and-replace): add argument to prevent return value insertion (side-effect only)
+
+	* perso/patches.el (mapcond): new implementation relying on for loop
+	(scroll-margin): re-enables hack
+
+	* perso/icomplete+.el: don't interfere with minibuffer-completion-table (ido.el relies on it)
+
+	* latex-style/sigmalog.el: initial checkin
+
+	* latex-style/french.el: initial checkin
+
+	* dotemacs.el (scroll-margin): restore hack
+
+	* config/planner-config.el (planner-mode-map): keybindings for planner-task-cancelled
+
+	* config/muse-config.el: move some variables from customize
+
+	* config/latex-config.el (turn-on-reftex-if-available): protect reftex invocation
+	(tex): move some variables from customize
+	move some settings to auctex styles
+
+	* config/help-config.el: initial checkin
+
+	* config/erc-config.el (request): dispatch instructions in request scope
+
+	* config/emacs-wiki-config.el (require): load emacs-wiki
+
+	* config/ediff-config.el: pointless defcustom
+
+	* config/compile-config.el (compile-default-command): define default compile command
+	(dwim-compile-check): rewrite using loop
+	(compile-command): set to dwim-compile-command
+
+	* config/buffer-config.el (icomplete): enable icomplete+
+
 2005-07-04  Yann Hodique  <Yann.Hodique@lifl.fr>
 
 	* config/planner-config.el: use planner-multi
