@@ -33,7 +33,7 @@
  '(custom-file "~/.emacs-cust")
  '(default-justification (quote left))
  '(desktop-save (quote if-exists))
- '(desktop-save-mode nil)
+ '(desktop-save-mode nil nil (desktop))
  '(dired-omit-files "^\\.?#\\|^\\.$")
  '(display-time-24hr-format t)
  '(display-time-day-and-date t)
@@ -121,6 +121,7 @@
  '(partial-completion-mode t)
  '(pcomplete-autolist t)
  '(pcomplete-cycle-completions nil)
+ '(planner-default-page "TaskPool")
  '(planner-backend (quote muse))
  '(planner-multi-copy-tasks-to-page "TaskPool")
  '(planner-tasks-file-behavior (quote (quote close)))
@@ -168,7 +169,7 @@
  '(visible-bell t)
  '(w3m-icon-directory "~/.emacs.d/emacs-w3m/icons")
  '(wdired-allow-to-change-permissions (quote advanced))
- '(which-function-mode nil)
+ '(which-function-mode nil nil (which-func))
  '(x-select-enable-clipboard nil))
 
 (custom-set-faces

@@ -5,7 +5,7 @@
 ;; Hi-lock: (("^;;;_ \\+ \\(.*\\)" (1 'hi-black-b t)))
 ;; Hi-lock: ((";; \\(.*\\)" (1 'italic append)))
 ;; Hi-lock: end
-
+(toggle-debug-on-error)
 ;;;_* Basis
 ;; Load site-specific stuff: paths, accounts, projects...
 (if (file-exists-p (expand-file-name "~/.emacs-local"))
@@ -29,7 +29,7 @@
 
 
 ;; Save minibuffer history between sessions
-(require 'save-history)
+(request 'save-history)
 
 ;; Date in mode line
 (display-time)
@@ -499,8 +499,8 @@
 
 (autoload 'run-acl2 "top-start-inferior-acl2" "Begin ACL2 in an inferior ACL2 mode buffer." t)
 
-(require 'slime)
-(setq inferior-lisp-program "clisp -q")
-(slime-setup)
+(when (request 'slime)
+  (setq inferior-lisp-program "clisp -q")
+  (slime-setup))
 
 (message ".emacs loaded")

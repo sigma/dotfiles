@@ -45,7 +45,7 @@
                 ad-do-it))
 
             ;; Set dired-x global variables here.  For example:
-            (setq dired-x-hands-off-my-keys nil
+            (setq dired-x-hands-off-my-keys t
                   dired-find-subdir nil)
 
             (define-key dired-mode-map (kbd "C-c C-c") 'wdired-change-to-wdired-mode)

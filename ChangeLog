@@ -1,3 +1,9 @@
+2005-08-23  Yann Hodique  <Yann.Hodique@lifl.fr>
+
+	* dotemacs.el (request): don't break when slime's not there
+
+	* config/buffer-config.el (dired-load-hook): don't bind keys
+
 2005-08-22  Yann Hodique  <Yann.Hodique@lifl.fr>
 
 	* config/ido-config.el: initial checkin
