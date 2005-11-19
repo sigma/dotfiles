@@ -3,7 +3,7 @@
 
 ;;;_+ Loading
 
-(request 'planner)
+(require 'planner)
 
 (planner-install-extra-task-keybindings)
 
@@ -36,7 +36,7 @@
 
 (request 'planner-w3m)
 
-(request 'planner-xtla)
+; (request 'planner-xtla)
 
 (request 'planner-bookmark)
 

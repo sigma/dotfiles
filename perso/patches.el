@@ -203,7 +203,9 @@ is not nil, then in case of no success, this value is returned"
       (let ((var (if (equal arg 0) -1 arg)))
         (save-excursion
           (end-of-line)
-          (open-line (- var))))
+          (open-line (- var)))
+        (forward-line)
+        (beginning-of-line))
     ad-do-it))
 
 ;; BUFFER SWITCHING FIX

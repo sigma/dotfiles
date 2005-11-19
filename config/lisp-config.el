@@ -29,9 +29,16 @@
 ;;; Lisp
 
 (request 'color-eldoc)
-(add-hook 'emacs-lisp-mode-hook 'turn-on-eldoc-mode)
-(add-hook 'lisp-interaction-mode-hook 'turn-on-eldoc-mode)
-(add-hook 'ielm-mode-hook 'turn-on-eldoc-mode)
+
+(defun yh/lisp-hook()
+  (turn-on-eldoc-mode)
+  (hl-line-hack-mode -1)
+  (hl-sexp-mode 1))
+
+(add-hook 'emacs-lisp-mode-hook 'yh/lisp-hook)
+(add-hook 'lisp-interaction-mode-hook 'yh/lisp-hook)
+(add-hook 'ielm-mode-hook 'yh/lisp-hook)
+(add-hook 'lisp-mode-hook 'yh/lisp-hook)
 
 (define-key emacs-lisp-mode-map (kbd "C-c C-c") 'emacs-lisp-byte-compile)
 (font-lock-add-keywords 'emacs-lisp-mode
@@ -69,11 +76,6 @@
 
 (put 'define-lisp-indent-function 'safe-local-eval-function t)
 (put 'font-lock-add-keywords 'safe-local-eval-function t)
-
-;; (require 'slime)
-;; (add-hook 'lisp-mode-hook (lambda () (slime-mode t)))
-;; (add-hook 'inferior-lisp-mode-hook (lambda () (inferior-slime-mode t)))
-;; (setq inferior-lisp-program "clisp -ansi --quiet")
 
 (provide 'lisp-config)
 ;;; lisp-config.el ends here

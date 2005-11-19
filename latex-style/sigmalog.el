@@ -34,7 +34,7 @@
   (newline-and-indent))
 
 (defun LaTeX-sigmalog-install-syntactic-keywords ()
-  (add-to-list 'font-latex-verbatim-environments-local
+  (add-to-list 'LaTeX-verbatim-environments-local
                "sigmalog")
   (font-latex-set-syntactic-keywords))
 

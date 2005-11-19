@@ -7,6 +7,13 @@
 ;; Hi-lock: end
 (toggle-debug-on-error)
 ;;;_* Basis
+
+(if (file-exists-p (expand-file-name (format "~/.emacs-%d" emacs-major-version)))
+    (load-file (expand-file-name (format "~/.emacs-%d" emacs-major-version))))
+
+(if (file-exists-p (expand-file-name (format "~/.emacs-%d-%d" emacs-major-version emacs-minor-version)))
+    (load-file (expand-file-name (format "~/.emacs-%d-%d" emacs-major-version emacs-minor-version))))
+
 ;; Load site-specific stuff: paths, accounts, projects...
 (if (file-exists-p (expand-file-name "~/.emacs-local"))
     (load-file (expand-file-name "~/.emacs-local")))
@@ -29,7 +36,8 @@
 
 
 ;; Save minibuffer history between sessions
-(request 'save-history)
+(require 'savehist)
+(savehist-load)
 
 ;; Date in mode line
 (display-time)
@@ -69,11 +77,6 @@
 ;; Load the emacs type verifier first (gnu emacs, xemacs, ...)
 (request 'emacs-type)
 
-(when (request 'desktop)
-  (progn
-    (desktop-save-mode 1)
-    (desktop-read)))
-
 ;; Save place by default
 (when (request 'saveplace)
   (setq-default save-place t))
@@ -91,9 +94,6 @@
 
 ;; ignore case for finding files
 (setq read-file-name-completion-ignore-case t)
-
-;; modifier for navigating through windows with arrow keys
-(windmove-default-keybindings 'alt)
 
 (request 'autoloads)
 
@@ -149,13 +149,13 @@
 
 ;; common
 (request 'buffer-config)
-(request 'ido-config)
+;(request 'ido-config)
 (request 'cedet-config)
 
 ;; unless minimal
 (unless-configuration 'minimal
-  (request 'planner-config)
   (request 'muse-config)
+  (request 'planner-config)
   (request 'tramp-config)
   (request 'eshell-config)
   (request 'help-config)
@@ -315,6 +315,7 @@
 ;; These were traditional bindings, why did they change??
 (global-set-key (kbd "<home>") 'beginning-of-buffer)
 (global-set-key (kbd "<end>") 'end-of-buffer)
+(global-set-key (kbd "<delete>") 'delete-char)
 
 ;; "intelligent" home and end
 (global-set-key (kbd "<C-home>") 'my-home)
@@ -499,8 +500,33 @@
 
 (autoload 'run-acl2 "top-start-inferior-acl2" "Begin ACL2 in an inferior ACL2 mode buffer." t)
 
-(when (request 'slime)
-  (setq inferior-lisp-program "clisp -q")
-  (slime-setup))
+;;; SLIME & Lisp
+;; (require 'slime)
+;; (setq lisp-clisp "clisp -q")
+;; (setq lisp-sbcl "sbcl")
+;; ;; by registering your implementations, you can choose one by
+;; ;; its "short name" when doing C-u M-x slime
+;; (slime-register-lisp-implementation "clisp" lisp-clisp)
+;; (slime-register-lisp-implementation "sbcl" lisp-sbcl)
+
+;; ;; default
+;; (setq inferior-lisp-program lisp-sbcl)
+;; (setq slime-edit-definition-fallback-function 'find-tag)
+;; (setq slime-complete-symbol-function 'slime-fuzzy-complete-symbol)
+;; (slime-setup :autodoc t)
+
+;; (defun slime-clisp ()
+;;   (interactive)
+;;   (slime (slime-find-lisp-implementation "clisp") "*inferior-lisp-clisp*"))
+
+;; ;; start sbcl with its own inferior-lisp buffer
+;; (defun slime-sbcl ()
+;;   (interactive)
+;;   (slime (slime-find-lisp-implementation "sbcl") "*inferior-lisp-sbcl*"))
+
+(request 'proof-site)
+(setq coq-version-is-V8-1 t)
+
+(request 'icicles-config)
 
 (message ".emacs loaded")

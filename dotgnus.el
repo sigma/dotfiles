@@ -779,6 +779,6 @@ Must be called from the `gnus-select-group-hook'."
 (autoload 'trivial-cite "tc" t t)
 
 ;; (server-start)
-;(calendar)
+(calendar)
 (setq planner-directory "~/Plans")
 (find-file (concat planner-directory "/" planner-default-page))

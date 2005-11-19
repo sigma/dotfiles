@@ -49,7 +49,8 @@
         if (dwim-compile-check (car choice)) return (cdr choice)
         finally return compile-default-command))
 
-(setq compile-command '(dwim-compile-command))
+(make-variable-buffer-local 'compile-command)
+(setq-default compile-command '(dwim-compile-command))
 
 ;; I hate to mix different compilations contexts (see make -C.. for example...)
 (make-variable-buffer-local 'compile-history)
