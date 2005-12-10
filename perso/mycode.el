@@ -251,14 +251,14 @@
           (lambda ()
             (my-php-mode-hook)
             (glasses-mode 1)
-            (camelCase-mode 1)))
+            (c-subword-mode 1)))
 
 (add-hook 'c-mode-common-hook
           (lambda ()
             (my-c-mode-common-hook)
             ;; activate glasses
             (glasses-mode 1)
-            (camelCase-mode 1)
+            (c-subword-mode 1)
             (set (make-local-variable 'fill-nobreak-predicate)
 		 (lambda ()
 		   (not (eq (get-text-property (point) 'face)

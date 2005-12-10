@@ -1,5 +1,10 @@
 2005-12-10  Yann Hodique  <Yann.Hodique@lifl.fr>
 
+	* perso/mycode.el (php-mode-user-hook): use c-subword-mode
+	(c-mode-common-hook): use c-subword-mode
+
+	* perso/camelCase.el: removed (obsoleted by c-subword-mode)
+
 	* dotemacs.el (functionp): use global-hi-lock-mode
 
 	* config/ido-config.el (yh/ido-setup): reflect changes to ido-mode
