@@ -69,7 +69,9 @@
 (global-auto-revert-mode 1)
 
 ;; Enable dynamic highlighting
-(hi-lock-mode 1)
+(if (functionp 'global-hi-lock-mode)
+            (global-hi-lock-mode 1)
+          (hi-lock-mode 1))
 
 ;; Throw out the mouse when typing
 (mouse-avoidance-mode 'exile)
@@ -149,7 +151,7 @@
 
 ;; common
 (request 'buffer-config)
-;(request 'ido-config)
+(request 'ido-config)
 (request 'cedet-config)
 
 ;; unless minimal

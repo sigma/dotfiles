@@ -61,10 +61,7 @@
   (exit-minibuffer))
 
 (defun yh/ido-setup ()
-  (if (eq ido-cur-item 'buffer)
-      (progn
-        (setq yh/ido-current-mode-buffers nil)
-        (define-key ido-mode-map (kbd "M-m") 'yh/ido-set-mode))))
+  (define-key ido-buffer-completion-map (kbd "M-m") 'yh/ido-set-mode))
 
 (eval-after-load 'ido
   '(progn
