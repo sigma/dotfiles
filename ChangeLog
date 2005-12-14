@@ -1,3 +1,7 @@
+2005-12-14  Yann Hodique  <Yann.Hodique@lifl.fr>
+
+	* perso/mycode.el (c-guess-basic-syntax): no need to redefine it anymore
+
 2005-12-10  Yann Hodique  <Yann.Hodique@lifl.fr>
 
 	* perso/mycode.el (php-mode-user-hook): use c-subword-mode
