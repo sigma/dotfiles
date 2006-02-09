@@ -1,3 +1,7 @@
+2006-02-09  Yann Hodique  <Yann.Hodique@lifl.fr>
+
+	* perso/scroll-in-place.el: initial checkin
+
 2006-01-30  Yann Hodique  <Yann.Hodique@lifl.fr>
 
 	* perso/patches.el (try): macro for failing silently during arbitrary code invocation
