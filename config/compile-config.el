@@ -44,6 +44,8 @@
     (loop for f in (directory-files dir)
           if (string-match motif f) return f)))
 
+(eval-when-compile (require 'cl))
+
 (defun dwim-compile-command ()
   (loop for choice in dwim-compile-alist
         if (dwim-compile-check (car choice)) return (cdr choice)

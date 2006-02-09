@@ -5,7 +5,9 @@
 ;; Hi-lock: (("^;;;_ \\+ \\(.*\\)" (1 'hi-black-b t)))
 ;; Hi-lock: ((";; \\(.*\\)" (1 'italic append)))
 ;; Hi-lock: end
+
 (toggle-debug-on-error)
+
 ;;;_* Basis
 
 (if (file-exists-p (expand-file-name (format "~/.emacs-%d" emacs-major-version)))
@@ -36,8 +38,8 @@
 
 
 ;; Save minibuffer history between sessions
-(require 'savehist)
-(savehist-load)
+(when (request 'savehist)
+  (savehist-load))
 
 ;; Date in mode line
 (display-time)
@@ -135,6 +137,7 @@
 (defun current-configuration ()
   (cond ((member "gnus" command-line-args) 'mail)
         ((equal (car command-line-args) "vi") 'minimal)
+        ((member "proof-splash-display-screen" command-line-args) 'proof)
         (t 'code)))
 
 (defmacro when-configuration (config &rest body)
@@ -151,22 +154,25 @@
 
 ;; common
 (request 'buffer-config)
-(request 'ido-config)
 (request 'cedet-config)
+
+(unless-configuration 'proof
+  (request 'ido-config))
 
 ;; unless minimal
 (unless-configuration 'minimal
-  (request 'muse-config)
-  (request 'planner-config)
-  (request 'tramp-config)
-  (request 'eshell-config)
-  (request 'help-config)
-  (request 'moccur-config)
-  (request 'lispy-config)
-  (request 'tabbar-config)
-  (request 'sawfish-config)
-  (request 'pmwiki-config)
-  (request 'psvn-config))
+  (unless-configuration 'proof
+    (request 'muse-config)
+    (request 'planner-config)
+    (request 'tramp-config)
+    (request 'eshell-config)
+    (request 'help-config)
+    (request 'moccur-config)
+    (request 'lispy-config)
+    (request 'tabbar-config)
+    (request 'sawfish-config)
+    (request 'pmwiki-config)
+    (request 'psvn-config)))
 
 (unless-configuration 'minimal
   (unless-configuration 'mail
@@ -490,9 +496,9 @@
 (add-to-list 'auto-mode-alist '("\\.pro\\'" . makefile-mode))
 (add-to-list 'auto-mode-alist '("SCons\\(cript\\|truct\\)\\'" . python-mode))
 
-(require 'type-break)
-(setq type-break-file-name nil)
-(type-break-mode 1)
+(when (request 'type-break)
+  (setq type-break-file-name nil)
+  (type-break-mode 1))
 
 ;(require 'allout)
 ;(allout-init t)
@@ -503,32 +509,20 @@
 (autoload 'run-acl2 "top-start-inferior-acl2" "Begin ACL2 in an inferior ACL2 mode buffer." t)
 
 ;;; SLIME & Lisp
-;; (require 'slime)
-;; (setq lisp-clisp "clisp -q")
-;; (setq lisp-sbcl "sbcl")
-;; ;; by registering your implementations, you can choose one by
-;; ;; its "short name" when doing C-u M-x slime
-;; (slime-register-lisp-implementation "clisp" lisp-clisp)
-;; (slime-register-lisp-implementation "sbcl" lisp-sbcl)
+(when (request 'slime)
+  ;; default
+  (setq inferior-lisp-program "cmucl")
+  (setq slime-edit-definition-fallback-function 'find-tag)
+  (setq slime-complete-symbol-function 'slime-fuzzy-complete-symbol)
+  (slime-setup :autodoc t)
+  (global-set-key (kbd "<f12>") 'slime-selector))
 
-;; ;; default
-;; (setq inferior-lisp-program lisp-sbcl)
-;; (setq slime-edit-definition-fallback-function 'find-tag)
-;; (setq slime-complete-symbol-function 'slime-fuzzy-complete-symbol)
-;; (slime-setup :autodoc t)
+(require 'proof-site)
+;(setq coq-version-is-V8-1 t)
 
-;; (defun slime-clisp ()
-;;   (interactive)
-;;   (slime (slime-find-lisp-implementation "clisp") "*inferior-lisp-clisp*"))
-
-;; ;; start sbcl with its own inferior-lisp buffer
-;; (defun slime-sbcl ()
-;;   (interactive)
-;;   (slime (slime-find-lisp-implementation "sbcl") "*inferior-lisp-sbcl*"))
-
-(request 'proof-site)
-(setq coq-version-is-V8-1 t)
-
-(request 'icicles-config)
+(when-configuration 'code
+;;  (request 'icicles-config)
+  (try
+   (server-mode 1)))
 
 (message ".emacs loaded")

@@ -3,99 +3,103 @@
 
 ;;;_+ Loading
 
-(require 'planner)
+(require 'patches)
 
-(planner-install-extra-task-keybindings)
+(when (request 'planner)
 
-(planner-install-extra-note-keybindings)
-(define-key planner-mode-map "\C-c\C-o\C-h" (lambda () (interactive) (planner-create-note (muse-page-name))))
+  (planner-install-extra-task-keybindings)
 
-(setq planner-annotation-format-local-file-name 'yh/collapse-home-directory)
+  (planner-install-extra-note-keybindings)
+  (define-key planner-mode-map "\C-c\C-o\C-h" (lambda () (interactive) (planner-create-note (muse-page-name))))
 
-(define-key planner-mode-map "\C-c\C-t\C-e" 'planner-edit-task-description)
+  (setq planner-annotation-format-local-file-name 'yh/collapse-home-directory)
 
-(define-key planner-mode-map (kbd "C-c C-t C-S-c") 'planner-task-cancelled)
-(define-key planner-mode-map (kbd "C-c C-S-c") 'planner-task-cancelled)
+  (define-key planner-mode-map "\C-c\C-t\C-e" 'planner-edit-task-description)
 
-(eval-after-load "bbdb"
-  '(require 'planner-bbdb))
+  (define-key planner-mode-map (kbd "C-c C-t C-S-c") 'planner-task-cancelled)
+  (define-key planner-mode-map (kbd "C-c C-S-c") 'planner-task-cancelled)
 
-(eval-after-load "gnus"
-  '(progn
-     (require 'planner-gnus)
-     (planner-gnus-insinuate)))
+  (eval-after-load "bbdb"
+    '(require 'planner-bbdb))
 
-(request 'planner-bibtex)
-(request 'planner-id)
+  (eval-after-load "gnus"
+    '(progn
+       (require 'planner-gnus)
+       (planner-gnus-insinuate)))
 
-(planner-insinuate-calendar)
+  (request 'planner-bibtex)
+  (request 'planner-id)
 
-(request 'planner-log-edit)
+  (planner-insinuate-calendar)
 
-(add-to-list 'planner-log-edit-flush-regexp-list "^##.*$")
+  (request 'planner-log-edit)
 
-(request 'planner-w3m)
+  (add-to-list 'planner-log-edit-flush-regexp-list "^##.*$")
 
-; (request 'planner-xtla)
+  (request 'planner-w3m)
 
-(request 'planner-bookmark)
+                                        ; (request 'planner-xtla)
 
-(when (require 'planner-multi)
-  (setq planner-multi-copy-tasks-to-page "TaskPool"))
+  (request 'planner-bookmark)
 
-;; (require 'action-lock)
+  (when (require 'planner-multi)
+    (setq planner-multi-copy-tasks-to-page "TaskPool"))
 
-;; (add-to-list 'action-lock-default-rules
-;;             (list (with-planner muse-explicit-link-regexp)
-;;                   'planner-action-lock-follow-name-at-point))
+  ;; (require 'action-lock)
 
-;; (setq action-lock-rules action-lock-default-rules)
+  ;; (add-to-list 'action-lock-default-rules
+  ;;             (list (with-planner muse-explicit-link-regexp)
+  ;;                   'planner-action-lock-follow-name-at-point))
 
-;; (defvar planner-action-lock-default-directory (planner-directory) "Expand files relative to this directory.")
+  ;; (setq action-lock-rules action-lock-default-rules)
 
-;; (defsubst planner-url-p (name)
-;;   "Return non-nil if NAME is a URL."
-;;   (save-match-data
-;;     (string-match muse-url-regexp name)))
+  ;; (defvar planner-action-lock-default-directory (planner-directory) "Expand files relative to this directory.")
 
-;; (defun planner-wiki-tag (wiki-name)
-;;   (save-match-data
-;;     (if (string-match "#" wiki-name)
-;;         (substring wiki-name (match-end 0)))))
+  ;; (defsubst planner-url-p (name)
+  ;;   "Return non-nil if NAME is a URL."
+  ;;   (save-match-data
+  ;;     (string-match muse-url-regexp name)))
 
-;; (defun planner-action-lock-follow-name-at-point (&optional other-window)
-;;  (let ((link-name (match-string 0))
-;;        (base-buffer (current-buffer))
-;;        ;; the name of the buffer that contains the link.  check
-;;        ;; whether buffer-name is a WikiName, else make it one
-;;        (parent-name (or (planner-page-name)
-;;                         (planner-make-link (buffer-name)))))
-;;    (with-planner
-;;      (let ((link (planner-link-target link-name)))
-;;        (if (planner-url-p link)
-;;            (planner-browse-url link other-window)
-;;          ;; The name list is current since the last time the buffer was
-;;          ;; highlighted
-;;          (let* ((base (planner-link-base link-name))
-;;                 (file (planner-page-file base))
-;;                 (tag  (and (not (planner-url-p link))
-;;                            (planner-wiki-tag link)))
-;;                 (find-file-function (if other-window
-;;                                         'find-file-other-window
-;;                                       'find-file))
-;;                 (newbuf
-;;                  (funcall find-file-function
-;;                           (or file
-;;                               (expand-file-name
-;;                                       base
-;;                                       (or planner-action-lock-default-directory
-;;                                           (and (buffer-file-name)
-;;                                                (file-name-directory
-;;                                                 (buffer-file-name)))
-;;                                           default-directory))))))
-;;            (when tag
-;;              (goto-char (point-min))
-;;              (re-search-forward (concat "^\\.?#" tag) nil t))))))))
+  ;; (defun planner-wiki-tag (wiki-name)
+  ;;   (save-match-data
+  ;;     (if (string-match "#" wiki-name)
+  ;;         (substring wiki-name (match-end 0)))))
+
+  ;; (defun planner-action-lock-follow-name-at-point (&optional other-window)
+  ;;  (let ((link-name (match-string 0))
+  ;;        (base-buffer (current-buffer))
+  ;;        ;; the name of the buffer that contains the link.  check
+  ;;        ;; whether buffer-name is a WikiName, else make it one
+  ;;        (parent-name (or (planner-page-name)
+  ;;                         (planner-make-link (buffer-name)))))
+  ;;    (with-planner
+  ;;      (let ((link (planner-link-target link-name)))
+  ;;        (if (planner-url-p link)
+  ;;            (planner-browse-url link other-window)
+  ;;          ;; The name list is current since the last time the buffer was
+  ;;          ;; highlighted
+  ;;          (let* ((base (planner-link-base link-name))
+  ;;                 (file (planner-page-file base))
+  ;;                 (tag  (and (not (planner-url-p link))
+  ;;                            (planner-wiki-tag link)))
+  ;;                 (find-file-function (if other-window
+  ;;                                         'find-file-other-window
+  ;;                                       'find-file))
+  ;;                 (newbuf
+  ;;                  (funcall find-file-function
+  ;;                           (or file
+  ;;                               (expand-file-name
+  ;;                                       base
+  ;;                                       (or planner-action-lock-default-directory
+  ;;                                           (and (buffer-file-name)
+  ;;                                                (file-name-directory
+  ;;                                                 (buffer-file-name)))
+  ;;                                           default-directory))))))
+  ;;            (when tag
+  ;;              (goto-char (point-min))
+  ;;              (re-search-forward (concat "^\\.?#" tag) nil t))))))))
+
+  )
 
 (provide 'planner-config)
 

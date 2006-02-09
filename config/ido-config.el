@@ -79,5 +79,10 @@
 
      (add-hook 'ido-setup-hook 'yh/ido-setup)))
 
+(when (request 'ido)
+  (setq ido-confirm-unique-completion t
+        ido-everywhere t)
+  (ido-mode 1))
+
 (provide 'ido-config)
 ;;; ido-config.el ends here

@@ -327,6 +327,10 @@
             (when ok
               (cons (concat file "." ext)  name))))))))
 
+(require 'ffap)
+(setq ffap-c-path
+      (append '("../include" "../inc") ffap-c-path))
+
 ; C++ member functions;
 (add-hook 'c++-mode-hook (lambda () (local-set-key "\C-cm" (lambda ()
                                                              (interactive)

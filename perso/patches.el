@@ -27,30 +27,20 @@
 ;; has nothing to do with me :-)
 
 ;;; Code:
+(eval-when-compile (require 'cl))
+
+(defmacro try (&rest code)
+  "Execute `code' failing silently"
+  `(condition-case nil
+       ,@code
+     (error nil)))
 
 ;; Use this one instead of require to ignore errors
 (defun request (feature)
   "Fail to require silently"
-  (condition-case nil
-    (require feature)
-  (error nil)))
+  (try (require feature)))
 
 ;; Map a condition/action on a list
-;; (defun mapcond (test result list &optional default)
-;;   "Map a TEST function over LIST and return the application of
-;;   the RESULT function over the first positive answer. If DEFAULT
-;;   is not nil, then in case of no success, this value is returned"
-;;   (or (let ((ex t)
-;;             (res nil))
-;;         (while (and ex list)
-;;           (if (funcall test (car list))
-;;               (progn
-;;                 (setq ex nil
-;;                       res (funcall result (car list))))
-;;             (setq list (cdr list))))
-;;         res)
-;;       default))
-
 (defun mapcond (test result list &optional default)
   "Map a TEST function over LIST and return the application of
 the RESULT function over the first positive answer. If DEFAULT

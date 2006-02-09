@@ -1,3 +1,16 @@
+2006-01-30  Yann Hodique  <Yann.Hodique@lifl.fr>
+
+	* perso/patches.el (try): macro for failing silently during arbitrary code invocation
+	(request): rewrite request using try
+
+	* perso/mycode.el (ffap-c-path): search in "standard" local directories
+
+	* dotemacs.el (request): make savehist optional for old config
+	(current-configuration): define configuration for theorem proving
+	(request): make type-break optional
+
+	* config/ido-config.el (request): make ido optional for old config
+
 2005-12-14  Yann Hodique  <Yann.Hodique@lifl.fr>
 
 	* perso/mycode.el (c-guess-basic-syntax): no need to redefine it anymore
