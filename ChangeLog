@@ -1,3 +1,13 @@
+2006-03-07  Yann Hodique  <Yann.Hodique@lifl.fr>
+
+	* icicles/: mirror icicles project here
+
+2006-03-03  Yann Hodique  <Yann.Hodique@lifl.fr>
+
+	* perso/psvn.el: new version of psvn.el
+
+	* config/ido-config.el (ido): change-context (PVS) uses read-file-name
+
 2006-02-09  Yann Hodique  <Yann.Hodique@lifl.fr>
 
 	* perso/scroll-in-place.el: initial checkin
