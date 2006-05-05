@@ -30,10 +30,13 @@
 
 (request 'color-eldoc)
 
+(autoload 'paredit-mode "paredit" "Minor mode for pseudo-structurally editing Lisp code." t)
+
 (defun yh/lisp-hook()
   (turn-on-eldoc-mode)
   (hl-line-hack-mode -1)
-  (hl-sexp-mode 1))
+  (hl-sexp-mode 1)
+  (paredit-mode +1))
 
 (add-hook 'emacs-lisp-mode-hook 'yh/lisp-hook)
 (add-hook 'lisp-interaction-mode-hook 'yh/lisp-hook)
@@ -51,6 +54,9 @@
                            (1 font-lock-keyword-face)
                            (2 font-lock-constant-face nil t))
                           ))
+
+(define-key paredit-mode-map (kbd "RET") nil)
+(define-key lisp-mode-shared-map (kbd "RET") 'paredit-newline)
 
 (add-hook 'c-mode-common-hook
           (lambda ()

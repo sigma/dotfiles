@@ -1,3 +1,13 @@
+2006-05-05  Yann Hodique  <Yann.Hodique@lifl.fr>
+
+	* perso/tempo-c++.el (c-mode-common-hook): use common hook
+
+	* perso/paredit.el: initial checkin
+
+	* dotemacs.el: various fixes
+
+	* config/lisp-config.el (paredit-mode): activate paredit-mode
+
 2006-03-19  Yann Hodique  <Yann.Hodique@lifl.fr>
 
 	* perso/patches.el: persistant scratch buffer

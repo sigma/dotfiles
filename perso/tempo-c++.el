@@ -249,15 +249,12 @@
                           "Insert a C++ for loop: for(container::ConstIterator it = a.begin(); it != a.end(); ++it)"
                           'c-tempo-tags)
 
-(add-hook 'c-mode-hook (lambda ()
-			  (tempo-use-tag-list 'c-tempo-tags)
-                          (tempo-use-tag-list 'c++-tempo-tags)
-			  (yh/tempo-build-local-map c-tempo-keys-alist)))
-
-(add-hook 'c++-mode-hook (lambda ()
-                           (tempo-use-tag-list 'c-tempo-tags)
-                           (tempo-use-tag-list 'c++-tempo-tags)
-                           (yh/tempo-build-local-map c-tempo-keys-alist)))
+(add-hook 'c-mode-common-hook
+          (lambda ()
+            (unless (eq major-mode 'php-mode)
+              (tempo-use-tag-list 'c-tempo-tags)
+              (tempo-use-tag-list 'c++-tempo-tags)
+              (yh/tempo-build-local-map c-tempo-keys-alist))))
 
 (provide 'tempo-c++)
 ;;; tempo-c++.el ends here
