@@ -2,6 +2,7 @@
 
 	* dotemacs.el (org-config): load by default
 	trigger (org-agenda-list) at startup
+	(file-exists-p): absolute filenames in non-local config is *bad* :)
 
 	* config/planner-config.el (kbd): move keybindings to config file
 

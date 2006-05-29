@@ -522,8 +522,8 @@
    (server-mode 1)))
 
 ;;; Startup code
-(when (file-exists-p "~/org/organizer.org")
-  (find-file "~/org/organizer.org")
+(when (file-exists-p org-default-notes-file)
+  (find-file org-default-notes-file)
   (setq default-directory "~/")
   (require 'calendar)
   (when (require 'org nil t)
