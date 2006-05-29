@@ -29,8 +29,24 @@
 ;;; Calendar
 
 (when (request 'calendar)
-  (setq european-calendar-style t))
+  (setq european-calendar-style t)
+  (setq calendar-holidays nil))
 
+(add-hook 'diary-display-hook 'fancy-diary-display)
+
+(defun diary-cyclic-bounded (limit n month day year &optional mark)
+  (let* ((d (if european-calendar-style month day))
+         (m (if european-calendar-style
+                day
+              month))
+         (diff (- (calendar-absolute-from-gregorian date)
+                  (calendar-absolute-from-gregorian
+                   (list m d year))))
+         (cycle (/ diff n)))
+    (if (and (>= diff 0)
+             (zerop (% diff n))
+             (< cycle limit))
+        (cons mark (format entry cycle (diary-ordinal-suffix cycle))))))
 
 (provide 'calendar-config)
 ;;; calendar-config.el ends here

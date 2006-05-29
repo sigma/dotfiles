@@ -101,6 +101,9 @@
 
   )
 
+(global-set-key (kbd "C-c t") 'planner-create-task)
+(global-set-key (kbd "C-c T") 'planner-create-task-from-buffer)
+
 (provide 'planner-config)
 
 ;;;_* Local emacs vars.

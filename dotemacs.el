@@ -155,6 +155,8 @@
 ;; common
 (request 'buffer-config)
 (request 'cedet-config)
+(request 'org-config)
+(request 'calendar-config)
 
 (unless-configuration 'proof
   (request 'ido-config))
@@ -162,9 +164,9 @@
 ;; unless minimal
 (unless-configuration 'minimal
   (unless-configuration 'proof
-    (request 'muse-config)
+    ;; (request 'muse-config)
     (request 'ecb-config)
-    (request 'planner-config)
+    ;; (request 'planner-config)
     (request 'tramp-config)
     (request 'eshell-config)
     (request 'help-config)
@@ -194,10 +196,6 @@
     (request 'crontab-config)
     (request 'flashcard-config)
     (request 'vc-config)))
-
-;; mail only
-(when-configuration 'mail
-  (request 'calendar-config))
 
 ;;; Utils/Functions
 
@@ -286,8 +284,7 @@
   (set-window-text-height (selected-window) 72)
   (other-window 1)
   (eshell)
-  (other-window -1)
-)
+  (other-window -1))
 
 (make-main-frame)
 
@@ -391,9 +388,6 @@
 (request 'elscreen)
 
 (request 'w3m-load)
-
-(global-set-key (kbd "C-c t") 'planner-create-task)
-(global-set-key (kbd "C-c T") 'planner-create-task-from-buffer)
 
 ;;;_* Experimental
 
@@ -526,5 +520,13 @@
 ;;  (request 'icicles-config)
   (try
    (server-mode 1)))
+
+;;; Startup code
+(when (file-exists-p "~/org/organizer.org")
+  (find-file "~/org/organizer.org")
+  (setq default-directory "~/")
+  (require 'calendar)
+  (when (require 'org nil t)
+    (call-interactively 'org-agenda-list)))
 
 (message ".emacs loaded")
