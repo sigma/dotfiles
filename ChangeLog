@@ -1,3 +1,9 @@
+2006-05-30  Yann Hodique  <Yann.Hodique@lifl.fr>
+
+	* perso/physical-line.el: initial checkin
+
+	* perso/paredit.el: update to newest beta
+
 2006-05-29  Yann Hodique  <Yann.Hodique@lifl.fr>
 
 	* dotemacs.el (org-config): load by default

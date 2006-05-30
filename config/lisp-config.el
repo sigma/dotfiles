@@ -55,9 +55,6 @@
                            (2 font-lock-constant-face nil t))
                           ))
 
-(define-key paredit-mode-map (kbd "RET") nil)
-(define-key lisp-mode-shared-map (kbd "RET") 'paredit-newline)
-
 (add-hook 'c-mode-common-hook
           (lambda ()
             (when (request 'guile-c)
