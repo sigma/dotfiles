@@ -99,19 +99,20 @@
 (request 'dircolors)
 
 ;; Frame appearence
-(set-default-font "fixed")
-(when (eq window-system 'x)
-    (setq default-frame-alist
-          (append default-frame-alist
-                  '((tool-bar-lines . 0)
-                    (menu-bar-lines . 0)
-                    (width . 100)
-                    (height . 50)
-                    (foreground-color . "wheat")
-                    (background-color . "darkslategray")
-                    (cursor-color . "yellow")
-                    (font . "fixed")
-                    ))))
+(setq default-frame-alist '((left-fringe)
+                            (right-fringe)
+                            (menu-bar-lines . 0)
+                            (vertical-scroll-bars)
+                            (tool-bar-lines . 0)))
+
+(setq window-system-default-frame-alist
+      '((x (width . 100)
+           (height . 50)
+           (foreground-color . "wheat")
+           (background-color . "darkslategray")
+           (cursor-color . "yellow")
+           (font . "fixed")
+           )))
 
 (if (> emacs-major-version 20) (custom-set-variables '(tool-bar-mode nil nil (tool-bar))))
 (if (> emacs-major-version 20) (set-scroll-bar-mode nil))

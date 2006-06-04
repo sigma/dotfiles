@@ -65,7 +65,7 @@
 (defun yh/looking-at-tags ()
   (looking-at "\s*:\\([a-zA-Z_@0-9:]+\\):[ \t]*\\([\n\r]\\|\\'\\)"))
 
-(defadvice org-meta-return (before org-meta-return-before act)
+(defadvice org-insert-heading (before org-insert-heading-before act)
   "If the cursor is between heading and tags list, then open
 a new heading WITHOUT moving the tags"
   (when (yh/looking-at-tags)

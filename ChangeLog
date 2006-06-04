@@ -1,3 +1,10 @@
+2006-06-04  Yann Hodique  <Yann.Hodique@lifl.fr>
+
+	* perso/visual.el (default-frame-alist): leave only common configuration
+	(window-system-default-frame-alist): specific settings here
+
+	* config/org-config.el (org-insert-heading): advice this function instead
+
 2006-05-30  Yann Hodique  <Yann.Hodique@lifl.fr>
 
 	* perso/physical-line.el: initial checkin
