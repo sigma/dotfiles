@@ -43,7 +43,15 @@
 (add-hook 'ielm-mode-hook 'yh/lisp-hook)
 (add-hook 'lisp-mode-hook 'yh/lisp-hook)
 
+(defun yh/insert-elisp-key ()
+  (interactive)
+  (insert (concat "(kbd \""
+                  (help-key-description (read-key-sequence "Key: ") nil)
+                  "\")")))
+
 (define-key emacs-lisp-mode-map (kbd "C-c C-c") 'emacs-lisp-byte-compile)
+(define-key emacs-lisp-mode-map (kbd "C-c k") 'yh/insert-elisp-key)
+
 (font-lock-add-keywords 'emacs-lisp-mode
                         `((,(concat "\\<" (regexp-opt '("add-hook" "add-mhook"
                                                         "autoload" "defmadvice"

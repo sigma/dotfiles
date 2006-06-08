@@ -309,7 +309,6 @@
 (global-set-key (kbd "C-x ~") 'previous-error)
 (global-set-key (kbd "C-c s") 'eshell)
 (global-set-key (kbd "C-c c") 'compile)
-(global-set-key (kbd "C-c k") 'mode-compile-kill)
 (global-set-key (kbd "C-c g") 'goto-line)
 (global-set-key (kbd "C-c o") 'my-occur)
 (global-set-key (kbd "C-c e") 'fc-eval-and-replace)
@@ -416,21 +415,9 @@
   (global-set-key (kbd "<M-f7>")    'fold-dwim-hide-all)
   (global-set-key (kbd "<S-M-f7>")  'fold-dwim-show-all))
 
-(when (request 'emms)
-  (request 'emms-default)
-  (emms-setup 'advanced "~/music")
-  ;; Show the current track each time EMMS
-  ;; starts to play a track with "NP : "
-;  (add-hook 'emms-player-started-hook 'emms-show)
-;  (setq emms-show-format "NP: %s")
-
-  ;; When asked for emms-play-directory,
-  ;; always start from this one
-  ;;(setq emms-source-file-default-directory "~/music/")
-
-  ;; Want to use alsa with mpg321 ?
-  ;;(setq emms-player-mpg321-parameters '("-o" "alsa"))
-  )
+(when (request 'emms-setup)
+  (emms-standard)
+  (emms-default-players))
 
 (add-to-list 'auto-mode-alist '("\\.hlal\\'" . c-mode))
 
