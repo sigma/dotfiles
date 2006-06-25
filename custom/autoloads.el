@@ -27,7 +27,8 @@
 ;;; Code:
 
 ;;; Autoloads
-(require 'custom-loaddefs)
+(load "custom-loaddefs")
+(load "lib-loaddefs")
 
 (autoload 'css-mode "css-mode" "Major mode for editing CSS style sheets.
 \\{cssm-mode-map}" t nil)

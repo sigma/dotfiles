@@ -99,7 +99,7 @@
 ;; ignore case for finding files
 (setq read-file-name-completion-ignore-case t)
 
-(request 'autoloads)
+(require 'autoloads)
 
 ;;;_* Charsets & languages
 
