@@ -1,3 +1,11 @@
+2006-06-25  Yann Hodique  <Yann.Hodique@lifl.fr>
+
+	* perso/patches.el ([insert]): undefine it
+
+	* perso/mycode.el: comment out problematic font-locking
+
+	* latex-style/beamer.el: initial checkin
+
 2006-06-08  Yann Hodique  <Yann.Hodique@lifl.fr>
 
 	* dotemacs.el (kbd): C-c k is now irrelevant

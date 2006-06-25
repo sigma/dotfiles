@@ -494,7 +494,7 @@
 ;;; SLIME & Lisp
 (when (request 'slime)
   ;; default
-  (setq inferior-lisp-program "cmucl")
+  (setq inferior-lisp-program "sbcl")
   (setq slime-edit-definition-fallback-function 'find-tag)
   (setq slime-complete-symbol-function 'slime-fuzzy-complete-symbol)
   (slime-setup :autodoc t)

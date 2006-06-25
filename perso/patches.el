@@ -115,10 +115,7 @@ is not nil, then in case of no success, this value is returned"
 (global-set-key [(control =)] 'match-paren)
 
 ;; ...never switch to overwrite mode, not even accidentally
-(global-set-key [insert]
-  (function
-   (lambda () (interactive)
-     (message "Sorry, overwrite mode has been disabled forever."))))
+(global-set-key [insert] 'undefined)
 
 ;; disable backups for files in /tmp or in my Mail or News directories.
 (defun ecm-backup-enable-predicate (filename)

@@ -77,8 +77,8 @@
 	      font-lock-type-face font-lock-function-name-face))
          (3 font-lock-function-name-face nil t)
          (5 font-lock-function-name-face nil t))
-       '("\\<\\(auto\\|bool\\|c\\(har\\|o\\(mplex\\|nst\\)\\)\\|double\\|e\\(num\\|x\\(p\\(licit\\|ort\\)\\|tern\\)\\)\\|f\\(loat\\|riend\\)\\|in\\(line\\|t\\)\\|long\\|mutable\\|namespace\\|register\\|s\\(hort\\|igned\\|t\\(atic\\|ruct\\)\\)\\|t\\(emplate\\|ypedef\\)\\|u\\(n\\(ion\\|signed\\)\\|sing\\)\\|v\\(irtual\\|o\\(id\\|latile\\)\\)\\|Q[A-Z][a-zA-Z_]*\\|Q[a-z][A-Z][a-zA-Z_]*\\|uint\\|ulong\\|string\\)\\>"
-         (0 font-lock-type-face))
+       ;; '("\\<\\(auto\\|bool\\|c\\(har\\|o\\(mplex\\|nst\\)\\)\\|double\\|e\\(num\\|x\\(p\\(licit\\|ort\\)\\|tern\\)\\)\\|f\\(loat\\|riend\\)\\|in\\(line\\|t\\)\\|long\\|mutable\\|namespace\\|register\\|s\\(hort\\|igned\\|t\\(atic\\|ruct\\)\\)\\|t\\(emplate\\|ypedef\\)\\|u\\(n\\(ion\\|signed\\)\\|sing\\)\\|v\\(irtual\\|o\\(id\\|latile\\)\\)\\|Q[A-Z][a-zA-Z_]*\\|Q[a-z][A-Z][a-zA-Z_]*\\|uint\\|ulong\\|string\\)\\>"
+       ;;   (0 font-lock-type-face))
        '("\\<\\(operator\\)\\>[ 	]*\\(!=\\|%=\\|&[&=]\\|()\\|\\*=\\|\\+[+=]\\|-\\(>\\*\\|[=>-]\\)\\|/=\\|<\\(<=\\|[<=]\\)\\|==\\|>\\(>=\\|[=>]\\)\\|\\[\\]\\|\\^=\\||[=|]\\|[!%&*+,/<=>|~^-]\\)?"
          (1 font-lock-keyword-face)
          (2 font-lock-builtin-face nil t))
@@ -94,59 +94,59 @@
 	 (0 font-lock-keyword-face))
        '("\\<\\(false\\|true\\)\\>"
 	 (0 font-lock-constant-face))
-       '("\\<\\(auto\\|bool\\|c\\(har\\|o\\(mplex\\|nst\\)\\)\\|double\\|e\\(num\\|x\\(p\\(licit\\|ort\\)\\|tern\\)\\)\\|f\\(loat\\|riend\\)\\|in\\(line\\|t\\)\\|long\\|mutable\\|namespace\\|register\\|s\\(hort\\|igned\\|t\\(atic\\|ruct\\)\\)\\|t\\(emplate\\|ypedef\\)\\|u\\(n\\(ion\\|signed\\)\\|sing\\)\\|v\\(irtual\\|o\\(id\\|latile\\)\\)\\|JBF[a-zA-Z0-9_]*\\|eZ[a-zA-Z0-9_]*\\|Q[a-zA-Z_]*\\|uint\\|ulong\\|string\\)\\>\\([ 	]*<\\([^>\n]+\\)[ 	*&]*>\\)?\\([ 	]*::[ 	*~]*\\(\\sw+\\)\\)*\\([ 	*&]+\\(\\sw+\\)\\>\\([ 	]*<\\([^>\n]+\\)[ 	*&]*>\\)?\\([ 	]*::[ 	*~]*\\(\\sw+\\)\\)*\\)*"
-	 (font-lock-match-c-style-declaration-item-and-skip-to-next
-	  (goto-char
-	   (or
-	    (match-beginning 20)
-	    (match-end 1)))
-	  (goto-char
-	   (match-end 1))
-	  (1
-	   (cond
-	    ((or
-	      (match-beginning 2)
-	      (match-beginning 4))
-	     font-lock-type-face)
-	    ((match-beginning 6)
-	     font-lock-function-name-face)
-	    (t font-lock-variable-name-face)))
-	  (3 font-lock-function-name-face nil t)
-	  (5
-	   (if
-	       (match-beginning 6)
-	       font-lock-function-name-face font-lock-variable-name-face)
-	   nil t)))
-       '("\\(}\\)[ 	*]*\\sw"
-	 (font-lock-match-c-style-declaration-item-and-skip-to-next
-	  (goto-char
-	   (match-end 1))
-	  nil
-	  (1
-	   (if
-	       (match-beginning 6)
-	       font-lock-function-name-face font-lock-variable-name-face))))
-       '("^\\(\\(\\sw+\\)\\>\\([ 	]*<\\([^>\n]+\\)[ 	*&]*>\\)?\\([ 	]*::[ 	*~]*\\(\\sw+\\)\\)*[ 	*&]*\\)+"
-	 (font-lock-match-c-style-declaration-item-and-skip-to-next
-	  (goto-char
-	   (match-beginning 1))
-	  (goto-char
-	   (match-end 1))
-	  (1
-	   (cond
-	    ((or
-	      (match-beginning 2)
-	      (match-beginning 4))
-	     font-lock-type-face)
-	    ((match-beginning 6)
-	     font-lock-function-name-face)
-	    (t font-lock-variable-name-face)))
-	  (3 font-lock-function-name-face nil t)
-	  (5
-	   (if
-	       (match-beginning 6)
-	       font-lock-function-name-face font-lock-variable-name-face)
-	   nil t)))
+       ;; '("\\<\\(auto\\|bool\\|c\\(har\\|o\\(mplex\\|nst\\)\\)\\|double\\|e\\(num\\|x\\(p\\(licit\\|ort\\)\\|tern\\)\\)\\|f\\(loat\\|riend\\)\\|in\\(line\\|t\\)\\|long\\|mutable\\|namespace\\|register\\|s\\(hort\\|igned\\|t\\(atic\\|ruct\\)\\)\\|t\\(emplate\\|ypedef\\)\\|u\\(n\\(ion\\|signed\\)\\|sing\\)\\|v\\(irtual\\|o\\(id\\|latile\\)\\)\\|JBF[a-zA-Z0-9_]*\\|eZ[a-zA-Z0-9_]*\\|Q[a-zA-Z_]*\\|uint\\|ulong\\|string\\)\\>\\([ 	]*<\\([^>\n]+\\)[ 	*&]*>\\)?\\([ 	]*::[ 	*~]*\\(\\sw+\\)\\)*\\([ 	*&]+\\(\\sw+\\)\\>\\([ 	]*<\\([^>\n]+\\)[ 	*&]*>\\)?\\([ 	]*::[ 	*~]*\\(\\sw+\\)\\)*\\)*"
+       ;;   (font-lock-match-c-style-declaration-item-and-skip-to-next
+       ;;    (goto-char
+       ;;     (or
+       ;;      (match-beginning 20)
+       ;;      (match-end 1)))
+       ;;    (goto-char
+       ;;     (match-end 1))
+       ;;    (1
+       ;;     (cond
+       ;;      ((or
+       ;;        (match-beginning 2)
+       ;;        (match-beginning 4))
+       ;;       font-lock-type-face)
+       ;;      ((match-beginning 6)
+       ;;       font-lock-function-name-face)
+       ;;      (t font-lock-variable-name-face)))
+       ;;    (3 font-lock-function-name-face nil t)
+       ;;    (5
+       ;;     (if
+       ;;         (match-beginning 6)
+       ;;         font-lock-function-name-face font-lock-variable-name-face)
+       ;;     nil t)))
+       ;; '("\\(}\\)[ 	*]*\\sw"
+       ;;   (font-lock-match-c-style-declaration-item-and-skip-to-next
+       ;;    (goto-char
+       ;;     (match-end 1))
+       ;;    nil
+       ;;    (1
+       ;;     (if
+       ;;         (match-beginning 6)
+       ;;         font-lock-function-name-face font-lock-variable-name-face))))
+       ;; '("^\\(\\(\\sw+\\)\\>\\([ 	]*<\\([^>\n]+\\)[ 	*&]*>\\)?\\([ 	]*::[ 	*~]*\\(\\sw+\\)\\)*[ 	*&]*\\)+"
+       ;;   (font-lock-match-c-style-declaration-item-and-skip-to-next
+       ;;    (goto-char
+       ;;     (match-beginning 1))
+       ;;    (goto-char
+       ;;     (match-end 1))
+       ;;    (1
+       ;;     (cond
+       ;;      ((or
+       ;;        (match-beginning 2)
+       ;;        (match-beginning 4))
+       ;;       font-lock-type-face)
+       ;;      ((match-beginning 6)
+       ;;       font-lock-function-name-face)
+       ;;      (t font-lock-variable-name-face)))
+       ;;    (3 font-lock-function-name-face nil t)
+       ;;    (5
+       ;;     (if
+       ;;         (match-beginning 6)
+       ;;         font-lock-function-name-face font-lock-variable-name-face)
+       ;;     nil t)))
        '("[{}()<>=;:+\\*\\/\\[]\\|\\]\\|\\-" (0 font-lock-keys-face))
        '("\\<[0-9]+\\>" (0 font-lock-number-face))
        '("\\<0x[0-9a-fA-F]+\\>" (0 font-lock-hexnumber-face))

@@ -33,7 +33,7 @@
 
 (setq org-CUA-compatible t)
 
-(when (require 'remember)
+(when (request 'remember)
   (setq org-default-notes-file "notes.org")
   (autoload 'org-remember-annotation "org")
   (autoload 'org-remember-apply-template "org")
