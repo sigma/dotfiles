@@ -1,8 +1,8 @@
 ;;; loaddefs.el --- automatically extracted autoloads
 ;; To regenerate this file, simply C-x C-e the following expression
-;; (let ((generated-autoload-file "custom-loaddefs.el")) (create-directory-autoloads "."))
+;; (let ((generated-autoload-file "cust-loaddefs.el")) (create-directory-autoloads "."))
 ;;; Code:
-(provide 'custom-loaddefs)
+(provide 'cust-loaddefs)
 
 ;;;### (autoloads (fc-eval-and-replace increment-number-at-point
 ;;;;;;  de-context-kill diff-buffer-with-associated-file my-occur
