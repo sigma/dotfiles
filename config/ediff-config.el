@@ -28,6 +28,9 @@
 
 ;;; Ediff
 
+(eval-when-compile
+  (require 'ediff))
+
 (eval-after-load "ediff-wind"
   '(progn
      (setq ediff-window-setup-function 'ediff-setup-windows-plain)

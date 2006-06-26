@@ -1,3 +1,11 @@
+2006-06-26  Yann Hodique  <Yann.Hodique@lifl.fr>
+
+	* lib/mime.el (mime-mode): remove faulty comment (bug in here)
+
+	* config/ediff-config.el (require): fix compilation issue
+
+	* config/compile-config.el: fix compilation issue
+
 2006-06-25  Yann Hodique  <Yann.Hodique@lifl.fr>
 
 	* perso/patches.el ([insert]): undefine it

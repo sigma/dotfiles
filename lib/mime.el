@@ -119,7 +119,7 @@
 ;; This is also a plain text.  But, it is explicitly specified as is.
 ;;
 ;;--[[text/plain; charset=ISO-2022-JP]]
-;; $B$3$l$O(B charset $B$r(B ISO-2022-JP $B$K;XDj$7$?F|K\8l$N(B plain $B%F%-%9%H$G$9(B.
+;; これは charset を ISO-2022-JP に指定した日本語の plain テキストです.
 ;;
 ;;--[[text/richtext]]
 ;; <center>This is a richtext.</center>
@@ -131,7 +131,7 @@
 ;; LCD Archive Entry:
 ;; mime|Masanobu UMEDA|umerin@mse.kyutech.ac.jp|
 ;; Simple MIME Composer|
-;; $Date$|$Revision: 1.1 $|(J~(B/misc/mime.el.Z|
+;; $Date$|$Revision: 1.1 $|‾/misc/mime.el.Z|
 
 ;;; Code:
 
@@ -142,7 +142,7 @@
 (defvar mime-prefix "\C-c\C-x"
   "*Keymap prefix for MIME commands.")
 
-(defvar mime-signature-file "(J~(B/.signature.rtf"
+(defvar mime-signature-file "‾/.signature.rtf"
   "*Signature file to be included as a part of a multipart message.")
 
 (defvar mime-ignore-preceding-spaces nil
@@ -456,8 +456,6 @@ TABs at the beginning of the line are not a part of the message:
 	This is also a plain text.  But, it is explicitly specified as
 	is.
 	--[[text/plain; charset=ISO-2022-JP]]
-	$B$3$l$O(B charset $B$r(B ISO-2022-JP $B$K;XDj$7$?F|K\8l$N(B plain $B%F%-%9(B
-	$B%H$G$9(B.
 	--[[text/richtext]]
 	<center>This is a richtext.</center>
 	--[[image/gif][base64]]^M...image encoded in base64 here...

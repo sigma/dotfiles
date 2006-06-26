@@ -1389,7 +1389,7 @@ Acts like backward-sexp but can also matching quoted parens. Look at
 ;;;***
 
 ;;;### (autoloads (mime-forward-from-gnus-using-mail mime-forward-from-rmail-using-mail
-;;;;;;  mime-mode) "mime" "mime.el" (17566 44169))
+;;;;;;  mime-mode) "mime" "mime.el" (17566 50806))
 ;;; Generated autoloads from mime.el
 
 (autoload (quote mime-mode) "mime" "\
@@ -1448,8 +1448,6 @@ TABs at the beginning of the line are not a part of the message:
 	This is also a plain text.  But, it is explicitly specified as
 	is.
 	--[[text/plain; charset=ISO-2022-JP]]
-	’¤³’¤ì’¤Ï charset ’¤ò ISO-2022-JP ’¤Ë’»Ø’Äê’¤·’¤¿’Æü’ËÜ’¸ì’¤Î plain ’¥Æ’¥­’¥¹
-	’¥È’¤Ç’¤¹.
 	--[[text/richtext]]
 	<center>This is a richtext.</center>
 	--[[image/gif][base64]]^M...image encoded in base64 here...
@@ -2549,7 +2547,7 @@ Goes backward if ARG is negative; error if CHAR not found.
 ;;;;;;  "paredit.el" "physical-line.el" "post.el" "project.el" "py-complete.el"
 ;;;;;;  "remem.el" "scroll-in-place.el" "setnu.el" "sig.el" "todl-mode.el"
 ;;;;;;  "todoo.el" "typopunct.el" "visible-mark-mode.el" "xcscope.el"
-;;;;;;  "xterm-extras.el") (17566 46498 179336))
+;;;;;;  "xterm-extras.el") (17566 50815 681214))
 
 ;;;***
 

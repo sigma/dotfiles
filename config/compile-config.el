@@ -26,6 +26,9 @@
 
 ;;; Code:
 
+(eval-when-compile
+  (require 'cl))
+
 ;; Do what I mean when I compile
 ;; ie chose the right compilation command
 (defvar dwim-compile-alist '(("^\\(?:GNU\\)?[Mm]akefile$" . "make")
