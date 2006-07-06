@@ -1,3 +1,13 @@
+2006-07-06  Yann Hodique  <Yann.Hodique@lifl.fr>
+
+	* dotemacs.el: removing config for packages I don't use for now
+
+	* dotemacs-cust.el: remove semantic configuration
+
+	* custom/autoloads.el: xtla does not exist anymore
+
+	* config/latex-config.el (request): fix TeX-data-directory for my installation
+
 2006-06-26  Yann Hodique  <Yann.Hodique@lifl.fr>
 
 	* lib/mime.el (mime-mode): remove faulty comment (bug in here)

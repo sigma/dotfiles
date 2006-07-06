@@ -49,7 +49,6 @@
 (autoload 'turn-on-eldoc-mode "eldoc" "Activate eldoc" t nil)
 (autoload 'w3-speedbar-buttons "sb-w3" "s3 specific speedbar button generator.")
 (autoload 'irc "erc-config" "" t nil)
-(autoload 'xtla "xtla" "" t nil)
 
 (provide 'autoloads)
 ;;; autoloads.el ends here

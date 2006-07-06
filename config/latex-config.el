@@ -41,6 +41,9 @@
 
 (when (request 'tex-site)
   (progn
+    ;; oddly auctex is contained twice
+    (setq TeX-data-directory (file-name-directory TeX-data-directory))
+
     (setq-default TeX-master t)
     ;; reftex helps managing references, toc, ...
     (add-hook 'LaTeX-mode-hook 'turn-on-reftex-if-available)

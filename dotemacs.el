@@ -154,7 +154,7 @@
 
 ;; common
 (request 'buffer-config)
-(request 'cedet-config)
+;; (request 'cedet-config)
 (request 'org-config)
 (request 'calendar-config)
 
@@ -165,16 +165,16 @@
 (unless-configuration 'minimal
   (unless-configuration 'proof
     ;; (request 'muse-config)
-    (request 'ecb-config)
+    ;; (request 'ecb-config)
     ;; (request 'planner-config)
     (request 'tramp-config)
     (request 'eshell-config)
     (request 'help-config)
     (request 'moccur-config)
-    (request 'lispy-config)
+    ;; (request 'lispy-config)
     (request 'tabbar-config)
-    (request 'sawfish-config)
-    (request 'pmwiki-config)
+    ;; (request 'sawfish-config)
+    ;; (request 'pmwiki-config)
     (request 'psvn-config)))
 
 (unless-configuration 'minimal
@@ -182,11 +182,11 @@
     (request 'changelog-config)
     (request 'compile-config)
     (request 'ediff-config)
-    (request 'speedbar-config)
+    ;; (request 'speedbar-config)
     (request 'doxymacs-config)
     (request 'latex-config)
-    (request 'highlight-changes-config)
-    (request 'fracc-config)
+    ;; (request 'highlight-changes-config)
+    ;; (request 'fracc-config)
     (request 'paren-config)
     (request 'lisp-config)
     (request 'shell-config)
@@ -194,7 +194,7 @@
     (request 'project-config)
     (request 'completion-config)
     (request 'crontab-config)
-    (request 'flashcard-config)
+    ;; (request 'flashcard-config)
     (request 'vc-config)))
 
 ;;; Utils/Functions
@@ -407,13 +407,13 @@
 (autoload 'graphviz-dot-mode "graphviz-dot-mode" "" t nil)
 (add-to-list 'auto-mode-alist '("\\.dot\\'" . graphviz-dot-mode))
 
-(when (request 'fold-dwim)
-  (unless (boundp 'folding-mode)
-    (setq folding-mode nil))
-  (setq fold-dwim-outline-style-default 'nested)
-  (global-set-key (kbd "<f7>")      'fold-dwim-toggle)
-  (global-set-key (kbd "<M-f7>")    'fold-dwim-hide-all)
-  (global-set-key (kbd "<S-M-f7>")  'fold-dwim-show-all))
+;; (when (request 'fold-dwim)
+;;   (unless (boundp 'folding-mode)
+;;     (setq folding-mode nil))
+;;   (setq fold-dwim-outline-style-default 'nested)
+;;   (global-set-key (kbd "<f7>")      'fold-dwim-toggle)
+;;   (global-set-key (kbd "<M-f7>")    'fold-dwim-hide-all)
+;;   (global-set-key (kbd "<S-M-f7>")  'fold-dwim-show-all))
 
 (when (request 'emms-setup)
   (emms-standard)
@@ -492,16 +492,20 @@
 (autoload 'run-acl2 "top-start-inferior-acl2" "Begin ACL2 in an inferior ACL2 mode buffer." t)
 
 ;;; SLIME & Lisp
-(when (request 'slime)
-  ;; default
-  (setq inferior-lisp-program "sbcl")
-  (setq slime-edit-definition-fallback-function 'find-tag)
-  (setq slime-complete-symbol-function 'slime-fuzzy-complete-symbol)
-  (slime-setup :autodoc t)
-  (global-set-key (kbd "<f12>") 'slime-selector))
+(autoload 'slime "slime")
+(eval-after-load 'slime
+  '(progn
+     ;; default
+     (setq inferior-lisp-program "sbcl")
+     (setq slime-edit-definition-fallback-function 'find-tag)
+     (setq slime-complete-symbol-function 'slime-fuzzy-complete-symbol)
+     (slime-setup :autodoc t)
+     (global-set-key (kbd "<f12>") 'slime-selector)))
 
-(require 'proof-site)
-;(setq coq-version-is-V8-1 t)
+(when-configuration 'proof
+  (require 'proof-site)
+  ;; (setq coq-version-is-V8-1 t)
+  )
 
 (when-configuration 'code
 ;;  (request 'icicles-config)
