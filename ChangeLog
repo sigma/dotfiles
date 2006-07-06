@@ -1,5 +1,9 @@
 2006-07-06  Yann Hodique  <Yann.Hodique@lifl.fr>
 
+	* lib/icomplete+.el (read-from-minibuffer): fix arguments to comply with new signature
+
+	* config/compile-config.el: don't make compile-history buffer-local after all
+
 	* dotemacs.el: removing config for packages I don't use for now
 	more doc
 

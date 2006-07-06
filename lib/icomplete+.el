@@ -291,7 +291,7 @@ Fifth arg INHERIT-INPUT-METHOD, if non-nil, means the minibuffer
 ;; Resets `minibuffer-completion-table' to avoid icompletion.
 (defsubst read-from-minibuffer
   (prompt
-   &optional initial-contents keymap read hist default-value inherit-input-method keep-all)
+   &optional initial-contents keymap read hist default-value inherit-input-method)
   "Read a string from the minibuffer, prompting with string PROMPT.
 The optional second arg INITIAL-CONTENTS is an obsolete alternative to
   DEFAULT-VALUE.  It normally should be nil in new code, except when
@@ -334,7 +334,7 @@ in `completing-read' and some related functions, which use
 zero-indexing for POSITION."
 ;  (setq minibuffer-completion-table nil) ; So won't icomplete by default.
   (old-read-from-minibuffer
-   prompt initial-contents keymap read hist default-value inherit-input-method keep-all))
+   prompt initial-contents keymap read hist default-value inherit-input-method))
 
 
 (or (fboundp 'old-read-no-blanks-input)

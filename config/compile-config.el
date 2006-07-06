@@ -58,7 +58,7 @@
 (setq-default compile-command '(dwim-compile-command))
 
 ;; I hate to mix different compilations contexts (see make -C.. for example...)
-(make-variable-buffer-local 'compile-history)
+;; (make-variable-buffer-local 'compile-history)
 
 (provide 'compile-config)
 ;;; compile-config.el ends here

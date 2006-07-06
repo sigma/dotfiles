@@ -136,7 +136,7 @@
  '(reftex-auto-recenter-toc t)
  '(reftex-revisit-to-follow t)
  '(reftex-toc-split-windows-horizontally nil)
- '(safe-local-variable-values (quote ((TeX-master . "main") (TeX-master . t) (auto-compile-lisp))))
+ '(safe-local-variable-values (quote ((auto-recompile . t) (TeX-master . "main") (TeX-master . t) (auto-compile-lisp))))
  '(save-abbrevs (quote silently))
  '(save-place-limit 100)
  '(sawfish-extra-keyword-list (quote ("add-frame-style" "call-after-load" "call-after-property-changed" "call-after-state-changed" "custom-set-property" "define" "define-structure" "export" "open")))
