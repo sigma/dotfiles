@@ -10,21 +10,26 @@
 
 ;;;_* Basis
 
+;; load code specific to some major version
 (if (file-exists-p (expand-file-name (format "~/.emacs-%d" emacs-major-version)))
     (load-file (expand-file-name (format "~/.emacs-%d" emacs-major-version))))
 
+;; load code specific to some minor version
 (if (file-exists-p (expand-file-name (format "~/.emacs-%d-%d" emacs-major-version emacs-minor-version)))
     (load-file (expand-file-name (format "~/.emacs-%d-%d" emacs-major-version emacs-minor-version))))
 
-;; Load site-specific stuff: paths, accounts, projects...
+;; Load site-specific stuff: paths, accounts, passwords, projects...
 (if (file-exists-p (expand-file-name "~/.emacs-local"))
     (load-file (expand-file-name "~/.emacs-local")))
 
 ;; Fix various "bad" default behaviors
+;; add some personal features
 (require 'patches)
+
+;; How emacs should look like
 (request 'visual)
 
-;; My customizations are in a separate file
+;; Customizations are in a separate file
 (if (file-exists-p (expand-file-name "~/.emacs-cust"))
     (load-file (expand-file-name "~/.emacs-cust")))
 
@@ -75,10 +80,10 @@
             (global-hi-lock-mode 1)
           (hi-lock-mode 1))
 
-;; Throw out the mouse when typing
+;; Throw away the mouse when typing
 (mouse-avoidance-mode 'exile)
 
-;; Load the emacs type verifier first (gnu emacs, xemacs, ...)
+;; Load the emacs type verifier (gnu emacs, xemacs, ...)
 (request 'emacs-type)
 
 ;; Save place by default
@@ -134,6 +139,11 @@
 
 ;;;_* Packages configuration
 
+;; I use emacs in 4 different ways from the command line:
+;; - as a mail reader (gnus)
+;; - as my $EDITOR (aliased as "vi" :p)
+;; - as a proof environment (ProofGeneral)
+;; - as my default coding environment
 (defun current-configuration ()
   (cond ((member "gnus" command-line-args) 'mail)
         ((equal (car command-line-args) "vi") 'minimal)
@@ -197,7 +207,7 @@
     ;; (request 'flashcard-config)
     (request 'vc-config)))
 
-;;; Utils/Functions
+;;;_* Utils/Functions
 
 (make-double-command my-home ()
   "Go to beginning of line, or beginning of buffer."
@@ -226,6 +236,7 @@
 ;; make sure modifs are taken into account (use with caution)
 (add-hook 'after-save-hook 'byte-compile-elisp)
 
+;; make my scripts executable
 (add-hook 'after-save-hook 'executable-make-buffer-file-executable-if-script-p)
 
 ;; I hate trailing whitespaces (use with caution)

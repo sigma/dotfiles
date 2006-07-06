@@ -1,6 +1,7 @@
 2006-07-06  Yann Hodique  <Yann.Hodique@lifl.fr>
 
 	* dotemacs.el: removing config for packages I don't use for now
+	more doc
 
 	* dotemacs-cust.el: remove semantic configuration
 
