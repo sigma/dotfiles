@@ -1,3 +1,9 @@
+2006-07-19  Yann Hodique  <Yann.Hodique@lifl.fr>
+
+	* custom/patches.el (temporary-file-directory): bug fix
+
+	* config/slime-config.el: initial checkin
+
 2006-07-06  Yann Hodique  <Yann.Hodique@lifl.fr>
 
 	* lib/icomplete+.el (read-from-minibuffer): fix arguments to comply with new signature

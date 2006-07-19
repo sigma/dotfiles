@@ -60,6 +60,7 @@
 (when (request 'icomplete)
   (icomplete-mode 1)
   (request 'icomplete+))
+
 ;; (when (request 'iswitchb) (iswitchb-mode 1))
 
 (provide 'buffer-config)

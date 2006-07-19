@@ -199,6 +199,7 @@
     ;; (request 'fracc-config)
     (request 'paren-config)
     (request 'lisp-config)
+    (request 'slime-config)
     (request 'shell-config)
     (request 'mycode)
     (request 'project-config)
@@ -427,7 +428,7 @@
 ;;   (global-set-key (kbd "<S-M-f7>")  'fold-dwim-show-all))
 
 (when (request 'emms-setup)
-  (emms-standard)
+  (emms-minimalistic)
   (emms-default-players))
 
 (add-to-list 'auto-mode-alist '("\\.hlal\\'" . c-mode))
@@ -501,17 +502,6 @@
 (autoload 'anchored-transpose "anchored-transpose" nil t)
 
 (autoload 'run-acl2 "top-start-inferior-acl2" "Begin ACL2 in an inferior ACL2 mode buffer." t)
-
-;;; SLIME & Lisp
-(autoload 'slime "slime")
-(eval-after-load 'slime
-  '(progn
-     ;; default
-     (setq inferior-lisp-program "sbcl")
-     (setq slime-edit-definition-fallback-function 'find-tag)
-     (setq slime-complete-symbol-function 'slime-fuzzy-complete-symbol)
-     (slime-setup :autodoc t)
-     (global-set-key (kbd "<f12>") 'slime-selector)))
 
 (when-configuration 'proof
   (require 'proof-site)

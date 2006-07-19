@@ -133,7 +133,7 @@ is not nil, then in case of no success, this value is returned"
 (when (request 'auto-save)
   (setq auto-save-directory (expand-file-name "~/.autosaves/")))
 
-(setq temporary-file-directory "~/tmp/")
+(setq temporary-file-directory (expand-file-name "~/tmp/"))
 
 ;; Why the hell should some commands be disabled?
 (setq disabled-command-function nil)
@@ -190,9 +190,7 @@ is not nil, then in case of no success, this value is returned"
       (let ((var (if (equal arg 0) -1 arg)))
         (save-excursion
           (end-of-line)
-          (open-line (- var)))
-        (forward-line)
-        (beginning-of-line))
+          (open-line (- var))))
     ad-do-it))
 
 ;; BUFFER SWITCHING FIX

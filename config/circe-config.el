@@ -61,9 +61,10 @@
 (defun irc ()
   "Connect to IRC."
   (interactive)
-  ;; (circe "irc.freenode.net" "6667" "freenode")
+  (circe "irc.freenode.net" "6667" "freenode" public-passwd "Sigma")
   ;; (circe "sarg" "23523" "IRCnet" muh-passwd)
-  (circe "localhost" "6667" "bitlbee" public-passwd "Yann"))
+  ;; (circe "localhost" "6667" "bitlbee" public-passwd "Yann")
+  )
 
 (provide 'circe-config)
 ;;; circe-config.el ends here
