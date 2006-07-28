@@ -89,7 +89,7 @@
 ;; present
 (defadvice lui-track-set-modified-status
   (before lui-track-set-modified-status-before
-          (buffer status faces) act)
+          (buffer status &optional faces) act)
   "Add `circe-query-face' to the list of faces if BUFFER is in
 `circe-query-mode'"
   (with-current-buffer (get-buffer buffer)

@@ -1,6 +1,7 @@
 2006-07-28  Yann Hodique  <Yann.Hodique@lifl.fr>
 
 	* config/circe-config.el: extended sorting tracking
+	(lui-track-set-modified-status): faces are optional
 
 	* config/slime-config.el (slime): install slime48
 
