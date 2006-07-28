@@ -52,10 +52,10 @@
 ;; I want channel tracking by priority
 (defun yh/lui-property (str)
   "Extract the relevant property from
-`lui-track-faces-priorities' or nil"
+`tracking-faces-priorities' or nil"
   (car (delete-if-not
         (lambda (pr)
-          (member pr lui-track-faces-priorities))
+          (member pr tracking-faces-priorities))
         (text-properties-at 0 str))))
 
 (defun yh/sort-lui-tracks (a b)
@@ -67,12 +67,14 @@
           ((null pra)
            nil)
           (t
-           (and (member prb (memq pra lui-track-faces-priorities)) t)))))
+           (and (member prb (memq pra tracking-faces-priorities)) t)))))
 
-(defadvice lui-track-set-modified-status (after lui-track-set-modified-status-after act)
-  "Sort `lui-track-buffers' according to their priority"
-  (sort lui-track-buffers 'yh/sort-lui-tracks)
-  (setq lui-track-mode-line-buffers (lui-track-status))
+(defadvice tracking-add-buffer (after tracking-add-buffer-after act)
+  "Sort `tracking-buffers' according to their priority"
+  (let ((l (length tracking-buffers)))
+    (setq tracking-buffers (sort tracking-buffers 'yh/sort-lui-tracks))
+    (assert (equal l (length tracking-buffers))))
+  (setq tracking-mode-line-buffers (tracking-status))
   (sit-for 0) ;; Update mode line
   )
 
@@ -87,9 +89,9 @@
 
 ;; I want query buffer to be tracked with high priority even if no face is
 ;; present
-(defadvice lui-track-set-modified-status
-  (before lui-track-set-modified-status-before
-          (buffer status &optional faces) act)
+(defadvice tracking-add-buffer
+  (before tracking-add-buffer-before
+          (buffer &optional faces) act)
   "Add `circe-query-face' to the list of faces if BUFFER is in
 `circe-query-mode'"
   (with-current-buffer (get-buffer buffer)

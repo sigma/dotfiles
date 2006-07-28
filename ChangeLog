@@ -2,6 +2,7 @@
 
 	* config/circe-config.el: extended sorting tracking
 	(lui-track-set-modified-status): faces are optional
+	ported patches to newer circe
 
 	* config/slime-config.el (slime): install slime48
 
