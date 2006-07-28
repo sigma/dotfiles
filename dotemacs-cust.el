@@ -103,6 +103,7 @@
  '(indent-tabs-mode nil)
  '(inhibit-splash-screen t)
  '(log-edit-common-indent -7)
+ '(lui-fill-column 100)
  '(mark-diary-entries-in-calendar t)
  '(max-lisp-eval-depth 500)
  '(max-specpdl-size 1000)
@@ -182,6 +183,8 @@
   ;; If there is more than one, they won't work right.
  '(bold ((t (:foreground "lightcoral" :weight bold))))
  '(bold-italic ((t (:foreground "orange" :slant italic :weight bold))))
+ '(circe-my-message-face ((t (:background "slateblue"))))
+ '(circe-originator-face ((t (:weight bold))))
  '(cparen-around-andor-face ((t (:foreground "red" :weight bold))))
  '(cparen-around-begin-face ((t (:foreground "red"))))
  '(cparen-around-define-face ((t (:foreground "lightblue" :weight bold))))
