@@ -177,6 +177,7 @@
     ;; (request 'muse-config)
     ;; (request 'ecb-config)
     ;; (request 'planner-config)
+    (request 'circe-config)
     (request 'tramp-config)
     (request 'eshell-config)
     (request 'help-config)

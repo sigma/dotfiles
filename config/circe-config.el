@@ -39,14 +39,16 @@
 
 (eval-after-load 'circe
   '(progn
+     ;; enable logging
+     (require 'lui-logging)
+     (add-hook 'circe-chat-mode-hook 'enable-lui-logging)
+     (add-hook 'circe-query-mode-hook 'enable-lui-logging)
      ;; make circe-query-face of highest priority
      (setq circe-track-faces-priorities
            (cons 'circe-query-face circe-track-faces-priorities))
      (require 'lui-irc-colors)
      (add-to-list 'lui-pre-output-hook 'lui-irc-colors)
-     (require 'circe-highlight-all-nicks)
-     (enable-circe-highlight-all-nicks)
-     ;; give time for cloak installation
+          ;; give time for cloak installation
      (add-hook 'circe-server-connected-hook (lambda () (sit-for 1)))))
 
 ;; I want channel tracking by priority
@@ -59,10 +61,13 @@
         (text-properties-at 0 str))))
 
 (defun yh/sort-lui-tracks (a b)
-  "Predicate to sort tracks by decreasing priorities"
+  "Predicate to sort tracks by decreasing priorities, then by
+lexicographic order"
   (let ((pra (yh/lui-property a))
         (prb (yh/lui-property b)))
-    (cond ((null prb)
+    (cond ((eq pra prb)
+           (string-lessp a b))
+          ((null prb)
            t)
           ((null pra)
            nil)
@@ -98,10 +103,29 @@
     (when (eq major-mode 'circe-query-mode)
       (setq faces (cons 'circe-query-face faces)))))
 
+(defun circe-channels-for-current-server ()
+  (interactive)
+  (when (or (eq major-mode 'circe-channel-mode)
+            (eq major-mode 'circe-query-mode))
+    (let ((server-buffer circe-server-buffer))
+      (delete nil (mapcar #'(lambda (buf)
+                              (with-current-buffer buf
+                                (and (eq major-mode 'circe-channel-mode)
+                                     (eq server-buffer circe-server-buffer)
+                                     (buffer-name buf))))
+                          (buffer-list))))))
+
 ;; /invite is highly useful for bitlbee
 (defun circe-command-INVITE (who &optional channel)
   "Invite WHO in CHANNEL."
-  (interactive)
+  (interactive
+   (let ((w (read-from-minibuffer "Who: "))
+         (c (let ((channels (circe-channels-for-current-server)))
+              (completing-read "Channel: " channels nil nil
+                               (and (member circe-chat-target channels)
+                                    circe-chat-target)))))
+     (list w c)))
+
   (if (not (or channel circe-chat-target))
       (circe-server-message "No target for invitation")
     (circe-server-send (format "INVITE %s %s"
@@ -110,6 +134,12 @@
                                         (string-match "[^ ]" channel))
                                    channel
                                  circe-chat-target)))))
+
+(defun circe-command-RECOVER (nick)
+  (interactive "sNick: ")
+  (circe-command-MSG "NickServ"
+                     (format "recover %s %s" nick public-passwd))
+  (circe-command-NICK nick))
 
 (provide 'circe-config)
 ;;; circe-config.el ends here

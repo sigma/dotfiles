@@ -51,6 +51,9 @@ Return only one group for each buffer."
      ((memq major-mode
             '(emacs-lisp-mode inferior-emacs-lisp-mode lisp-mode lisp-interaction-mode scheme-mode sawfish-mode))
       '("Lisp"))
+     ((memq major-mode
+            '(circe-server-mode circe-channel-mode circe-query-mode))
+      '("IRC"))
      ((or (get-buffer-process (current-buffer))
           (memq major-mode
                 '(comint-mode compilation-mode)))

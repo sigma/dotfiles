@@ -197,7 +197,7 @@
 			       ("*Calendar*" 1.0))
 		   (horizontal 1.0
 			       (group 0.3 point)
-			       (,planner-default-page 1.0)))))
+			       (,(file-name-nondirectory local-home-page) 1.0)))))
 
       (gnus-add-configuration
        '(info
@@ -476,38 +476,38 @@
 
 (setq gnus-use-demon t)
 
-(defun yh-gnus-demon-install ()
+(defun yh/gnus-demon-install ()
   (interactive)
   ;; scan for news every 20 minutes
   (gnus-demon-add-handler 'gnus-demon-scan-news-and-update 20 2)
   ;; scan for mails every 10 minutes
   (gnus-demon-add-handler 'gnus-demon-scan-mail-and-update 10 2))
 
-(defun yh-gnus-demon-uninstall ()
+(defun yh/gnus-demon-uninstall ()
   (interactive)
   (gnus-demon-cancel))
 
-(setq message-signature 'fortune)
+(setq message-signature 'yh/fortune)
 
-(yh-gnus-demon-install)
+;; (yh/gnus-demon-install)
 
-(defvar fortune-program nil
+(defvar yh/fortune-program nil
   "*Program used to generate epigrams, default \"fortune\".")
 
-(defvar fortune-switches nil
+(defvar yh/fortune-switches nil
   "*List of extra arguments when `fortune-program' is invoked.")
 
-(setq fortune-program "/usr/games/fortune")
-(add-to-list 'fortune-switches "chapterhouse-dune")
-(add-to-list 'fortune-switches "children-of-dune")
-(add-to-list 'fortune-switches "dune")
-(add-to-list 'fortune-switches "dune-messiah")
-(add-to-list 'fortune-switches "god-emperor")
-(add-to-list 'fortune-switches "heretics-of-dune")
-(add-to-list 'fortune-switches "house-atreides")
-(add-to-list 'fortune-switches "house-harkonnen")
+(setq yh/fortune-program "/usr/games/fortune")
+(add-to-list 'yh/fortune-switches "chapterhouse-dune")
+(add-to-list 'yh/fortune-switches "children-of-dune")
+(add-to-list 'yh/fortune-switches "dune")
+(add-to-list 'yh/fortune-switches "dune-messiah")
+(add-to-list 'yh/fortune-switches "god-emperor")
+(add-to-list 'yh/fortune-switches "heretics-of-dune")
+(add-to-list 'yh/fortune-switches "house-atreides")
+(add-to-list 'yh/fortune-switches "house-harkonnen")
 
-(defun fortune (&optional long-p)
+(defun yh/fortune (&optional long-p)
   "Generate a random epigram.
 An optional prefix argument generates a long epigram.
 The epigram is inserted at point if called interactively."
@@ -518,8 +518,8 @@ The epigram is inserted at point if called interactively."
         (save-excursion
           (set-buffer fortune-buffer)
           (apply 'call-process
-                 (append (list (or fortune-program "fortune") nil t nil)
-                         fortune-switches (list (if long-p "-l" "-s"))))
+                 (append (list (or yh/fortune-program "fortune") nil t nil)
+                         yh/fortune-switches (list (if long-p "-l" "-s"))))
           (dos2unix)
           (skip-chars-backward "\n\t ")
           (setq fortune-string (buffer-substring (point-min) (point))))
@@ -529,15 +529,6 @@ The epigram is inserted at point if called interactively."
     fortune-string))
 
 (setq mm-text-html-renderer 'w3m)
-
-;; gnus alias to switch identity
-;; (require 'gnus-alias)
-;; (gnus-alias-init)
-;; (setq gnus-alias-default-identity "Lifl"
-;;       gnus-alias-identity-alist '(("Yahoo" "" "Yann Hodique <y_hodique@yahoo.fr>" "" nil "" "")
-;;                                   ("Lifl" "" "Yann Hodique <Yann.Hodique@lifl.fr>" "ENS Cachan / Lifl" nil "" ""))
-;;       gnus-alias-identity-rules '(("News" message-news-p "Yahoo")
-;;                                   ("Mails" message-mail-p "Lifl")))
 
 (setq gnus-group-highlight
       '(((and (= unread 0) (not mailp) (eq level 1)) . gnus-group-news-1-empty-face)
@@ -780,5 +771,4 @@ Must be called from the `gnus-select-group-hook'."
 
 ;; (server-start)
 (calendar)
-(setq planner-directory "~/Plans")
-(find-file (concat planner-directory "/" planner-default-page))
+(find-file local-home-page)

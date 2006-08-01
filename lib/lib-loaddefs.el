@@ -5,7 +5,7 @@
 (provide 'lib-loaddefs)
 
 ;;;### (autoloads (set-modified-alist modify-alist remove-alist set-alist
-;;;;;;  del-alist put-alist vassoc) "alist" "alist.el" (17566 43705))
+;;;;;;  del-alist put-alist vassoc) "alist" "alist.el" (17595 51999))
 ;;; Generated autoloads from alist.el
 
 (autoload (quote vassoc) "alist" "\
@@ -54,7 +54,7 @@ its value regard as nil.
 ;;;***
 
 ;;;### (autoloads (anchored-transpose) "anchored-transpose" "anchored-transpose.el"
-;;;;;;  (17566 43703))
+;;;;;;  (17595 51999))
 ;;; Generated autoloads from anchored-transpose.el
 
 (autoload (quote anchored-transpose) "anchored-transpose" "\
@@ -83,7 +83,7 @@ command swaps the 2 selections immediately.
 ;;;***
 
 ;;;### (autoloads (create-directory-autoloads create-file-autoloads)
-;;;;;;  "autoloads+" "autoloads+.el" (17566 43708))
+;;;;;;  "autoloads+" "autoloads+.el" (17595 52000))
 ;;; Generated autoloads from autoloads+.el
 
 (autoload (quote create-file-autoloads) "autoloads+" "\
@@ -111,7 +111,7 @@ directory or directories specified.
 ;;;***
 
 ;;;### (autoloads (babel-as-string babel-region babel) "babel" "babel.el"
-;;;;;;  (17566 43706))
+;;;;;;  (17595 51999))
 ;;; Generated autoloads from babel.el
 
 (autoload (quote babel) "babel" "\
@@ -134,7 +134,7 @@ Use a web translation service to translate MSG, returning a string.
 ;;;***
 
 ;;;### (autoloads (bf-test bf-run bf-compile bf-execute) "bf" "bf.el"
-;;;;;;  (17566 43704))
+;;;;;;  (17595 52000))
 ;;; Generated autoloads from bf.el
 
 (autoload (quote bf-execute) "bf" "\
@@ -171,7 +171,7 @@ by me.
 
 ;;;### (autoloads (turn-on-jde-blockcomment-mode turn-on-blockcomment-mode
 ;;;;;;  jde-blockcomment-mode blockcomment-mode) "block-comm" "block-comm.el"
-;;;;;;  (17566 43703))
+;;;;;;  (17595 51999))
 ;;; Generated autoloads from block-comm.el
 
 (autoload (quote blockcomment-mode) "block-comm" "\
@@ -218,7 +218,7 @@ file.
 ;;;;;;  boxquote-describe-variable boxquote-describe-function boxquote-boxquote
 ;;;;;;  boxquote-paragraph boxquote-defun boxquote-yank boxquote-kill-ring-save
 ;;;;;;  boxquote-insert-file boxquote-buffer boxquote-region boxquote-title)
-;;;;;;  "boxquote" "boxquote.el" (17566 43707))
+;;;;;;  "boxquote" "boxquote.el" (17595 51999))
 ;;; Generated autoloads from boxquote.el
 
 (autoload (quote boxquote-title) "boxquote" "\
@@ -336,7 +336,7 @@ Remove the boxquote that contains `point'.
 
 ;;;***
 
-;;;### (autoloads (bst-mode) "bst" "bst.el" (17566 43704))
+;;;### (autoloads (bst-mode) "bst" "bst.el" (17595 52000))
 ;;; Generated autoloads from bst.el
 
 (autoload (quote bst-mode) "bst" "\
@@ -350,7 +350,7 @@ Setup for BibTeX style file editing.
 ;;;;;;  Buffer-menu-mouse-delete Buffer-menu-mouse-save Buffer-menu-mouse-unmark
 ;;;;;;  Buffer-menu-mouse-other-window Buffer-menu-mouse-3-menu Buffer-menu-select
 ;;;;;;  Buffer-menu-execute Buffer-menu-mode buffer-menu) "buff-menu+"
-;;;;;;  "buff-menu+.el" (17566 44169))
+;;;;;;  "buff-menu+.el" (17595 51999))
 ;;; Generated autoloads from buff-menu+.el
 
 (defvar buffer-menu-font-lock-keywords (quote (("^\\( M.*\\)" 1 buffer-menu-headings-face) ("^\\([.]\\)" 1 buffer-menu-current-buffer-face) ("^\\(>\\)" 1 buffer-menu-view-mark-face) ("^\\(D\\)" 1 buffer-menu-delete-mark-face) ("^.\\(S\\)" 1 buffer-menu-save-mark-face) ("^.\\([*]\\)" 1 buffer-menu-modified-mark-face) ("^..\\(%\\)" 1 buffer-menu-read-only-mark-face) ("^....\\(.+\\)[ 	\n][0-9]" 1 buffer-menu-buffer-name-face) ("^.*[ 	][0-9]+[ 	]+\\([^/\n]+\\)" 1 buffer-menu-mode-face) ("^.*[ 	]\\([0-9]+\\)[ 	]+[^/\n]+" 1 buffer-menu-size-face) ("\\(/.*\\)$" 1 buffer-menu-file-name-face))) "\
@@ -469,7 +469,7 @@ Buffers can be marked via commands `\\<Buffer-menu-mode-map>\\[Buffer-menu-save]
 
 ;;;***
 
-;;;### (autoloads (cparen-activate) "cparen" "cparen.el" (17566 44169))
+;;;### (autoloads (cparen-activate) "cparen" "cparen.el" (17595 51999))
 ;;; Generated autoloads from cparen.el
 
 (autoload (quote cparen-activate) "cparen" "\
@@ -485,8 +485,28 @@ buffer.
 
 ;;;***
 
+;;;### (autoloads (crontab-get crontab-mode) "crontab-mode" "crontab-mode.el"
+;;;;;;  (17595 52000))
+;;; Generated autoloads from crontab-mode.el
+
+(autoload (quote crontab-mode) "crontab-mode" "\
+Major mode for editing crontabs.
+Defines commands for getting and applying crontabs for hosts.
+Sets up command `font-lock-mode'.
+
+\\{crontab-mode-map}
+
+\(fn)" t nil)
+
+(autoload (quote crontab-get) "crontab-mode" "\
+Get the crontab for the HOST into a buffer.
+
+\(fn HOST)" t nil)
+
+;;;***
+
 ;;;### (autoloads (dabbrev-hover-install dabbrev-hover-start dabbrev-hover-introduction)
-;;;;;;  "dabbrev-hover" "dabbrev-hover.el" (17566 43706))
+;;;;;;  "dabbrev-hover" "dabbrev-hover.el" (17595 52000))
 ;;; Generated autoloads from dabbrev-hover.el
 
 (autoload (quote dabbrev-hover-introduction) "dabbrev-hover" "\
@@ -507,7 +527,7 @@ Not documented
 ;;;***
 
 ;;;### (autoloads (define-face-const) "def-face-const" "def-face-const.el"
-;;;;;;  (17566 44169))
+;;;;;;  (17595 51999))
 ;;; Generated autoloads from def-face-const.el
 
 (autoload (quote define-face-const) "def-face-const" "\
@@ -554,113 +574,9 @@ If color ZZZZZZ is undefined:
 
 ;;;***
 
-;;;### (autoloads (exit-minibuffer minibuffer-completion-help+ rebind-minibuffer-completion-maps
-;;;;;;  abort-minibuffer-input assoc-tail completing-read buffer-alist)
-;;;;;;  "elect-mbuf" "elect-mbuf.el" (17566 43705))
-;;; Generated autoloads from elect-mbuf.el
-
-(defvar mbuf-completion-help-face (or (and (boundp (quote darkmagenta-foreground-face)) darkmagenta-foreground-face) (define-face-const "DarkMagenta" nil)) "\
-*Face used to highlight minibuffer completion help.")
-
-(defvar mbuf-completion-help-title-face (or (and (boundp (quote red-foreground-face)) red-foreground-face) (define-face-const "Red" nil)) "\
-*Face used for instructions introducing completion help.")
-
-(autoload (quote buffer-alist) "elect-mbuf" "\
-Alist of (BUF-NAME . BUF) items, where BUF-NAME (a string) names BUF,
-which is in (buffer-list), and BUF-NAME does not start with SPACE.
-
-\(fn)" nil nil)
-
-(autoload (quote completing-read) "elect-mbuf" "\
-Read string in minibuffer, with completion and default input cycling.
-Minibuffer completion help via \\<minibuffer-local-completion-map>\\[minibuffer-completion-help+]. Completion via \\[minibuffer-complete-word], \\[minibuffer-complete] and ESC-TAB.
-Cycling of default inputs via \\[previous-default-input] and \\[next-default-input].
-Cycling of past inputs via \\[previous-history-element] and \\[next-history-element].
-Searching through input history via \\[previous-matching-history-element] and \\[next-matching-history-element].
-Case is ignored if `completion-ignore-case' is non-nil.
-Type \\[exit-minibuffer] to end your input.
-
-Args: PROMPT, TABLE, PREDICATE, REQUIRE-MATCH, INITIAL-INPUT, HIST:
-
-PROMPT is a string to prompt with; normally ends in a colon and space.
-
-TABLE is an alist whose elements' cars are strings, or an obarray.
-
-PREDICATE limits completion to a subset of TABLE.
-See `try-completion' and `all-completions' for more details on
-completion, TABLE, PREDICATE.
-
-If REQUIRE-MATCH is non-nil, you are not allowed to exit unless the
-input is (or completes to) an element of TABLE or is null.  If it is
-also not `t', \\[exit-minibuffer] doesn't exit if it effects non-null
-completion.  If the input is null, `completing-read' returns an empty
-string, regardless of the value of REQUIRE-MATCH.
-
-If INITIAL-INPUT is non-nil, insert it in the minibuffer initially.
-If it is (STRING . POSITION), the initial input is STRING, but point
-is placed POSITION characters into the string.
-
-HIST, if non-nil, specifies a history list, and optionally the initial
-position in the list.  It can be a symbol, which is the history list
-variable to use, or it can be a cons cell (HISTVAR . HISTPOS).  In
-that case, HISTVAR is the history list variable to use, and HISTPOS is
-the initial position (the position in the list which INITIAL-INPUT
-corresponds to).  Positions are counted starting from 1 at the
-beginning of the list.
-
-DEF, if non-nil, is the default value.
-
-If INHERIT-INPUT-METHOD is non-nil, the minibuffer inherits the
-current input method and the setting of `enable-multibyte-characters'.
-
-Completion ignores case when`completion-ignore-case' is non-nil.
-
-\(fn PROMPT TABLE &optional PREDICATE REQUIRE-MATCH INITIAL-INPUT HIST DEF INHERIT-INPUT-METHOD)" nil nil)
-
-(autoload (quote assoc-tail) "elect-mbuf" "\
-Returns longest (i.e. first) tail of LIST whose caar matches ELEMENT.
-Matching is done with function `equal'.
-
-\(fn ELEMENT LIST)" nil nil)
-
-(autoload (quote abort-minibuffer-input) "elect-mbuf" "\
-Abort input, or, if in delete selection mode, deactivate the mark.
-Iconify \"*Completions*\" frame, if any, before aborting minibuffer
-input via `abort-recursive-edit'.
-
-This can be used in delete selection mode to cancel a selection in
-the minibuffer without aborting.  (A second C-g will then abort.)
-This feature won't work if using icomplete (`icomplete-inhibit' =
-nil; see file `icomplete.el').
-
-\(fn)" t nil)
-
-(autoload (quote rebind-minibuffer-completion-maps) "elect-mbuf" "\
-Rebind minibuffer completion maps to be able to cycle minibuffer
-default inputs.  This should be done after all keys have been bound,
-because it redefines minibuffer keymaps.
-
-\(fn)" nil nil)
-
-(autoload (quote minibuffer-completion-help+) "elect-mbuf" "\
-Describe minibuffer bindings.  Display list of possible completions
-of current minibuffer contents.
-
-\(fn)" t nil)
-
-(defvar command-calling-for-completion nil "\
-Last command causing display of list of possible completions.")
-
-(autoload (quote exit-minibuffer) "elect-mbuf" "\
-Terminate this minibuffer argument.
-
-\(fn)" t nil)
-
-;;;***
-
 ;;;### (autoloads (fold-dwim-toggle fold-dwim-show fold-dwim-hide
 ;;;;;;  fold-dwim-show-all fold-dwim-hide-all) "fold-dwim" "fold-dwim.el"
-;;;;;;  (17566 43705))
+;;;;;;  (17595 51999))
 ;;; Generated autoloads from fold-dwim.el
 
 (autoload (quote fold-dwim-hide-all) "fold-dwim" "\
@@ -693,7 +609,7 @@ at the cursor.
 
 ;;;***
 
-;;;### (autoloads (ftelnet) "ftelnet" "ftelnet.el" (17566 44169))
+;;;### (autoloads (ftelnet) "ftelnet" "ftelnet.el" (17595 51999))
 ;;; Generated autoloads from ftelnet.el
  (add-hook 'same-window-regexps "^\\*telnet-.*\\*\\(\\|<[0-9]+>\\)")
 
@@ -737,7 +653,7 @@ variable.
 
 ;;;### (autoloads (gnus-alias-determine-identity gnus-alias-use-identity
 ;;;;;;  gnus-alias-select-identity gnus-alias-init) "gnus-alias"
-;;;;;;  "gnus-alias.el" (17566 44169))
+;;;;;;  "gnus-alias.el" (17595 51999))
 ;;; Generated autoloads from gnus-alias.el
 
 (autoload (quote gnus-alias-init) "gnus-alias" "\
@@ -774,7 +690,7 @@ Identity, but don't actually use it (just return it)
 ;;;***
 
 ;;;### (autoloads (gnus-cvslog-highlight gnus-cvslog-highlight-maybe)
-;;;;;;  "gnus-cvslog" "gnus-cvslog.el" (17566 43707))
+;;;;;;  "gnus-cvslog" "gnus-cvslog.el" (17595 52000))
 ;;; Generated autoloads from gnus-cvslog.el
 
 (autoload (quote gnus-cvslog-highlight-maybe) "gnus-cvslog" "\
@@ -793,7 +709,7 @@ This is the main entry point of this file.
 ;;;***
 
 ;;;### (autoloads (graphviz-dot-mode) "graphviz-dot-mode" "graphviz-dot-mode.el"
-;;;;;;  (17566 43705))
+;;;;;;  (17595 51999))
 ;;; Generated autoloads from graphviz-dot-mode.el
 
 (autoload (quote graphviz-dot-mode) "graphviz-dot-mode" "\
@@ -846,7 +762,7 @@ Turning on Graphviz Dot mode calls the value of the variable
 
 ;;;***
 
-;;;### (autoloads (gtags-mode) "gtags" "gtags.el" (17566 43703))
+;;;### (autoloads (gtags-mode) "gtags" "gtags.el" (17595 51999))
 ;;; Generated autoloads from gtags.el
 
 (autoload (quote gtags-mode) "gtags" "\
@@ -885,7 +801,7 @@ with no args, if that value is non-nil.
 ;;;***
 
 ;;;### (autoloads (h4x0r-string h4x0r-word-at-point h4x0r-buffer
-;;;;;;  h4x0r-region) "h4x0r" "h4x0r.el" (17566 43703))
+;;;;;;  h4x0r-region) "h4x0r" "h4x0r.el" (17595 51999))
 ;;; Generated autoloads from h4x0r.el
 
 (autoload (quote h4x0r-region) "h4x0r" "\
@@ -912,7 +828,7 @@ Not documented
 
 ;;;### (autoloads (highline-off highline-on highline-local-mode highline-mode-off
 ;;;;;;  highline-mode-on highline-mode highline-customize) "highline"
-;;;;;;  "highline.el" (17566 43703))
+;;;;;;  "highline.el" (17595 51999))
 ;;; Generated autoloads from highline.el
 
 (autoload (quote highline-customize) "highline" "\
@@ -959,7 +875,7 @@ Turn off local highlighting of the current line in buffer (hl on modeline).
 ;;;***
 
 ;;;### (autoloads (global-hl-line-hack-mode hl-line-hack-mode) "hl-line-hack"
-;;;;;;  "hl-line-hack.el" (17566 43704))
+;;;;;;  "hl-line-hack.el" (17595 51999))
 ;;; Generated autoloads from hl-line-hack.el
 
 (autoload (quote hl-line-hack-mode) "hl-line-hack" "\
@@ -976,9 +892,7 @@ See the command `global-hl-line-hack-mode' for a description of this minor-mode.
 Setting this variable directly does not take effect;
 use either \\[customize] or the function `global-hl-line-hack-mode'.")
 
-(custom-autoload (quote global-hl-line-hack-mode) "hl-line-hack")
-
-(put (quote global-hl-line-hack-mode) (quote custom-set) (quote custom-set-minor-mode))
+(custom-autoload (quote global-hl-line-hack-mode) "hl-line-hack" nil)
 
 (autoload (quote global-hl-line-hack-mode) "hl-line-hack" "\
 Toggle Hl-Line-Hack mode in every buffer.
@@ -991,7 +905,7 @@ in which `(lambda nil (hl-line-hack-mode 1))' turns it on.
 ;;;***
 
 ;;;### (autoloads (global-hl-sexp-mode hl-sexp-mode) "hl-sexp" "hl-sexp.el"
-;;;;;;  (17566 44169))
+;;;;;;  (17595 51999))
 ;;; Generated autoloads from hl-sexp.el
 
 (autoload (quote hl-sexp-mode) "hl-sexp" "\
@@ -1008,9 +922,7 @@ See the command `global-hl-sexp-mode' for a description of this minor-mode.
 Setting this variable directly does not take effect;
 use either \\[customize] or the function `global-hl-sexp-mode'.")
 
-(custom-autoload (quote global-hl-sexp-mode) "hl-sexp")
-
-(put (quote global-hl-sexp-mode) (quote custom-set) (quote custom-set-minor-mode))
+(custom-autoload (quote global-hl-sexp-mode) "hl-sexp" nil)
 
 (autoload (quote global-hl-sexp-mode) "hl-sexp" "\
 Toggle Hl-Sexp mode in every buffer.
@@ -1022,7 +934,7 @@ in which `hl-sexp-mode' turns it on.
 
 ;;;***
 
-;;;### (autoloads (http-get) "http-get" "http-get.el" (17566 43704))
+;;;### (autoloads (http-get) "http-get" "http-get.el" (17595 51999))
 ;;; Generated autoloads from http-get.el
 
 (autoload (quote http-get) "http-get" "\
@@ -1069,7 +981,7 @@ use `decode-coding-region' and get the coding system to use from
 ;;;***
 
 ;;;### (autoloads (icomplete-completions icomplete-exhibit) "icomplete+"
-;;;;;;  "icomplete+.el" (17566 43704))
+;;;;;;  "icomplete+.el" (17595 51999))
 ;;; Generated autoloads from icomplete+.el
 
 (unless (boundp (quote darkgoldenrod-foreground-face)) (define-face-const "DarkGoldenrod" nil))
@@ -1107,7 +1019,7 @@ are exhibited within the square braces.)
 ;;;***
 
 ;;;### (autoloads (idledo-add-to-end-of-list) "idledo" "idledo.el"
-;;;;;;  (17566 43705))
+;;;;;;  (17595 51999))
 ;;; Generated autoloads from idledo.el
 
 (autoload (quote idledo-add-to-end-of-list) "idledo" "\
@@ -1117,8 +1029,8 @@ Like add-to-list, but adds at the end, if added at all.
 
 ;;;***
 
-;;;### (autoloads (isearchb-activate) "isearchb" "isearchb.el" (17566
-;;;;;;  43703))
+;;;### (autoloads (isearchb-activate) "isearchb" "isearchb.el" (17595
+;;;;;;  51999))
 ;;; Generated autoloads from isearchb.el
 
 (autoload (quote isearchb-activate) "isearchb" "\
@@ -1130,7 +1042,7 @@ Not documented
 
 ;;;### (autoloads (iswitchb-mode iswitchb-buffer-other-frame iswitchb-display-buffer
 ;;;;;;  iswitchb-buffer-other-window iswitchb-buffer iswitchb-default-keybindings
-;;;;;;  iswitchb-read-buffer) "iswitchb" "iswitchb.el" (17566 43704))
+;;;;;;  iswitchb-read-buffer) "iswitchb" "iswitchb.el" (17595 51999))
 ;;; Generated autoloads from iswitchb.el
 
 (autoload (quote iswitchb-read-buffer) "iswitchb" "\
@@ -1194,9 +1106,7 @@ See the command `iswitchb-mode' for a description of this minor-mode.
 Setting this variable directly does not take effect;
 use either \\[customize] or the function `iswitchb-mode'.")
 
-(custom-autoload (quote iswitchb-mode) "iswitchb")
-
-(put (quote iswitchb-mode) (quote custom-set) (quote custom-set-minor-mode))
+(custom-autoload (quote iswitchb-mode) "iswitchb" nil)
 
 (autoload (quote iswitchb-mode) "iswitchb" "\
 Toggle Iswitchb global minor mode.
@@ -1208,17 +1118,7 @@ This mode enables switching between buffers using substrings.  See
 
 ;;;***
 
-;;;### (autoloads (keytable) "keytable" "keytable.el" (17566 43705))
-;;; Generated autoloads from keytable.el
-
-(autoload (quote keytable) "keytable" "\
-Display key table.
-
-\(fn &optional PREFIX BUFFER)" t nil)
-
-;;;***
-
-;;;### (autoloads (map-lines) "map-lines" "map-lines.el" (17566 43703))
+;;;### (autoloads (map-lines) "map-lines" "map-lines.el" (17595 51999))
 ;;; Generated autoloads from map-lines.el
 
 (autoload (quote map-lines) "map-lines" "\
@@ -1228,7 +1128,7 @@ Map COMMAND over lines matching REGEX.
 
 ;;;***
 
-;;;### (autoloads (margin-mode) "margin" "margin.el" (17566 43704))
+;;;### (autoloads (margin-mode) "margin" "margin.el" (17595 51999))
 ;;; Generated autoloads from margin.el
 
 (autoload (quote margin-mode) "margin" "\
@@ -1239,7 +1139,7 @@ Minor mode that displays a margin
 ;;;***
 
 ;;;### (autoloads (expand-member-functions) "member-functions" "member-functions.el"
-;;;;;;  (17566 43705))
+;;;;;;  (17595 51999))
 ;;; Generated autoloads from member-functions.el
 
 (autoload (quote expand-member-functions) "member-functions" "\
@@ -1266,8 +1166,8 @@ implementation file.
 ;;;***
 
 ;;;### (autoloads (metamail-region metamail-buffer metamail-interpret-body
-;;;;;;  metamail-interpret-header) "metamail" "metamail.el" (17566
-;;;;;;  44169))
+;;;;;;  metamail-interpret-header) "metamail" "metamail.el" (17595
+;;;;;;  51999))
 ;;; Generated autoloads from metamail.el
 
 (autoload (quote metamail-interpret-header) "metamail" "\
@@ -1313,7 +1213,7 @@ redisplayed as output is inserted.
 ;;;### (autoloads (paren-backward-sexp paren-forward-sexp paren-toggle-open-paren-context
 ;;;;;;  paren-toggle-matching-quoted-paren paren-toggle-matching-paired-delimiter
 ;;;;;;  paren-deactivate paren-activate) "mic-paren" "mic-paren.el"
-;;;;;;  (17566 43703))
+;;;;;;  (17595 51999))
 ;;; Generated autoloads from mic-paren.el
 
 (autoload (quote paren-activate) "mic-paren" "\
@@ -1389,7 +1289,7 @@ Acts like backward-sexp but can also matching quoted parens. Look at
 ;;;***
 
 ;;;### (autoloads (mime-forward-from-gnus-using-mail mime-forward-from-rmail-using-mail
-;;;;;;  mime-mode) "mime" "mime.el" (17566 50806))
+;;;;;;  mime-mode) "mime" "mime.el" (17595 51999))
 ;;; Generated autoloads from mime.el
 
 (autoload (quote mime-mode) "mime" "\
@@ -1528,7 +1428,7 @@ The message will be appended if being composed.
 
 ;;;### (autoloads (bbdb/send-hook bbdb/send-auto-notes-hook bbdb/send-ignore-some-messages-hook
 ;;;;;;  bbdb/send-ignore-most-messages-hook) "moy-bbdb" "moy-bbdb.el"
-;;;;;;  (17566 43704))
+;;;;;;  (17595 51999))
 ;;; Generated autoloads from moy-bbdb.el
 
 (autoload (quote bbdb/send-ignore-most-messages-hook) "moy-bbdb" "\
@@ -1562,7 +1462,7 @@ Parse headers of outgoing message, insert the addresses of the
 
 ;;;***
 
-;;;### (autoloads (mtp) "mtp" "mtp.el" (17566 43703))
+;;;### (autoloads (mtp) "mtp" "mtp.el" (17595 51999))
 ;;; Generated autoloads from mtp.el
  (add-hook 'same-window-regexps "^\\*telnet-.*\\*\\(\\|<[0-9]+>\\)")
 
@@ -1604,8 +1504,8 @@ variable.
 
 ;;;***
 
-;;;### (autoloads (obfuscate-url) "obfusurl" "obfusurl.el" (17566
-;;;;;;  43703))
+;;;### (autoloads (obfuscate-url) "obfusurl" "obfusurl.el" (17595
+;;;;;;  51999))
 ;;; Generated autoloads from obfusurl.el
 
 (autoload (quote obfuscate-url) "obfusurl" "\
@@ -1620,7 +1520,7 @@ most mortals anyway).
 ;;;***
 
 ;;;### (autoloads (page-break-mode) "page-break" "page-break.el"
-;;;;;;  (17566 43704))
+;;;;;;  (17595 52000))
 ;;; Generated autoloads from page-break.el
 
 (autoload (quote page-break-mode) "page-break" "\
@@ -1633,29 +1533,8 @@ horizontal line of `page-break-string-char' characters.
 
 ;;;***
 
-;;;### (autoloads (paren-pair-mode-for-html paren-pair-mode) "paren-pair"
-;;;;;;  "paren-pair.el" (17566 43706))
-;;; Generated autoloads from paren-pair.el
-
-(autoload (quote paren-pair-mode) "paren-pair" "\
-Toggle paren pair mode.
-With a prefix ARG, enable paren pair mode iff arg is nonzero.
-
-\(fn ARG)" t nil)
-
-(autoload (quote paren-pair-mode-for-html) "paren-pair" "\
-Toggle paren pair mode for HTML.
-This is a legacy function which was needed when paren-pair mode did
-not automatically examine syntax tables.
-
-\(fn)" t nil)
-
-(when (bound-and-true-p mihi-default-keys) (global-set-key (kbd "C-c )") (quote paren-pair-mode)) (add-hook (quote html-mode-hook) (quote paren-pair-mode-for-html)))
-
-;;;***
-
-;;;### (autoloads (pmwiki-edit) "pmwiki-mode" "pmwiki-mode.el" (17566
-;;;;;;  43704))
+;;;### (autoloads (pmwiki-edit) "pmwiki-mode" "pmwiki-mode.el" (17595
+;;;;;;  51999))
 ;;; Generated autoloads from pmwiki-mode.el
 
 (autoload (quote pmwiki-edit) "pmwiki-mode" "\
@@ -1672,7 +1551,7 @@ the beginning of the buffer.
 ;;;### (autoloads (pod-last-sexp-runtime pod-load-file pod-load pod-activate-advice
 ;;;;;;  pod-deactivate-advice pod-reset-results pod-todo pod-new-features
 ;;;;;;  pod-commentary pod-introduction pod-quick-start) "pod" "pod.el"
-;;;;;;  (17566 43703))
+;;;;;;  (17595 51999))
 ;;; Generated autoloads from pod.el
 
 (autoload (quote pod-quick-start) "pod" "\
@@ -1733,7 +1612,7 @@ Not documented
 ;;;***
 
 ;;;### (autoloads (run-prolog mercury-mode prolog-mode) "prolog"
-;;;;;;  "prolog.el" (17566 43706))
+;;;;;;  "prolog.el" (17595 51999))
 ;;; Generated autoloads from prolog.el
 
 (autoload (quote prolog-mode) "prolog" "\
@@ -1765,7 +1644,7 @@ With prefix argument ARG, restart the Prolog process if running before.
 
 ;;;***
 
-;;;### (autoloads (svn-status) "psvn" "psvn.el" (17566 44169))
+;;;### (autoloads (svn-status) "psvn" "psvn.el" (17595 51999))
 ;;; Generated autoloads from psvn.el
 
 (autoload (quote svn-status) "psvn" "\
@@ -1777,7 +1656,7 @@ If ARG then pass the -u argument to `svn status'.
 ;;;***
 
 ;;;### (autoloads (py-shell python-mode) "python-mode" "python-mode.el"
-;;;;;;  (17566 43706))
+;;;;;;  (17595 52000))
 ;;; Generated autoloads from python-mode.el
 
 (autoload (quote python-mode) "python-mode" "\
@@ -1846,7 +1725,7 @@ filter.
 
 ;;;### (autoloads (rm-mouse-drag-region rm-kill-ring-save rm-kill-region
 ;;;;;;  rm-exchange-point-and-mark rm-set-mark rm-example-picture-mode-bindings)
-;;;;;;  "rect-mark" "rect-mark.el" (17566 43703))
+;;;;;;  "rect-mark" "rect-mark.el" (17595 51999))
 ;;; Generated autoloads from rect-mark.el
  (define-key ctl-x-map "r\C-@" 'rm-set-mark)
  (define-key ctl-x-map [?r ?\C-\ ] 'rm-set-mark)
@@ -1905,8 +1784,24 @@ This must be bound to a button-down mouse event.
 
 ;;;***
 
+;;;### (autoloads (rfc-goto-number rfc-index) "rfc" "rfc.el" (17595
+;;;;;;  52000))
+;;; Generated autoloads from rfc.el
+
+(autoload (quote rfc-index) "rfc" "\
+Show the index of RFC.
+
+\(fn)" t nil)
+
+(autoload (quote rfc-goto-number) "rfc" "\
+Show an RFC article which number is NUMBER.
+
+\(fn NUMBER)" t nil)
+
+;;;***
+
 ;;;### (autoloads (rmail-convert-mime-header rmail-show-mime) "rmailmime"
-;;;;;;  "rmailmime.el" (17566 44169))
+;;;;;;  "rmailmime.el" (17595 51999))
 ;;; Generated autoloads from rmailmime.el
 
 (autoload (quote rmail-show-mime) "rmailmime" "\
@@ -1928,8 +1823,8 @@ vm-message-filter in VM.  Original header is preserved in Rmail.
 
 ;;;***
 
-;;;### (autoloads (replace-recent-character) "rrc" "rrc.el" (17566
-;;;;;;  43706))
+;;;### (autoloads (replace-recent-character) "rrc" "rrc.el" (17595
+;;;;;;  51999))
 ;;; Generated autoloads from rrc.el
 
 (autoload (quote replace-recent-character) "rrc" "\
@@ -1952,7 +1847,7 @@ such character is found, following options are shown:
 ;;;;;;  sawfish-info-function sawfish-describe-variable sawfish-describe-function
 ;;;;;;  sawfish-eval-print-last-sexp sawfish-eval-last-sexp sawfish-eval-expression
 ;;;;;;  sawfish-eval-defun sawfish-eval-buffer sawfish-eval-region
-;;;;;;  sawfish-mode) "sawfish" "sawfish.el" (17566 43705))
+;;;;;;  sawfish-mode) "sawfish" "sawfish.el" (17595 52000))
 ;;; Generated autoloads from sawfish.el
 
 (autoload (quote sawfish-mode) "sawfish" "\
@@ -2055,7 +1950,7 @@ Create a sawfish interaction buffer.
 
 ;;;***
 
-;;;### (autoloads (ssh) "ssh" "ssh.el" (17566 44169))
+;;;### (autoloads (ssh) "ssh" "ssh.el" (17595 52000))
 ;;; Generated autoloads from ssh.el
  (add-hook 'same-window-regexps "^\\*ssh-.*\\*\\(\\|<[0-9]+>\\)")
 
@@ -2104,8 +1999,8 @@ how ssh X display tunelling interacts with frames on remote displays.
 ;;;***
 
 ;;;### (autoloads (swbuff-kill-this-buffer swbuff-switch-to-next-buffer
-;;;;;;  swbuff-switch-to-previous-buffer) "swbuff" "swbuff.el" (17566
-;;;;;;  44169))
+;;;;;;  swbuff-switch-to-previous-buffer) "swbuff" "swbuff.el" (17595
+;;;;;;  51999))
 ;;; Generated autoloads from swbuff.el
 
 (autoload (quote swbuff-switch-to-previous-buffer) "swbuff" "\
@@ -2128,8 +2023,8 @@ And update the status window if showing.
 
 ;;;### (autoloads (tabbar-local-mode tabbar-mode tabbar-forward-tab
 ;;;;;;  tabbar-backward-tab tabbar-forward-group tabbar-backward-group
-;;;;;;  tabbar-forward tabbar-backward) "tabbar" "tabbar.el" (17566
-;;;;;;  44169))
+;;;;;;  tabbar-forward tabbar-backward) "tabbar" "tabbar.el" (17595
+;;;;;;  51999))
 ;;; Generated autoloads from tabbar.el
 
 (autoload (quote tabbar-backward) "tabbar" "\
@@ -2170,9 +2065,7 @@ See the command `tabbar-mode' for a description of this minor-mode.
 Setting this variable directly does not take effect;
 use either \\[customize] or the function `tabbar-mode'.")
 
-(custom-autoload (quote tabbar-mode) "tabbar")
-
-(put (quote tabbar-mode) (quote custom-set) (quote custom-set-minor-mode))
+(custom-autoload (quote tabbar-mode) "tabbar" nil)
 
 (autoload (quote tabbar-mode) "tabbar" "\
 Toggle display of a tab bar in the header line.
@@ -2194,7 +2087,7 @@ header line is restored, hiding the tab bar.
 
 ;;;***
 
-;;;### (autoloads (trivial-cite) "tc" "tc.el" (17566 43704))
+;;;### (autoloads (trivial-cite) "tc" "tc.el" (17595 51999))
 ;;; Generated autoloads from tc.el
 
 (autoload (quote trivial-cite) "tc" "\
@@ -2215,7 +2108,7 @@ tc-citation-string, tc-make-attribution and tc-header-funs.
 ;;;***
 
 ;;;### (autoloads (teyjus teyjus-edit-mode teyjus-mode) "teyjus"
-;;;;;;  "teyjus.el" (17566 43705))
+;;;;;;  "teyjus.el" (17595 51999))
 ;;; Generated autoloads from teyjus.el
 
 (autoload (quote teyjus-mode) "teyjus" "\
@@ -2254,7 +2147,7 @@ See also variable lprolog-prompt-pattern.
 
 ;;;***
 
-;;;### (autoloads (timbuk-mode) "timbuk" "timbuk.el" (17566 43704))
+;;;### (autoloads (timbuk-mode) "timbuk" "timbuk.el" (17595 51999))
 ;;; Generated autoloads from timbuk.el
 
 (autoload (quote timbuk-mode) "timbuk" "\
@@ -2307,7 +2200,7 @@ no args, if that value is non-nil.
 ;;;***
 
 ;;;### (autoloads (tf-run-with-idle-timer) "timerfunctions" "timerfunctions.el"
-;;;;;;  (17566 43703))
+;;;;;;  (17595 51999))
 ;;; Generated autoloads from timerfunctions.el
 
 (autoload (quote tf-run-with-idle-timer) "timerfunctions" "\
@@ -2340,7 +2233,7 @@ next goes idle.. (as in the default run-with-idle-timer.
 
 ;;;### (autoloads (ub-install-example undo-browse ub-movie-history
 ;;;;;;  ub-movie-backward ub-mode-on ub-introduction) "undo-browse"
-;;;;;;  "undo-browse.el" (17566 43706))
+;;;;;;  "undo-browse.el" (17595 52000))
 ;;; Generated autoloads from undo-browse.el
 
 (autoload (quote ub-introduction) "undo-browse" "\
@@ -2379,13 +2272,13 @@ Not documented
 
 ;;;### (autoloads (vcard-parse-region vcard-parse-string vcard-pretty-print
 ;;;;;;  vcard-standard-filters vcard-pretty-print-function) "vcard"
-;;;;;;  "vcard.el" (17566 44169))
+;;;;;;  "vcard.el" (17595 52000))
 ;;; Generated autoloads from vcard.el
 
 (defvar vcard-pretty-print-function (quote vcard-format-sample-box) "\
 *Formatting function used by `vcard-pretty-print'.")
 
-(custom-autoload (quote vcard-pretty-print-function) "vcard")
+(custom-autoload (quote vcard-pretty-print-function) "vcard" t)
 
 (defvar vcard-standard-filters (quote (vcard-filter-html vcard-filter-adr-newlines vcard-filter-tel-normalize vcard-filter-textprop-cr)) "\
 *Standard list of filters to apply to parsed vcard data.
@@ -2393,7 +2286,7 @@ These filters are applied sequentially to vcard attributes when
 the function `vcard-standard-filter' is supplied as the second argument to
 `vcard-parse'.")
 
-(custom-autoload (quote vcard-standard-filters) "vcard")
+(custom-autoload (quote vcard-standard-filters) "vcard" t)
 
 (autoload (quote vcard-pretty-print) "vcard" "\
 Format VCARD into a string suitable for display to user.
@@ -2452,8 +2345,8 @@ Note: this function modifies the buffer!
 ;;;### (autoloads (winring-rename-configuration winring-delete-configuration
 ;;;;;;  winring-jump-to-configuration winring-prev-configuration
 ;;;;;;  winring-next-configuration winring-duplicate-configuration
-;;;;;;  winring-new-configuration) "winring" "winring.el" (17566
-;;;;;;  43705))
+;;;;;;  winring-new-configuration) "winring" "winring.el" (17595
+;;;;;;  52000))
 ;;; Generated autoloads from winring.el
 
 (autoload (quote winring-new-configuration) "winring" "\
@@ -2505,7 +2398,7 @@ Rename the current configuration to NAME.
 ;;;***
 
 ;;;### (autoloads (zap-to-char zap-upto-char zap-following-char zap-from-char)
-;;;;;;  "zap-char" "zap-char.el" (17566 43705))
+;;;;;;  "zap-char" "zap-char.el" (17595 52000))
 ;;; Generated autoloads from zap-char.el
 
 (autoload (quote zap-from-char) "zap-char" "\
@@ -2539,15 +2432,15 @@ Goes backward if ARG is negative; error if CHAR not found.
 ;;;***
 
 ;;;### (autoloads nil nil ("auto-save.el" "c-font-lock-keywords.el"
-;;;;;;  "color-eldoc.el" "color-moccur.el" "color-mode.el" "dircolors.el"
-;;;;;;  "dired-details.el" "elscreen.el" "escreen.el" "flashcard.el"
-;;;;;;  "fracc.el" "grade.el" "highlight-current-line.el" "http-post.el"
-;;;;;;  "ll-debug.el" "longlines.el" "message-x.el" "moccur-edit.el"
-;;;;;;  "mtorus.el" "multi-region.el" "mutt.el" "nntodo.el" "osd.el"
-;;;;;;  "paredit.el" "physical-line.el" "post.el" "project.el" "py-complete.el"
-;;;;;;  "remem.el" "scroll-in-place.el" "setnu.el" "sig.el" "todl-mode.el"
-;;;;;;  "todoo.el" "typopunct.el" "visible-mark-mode.el" "xcscope.el"
-;;;;;;  "xterm-extras.el") (17566 50815 681214))
+;;;;;;  "color-eldoc.el" "color-moccur.el" "color-mode.el" "css-mode.el"
+;;;;;;  "dircolors.el" "dired-details.el" "elscreen.el" "emacs-type.el"
+;;;;;;  "flashcard.el" "fracc.el" "grade.el" "highlight-current-line.el"
+;;;;;;  "http-post.el" "ll-debug.el" "longlines.el" "message-x.el"
+;;;;;;  "moccur-edit.el" "multi-region.el" "nntodo.el" "osd.el" "paredit.el"
+;;;;;;  "physical-line.el" "post.el" "project.el" "py-complete.el"
+;;;;;;  "remem.el" "scroll-in-place.el" "setnu.el" "sig.el" "todoo.el"
+;;;;;;  "typopunct.el" "visible-mark-mode.el" "xcscope.el" "xterm-extras.el")
+;;;;;;  (17615 8766 608844))
 
 ;;;***
 

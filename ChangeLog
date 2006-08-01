@@ -1,3 +1,15 @@
+2006-08-01  Yann Hodique  <Yann.Hodique@lifl.fr>
+
+	* lib/lib-loaddefs.el: updated to reflect cleanup
+
+	* dotgnus.el: using org-mode now
+
+	* dotemacs.el (minimal): load circe
+
+	* config/tabbar-config.el (yh/tabbar-buffer-groups): add case for IRC buffers
+
+	* config/circe-config.el: various hacks
+
 2006-07-28  Yann Hodique  <Yann.Hodique@lifl.fr>
 
 	* config/circe-config.el: extended sorting tracking
