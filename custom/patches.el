@@ -138,6 +138,11 @@ is not nil, then in case of no success, this value is returned"
 ;; Why the hell should some commands be disabled?
 (setq disabled-command-function nil)
 
+;; Why the f*** has it been removed ??
+(add-hook 'custom-mode-hook
+          (lambda ()
+            (define-key custom-mode-map "\^m" 'widget-button-press)))
+
 ;; scroll-margin does not work with hl-line :-(
 (defvar top-margin)
 (defvar bottom-margin)

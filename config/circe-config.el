@@ -139,7 +139,19 @@ lexicographic order"
   (interactive "sNick: ")
   (circe-command-MSG "NickServ"
                      (format "recover %s %s" nick public-passwd))
+  (circe-command-MSG "NickServ"
+                     (format "release %s %s" nick public-passwd))
   (circe-command-NICK nick))
+
+(defun circe-clear ()
+  (interactive)
+  (save-excursion
+    (let ((lui-max-buffer-size 10000))
+      (lui-truncate))))
+
+(add-hook 'lui-mode-hook
+          (lambda ()
+            (define-key lui-mode-map (kbd "C-c C-o") 'circe-clear)))
 
 (provide 'circe-config)
 ;;; circe-config.el ends here

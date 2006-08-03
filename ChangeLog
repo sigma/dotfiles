@@ -1,3 +1,17 @@
+2006-08-03  Yann Hodique  <Yann.Hodique@lifl.fr>
+
+	* lib/psvn.el: new version
+
+	* lib/paredit.el: new version
+
+	* custom/patches.el: looks like RET does not work anymore in custom buffers...
+
+	* config/lisp-config.el (paredit): unbind the <modifier-left/right>
+	(slime-repl-mode-hook): use paredit
+
+	* config/circe-config.el (circe-command-RECOVER): add release...
+	(circe-clear): truncate buffer to lower value
+
 2006-08-01  Yann Hodique  <Yann.Hodique@lifl.fr>
 
 	* lib/lib-loaddefs.el: updated to reflect cleanup

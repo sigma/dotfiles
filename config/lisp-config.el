@@ -30,7 +30,16 @@
 
 (request 'color-eldoc)
 
+(require 'patches)
+
 (autoload 'paredit-mode "paredit" "Minor mode for pseudo-structurally editing Lisp code." t)
+
+(eval-after-load 'paredit
+  '(progn
+     (define-key paredit-mode-map (kbd "<C-right>") 'forward-word)
+     (define-key paredit-mode-map (kbd "<C-left>") 'backward-word)
+     (define-key paredit-mode-map (kbd "<C-M-right>") 'forward-sexp)
+     (define-key paredit-mode-map (kbd "<C-M-left>") 'backward-sexp)))
 
 (defun yh/lisp-hook()
   (turn-on-eldoc-mode)
@@ -38,10 +47,12 @@
   (hl-sexp-mode 1)
   (paredit-mode +1))
 
-(add-hook 'emacs-lisp-mode-hook 'yh/lisp-hook)
-(add-hook 'lisp-interaction-mode-hook 'yh/lisp-hook)
-(add-hook 'ielm-mode-hook 'yh/lisp-hook)
-(add-hook 'lisp-mode-hook 'yh/lisp-hook)
+(add-mhook '(emacs-lisp-mode-hook
+             lisp-interaction-mode-hook
+             ielm-mode-hook
+             lisp-mode-hook
+             slime-repl-mode-hook)
+           'yh/lisp-hook)
 
 (defun yh/insert-elisp-key ()
   (interactive)
