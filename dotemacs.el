@@ -175,7 +175,7 @@
 (unless-configuration 'minimal
   (unless-configuration 'proof
     ;; (request 'muse-config)
-    ;; (request 'ecb-config)
+    (request 'ecb-config)
     ;; (request 'planner-config)
     (request 'circe-config)
     (request 'tramp-config)
@@ -359,7 +359,6 @@
 (global-set-key (kbd "C-x k") 'de-context-kill)
 (global-set-key (kbd "C-x K") (lambda () (interactive) (dolist (buf (buffer-list)) (when (buffer-file-name buf) (kill-buffer buf)))))
 
-(global-set-key (kbd "C-c m") (lambda () (interactive) (gnus 2)))
 (global-set-key (kbd "C-c x") 'chmod-file)
 (global-set-key (kbd "C-c i") 'init)
 (global-set-key (kbd "C-c h") 'auto-insert)
@@ -391,6 +390,14 @@
 ;; versioning keys
 (global-set-key (kbd "<M-f12>") 'svn-status)
 (global-set-key (kbd "<C-f12>") 'cvs-update)
+
+;;; windmove :)
+(mapc #'eval
+      (mapcar #'(lambda (dir)
+                  (let ((name (symbol-name dir)))
+                    `(global-set-key (kbd ,(format "C-x <%s>" name))
+                                     ',(intern (concat "windmove-" name)))))
+              '(left right up down)))
 
 ;; xterm settings
 (when (and (string= "xterm" (getenv "TERM"))
@@ -429,8 +436,9 @@
 ;;   (global-set-key (kbd "<S-M-f7>")  'fold-dwim-show-all))
 
 (when (request 'emms-setup)
-  (emms-minimalistic)
-  (emms-default-players))
+  (emms-standard)
+  (emms-default-players)
+  (global-set-key (kbd "C-c m") 'emms-playlist-mode-go))
 
 (add-to-list 'auto-mode-alist '("\\.hlal\\'" . c-mode))
 

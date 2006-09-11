@@ -318,19 +318,6 @@
 
 ;;; Posting Styles
 
-(setq
- gnus-posting-styles
- '(
-   ;; For news
-   (message-this-is-news
-    (address "y_hodique@yahoo.fr")
-    )
-   ;; For mail
-   (message-this-is-mail
-    (address "Yann.Hodique@lifl.fr")
-    )
-))
-
 (defun nbc-message-insert-citation-line ()
   "Function that inserts a simple citation line."
   (when message-reply-headers
@@ -343,16 +330,18 @@
 (setq gnus-message-archive-group
        '((if (message-news-p)
  	     "news"
- 	   (concat "mail." (format-time-string "%Y-%m" (current-time))))))
+           (list gnus-newsgroup-name
+                 (concat "mail." (format-time-string "%Y-%m" (current-time)))))))
 
 (setq
- gnus-prompt-before-saving t
+ gnus-prompt-before-saving nil
  gnus-default-article-saver  'gnus-summary-save-in-rmail
  gnus-split-methods
  '(("^Newsgroups:.*\\(unix\\|linux\\|bsd\\)" "unix-stuff")
    ("^Newsgroups:.*\\(tex\\|xml\\)" "xml-stuff")
    ("^Newsgroups:.*perl" "perl-stuff")
    ("^Newsgroups:.*emacs\\|^Newsgroups:.*gnus" "emacs-stuff")
+   ("^Newsgroups:.*lisp" "lisp-stuff")
    (".*" "misc")))
 
 ;;; Misc

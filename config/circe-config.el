@@ -32,13 +32,18 @@
 
 (setq circe-default-realname user-full-name
       circe-ignore-list nil
-      circe-server-coding-system '(utf-8 . undecided))
+      circe-server-coding-system '(utf-8 . undecided)
+      circe-new-buffer-behavior 'ignore)
 
 (setq lui-max-buffer-size 30000
       lui-flyspell-p t)
 
+(defvar yh/lui-truncate-amount 20000)
+
 (eval-after-load 'circe
   '(progn
+     ;; fix truncation
+     (fset 'lui-truncate 'yh/lui-truncate)
      ;; enable logging
      (require 'lui-logging)
      (add-hook 'circe-chat-mode-hook 'enable-lui-logging)
@@ -139,8 +144,10 @@ lexicographic order"
   (interactive "sNick: ")
   (circe-command-MSG "NickServ"
                      (format "recover %s %s" nick public-passwd))
+  (sit-for 2)
   (circe-command-MSG "NickServ"
                      (format "release %s %s" nick public-passwd))
+  (sit-for 1)
   (circe-command-NICK nick))
 
 (defun circe-clear ()
@@ -152,6 +159,17 @@ lexicographic order"
 (add-hook 'lui-mode-hook
           (lambda ()
             (define-key lui-mode-map (kbd "C-c C-o") 'circe-clear)))
+
+(defun yh/lui-truncate ()
+  "Truncate the current buffer if it exceeds `lui-max-buffer-size'."
+  (when (and lui-max-buffer-size
+             (> (point-max)
+                lui-max-buffer-size))
+    (goto-char yh/lui-truncate-amount)
+    (forward-line 0)
+    (let ((inhibit-read-only t))
+      (remove-overlays (point-min) (point))
+      (delete-region (point-min) (point)))))
 
 (provide 'circe-config)
 ;;; circe-config.el ends here

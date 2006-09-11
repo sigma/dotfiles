@@ -1,3 +1,13 @@
+2006-09-11  Yann Hodique  <Yann.Hodique@lifl.fr>
+
+	* lib/paredit.el: update to latest version
+
+	* dotemacs.el: write windmove bindings in an obfuscated way ;)
+
+	* custom/patches.el: fix strange behavior of mouse-insert-selection-internal
+
+	* config/circe-config.el (yh/lui-truncate): customize truncation
+
 2006-08-03  Yann Hodique  <Yann.Hodique@lifl.fr>
 
 	* lib/psvn.el: new version
