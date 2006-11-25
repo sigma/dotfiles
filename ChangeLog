@@ -1,3 +1,9 @@
+2006-11-25  Yann Hodique  <Yann.Hodique@lifl.fr>
+
+	* custom/patches.el (backup-directory-alist): disable tramp backups
+
+	* lib/incr.el: initial checkin
+
 2006-09-11  Yann Hodique  <Yann.Hodique@lifl.fr>
 
 	* lib/paredit.el: update to latest version

@@ -444,6 +444,8 @@
 
 (request 'bookmark)
 
+(request 'incr)
+
 ;; (setq sgml-warn-about-undefined-entities nil)
 
 ;;************************************************************

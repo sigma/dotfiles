@@ -124,7 +124,8 @@ is not nil, then in case of no success, this value is returned"
        (not (string-match "/News/" filename))))
 
 (setq backup-enable-predicate 'ecm-backup-enable-predicate)
-(setq backup-directory-alist '(("." . "~/.backups")))
+(setq backup-directory-alist `(("." . "~/.backups") ; centralize backup files
+                               (,tramp-file-name-regexp . nil))) ; disable for tramp
 
 ;; don't break links
 (setq backup-by-copying t)
