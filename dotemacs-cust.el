@@ -155,6 +155,7 @@
  '(sawfish-extra-keyword-list (quote ("add-frame-style" "call-after-load" "call-after-property-changed" "call-after-state-changed" "custom-set-property" "define" "define-structure" "export" "open")))
  '(sawfish-warning-keyword-list (quote ("fixme" "FIXME" "Fixme" "fix me" "Fix me" "!!!" "Grrr" "Bummer" "todo" "TODO" "Todo")))
  '(scroll-bar-mode nil)
+ '(search-whitespace-regexp "[ 	\r\n]+")
  '(sh-shell-file "/bin/bash")
  '(show-paren-mode t)
  '(size-indication-mode t)

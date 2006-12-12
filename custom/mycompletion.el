@@ -29,7 +29,7 @@
 ;; explicit name :-)
 (defun gpl-header ()
   "Includes a header in the edited file."
-  (let ((name (buffer-name)))
+  (let ((name (file-name-nondirectory (buffer-file-name))))
     (with-temp-buffer
       (insert (format "%-75s\n\n" "/*  Time-stamp: <>  */"))
       (insert (format "/**\n%-75s\n" (concat " *  @file " name)))
@@ -57,9 +57,10 @@
 
 	      ;; C/C++ header
 	      (("\\.\\([Hh]\\|hh\\|hpp\\|hxx\\)\\'" . "C / C++ header")
-	       (upcase (concat "_" (file-name-nondirectory
-                                    (substring buffer-file-name 0 (match-beginning 0)))
-			       "_" (substring buffer-file-name (1+ (match-beginning 0))) "_"))
+	       (upcase (let* ((name buffer-file-name)
+                              (n (file-name-sans-extension (file-name-nondirectory name)))
+                              (e (file-name-extension name)))
+                         (concat "_" n "_" e "_")))
 	       (concat (gpl-header) "#ifndef ") str n "#define " str ?\n ?\n _ ?\n ?\n "#endif /* " str " */")
 
 	      ;; C/C++ implem

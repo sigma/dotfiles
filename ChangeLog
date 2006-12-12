@@ -1,3 +1,11 @@
+2006-12-12  Yann Hodique  <Yann.Hodique@lifl.fr>
+
+	* dotemacs-cust.el (custom-set-variables): ignore newlines in regexp searches
+
+	* custom/mycompletion.el (auto-insert-alist): fix C(++) headers
+
+	* config/winring-config.el: configuration for winring
+
 2006-11-25  Yann Hodique  <Yann.Hodique@lifl.fr>
 
 	* custom/patches.el (backup-directory-alist): disable tramp backups

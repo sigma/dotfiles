@@ -205,11 +205,11 @@ is not nil, then in case of no success, this value is returned"
 ;; that the current buffer is NOT in the completion list.
 ;;
 ;; i.e. say you're working in "temp.c", and you want to visit "temp.h"; so you
-;; type "C-xb", then "t<TAB>" which then presents you with a completion list of
-;; temp.c and temp.h, so you then must type "h<RET>".  This is annoying since
-;; why would you want to switch back to the buffer you're in?!?
-;; Using this fix would remove "temp.c" from the completion lits so that when
-;; you had typed "t<TAB>" the name would be completed as "temp.h" as desired.
+;; type "C-x b", then "t<TAB>" which then presents you with a completion list
+;; of temp.c and temp.h, so you then must type "h<RET>".  This is annoying
+;; since why would you want to switch back to the buffer you're in?!?  Using
+;; this fix would remove "temp.c" from the completion lits so that when you had
+;; typed "t<TAB>" the name would be completed as "temp.h" as desired.
 ;;
 ;; Steve Dodd
 ;; March 1998
