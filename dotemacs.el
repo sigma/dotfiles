@@ -176,6 +176,7 @@
   (unless-configuration 'proof
     ;; (request 'muse-config)
     (request 'ecb-config)
+    (request 'winring-config)
     ;; (request 'planner-config)
     (request 'circe-config)
     (request 'tramp-config)
@@ -345,6 +346,28 @@
   (global-set-key (kbd "<mouse-5>") 'scroll-up)
   (global-set-key (kbd "<C-mouse-4>") 'scroll-down-one-line)
   (global-set-key (kbd "<C-mouse-5>") 'scroll-up-one-line))
+
+;; viewport scrolling
+
+(global-set-key (kbd "<M-up>")
+                (lambda (arg)
+                  (interactive "p")
+                  (or arg (setq arg 1))
+                  (let ((top (line-number-at-pos (window-start)))
+                        (cur (line-number-at-pos (point))))
+                    (when (>= (- cur top) arg)
+                      (scroll-up arg)))))
+
+(global-set-key (kbd "<M-down>")
+                (lambda (arg)
+                  (interactive "p")
+                  (or arg (setq arg 1))
+                  (let ((cur (line-number-at-pos (point)))
+                        (bot (+ (line-number-at-pos (window-start))
+                                (window-text-height)
+                                -1)))
+                    (when (>= (- bot cur) arg)
+                      (scroll-down arg)))))
 
 ;; rectangle bindings. don't mix with registers! :)
 (global-set-key (kbd "C-x r C-SPC") 'rm-set-mark)
@@ -531,5 +554,10 @@
   (require 'calendar)
   (when (require 'org nil t)
     (call-interactively 'org-agenda-list)))
+
+(global-hl-line-hack-mode 1)
+
+;; setup *scratch* correctly
+(kill-scratch-buffer)
 
 (message ".emacs loaded")

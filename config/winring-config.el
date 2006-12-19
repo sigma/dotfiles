@@ -26,9 +26,6 @@
 
 ;;; Code:
 
-(eval-after-load 'winring
-  '(yh/winring-fix-switch))
-
 (eval-when-compile
   '(require 'patches))
 
@@ -39,6 +36,9 @@
     (condition-case nil
         ad-do-it
       (error (winring-new-configuration t)))))
+
+(eval-after-load 'winring
+  '(yh/winring-fix-switch))
 
 (provide 'winring-config)
 ;;; winring-config.el ends here

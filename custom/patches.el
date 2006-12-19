@@ -78,9 +78,9 @@ is not nil, then in case of no success, this value is returned"
                                                                                     (car spec)))) (cddr spec))
                               ,@body)) flist))) `(progn ,@defs)))
 
-(defun add-mhook (mlist func)
+(defun add-mhook (mlist func &optional append local)
   "Add the same function to multiple hooks"
-  (dolist (m mlist) (add-hook m func)))
+  (dolist (m mlist) (add-hook m func append local)))
 
 (defun clear-hook (hook)
   "Clear a hook"

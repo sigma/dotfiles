@@ -1,3 +1,16 @@
+2006-12-19  Yann Hodique  <Yann.Hodique@lifl.fr>
+
+	* lib/paredit.el: upgrade to latest beta
+
+	* dotemacs.el: add viewport scrolling
+	setup *scratch* buffer from the start
+
+	* custom/patches.el (add-mhook): add &optional arguments
+
+	* config/winring-config.el (winring): fix loading order
+
+	* config/lisp-config.el (yh/lisp-hook): remove reference to sexp hilighting
+
 2006-12-12  Yann Hodique  <Yann.Hodique@lifl.fr>
 
 	* dotemacs-cust.el (custom-set-variables): ignore newlines in regexp searches

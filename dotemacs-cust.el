@@ -89,7 +89,6 @@
  '(glasses-separate-parentheses-p nil)
  '(glasses-separator "")
  '(global-font-lock-mode t nil (font-lock))
- '(global-hl-line-hack-mode t)
  '(global-visible-mark-mode-exclude-alist (quote ("^\\*")))
  '(gnus-activate-level 5)
  '(gnus-cacheable-groups ".*")

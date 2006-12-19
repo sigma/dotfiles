@@ -335,11 +335,11 @@ Deprecated: use `paredit-mode' instead."
    ("M-s"       paredit-splice-sexp
                 ("(foo (bar| baz) quux)"
                  "(foo bar| baz quux)"))
-   ("M-<up>"
+   (("M-<up>" "ESC <up>")
                 paredit-splice-sexp-killing-backward
                 ("(foo (let ((x 5)) |(sqrt n)) bar)"
                  "(foo (sqrt n) bar)"))
-   ("M-<down>"
+   (("M-<down>" "ESC <down>")
                 paredit-splice-sexp-killing-forward
                 ("(a (b c| d e) f)"
                  "(a b c f)"))
@@ -1202,85 +1202,107 @@ Otherwise, kill all S-expressions that start after the point."
                     (memq syn-after  '(?_ ?w)))))   ;   constituents.
          (insert " "))))
 
+;;;;; Killing Words
+
+;;; This is tricky and asymmetrical because backward parsing is
+;;; extraordinarily difficult or impossible, so we have to implement
+;;; killing in both directions by parsing forward.
+
 (defun paredit-forward-kill-word ()
   "Kill a word forward, skipping over intervening delimiters."
   (interactive)
   (let ((beginning (point)))
     (skip-syntax-forward " -")
-    (if (or (eobp)
-            (eq (char-syntax (char-after)) ?w))
-        (progn (goto-char beginning)    ; Easy case: no intervening
-               (kill-word 1))           ;   delimiters.
-      (let* ((parse-state (paredit-current-parse-state))
-             (state (paredit-kill-word-state parse-state)))
-        (catch 'exit
-          (while t
-            ;; Go character-by-character forward.  If we encounter a
-            ;; state change -- that is, if we move into or out of a
-            ;; comment or string, or encounter a bracket --, then reset
-            ;; the beginning point to after wherever the state changed,
-            ;; so that we don't destroy any intervening delimiters.
-            (setq parse-state           ; PPS advances the point.
-                  (parse-partial-sexp (point) (1+ (point))
-                                      nil nil parse-state))
-            (let ((old-state state)
-                  (new-state (paredit-kill-word-state parse-state)))
-              (setq state new-state)
-              (if (not (eq old-state new-state))
-                  (setq beginning
-                        (paredit-kill-word-hack-comments old-state))))
-            ;; Finally, if we found a word, kill up to there and exit.
-            ;; BEGINNING will be the first point in this state.
-            (cond ((eq (char-syntax (char-after)) ?w)
-                   (goto-char beginning)
-                   (kill-word 1)
-                   (throw 'exit nil)))))))))
+    (let* ((parse-state (paredit-current-parse-state))
+           (state (paredit-kill-word-state parse-state 'char-after)))
+      (while (not (or (eobp)
+                      (eq ?w (char-syntax (char-after)))))
+        (setq parse-state
+              (progn (forward-char 1) (paredit-current-parse-state))
+;;               (parse-partial-sexp (point) (1+ (point))
+;;                                   nil nil parse-state)
+              )
+        (let* ((old-state state)
+               (new-state
+                (paredit-kill-word-state parse-state 'char-after)))
+          (cond ((not (eq old-state new-state))
+                 (setq parse-state
+                       (paredit-kill-word-hack old-state
+                                               new-state
+                                               parse-state))
+                 (setq state
+                       (paredit-kill-word-state parse-state
+                                                'char-after))
+                 (setq beginning (point)))))))
+    (goto-char beginning)
+    (kill-word 1)))
 
 (defun paredit-backward-kill-word ()
   "Kill a word backward, skipping over any intervening delimiters."
   (interactive)
-  (if (or (bobp)
-          (eq (char-syntax (char-before)) ?w))
-      ;; We're *on* the word, so we don't need to do anything else.
-      (backward-kill-word 1)
-    (let ((beginning (point)))
-      (backward-word 1)
-      (let* ((word-start (point))
-             (parse-state (paredit-current-parse-state))
-             (state (paredit-kill-word-state parse-state)))
+  (if (not (or (bobp)
+               (eq (char-syntax (char-before)) ?w)))
+      (let ((end (point)))
+        (backward-word 1)
         (forward-word 1)
-        (setq parse-state
-              (parse-partial-sexp word-start (point)
-                                  nil nil parse-state))
-        (while (and (eq state (paredit-kill-word-state parse-state))
-                    (< (point) beginning))
-          (setq parse-state             ; PPS advances the point.
-                (parse-partial-sexp (point) (1+ (point))
-                                    nil nil parse-state))
-          (setq state (paredit-kill-word-state parse-state)))
-        (if (or (and (eq state 'comment) (bolp))
-                (and (eq state 'string)  (eq (char-before) ?\" )))
-            (backward-char 1))
-        (kill-region word-start (point))))))
+        (let* ((parse-state (paredit-current-parse-state))
+               (state
+                (paredit-kill-word-state parse-state 'char-before)))
+          ;++ Hack: Move past the start regardless of whether there was
+          ;++ a state change, so that we can unconditionally move back
+          ;++ by one character afterward.
+          (while (and (<= (point) end)
+                      (not (eobp))
+                      (progn
+                        (setq parse-state
+                              (parse-partial-sexp (point) (1+ (point))
+                                                  nil nil parse-state))
+                        (eq state
+                            (paredit-kill-word-state parse-state
+                                                     'char-before)))))
+          (if (and (eq state 'comment)
+                   (eq ?\# (char-before (point)))
+                   (eq ?\| (char-before (1- (point)))))
+              (backward-char 1))
+          (backward-char 1))))          ;Back up before state change.
+  (backward-kill-word 1))
+
+;;; Word-Killing Auxiliaries
 
-(defun paredit-kill-word-state (parse-state)
+(defun paredit-kill-word-state (parse-state adjacent-char-fn)
   (cond ((paredit-in-comment-p parse-state) 'comment)
         ((paredit-in-string-p  parse-state) 'string)
-        ((and (not (eobp))
-              (memq (char-syntax (char-after))
-                    '(?\( ?\) )))
-         'bracket-sequence)
+        ((memq (char-syntax (funcall adjacent-char-fn))
+               '(?\( ?\) ))
+         'delimiter)
         (t 'other)))
 
-(defun paredit-kill-word-hack-comments (state)
-  (cond ((and (eq state 'comment)
-              (eq (char-after) ?\#))
-         (1+ (point)))
-        ((and (not (eq state 'comment))
-              (eq (char-before) ?\;))
+;;; This optionally advances the point past any comment delimiters that
+;;; should probably not be touched, based on the last state change and
+;;; the characters around the point.  It returns a new parse state,
+;;; starting from the PARSE-STATE parameter.
+
+(defun paredit-kill-word-hack (old-state new-state parse-state)
+  (cond ((and (not (eq old-state 'comment))
+              (not (eq new-state 'comment))
+              (not (paredit-in-string-escape-p))
+              (eq ?\# (char-before))
+              (eq ?\| (char-after)))
+         (forward-char 1)
+         (paredit-current-parse-state)
+;;          (parse-partial-sexp (point) (1+ (point))
+;;                              nil nil parse-state)
+         )
+        ((and (not (eq old-state 'comment))
+              (eq new-state 'comment)
+              (eq ?\; (char-before)))
          (skip-chars-forward ";")
-         (point))
-        (t (point))))
+         (paredit-current-parse-state)
+;;          (parse-partial-sexp (point) (save-excursion
+;;                                        (skip-chars-forward ";"))
+;;                              nil nil parse-state)
+         )
+        (t parse-state)))
 
 ;;;; Cursor and Screen Movement
 
@@ -1390,10 +1412,11 @@ With a numerical prefix argument N, kill N S-expressions backward in
 (defun paredit-kill-surrounding-sexps-for-splice (arg)
   (cond ((paredit-in-string-p) (error "Splicing illegal in strings."))
         ((or (not arg) (eq arg 0)) nil)
-        ((numberp arg)
+        ((or (numberp arg) (eq arg '-))
          ;; Kill ARG S-expressions before/after the point by saving
          ;; the point, moving across them, and killing the region.
-         (let ((saved (paredit-point-at-sexp-boundary (- arg))))
+         (let* ((arg (if (eq arg '-) -1 arg))
+                (saved (paredit-point-at-sexp-boundary (- arg))))
            (paredit-ignore-sexp-errors (backward-sexp arg))
            (kill-region saved (point))))
         ((consp arg)
