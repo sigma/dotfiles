@@ -1,5 +1,7 @@
 2007-01-27  Yann Hodique  <Yann.Hodique@lifl.fr>
 
+	* lib/psvn.el: update from mainstream
+
 	* lib/outline-magic.el: initial checkin
 
 	* lib/lua-mode.el: initial checkin
