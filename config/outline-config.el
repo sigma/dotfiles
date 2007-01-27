@@ -1,6 +1,6 @@
-;;; winring-config.el ---
+;;; outline-config.el ---
 
-;; Copyright (C) 2006  Free Software Foundation, Inc.
+;; Copyright (C) 2007  Free Software Foundation, Inc.
 
 ;; Author: Yann Hodique <Yann.Hodique@lifl.fr>
 ;; Keywords:
@@ -27,19 +27,16 @@
 ;;; Code:
 
 (eval-when-compile
-  '(require 'winring)
-  '(require 'patches))
+  (require 'patches))
 
-(defun yh/winring-fix-switch ()
-  (defmadvice (winring-next-configuration winring-prev-configuration)
-    (around winring act)
-    "Creation of new configuration if only one existing"
-    (condition-case nil
-        ad-do-it
-      (error (winring-new-configuration t)))))
+(add-hook 'outline-mode-hook
+          (lambda ()
+            (request 'outline-magic)))
 
-(eval-after-load 'winring
-  '(yh/winring-fix-switch))
+(add-hook 'outline-minor-mode-hook
+          (lambda ()
+            (when (request 'outline-magic)
+              (define-key outline-minor-mode-map [(f10)] 'outline-cycle))))
 
-(provide 'winring-config)
-;;; winring-config.el ends here
+(provide 'outline-config)
+;;; outline-config.el ends here

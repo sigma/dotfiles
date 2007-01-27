@@ -28,6 +28,12 @@
 
 ;;; Buffers
 
+(eval-when-compile
+
+  (require 'patches)
+  (require 'dired)
+  (require 'dired-x))
+
 (eval-after-load "buff-menu" '(request 'buff-menu+))
 (global-set-key (kbd "C-x C-b") 'buffer-menu)
 

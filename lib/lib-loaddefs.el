@@ -609,48 +609,6 @@ at the cursor.
 
 ;;;***
 
-;;;### (autoloads (ftelnet) "ftelnet" "ftelnet.el" (17595 51999))
-;;; Generated autoloads from ftelnet.el
- (add-hook 'same-window-regexps "^\\*telnet-.*\\*\\(\\|<[0-9]+>\\)")
-
-(autoload (quote ftelnet) "ftelnet" "\
-Open a network login connection to HOST via the `telnet' program.
-Input is sent line-at-a-time to the remote connection.
-
-Communication with the remote host is recorded in a buffer *telnet-HOST*
-\(or *telnet-HOST:PORT* if using a nonstandard port number).
-If a prefix argument is given and the buffer *telnet-HOST* already exists,
-a new buffer with a different connection will be made.
-
-When called from a program, if the optional second argument is a string or
-buffer, it names the buffer to use.
-
-The variable `ftelnet-program' contains the name of the actual program to
-run.  It can be a relative or absolute path.
-
-The variable `ftelnet-explicit-args' is a list of arguments to give to the
-telnet program when starting.  They are added after any arguments given in
-INPUT-ARGS.
-
-If the default value of `ftelnet-directory-tracking-mode' is t, then the
-default directory in that buffer is set to a remote (FTP) file name to
-access your home directory on the remote machine.  Occasionally this causes
-an error, if you cannot access the home directory on that machine.  This
-error is harmless as long as you don't try to use that default directory.
-
-If `ftelnet-directory-tracking-mode' is neither t nor nil, then the default
-directory is initially set up to your (local) home directory.
-This is useful if the remote machine and your local machine
-share the same files via NFS.  This is the default.
-
-If you wish to change directory tracking styles during a session, use the
-function `ftelnet-directory-tracking-mode' rather than simply setting the
-variable.
-
-\(fn INPUT-ARGS &optional BUFFER)" t nil)
-
-;;;***
-
 ;;;### (autoloads (gnus-alias-determine-identity gnus-alias-use-identity
 ;;;;;;  gnus-alias-select-identity gnus-alias-init) "gnus-alias"
 ;;;;;;  "gnus-alias.el" (17595 51999))
@@ -759,44 +717,6 @@ Turning on Graphviz Dot mode calls the value of the variable
 `graphviz-dot-mode-hook' with no args, if that value is non-nil.
 
 \(fn)" t nil)
-
-;;;***
-
-;;;### (autoloads (gtags-mode) "gtags" "gtags.el" (17595 51999))
-;;; Generated autoloads from gtags.el
-
-(autoload (quote gtags-mode) "gtags" "\
-Toggle Gtags mode, a minor mode for browsing source code using GLOBAL.
-
-Input tag name and move to the definition.
-	\\[gtags-find-tag]
-Input tag name and move to the referenced point.
-	\\[gtags-find-rtag]
-Input symbol and move to the locations.
-	\\[gtags-find-symbol]
-Input pattern, search with grep(1) and move to the locations.
-	\\[gtags-find-with-grep]
-Input pattern, search with id-utils(1) and move to the locations.
-	\\[gtags-find-with-idutils]
-Input pattern and move to the top of the file.
-	\\[gtags-find-file]
-Get the expression as a tagname around here and move there.
-	\\[gtags-find-tag-from-here]
-Display current screen on hypertext browser.
-	\\[gtags-display-browser]
-Get the expression as a tagname around here and move there.
-	\\[gtags-find-tag-by-event]
-Move to previous point on the stack.
-	\\[gtags-pop-stack]
-Make tag name list for completion.
-	\\[gtags-make-complete-list]
-
-Key definitions:
-\\{gtags-mode-map}
-Turning on Gtags mode calls the value of the variable `gtags-mode-hook'
-with no args, if that value is non-nil.
-
-\(fn &optional FORCES)" t nil)
 
 ;;;***
 
@@ -1029,92 +949,27 @@ Like add-to-list, but adds at the end, if added at all.
 
 ;;;***
 
-;;;### (autoloads (isearchb-activate) "isearchb" "isearchb.el" (17595
-;;;;;;  51999))
-;;; Generated autoloads from isearchb.el
+;;;### (autoloads (incr-add-to-alist) "incr" "incr.el" (17756 39478))
+;;; Generated autoloads from incr.el
 
-(autoload (quote isearchb-activate) "isearchb" "\
+(autoload (quote incr-add-to-alist) "incr" "\
 Not documented
 
-\(fn)" t nil)
+\(fn METHOD &optional BEFORE)" nil nil)
 
 ;;;***
 
-;;;### (autoloads (iswitchb-mode iswitchb-buffer-other-frame iswitchb-display-buffer
-;;;;;;  iswitchb-buffer-other-window iswitchb-buffer iswitchb-default-keybindings
-;;;;;;  iswitchb-read-buffer) "iswitchb" "iswitchb.el" (17595 51999))
-;;; Generated autoloads from iswitchb.el
+;;;### (autoloads (lua-mode) "lua-mode" "lua-mode.el" (17785 12703))
+;;; Generated autoloads from lua-mode.el
 
-(autoload (quote iswitchb-read-buffer) "iswitchb" "\
-Replacement for the built-in `read-buffer'.
-Return the name of a buffer selected.
-PROMPT is the prompt to give to the user.
-DEFAULT if given is the default buffer to be selected, which will
-go to the front of the list.
-If REQUIRE-MATCH is non-nil, an existing-buffer must be selected.
-If START is a string, the selection process is started with that
-string.
-If MATCHES-SET is non-nil, the buflist is not updated before
-the selection process begins.  Used by isearchb.el.
-
-\(fn PROMPT &optional DEFAULT REQUIRE-MATCH START MATCHES-SET)" nil nil)
-
-(autoload (quote iswitchb-default-keybindings) "iswitchb" "\
-Set up default keybindings for `iswitchb-buffer'.
-Call this function to override the normal bindings.  This function also
-adds a hook to the minibuffer.
-
-Obsolescent.  Use `iswitchb-mode'.
+(autoload (quote lua-mode) "lua-mode" "\
+Major mode for editing Lua code.
+The following keys are bound:
+\\{lua-mode-map}
 
 \(fn)" t nil)
 
-(autoload (quote iswitchb-buffer) "iswitchb" "\
-Switch to another buffer.
-
-The buffer name is selected interactively by typing a substring.  The
-buffer is displayed according to `iswitchb-default-method' -- the
-default is to show it in the same window, unless it is already visible
-in another frame.
-For details of keybindings, do `\\[describe-function] iswitchb'.
-
-\(fn)" t nil)
-
-(autoload (quote iswitchb-buffer-other-window) "iswitchb" "\
-Switch to another buffer and show it in another window.
-The buffer name is selected interactively by typing a substring.
-For details of keybindings, do `\\[describe-function] iswitchb'.
-
-\(fn)" t nil)
-
-(autoload (quote iswitchb-display-buffer) "iswitchb" "\
-Display a buffer in another window but don't select it.
-The buffer name is selected interactively by typing a substring.
-For details of keybindings, do `\\[describe-function] iswitchb'.
-
-\(fn)" t nil)
-
-(autoload (quote iswitchb-buffer-other-frame) "iswitchb" "\
-Switch to another buffer and show it in another frame.
-The buffer name is selected interactively by typing a substring.
-For details of keybindings, do `\\[describe-function] iswitchb'.
-
-\(fn)" t nil)
-
-(defvar iswitchb-mode nil "\
-Non-nil if Iswitchb mode is enabled.
-See the command `iswitchb-mode' for a description of this minor-mode.
-Setting this variable directly does not take effect;
-use either \\[customize] or the function `iswitchb-mode'.")
-
-(custom-autoload (quote iswitchb-mode) "iswitchb" nil)
-
-(autoload (quote iswitchb-mode) "iswitchb" "\
-Toggle Iswitchb global minor mode.
-With arg, turn Iswitchb mode on if and only iff ARG is positive.
-This mode enables switching between buffers using substrings.  See
-`iswitchb' for details.
-
-\(fn &optional ARG)" t nil)
+(add-to-list (quote auto-mode-alist) (quote ("\\.lua$" . lua-mode)))
 
 ;;;***
 
@@ -1125,16 +980,6 @@ This mode enables switching between buffers using substrings.  See
 Map COMMAND over lines matching REGEX.
 
 \(fn COMMAND-C REGEX)" t nil)
-
-;;;***
-
-;;;### (autoloads (margin-mode) "margin" "margin.el" (17595 51999))
-;;; Generated autoloads from margin.el
-
-(autoload (quote margin-mode) "margin" "\
-Minor mode that displays a margin
-
-\(fn &optional ARG)" t nil)
 
 ;;;***
 
@@ -1462,63 +1307,6 @@ Parse headers of outgoing message, insert the addresses of the
 
 ;;;***
 
-;;;### (autoloads (mtp) "mtp" "mtp.el" (17595 51999))
-;;; Generated autoloads from mtp.el
- (add-hook 'same-window-regexps "^\\*telnet-.*\\*\\(\\|<[0-9]+>\\)")
-
-(autoload (quote mtp) "mtp" "\
-Open a network login connection to HOST via the `telnet' program.
-Input is sent line-at-a-time to the remote connection.
-
-Communication with the remote host is recorded in a buffer *telnet-HOST*
-\(or *telnet-HOST:PORT* if using a nonstandard port number).
-If a prefix argument is given and the buffer *telnet-HOST* already exists,
-a new buffer with a different connection will be made.
-
-When called from a program, if the optional second argument is a string or
-buffer, it names the buffer to use.
-
-The variable `mtp-program' contains the name of the actual program to
-run.  It can be a relative or absolute path.
-
-The variable `mtp-explicit-args' is a list of arguments to give to the
-telnet program when starting.  They are added after any arguments given in
-INPUT-ARGS.
-
-If the default value of `mtp-directory-tracking-mode' is t, then the
-default directory in that buffer is set to a remote (FTP) file name to
-access your home directory on the remote machine.  Occasionally this causes
-an error, if you cannot access the home directory on that machine.  This
-error is harmless as long as you don't try to use that default directory.
-
-If `mtp-directory-tracking-mode' is neither t nor nil, then the default
-directory is initially set up to your (local) home directory.
-This is useful if the remote machine and your local machine
-share the same files via NFS.  This is the default.
-
-If you wish to change directory tracking styles during a session, use the
-function `mtp-directory-tracking-mode' rather than simply setting the
-variable.
-
-\(fn INPUT-ARGS &optional BUFFER)" t nil)
-
-;;;***
-
-;;;### (autoloads (obfuscate-url) "obfusurl" "obfusurl.el" (17595
-;;;;;;  51999))
-;;; Generated autoloads from obfusurl.el
-
-(autoload (quote obfuscate-url) "obfusurl" "\
-Obfuscate an URL under `point'.
-
-This might be useful if you're writing out an URL for someone but the URL
-itself is a spoiler. The URL will still work but it won't be readable (by
-most mortals anyway).
-
-\(fn)" t nil)
-
-;;;***
-
 ;;;### (autoloads (page-break-mode) "page-break" "page-break.el"
 ;;;;;;  (17595 52000))
 ;;; Generated autoloads from page-break.el
@@ -1530,21 +1318,6 @@ In Page Break mode, page breaks (^L characters) are displayed as a
 horizontal line of `page-break-string-char' characters.
 
 \(fn &optional ARG)" t nil)
-
-;;;***
-
-;;;### (autoloads (pmwiki-edit) "pmwiki-mode" "pmwiki-mode.el" (17595
-;;;;;;  51999))
-;;; Generated autoloads from pmwiki-mode.el
-
-(autoload (quote pmwiki-edit) "pmwiki-mode" "\
-Download the wiki page specified by LINK and BASE-URI.
-If BASE-URI is not given, it's taken from `pmwiki-page-uri'.
-Then change the buffer's mode to `pmwiki-mode'.
-If GOTO-END is nil, wait until the process is done and move point to
-the beginning of the buffer.
-
-\(fn LINK &optional BASE-URI GOTO-END HTTP-VER CONTENT-TYPE)" nil nil)
 
 ;;;***
 
@@ -1644,12 +1417,26 @@ With prefix argument ARG, restart the Prolog process if running before.
 
 ;;;***
 
-;;;### (autoloads (svn-status) "psvn" "psvn.el" (17595 51999))
+;;;### (autoloads (svn-status svn-checkout) "psvn" "psvn.el" (17617
+;;;;;;  52530))
 ;;; Generated autoloads from psvn.el
+
+(autoload (quote svn-checkout) "psvn" "\
+Run svn checkout REPOS-URL PATH.
+
+\(fn REPOS-URL PATH)" t nil)
+ (defalias 'svn-examine 'svn-status)
 
 (autoload (quote svn-status) "psvn" "\
 Examine the status of Subversion working copy in directory DIR.
-If ARG then pass the -u argument to `svn status'.
+If ARG is -, allow editing of the parameters. One could add -N to
+run svn status non recursively to make it faster.
+For every other non nil ARG pass the -u argument to `svn status', which
+asks svn to connect to the repository and check to see if there are updates
+there.
+
+If there is no .svn directory, examine if there is CVS and run
+`cvs-examine'. Otherwise ask if to run `dired'.
 
 \(fn DIR &optional ARG)" t nil)
 
@@ -1998,29 +1785,6 @@ how ssh X display tunelling interacts with frames on remote displays.
 
 ;;;***
 
-;;;### (autoloads (swbuff-kill-this-buffer swbuff-switch-to-next-buffer
-;;;;;;  swbuff-switch-to-previous-buffer) "swbuff" "swbuff.el" (17595
-;;;;;;  51999))
-;;; Generated autoloads from swbuff.el
-
-(autoload (quote swbuff-switch-to-previous-buffer) "swbuff" "\
-Switch to the previous buffer in the buffer list.
-
-\(fn)" t nil)
-
-(autoload (quote swbuff-switch-to-next-buffer) "swbuff" "\
-Switch to the next buffer in the buffer list.
-
-\(fn)" t nil)
-
-(autoload (quote swbuff-kill-this-buffer) "swbuff" "\
-Kill the current buffer.
-And update the status window if showing.
-
-\(fn)" t nil)
-
-;;;***
-
 ;;;### (autoloads (tabbar-local-mode tabbar-mode tabbar-forward-tab
 ;;;;;;  tabbar-backward-tab tabbar-forward-group tabbar-backward-group
 ;;;;;;  tabbar-forward tabbar-backward) "tabbar" "tabbar.el" (17595
@@ -2142,58 +1906,6 @@ and controlling the subjobs of the prolog.  See teyjus-mode.
 See also variable lprolog-prompt-pattern.
 
 \(Type \\[describe-mode] in the prolog buffer for a list of commands.)
-
-\(fn)" t nil)
-
-;;;***
-
-;;;### (autoloads (timbuk-mode) "timbuk" "timbuk.el" (17595 51999))
-;;; Generated autoloads from timbuk.el
-
-(autoload (quote timbuk-mode) "timbuk" "\
-Major mode for editing Timbuk code. \\<timbuk-mode-map>
-TAB indents for Timbuk code.  Delete converts tabs to spaces as it moves back.
-
-\\[timbuk-complete-word] completes the word around current point with respect to position in code
-\\[timbuk-show-completions] shows all possible completions at this point.
-
-Other useful functions are:
-
-\\[timbuk-mark-defun]	- Mark function.
-\\[timbuk-insert-block]	- insert begin ... end;
-\\[timbuk-star-comment]	- insert (* ... *)
-\\[timbuk-comment-area]	- Put marked area in a comment, fixing nested comments.
-\\[timbuk-uncomment-area]	- Uncomment an area commented with \\[timbuk-comment-area].
-\\[timbuk-beg-of-defun]	- Move to beginning of current function.
-\\[timbuk-end-of-defun]	- Move to end of current function.
-\\[timbuk-goto-defun]	- Goto function prompted for in the minibuffer.
-\\[timbuk-outline]	- Enter timbuk-outline-mode (see also timbuk-outline).
-
-Variables controlling indentation/edit style:
-
- timbuk-indent-level (default 3)
-    Indentation of Timbuk statements with respect to containing block.
- timbuk-case-indent (default 2)
-    Indentation for case statements.
- timbuk-auto-newline (default nil)
-    Non-nil means automatically newline after semicolons and the punctuation
-    mark after an end.
- timbuk-indent-nested-functions (default t)
-    Non-nil means nested functions are indented.
- timbuk-tab-always-indent (default t)
-    Non-nil means TAB in Timbuk mode should always reindent the current line,
-    regardless of where in the line point is when the TAB command is used.
- timbuk-auto-endcomments (default t)
-    Non-nil means a comment { ... } is set after the ends which ends cases and
-    functions. The name of the function or case will be set between the braces.
- timbuk-auto-lineup (default t)
-    List of contexts where auto lineup of :'s or ='s should be done.
-
-See also the user variables timbuk-type-keywords, timbuk-start-keywords and
-timbuk-separator-keywords.
-
-Turning on Timbuk mode calls the value of the variable timbuk-mode-hook with
-no args, if that value is non-nil.
 
 \(fn)" t nil)
 
@@ -2435,12 +2147,11 @@ Goes backward if ARG is negative; error if CHAR not found.
 ;;;;;;  "color-eldoc.el" "color-moccur.el" "color-mode.el" "css-mode.el"
 ;;;;;;  "dircolors.el" "dired-details.el" "elscreen.el" "emacs-type.el"
 ;;;;;;  "flashcard.el" "fracc.el" "grade.el" "highlight-current-line.el"
-;;;;;;  "http-post.el" "ll-debug.el" "longlines.el" "message-x.el"
-;;;;;;  "moccur-edit.el" "multi-region.el" "nntodo.el" "osd.el" "paredit.el"
-;;;;;;  "physical-line.el" "post.el" "project.el" "py-complete.el"
-;;;;;;  "remem.el" "scroll-in-place.el" "setnu.el" "sig.el" "todoo.el"
-;;;;;;  "typopunct.el" "visible-mark-mode.el" "xcscope.el" "xterm-extras.el")
-;;;;;;  (17615 8766 608844))
+;;;;;;  "http-post.el" "ll-debug.el" "message-x.el" "moccur-edit.el"
+;;;;;;  "multi-region.el" "nntodo.el" "osd.el" "paredit.el" "physical-line.el"
+;;;;;;  "post.el" "project.el" "py-complete.el" "scroll-in-place.el"
+;;;;;;  "sig.el" "typopunct.el" "visible-mark-mode.el" "xcscope.el"
+;;;;;;  "xterm-extras.el") (17802 18233 84854))
 
 ;;;***
 

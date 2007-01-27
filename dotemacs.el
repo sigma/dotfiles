@@ -44,7 +44,8 @@
 
 ;; Save minibuffer history between sessions
 (when (request 'savehist)
-  (savehist-load))
+  (savehist-mode 1)
+  (add-to-list 'savehist-additional-variables 'kill-ring))
 
 ;; Date in mode line
 (display-time)
@@ -57,7 +58,6 @@
   (setq time-stamp-active t)
   ;; Sets new format for the time stamp, also used with the creation tag.
   (setq time-stamp-format "%02d/%02m/%:y %02H:%02M:%02S %U")
-
   (add-hook 'before-save-hook 'time-stamp))
 
 ;; Default mode
@@ -164,7 +164,7 @@
 
 ;; common
 (request 'buffer-config)
-;; (request 'cedet-config)
+(request 'outline-config)
 (request 'org-config)
 (request 'calendar-config)
 
@@ -301,6 +301,7 @@
   (other-window -1))
 
 (make-main-frame)
+(init)
 
 ;; tidy up diffs when closing the file
 (defun kill-associated-diff-buf ()
@@ -427,8 +428,6 @@
            (request 'xterm-extras))
   (xterm-extra-keys))
 
-(request 'elscreen)
-
 (request 'w3m-load)
 
 ;;;_* Experimental
@@ -481,53 +480,13 @@
 (add-to-list 'auto-mode-alist '("\\.css\\'" . css-mode))
 (setq cssm-indent-function #'cssm-c-style-indenter)
 (setq cssm-indent-level '2)
-;;
-(add-hook 'php-mode-user-hook 'turn-on-font-lock)
 
-;; (when (request 'mmm-mode)
-;;   (setq mmm-global-mode 'maybe)
-;;   ;;
-;;   ;; set up an mmm group for fancy html editing
-;;   (mmm-add-group
-;;    'fancy-html
-;;    '(
-;;      (html-php-tagged
-;;       :submode php-mode
-;;       :face mmm-code-submode-face
-;;       :front "<[?]php"
-;;       :back "^[ \t]*[?]>")
-;;      (html-css-attribute
-;;       :submode css-mode
-;;       :face mmm-declaration-submode-face
-;;       :front "style=\""
-;;       :back "\"")))
-;;   ;;
-;;   ;; What files to invoke the new html-mode for?
-;;   (add-to-list 'auto-mode-alist '("\\.inc\\'" . html-mode))
-;;   (add-to-list 'auto-mode-alist '("\\.phtml\\'" . html-mode))
-;;   (add-to-list 'auto-mode-alist '("\\.php[34]?\\'" . html-mode))
-;;   (add-to-list 'auto-mode-alist '("\\.[sj]?html?\\'" . html-mode))
-;;   (add-to-list 'auto-mode-alist '("\\.jsp\\'" . html-mode))
-;;   ;;
-;;   ;; What features should be turned on in this html-mode?
-;;   (add-to-list 'mmm-mode-ext-classes-alist '(html-mode nil html-js))
-;;   (add-to-list 'mmm-mode-ext-classes-alist '(html-mode nil embedded-css))
-;;   (add-to-list 'mmm-mode-ext-classes-alist '(html-mode nil fancy-html))
-;;   ;;
-;;   ;; Not exactly related to editing HTML: enable editing help with mouse-3 in all sgml files
-;;   (defun go-bind-markup-menu-to-mouse3 ()
-;;     (define-key sgml-mode-map [(down-mouse-3)] 'sgml-tags-menu))
-;;   ;;
-;;   (add-hook 'sgml-mode-hook 'go-bind-markup-menu-to-mouse3))
+(add-hook 'php-mode-user-hook 'turn-on-font-lock)
 
 (add-to-list 'auto-mode-alist '("\\.[hi]\\'" . c++-mode))
 (add-to-list 'auto-mode-alist '("\\.djava\\'" . java-mode))
 (add-to-list 'auto-mode-alist '("\\.pro\\'" . makefile-mode))
 (add-to-list 'auto-mode-alist '("SCons\\(cript\\|truct\\)\\'" . python-mode))
-
-(when (request 'type-break)
-  (setq type-break-file-name nil)
-  (type-break-mode 1))
 
 ;(require 'allout)
 ;(allout-init t)
@@ -543,16 +502,14 @@
   )
 
 (when-configuration 'code
-;;  (request 'icicles-config)
-  (try
-   (server-mode 1)))
+  (try (server-mode 1)))
 
 ;;; Startup code
 (when (file-exists-p org-default-notes-file)
   (find-file org-default-notes-file)
   (setq default-directory "~/")
   (require 'calendar)
-  (when (require 'org nil t)
+  (when (request 'org)
     (call-interactively 'org-agenda-list)))
 
 (global-hl-line-hack-mode 1)

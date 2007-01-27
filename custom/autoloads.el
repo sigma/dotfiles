@@ -49,6 +49,14 @@
 (autoload 'turn-on-eldoc-mode "eldoc" "Activate eldoc" t nil)
 (autoload 'w3-speedbar-buttons "sb-w3" "s3 specific speedbar button generator.")
 (autoload 'irc "erc-config" "" t nil)
+(autoload 'blank-mode-on "blank-mode" "Turn on blank visualisation." t)
+(autoload 'blank-mode-off "blank-mode" "Turn off blank visualisation." t)
+(autoload 'blank-mode "blank-mode" "Toggle blank visualisation." t)
+(autoload 'blank-global-mode-on "blank-mode" "Turn on blank mode in every buffer." t)
+(autoload 'blank-global-mode-off "blank-mode" "Turn off blank mode in every buffer." t)
+(autoload 'blank-global-mode "blank-mode" "Toggle blank mode in every buffer." t)
+(autoload 'blank-mode-customize "blank-mode" "Customize blank visualisation." t)
+(autoload 'predictive-mode "predictive" "predictive" t)
 
 (provide 'autoloads)
 ;;; autoloads.el ends here

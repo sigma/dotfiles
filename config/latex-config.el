@@ -81,5 +81,13 @@
 (eval-after-load 'font-latex
   '(setq font-latex-fontify-script nil))
 
+(eval-after-load 'outline-config
+  '(add-hook 'LaTeX-mode-hook
+             (lambda ()
+               (outline-minor-mode 1)
+               (setq outline-promotion-headings
+                     '("\\chapter" "\\section" "\\subsection"
+                       "\\subsubsection" "\\paragraph" "\\subparagraph")))))
+
 (provide 'latex-config)
 ;;; latex-config.el ends here

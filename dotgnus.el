@@ -93,6 +93,11 @@
 ;; Use topics
 (add-hook 'gnus-group-mode-hook 'gnus-topic-mode)
 
+(setq gnus-group-jump-to-group-prompt '((0 . "nnimap+ImapHome:INBOX")
+                                        (1 . "nnimap+ImapLifl:")
+                                        (2 . "nnml:")
+                                        (3 . "nntp+free:")))
+
 (setq
  gnus-thread-hide-subtree t
  gnus-suppress-duplicates t

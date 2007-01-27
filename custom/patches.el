@@ -27,7 +27,7 @@
 ;; has nothing to do with me :-)
 
 ;;; Code:
-(eval-when-compile (require 'cl))
+(require 'cl)
 
 (defmacro try (&rest code)
   "Execute `code' failing silently"
@@ -140,9 +140,10 @@ is not nil, then in case of no success, this value is returned"
 (setq disabled-command-function nil)
 
 ;; Why the f*** has it been removed ??
-(add-hook 'custom-mode-hook
-          (lambda ()
-            (define-key custom-mode-map "\^m" 'widget-button-press)))
+(eval-after-load 'cus-edit
+  '(add-hook 'custom-mode-hook
+             (lambda ()
+               (define-key custom-mode-map "\^m" 'widget-button-press))))
 
 ;; scroll-margin does not work with hl-line :-(
 (defvar top-margin)
@@ -321,10 +322,12 @@ activate-mark-hook"
 (require 'generic-x)
 
 (mouse-sel-mode 1)
+
 ;;; default function doesn't honour yank-excluded-properties
-(defadvice mouse-insert-selection-internal (around mouse-insert-selection-internal-yank act)
-  (flet ((insert (str) (insert-for-yank str)))
-      ad-do-it))
+(eval-after-load 'mouse-sel
+  '(defadvice mouse-insert-selection-internal (around mouse-insert-selection-internal-yank act)
+     (flet ((insert (str) (insert-for-yank str)))
+       ad-do-it)))
 
 ;; If the *scratch* buffer is killed, recreate it automatically
 ;; FROM: Morten Welind

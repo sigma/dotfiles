@@ -1,3 +1,23 @@
+2007-01-27  Yann Hodique  <Yann.Hodique@lifl.fr>
+
+	* lib/outline-magic.el: initial checkin
+
+	* lib/lua-mode.el: initial checkin
+
+	* lib/blank-mode.el: initial checkin
+
+	* dotemacs.el (savehist): save kill-ring accross sessions
+
+	* custom/autoloads.el (autoload): autoload blanc-mode and predictive
+
+	* config/winring-config.el (eval-when-compile): fix compilation
+
+	* config/outline-config.el: initial checkin
+
+	* config/latex-config.el (outline-config): configure outline for LaTeX-mode
+
+	* config/buffer-config.el (eval-when-compile): fix compilation
+
 2006-12-19  Yann Hodique  <Yann.Hodique@lifl.fr>
 
 	* lib/paredit.el: upgrade to latest beta
