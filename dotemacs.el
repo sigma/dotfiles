@@ -330,6 +330,13 @@
 (global-set-key (kbd "C-c f") 'find-function)
 (global-set-key (kbd "C-c F") 'find-function-on-key)
 
+;; Enter a recursive edit. C-M-c will bring back exactly there
+(global-set-key (kbd "C-c r") (lambda ()
+                                (interactive)
+                                (save-window-excursion
+                                  (save-excursion
+                                    (recursive-edit)))))
+
 (global-set-key (kbd "<C-tab>") 'other-window)
 
 ;; These were traditional bindings, why did they change??

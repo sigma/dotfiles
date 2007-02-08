@@ -75,5 +75,13 @@ a new heading WITHOUT moving the tags"
   "Restore the tags alignment after changing priorities"
   (and org-auto-align-tags (org-set-tags nil t)))
 
+(defmadvice (org-agenda)
+  (around ecb-org act)
+  "Inhibit minimization of compile window when ecb is active"
+  (flet ((ecb-toggle-compile-window (&rest args) nil))
+    ad-do-it))
+
+
+
 (provide 'org-config)
 ;;; org-config.el ends here
