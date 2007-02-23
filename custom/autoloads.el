@@ -33,7 +33,6 @@
 (autoload 'css-mode "css-mode" "Major mode for editing CSS style sheets.
 \\{cssm-mode-map}" t nil)
 (autoload 'doxymacs-mode "doxymacs" "mode help" t nil)
-(autoload 'ecb-activate "ecb" "Emacs Code Browser" t nil)
 (autoload 'gnuserv-start "gnuserv-compat" "Allow this Emacs process to be a server for client processes." t)
 (autoload 'guile-scheme-mode "guile-scheme" "" t nil)
 (autoload 'htmlize-buffer "htmlize" "Provide an html page from the current buffer" t nil)
@@ -44,8 +43,6 @@
 (autoload 'make-regexp "make-regexp" "Return a regexp to match a string item in STRINGS.")
 (autoload 'make-regexps "make-regexp" "Return a regexp to REGEXPS.")
 (autoload 'rpm "sb-rpm" "Rpm package listing in speedbar.")
-(autoload 'speedbar-frame-mode "speedbar" "Popup a speedbar frame" t)
-(autoload 'speedbar-get-focus "speedbar" "Jump to speedbar frame" t)
 (autoload 'turn-on-eldoc-mode "eldoc" "Activate eldoc" t nil)
 (autoload 'w3-speedbar-buttons "sb-w3" "s3 specific speedbar button generator.")
 (autoload 'irc "erc-config" "" t nil)

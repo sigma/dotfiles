@@ -265,12 +265,13 @@
 ;; My init function for main window
 (defun init ()
   (interactive)
-  (let ((act (request 'winring)))
-    (ecb-activate)
-    (when act
-      (progn
-        (ecb-winman-winring-enable-support)
-        (winring-initialize)))))
+  (when (request 'ecb)
+    (let ((act (request 'winring)))
+      (ecb-activate)
+      (when act
+	(progn
+	  (ecb-winman-winring-enable-support)
+	  (winring-initialize))))))
 
 (request 'server)
 (defun root-portal ()
@@ -512,7 +513,8 @@
   (try (server-mode 1)))
 
 ;;; Startup code
-(when (file-exists-p org-default-notes-file)
+(when (and (boundp 'org-default-notes-file)
+	   (file-exists-p org-default-notes-file))
   (find-file org-default-notes-file)
   (setq default-directory "~/")
   (require 'calendar)
