@@ -45,11 +45,7 @@
   (turn-on-eldoc-mode)
   (paredit-mode +1))
 
-(add-mhook '(emacs-lisp-mode-hook
-             lisp-interaction-mode-hook
-             ielm-mode-hook
-             lisp-mode-hook
-             slime-repl-mode-hook)
+(add-mhook '(emacs-lisp-mode-hook lisp-interaction-mode-hook ielm-mode-hook lisp-mode-hook slime-repl-mode-hook)
            'yh/lisp-hook t)
 
 (defun yh/insert-elisp-key ()

@@ -36,7 +36,7 @@
 (add-hook 'outline-minor-mode-hook
           (lambda ()
             (when (request 'outline-magic)
-              (define-key outline-minor-mode-map [(f10)] 'outline-cycle))))
+              (define-key outline-minor-mode-map (kbd "<tab>") 'outline-cycle))))
 
 (provide 'outline-config)
 ;;; outline-config.el ends here

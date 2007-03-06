@@ -164,31 +164,6 @@
   (interactive)
   ;; offset customizations not in my-c-style
   (c-set-offset 'member-init-intro '++)
-  ;; Regular expression for the outline mode.
-  ;; Enable outline mode with M-x outline-minor-mode
-  (setq outline-regexp (concat
-			"^"		; beginning of line is required
-			"\\(template[ \t]*<[^>]+>[ \t]*\\)?" ; there may be a "template <...>"
-			"\\([a-zA-Z0-9_:]+[ \t]+\\)?" ; type specs; there can be no
-			"\\([a-zA-Z0-9_:]+[ \t]+\\)?" ; more than 3 tokens, right?
-
-			"\\("		; last type spec including */&
-			"[a-zA-Z0-9_:]+"
-			"\\([ \t]*[*&]+[ \t]*\\|[ \t]+\\)" ; either pointer/ref sign or whitespace
-			"\\)?"		; if there is a last type spec
-			"\\("		; name; take that into the imenu entry
-			"[a-zA-Z0-9_:~]+" ; member function, ctor or dtor...
-					; (may not contain * because then
-					; "a::operator char*" would become "char*"!)
-			"\\|"
-			"\\([a-zA-Z0-9_:~]*::\\)?operator"
-			"[^a-zA-Z1-9_][^(]*" ; ...or operator
-			" \\)"
-			"[ \t]*([^)]*)[ \t\n]*[^ ;]" ; require something other than a ; after
-			))
-
-  ;; Figure out this one later
-;;  (setq outline-heading-end-regexp "^{\n")
 
   ;; We want spaces instead of real tabs.
   (setq indent-tabs-mode nil)
@@ -216,7 +191,6 @@
                                  (progn
                                    (newline-and-indent)
                                    (insert "* "))))
-  (outline-minor-mode)
   (define-key esc-map "\t" 'project-expand-symbol)
 
   (setq c-opt-access-key "\\(p\\(?:r\\(?:ivate\\|otected\\)\\|ublic\\)\\|slots\\|signals\\)[ 	\n\f]*\\(?:[ 	\n\f]slots\\)?:")
@@ -226,9 +200,6 @@
   (interactive)
   ;; offset customizations not in my-c-style
   (c-set-offset 'member-init-intro '+)
-  ;; Regular expression for the outline mode.
-  ;; Enable outline mode with M-x outline-minor-mode
-  (setq outline-regexp "^[ \t\n\r\f]*function[ \t\n\r\f]+[a-zA-Z_0-9]+([^)]*)")
 
   ;; We want spaces instead of real tabs.
   (setq indent-tabs-mode nil)
@@ -543,8 +514,7 @@
 (add-hook 'python-mode-hook
           (lambda ()
             (set (make-variable-buffer-local 'beginning-of-defun-function)
-                 'py-beginning-of-def-or-class)
-            (setq outline-regexp "def\\|class ")))
+                 'py-beginning-of-def-or-class)))
 
 ;; (autoload 'py-complete-init "py-complete")
 ;; (add-hook 'python-mode-hook 'py-complete-init)

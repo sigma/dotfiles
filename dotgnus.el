@@ -11,6 +11,9 @@
 (if (file-exists-p (expand-file-name "~/.gnus-local.el"))
     (load-file (expand-file-name "~/.gnus-local.el")))
 
+(require 'gnus-dired)
+(add-hook 'dired-mode-hook 'turn-on-gnus-dired-mode)
+
 (require 'message-x)
 
 ;; Define url catchers

@@ -34,8 +34,49 @@
   (require 'dired)
   (require 'dired-x))
 
-(eval-after-load "buff-menu" '(request 'buff-menu+))
-(global-set-key (kbd "C-x C-b") 'buffer-menu)
+;; (eval-after-load "buff-menu" '(request 'buff-menu+))
+;; (global-set-key (kbd "C-x C-b") 'buffer-menu)
+
+(global-set-key (kbd "C-x C-b") 'ibuffer)
+
+;; default groups for ibuffer
+(setq ibuffer-saved-filter-groups
+      (quote (("default"
+               ("emacs" (or
+                         (name . "^\\*scratch\\*$")
+                         (name . "^\\*Messages\\*$")))
+               ("org" (mode . org-mode))
+               ("latex" (or
+                         (mode . LaTeX-mode)
+                         (mode . latex-mode)))
+               ("C(++)" (or
+                         (mode . c-mode)
+                         (mode . c++-mode)))
+               ("Java" (mode . java-mode))
+               ("lisp" (or
+                        (mode . emacs-lisp-mode)
+                        (mode . lisp-interaction-mode)
+                        (mode . ielm-mode)
+                        (mode . lisp-mode)
+                        (mode . slime-repl-mode)))
+               ("dired" (mode . dired-mode))
+               ("circe" (mode . circe-mode))
+               ("gnus" (or
+                        (mode . message-mode)
+                        (mode . bbdb-mode)
+                        (mode . mail-mode)
+                        (mode . gnus-group-mode)
+                        (mode . gnus-summary-mode)
+                        (mode . gnus-article-mode)
+                        (name . "^\\.bbdb$")
+                        (name . "^\\.newsrc-dribble")))))))
+
+;; ibuffer, I like my buffers to be grouped
+(add-hook 'ibuffer-mode-hook
+          (lambda ()
+            (local-set-key (kbd "r") 'ibuffer-update)
+            (ibuffer-switch-to-saved-filter-groups
+             "default")))
 
 (add-hook 'dired-load-hook
           (lambda ()

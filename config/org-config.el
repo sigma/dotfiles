@@ -25,22 +25,14 @@
 ;;
 
 ;;; Code:
+(require 'org)
 
 (add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
 
+(define-key org-mode-map (kbd "<C-tab>") nil)
+
 (define-key global-map "\C-cl" 'org-store-link)
 (define-key global-map "\C-ca" 'org-agenda)
-
-(setq org-CUA-compatible t)
-
-(when (request 'remember)
-  (setq org-default-notes-file "notes.org")
-  (autoload 'org-remember-annotation "org")
-  (autoload 'org-remember-apply-template "org")
-  (autoload 'org-remember-handler "org")
-  (setq remember-annotation-functions '(org-remember-annotation))
-  (setq remember-handler-functions '(org-remember-handler))
-  (add-hook 'remember-mode-hook 'org-remember-apply-template))
 
 (setq org-agenda-include-diary t
       org-log-done t
@@ -48,7 +40,18 @@
       org-archive-stamp-time nil
       org-lowest-priority 69
       org-tags-column -79
-      org-todo-keywords '("TODO" "WAITING" "STARTED" "DONE"))
+      org-todo-keywords '("TODO" "STARTED" "DONE"))
+
+(when (request 'remember)
+  (setq remember-annotation-functions '(org-remember-annotation))
+  (setq remember-handler-functions '(org-remember-handler))
+  (add-hook 'remember-mode-hook 'org-remember-apply-template)
+
+  (setq org-remember-templates
+        `((?t "* TODO %?\n  %i\n  %a" ,org-default-notes-file "Misc")
+          (?n "* NEXTACTION %?\n  %i\n  %a" ,org-default-notes-file "Misc")
+          (?w "* WAITING %?\n  %i\n  %a" ,org-default-notes-file "Misc")
+          (?m "* MAYBE %?\n  %i\n  %a" ,org-default-notes-file "Misc"))))
 
 (global-set-key (kbd "C-c t") 'fc-toggle-notes)
 (defun fc-toggle-notes ()
@@ -80,8 +83,6 @@ a new heading WITHOUT moving the tags"
   "Inhibit minimization of compile window when ecb is active"
   (flet ((ecb-toggle-compile-window (&rest args) nil))
     ad-do-it))
-
-
 
 (provide 'org-config)
 ;;; org-config.el ends here

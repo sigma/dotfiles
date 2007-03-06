@@ -6,8 +6,8 @@
 ;; Hi-lock: ((";; \\(.*\\)" (1 'italic append)))
 ;; Hi-lock: end
 
-(toggle-debug-on-error)
-
+;; (toggle-debug-on-error)
+
 ;;;_* Basis
 
 ;; load code specific to some major version
@@ -105,7 +105,7 @@
 (setq read-file-name-completion-ignore-case t)
 
 (require 'autoloads)
-
+
 ;;;_* Charsets & languages
 
 (add-to-list 'ispell-dictionary-alist '("latin" "[A-Za-z]" "[^A-Za-z]" "[']" nil nil "~tex" iso-8859-1))
@@ -136,7 +136,7 @@
   (insert (make-char 'latin-iso8859-15 #xBD)))
 
 (global-set-key (kbd "H-o H-e") 'sk-insert-oe)
-
+
 ;;;_* Packages configuration
 
 ;; I use emacs in 4 different ways from the command line:
@@ -189,27 +189,26 @@
     ;; (request 'pmwiki-config)
     (request 'psvn-config)))
 
-(unless-configuration 'minimal
-  (unless-configuration 'mail
-    (request 'changelog-config)
-    (request 'compile-config)
-    (request 'ediff-config)
-    ;; (request 'speedbar-config)
-    (request 'doxymacs-config)
-    (request 'latex-config)
-    ;; (request 'highlight-changes-config)
-    ;; (request 'fracc-config)
-    (request 'paren-config)
-    (request 'lisp-config)
-    (request 'slime-config)
-    (request 'shell-config)
-    (request 'mycode)
-    (request 'project-config)
-    (request 'completion-config)
-    (request 'crontab-config)
-    ;; (request 'flashcard-config)
-    (request 'vc-config)))
-
+(when-configuration 'code
+  (request 'changelog-config)
+  (request 'compile-config)
+  (request 'ediff-config)
+  ;; (request 'speedbar-config)
+  (request 'doxymacs-config)
+  (request 'latex-config)
+  ;; (request 'highlight-changes-config)
+  ;; (request 'fracc-config)
+  (request 'paren-config)
+  (request 'lisp-config)
+  (request 'slime-config)
+  (request 'shell-config)
+  (request 'mycode)
+  (request 'project-config)
+  (request 'completion-config)
+  (request 'crontab-config)
+  ;; (request 'flashcard-config)
+  (request 'vc-config))
+
 ;;;_* Utils/Functions
 
 (make-double-command my-home ()
@@ -313,7 +312,7 @@
       (kill-buffer buf))))
 
 (add-hook 'kill-buffer-hook 'kill-associated-diff-buf)
-
+
 ;;;_* Global key bindings
 
 (global-set-key (kbd "<C-backspace>") 'kill-syntax-backward)
@@ -327,6 +326,7 @@
 (global-set-key (kbd "C-c c") 'compile)
 (global-set-key (kbd "C-c g") 'goto-line)
 (global-set-key (kbd "C-c o") 'my-occur)
+(global-set-key (kbd "C-c u") 'remember)
 (global-set-key (kbd "C-c e") 'fc-eval-and-replace)
 (global-set-key (kbd "C-c f") 'find-function)
 (global-set-key (kbd "C-c F") 'find-function-on-key)
@@ -396,7 +396,14 @@
 (global-set-key (kbd "C-c h") 'auto-insert)
 ;;(global-set-key (kbd "C-x C-f") 'find-file-guessing)
 
-(define-key global-map (kbd "H-s") 'isearchb-activate)
+(global-set-key (kbd "H-s") 'isearchb-activate)
+
+(define-key isearch-mode-map (kbd "C-o")
+  (lambda ()
+    (interactive)
+    (let ((case-fold-search isearch-case-fold-search))
+      (occur (if isearch-regexp isearch-string
+               (regexp-quote isearch-string))))))
 
 (global-set-key (kbd "<f5>")
                 (lambda () (interactive)
@@ -437,42 +444,19 @@
   (xterm-extra-keys))
 
 (request 'w3m-load)
-
+
 ;;;_* Experimental
 
-(defun wrap-yank (beg end &optional arg)
-  (interactive "rP")
-  (save-excursion
-    (goto-char end)
-    (yank)
-    (when arg
-      (newline))
-    (goto-char beg)
-    (yank 2)
-    (when arg
-      (newline))))
+(when (request 'linkd)
+  (add-hook 'org-mode-hook 'linkd-mode))
 
-(global-set-key (kbd "C-M-y") 'wrap-yank)
+(when (request 'pp-c-l)
+  (pretty-control-l-mode 1))
 
 (autoload 'graphviz-dot-mode "graphviz-dot-mode" "" t nil)
 (add-to-list 'auto-mode-alist '("\\.dot\\'" . graphviz-dot-mode))
 
-;; (when (request 'fold-dwim)
-;;   (unless (boundp 'folding-mode)
-;;     (setq folding-mode nil))
-;;   (setq fold-dwim-outline-style-default 'nested)
-;;   (global-set-key (kbd "<f7>")      'fold-dwim-toggle)
-;;   (global-set-key (kbd "<M-f7>")    'fold-dwim-hide-all)
-;;   (global-set-key (kbd "<S-M-f7>")  'fold-dwim-show-all))
-
-(when (request 'emms-setup)
-  (emms-standard)
-  (emms-default-players)
-  (global-set-key (kbd "C-c m") 'emms-playlist-mode-go))
-
 (add-to-list 'auto-mode-alist '("\\.hlal\\'" . c-mode))
-
-(request 'bookmark)
 
 (request 'incr)
 
@@ -496,30 +480,20 @@
 (add-to-list 'auto-mode-alist '("\\.pro\\'" . makefile-mode))
 (add-to-list 'auto-mode-alist '("SCons\\(cript\\|truct\\)\\'" . python-mode))
 
-;(require 'allout)
-;(allout-init t)
-
 (global-set-key (kbd "C-x t") 'anchored-transpose)
 (autoload 'anchored-transpose "anchored-transpose" nil t)
-
-(autoload 'run-acl2 "top-start-inferior-acl2" "Begin ACL2 in an inferior ACL2 mode buffer." t)
-
-(when-configuration 'proof
-  (require 'proof-site)
-  ;; (setq coq-version-is-V8-1 t)
-  )
 
 (when-configuration 'code
   (try (server-mode 1)))
 
 ;;; Startup code
+(require 'org)
 (when (and (boundp 'org-default-notes-file)
 	   (file-exists-p org-default-notes-file))
   (find-file org-default-notes-file)
-  (setq default-directory "~/")
   (require 'calendar)
-  (when (request 'org)
-    (call-interactively 'org-agenda-list)))
+  (call-interactively 'org-agenda-list)
+  (eshell))
 
 (global-hl-line-hack-mode 1)
 
