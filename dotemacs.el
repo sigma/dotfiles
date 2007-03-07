@@ -447,6 +447,10 @@
 
 ;;;_* Experimental
 
+;; Just in case compose is broken...
+(define-key key-translation-map (kbd "<Multi_key>") 'iso-transl-ctl-x-8-map)
+(autoload 'iso-transl-ctl-x-8-map "iso-transl" "Keymap for C-x 8 prefix." t 'keymap)
+
 (when (request 'linkd)
   (add-hook 'org-mode-hook 'linkd-mode))
 

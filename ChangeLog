@@ -1,3 +1,11 @@
+2007-03-07  Yann Hodique  <Yann.Hodique@lifl.fr>
+
+	* dotgnus.el: disable broken signature
+
+	* dotemacs.el: add code for using <Multi_key> as an alias for C-x 8
+
+	* config/buffer-config.el (ibuffer-saved-filter-groups): fix circe group
+
 2007-02-08  Yann Hodique  <Yann.Hodique@lifl.fr>
 
 	* dotemacs.el: added useful wrapper to recursive-edit

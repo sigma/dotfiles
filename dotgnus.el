@@ -754,7 +754,7 @@ Must be called from the `gnus-select-group-hook'."
   (quote (setq mm-automatic-display (remove "application/pgp-signature"
                                             mm-automatic-display))))
 
-(add-hook 'gnus-message-setup-hook 'mml-secure-message-sign-pgpmime)
+;; (add-hook 'gnus-message-setup-hook 'mml-secure-message-sign-pgpmime)
 
 (require 'gnus-sum)
 (require 'nntodo)

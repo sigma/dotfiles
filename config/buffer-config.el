@@ -60,7 +60,11 @@
                         (mode . lisp-mode)
                         (mode . slime-repl-mode)))
                ("dired" (mode . dired-mode))
-               ("circe" (mode . circe-mode))
+               ("circe" (or
+                         (mode . circe-mode)
+                         (mode . circe-server-mode)
+                         (mode . circe-query-mode)
+                         (mode . circe-channel-mode)))
                ("gnus" (or
                         (mode . message-mode)
                         (mode . bbdb-mode)
