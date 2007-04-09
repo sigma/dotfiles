@@ -59,6 +59,7 @@
                         (mode . ielm-mode)
                         (mode . lisp-mode)
                         (mode . slime-repl-mode)))
+               ("python" (mode . python-mode))
                ("dired" (mode . dired-mode))
                ("circe" (or
                          (mode . circe-mode)

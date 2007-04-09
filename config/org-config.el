@@ -26,6 +26,7 @@
 
 ;;; Code:
 (require 'org)
+(require 'org-publish)
 
 (add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
 

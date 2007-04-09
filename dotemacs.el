@@ -190,6 +190,7 @@
     (request 'psvn-config)))
 
 (when-configuration 'code
+  (request 'bm-config)
   (request 'changelog-config)
   (request 'compile-config)
   (request 'ediff-config)
@@ -202,6 +203,7 @@
   (request 'lisp-config)
   (request 'slime-config)
   (request 'shell-config)
+  (request 'python-config)
   (request 'mycode)
   (request 'project-config)
   (request 'completion-config)
@@ -317,7 +319,7 @@
 
 (global-set-key (kbd "<C-backspace>") 'kill-syntax-backward)
 
-(global-set-key (kbd "C-c +") 'increment-number-at-point)
+(global-set-key (kbd "C-c +") 'incr-dwim)
 
 (global-set-key (kbd "<f3>") 'ecb-toggle-compile-window)
 ;; Depending on your keyboard you may want another one binding
@@ -462,7 +464,11 @@
 
 (add-to-list 'auto-mode-alist '("\\.hlal\\'" . c-mode))
 
-(request 'incr)
+(autoload 'javascript-mode "javascript" nil t)
+(add-to-list 'auto-mode-alist '("\\.js\\'" . javascript-mode))
+
+(when (request 'incr)
+  (delq 'rotate incr-enable-feature))
 
 ;; (setq sgml-warn-about-undefined-entities nil)
 
@@ -482,7 +488,6 @@
 (add-to-list 'auto-mode-alist '("\\.[hi]\\'" . c++-mode))
 (add-to-list 'auto-mode-alist '("\\.djava\\'" . java-mode))
 (add-to-list 'auto-mode-alist '("\\.pro\\'" . makefile-mode))
-(add-to-list 'auto-mode-alist '("SCons\\(cript\\|truct\\)\\'" . python-mode))
 
 (global-set-key (kbd "C-x t") 'anchored-transpose)
 (autoload 'anchored-transpose "anchored-transpose" nil t)

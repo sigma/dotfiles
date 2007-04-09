@@ -169,6 +169,55 @@ by me.
 
 ;;;***
 
+;;;### (autoloads (blank-global-mode-off blank-global-mode-on blank-global-mode
+;;;;;;  blank-mode-off blank-mode-on blank-mode blank-mode-customize)
+;;;;;;  "blank-mode" "blank-mode.el" (17842 40252))
+;;; Generated autoloads from blank-mode.el
+
+(autoload (quote blank-mode-customize) "blank-mode" "\
+Customize blank-mode options.
+
+\(fn)" t nil)
+
+(autoload (quote blank-mode) "blank-mode" "\
+Toggle blank minor mode visualisation (bl on modeline).
+
+If ARG is null, toggle blank visualisation.
+If ARG is a number and is greater than zero, turn on visualisation; otherwise,
+turn off visualisation.
+
+\(fn &optional ARG)" t nil)
+
+(autoload (quote blank-mode-on) "blank-mode" "\
+Turn on blank minor mode visualisation (bl on modeline).
+
+\(fn)" t nil)
+
+(autoload (quote blank-mode-off) "blank-mode" "\
+Turn off blank minor mode visualisation (bl on modeline).
+
+\(fn)" t nil)
+
+(autoload (quote blank-global-mode) "blank-mode" "\
+Toggle blank global minor mode visualisation (BL on modeline).
+
+With ARG, turn highline mode on if ARG is positive, off otherwise.
+Only useful with a windowing system.
+
+\(fn &optional ARG)" t nil)
+
+(autoload (quote blank-global-mode-on) "blank-mode" "\
+Turn on blank global minor mode visualisation (BL on modeline).
+
+\(fn)" t nil)
+
+(autoload (quote blank-global-mode-off) "blank-mode" "\
+Turn off blank global minor mode visualisation (BL on modeline).
+
+\(fn)" t nil)
+
+;;;***
+
 ;;;### (autoloads (turn-on-jde-blockcomment-mode turn-on-blockcomment-mode
 ;;;;;;  jde-blockcomment-mode blockcomment-mode) "block-comm" "block-comm.el"
 ;;;;;;  (17595 51999))
@@ -959,6 +1008,21 @@ Not documented
 
 ;;;***
 
+;;;### (autoloads (javascript-mode) "javascript" "javascript.el"
+;;;;;;  (17809 11220))
+;;; Generated autoloads from javascript.el
+
+(autoload (quote javascript-mode) "javascript" "\
+Major mode for editing JavaScript source text.
+
+Key bindings:
+
+\\{javascript-mode-map}
+
+\(fn)" t nil)
+
+;;;***
+
 ;;;### (autoloads (lua-mode) "lua-mode" "lua-mode.el" (17785 12703))
 ;;; Generated autoloads from lua-mode.el
 
@@ -1417,8 +1481,8 @@ With prefix argument ARG, restart the Prolog process if running before.
 
 ;;;***
 
-;;;### (autoloads (svn-status svn-checkout) "psvn" "psvn.el" (17617
-;;;;;;  52530))
+;;;### (autoloads (svn-status svn-checkout) "psvn" "psvn.el" (17851
+;;;;;;  31862))
 ;;; Generated autoloads from psvn.el
 
 (autoload (quote svn-checkout) "psvn" "\
@@ -1439,74 +1503,6 @@ If there is no .svn directory, examine if there is CVS and run
 `cvs-examine'. Otherwise ask if to run `dired'.
 
 \(fn DIR &optional ARG)" t nil)
-
-;;;***
-
-;;;### (autoloads (py-shell python-mode) "python-mode" "python-mode.el"
-;;;;;;  (17595 52000))
-;;; Generated autoloads from python-mode.el
-
-(autoload (quote python-mode) "python-mode" "\
-Major mode for editing Python files.
-To submit a problem report, enter `\\[py-submit-bug-report]' from a
-`python-mode' buffer.  Do `\\[py-describe-mode]' for detailed
-documentation.  To see what version of `python-mode' you are running,
-enter `\\[py-version]'.
-
-This mode knows about Python indentation, tokens, comments and
-continuation lines.  Paragraphs are separated by blank lines only.
-
-COMMANDS
-\\{py-mode-map}
-VARIABLES
-
-py-indent-offset		indentation increment
-py-block-comment-prefix		comment string used by `comment-region'
-py-python-command		shell command to invoke Python interpreter
-py-temp-directory		directory used for temp files (if needed)
-py-beep-if-tab-change		ring the bell if `tab-width' is changed
-
-\(fn)" t nil)
-
-(autoload (quote py-shell) "python-mode" "\
-Start an interactive Python interpreter in another window.
-This is like Shell mode, except that Python is running in the window
-instead of a shell.  See the `Interactive Shell' and `Shell Mode'
-sections of the Emacs manual for details, especially for the key
-bindings active in the `*Python*' buffer.
-
-With optional \\[universal-argument], the user is prompted for the
-flags to pass to the Python interpreter.  This has no effect when this
-command is used to switch to an existing process, only when a new
-process is started.  If you use this, you will probably want to ensure
-that the current arguments are retained (they will be included in the
-prompt).  This argument is ignored when this function is called
-programmatically, or when running in Emacs 19.34 or older.
-
-Note: You can toggle between using the CPython interpreter and the
-JPython interpreter by hitting \\[py-toggle-shells].  This toggles
-buffer local variables which control whether all your subshell
-interactions happen to the `*JPython*' or `*Python*' buffers (the
-latter is the name used for the CPython buffer).
-
-Warning: Don't use an interactive Python if you change sys.ps1 or
-sys.ps2 from their default values, or if you're running code that
-prints `>>> ' or `... ' at the start of a line.  `python-mode' can't
-distinguish your output from Python's output, and assumes that `>>> '
-at the start of a line is a prompt from Python.  Similarly, the Emacs
-Shell mode code assumes that both `>>> ' and `... ' at the start of a
-line are Python prompts.  Bad things can happen if you fool either
-mode.
-
-Warning:  If you do any editing *in* the process buffer *while* the
-buffer is accepting output from Python, do NOT attempt to `undo' the
-changes.  Some of the output (nowhere near the parts you changed!) may
-be lost if you do.  This appears to be an Emacs bug, an unfortunate
-interaction between undo and process filters; the same problem exists in
-non-Python process buffers using the default (Emacs-supplied) process
-filter.
-
-\(fn &optional ARGPROMPT)" t nil)
 
 ;;;***
 
@@ -2147,11 +2143,12 @@ Goes backward if ARG is negative; error if CHAR not found.
 ;;;;;;  "color-eldoc.el" "color-moccur.el" "color-mode.el" "css-mode.el"
 ;;;;;;  "dircolors.el" "dired-details.el" "elscreen.el" "emacs-type.el"
 ;;;;;;  "flashcard.el" "fracc.el" "grade.el" "highlight-current-line.el"
-;;;;;;  "http-post.el" "ll-debug.el" "message-x.el" "moccur-edit.el"
-;;;;;;  "multi-region.el" "nntodo.el" "osd.el" "paredit.el" "physical-line.el"
-;;;;;;  "post.el" "project.el" "py-complete.el" "scroll-in-place.el"
-;;;;;;  "sig.el" "typopunct.el" "visible-mark-mode.el" "xcscope.el"
-;;;;;;  "xterm-extras.el") (17802 18233 84854))
+;;;;;;  "http-post.el" "ll-debug.el" "magpie.el" "message-x.el" "moccur-edit.el"
+;;;;;;  "multi-region.el" "nntodo.el" "osd.el" "outline-magic.el"
+;;;;;;  "paredit.el" "physical-line.el" "post.el" "pp-c-l.el" "project.el"
+;;;;;;  "py-complete.el" "scroll-in-place.el" "sig.el" "typopunct.el"
+;;;;;;  "visible-mark-mode.el" "xcscope.el" "xterm-extras.el") (17929
+;;;;;;  18411 453007))
 
 ;;;***
 

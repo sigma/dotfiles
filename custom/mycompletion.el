@@ -158,8 +158,7 @@
 ;; Thanks to Klaus Berndl for code
 (require 'hippie-exp)
 (setq hippie-expand-try-functions-list
-      '(
-        tempo-complete-tag
+      '(tempo-complete-tag
 	try-expand-dabbrev
 	try-expand-dabbrev-all-buffers
 	try-expand-dabbrev-from-kill
@@ -180,9 +179,8 @@
   (let ((old-case-fold-search case-fold-search))
     (setq case-fold-search nil)
     (hippie-expand arg)
-    (setq case-fold-search old-case-fold-search)
-    )
-  )
+    (setq case-fold-search old-case-fold-search)))
+
 ;; all expansion is done by 'my-hippie-expand bound to C-Return!
 (global-set-key (quote [(control return)]) (quote my-hippie-expand))
 

@@ -1,4 +1,4 @@
-;;; mycode.el --- everything I need to code around
+;;; cc-config.el ---
 
 ;; Copyright (C) 2003  Free Software Foundation, Inc.
 
@@ -26,11 +26,7 @@
 
 ;;; Code:
 
-;; (require 'cc-cmds)
 (require 'patches)
-
-(if (not (fboundp 'emacs-type-is-regular))
-    (defun emacs-type-is-regular () t))
 
 ;---------------------------------------------------------------------
 ; C++ mode modifications
@@ -38,125 +34,65 @@
 
 ;; Define a new regexp for font-lock-mode
 ;; DONT'T MESS WITH IT
-(if (emacs-type-is-regular)
-    (defconst c++-new-font-lock-keywords
-      (list
-       '("\\<[0-9]+\\.[0-9]+\\>" (0 font-lock-floatnumber-face))
-       '("^#[ 	]*error[ 	]+\\(.+\\)"
-         (1 font-lock-warning-face prepend))
-       '("^#[ 	]*\\(import\\|include\\)[ 	]*\\(<[^>\"\n]*>?\\)"
-         (2 font-lock-string-face))
-       '("^#[ 	]*define[ 	]+\\(\\sw+\\)("
-         (1 font-lock-function-name-face))
-       '("^#[ 	]*\\(elif\\|if\\)\\>"
-         ("\\<\\(defined\\)\\>[ 	]*(?\\(\\sw+\\)?" nil nil
-          (1 font-lock-builtin-face)
-          (2 font-lock-variable-name-face nil t)))
-       '("^#[ 	]*\\(\\sw+\\)\\>[ 	!]*\\(\\sw+\\)?"
-         (1 font-lock-builtin-face)
-         (2 font-lock-variable-name-face nil t))
-       '("\\<\\(public\\|private\\|protected\\)\\>[ \t]+\\(\\<\\(signals\\|slots\\)\\>\\)[ \t]*:"
-         (1 font-lock-type-face)
-         (2 font-lock-type-face)
-         )
-       '("\\<\\(class\\|public\\|private\\|protected\\|typename\\|signals\\|slots\\)\\>[ 	]*\\(\\(\\sw+\\)\\>\\([ 	]*<\\([^>\n]+\\)[ 	*&]*>\\)?\\([ 	]*::[ 	*~]*\\(\\sw+\\)\\)*\\)?"
-         (1 font-lock-type-face)
-         (3
-          (if
-              (match-beginning 6)
-              font-lock-type-face font-lock-function-name-face)
-          nil t)
-         (5 font-lock-function-name-face nil t)
-         (7 font-lock-function-name-face nil t))
-       '("^\\(\\sw+\\)\\>\\([ 	]*<\\([^>\n]+\\)[ 	*&]*>\\)?\\([ 	]*::[ 	*~]*\\(\\sw+\\)\\)*[ 	]*("
-         (1
-	  (if
-	      (or
-	       (match-beginning 2)
-	       (match-beginning 4))
-	      font-lock-type-face font-lock-function-name-face))
-         (3 font-lock-function-name-face nil t)
-         (5 font-lock-function-name-face nil t))
-       ;; '("\\<\\(auto\\|bool\\|c\\(har\\|o\\(mplex\\|nst\\)\\)\\|double\\|e\\(num\\|x\\(p\\(licit\\|ort\\)\\|tern\\)\\)\\|f\\(loat\\|riend\\)\\|in\\(line\\|t\\)\\|long\\|mutable\\|namespace\\|register\\|s\\(hort\\|igned\\|t\\(atic\\|ruct\\)\\)\\|t\\(emplate\\|ypedef\\)\\|u\\(n\\(ion\\|signed\\)\\|sing\\)\\|v\\(irtual\\|o\\(id\\|latile\\)\\)\\|Q[A-Z][a-zA-Z_]*\\|Q[a-z][A-Z][a-zA-Z_]*\\|uint\\|ulong\\|string\\)\\>"
-       ;;   (0 font-lock-type-face))
-       '("\\<\\(operator\\)\\>[ 	]*\\(!=\\|%=\\|&[&=]\\|()\\|\\*=\\|\\+[+=]\\|-\\(>\\*\\|[=>-]\\)\\|/=\\|<\\(<=\\|[<=]\\)\\|==\\|>\\(>=\\|[=>]\\)\\|\\[\\]\\|\\^=\\||[=|]\\|[!%&*+,/<=>|~^-]\\)?"
-         (1 font-lock-keyword-face)
-         (2 font-lock-builtin-face nil t))
-       '("\\<\\(case\\|goto\\)\\>[ 	]*\\(-?\\sw+\\)?"
-         (1 font-lock-keyword-face)
-         (2 font-lock-constant-face nil t))
-       '(":"
-	 ("^[ 	]*\\(\\sw+\\)[ 	]*:\\($\\|[^:]\\)"
-	  (beginning-of-line)
-	  (end-of-line)
-	  (1 font-lock-constant-face)))
-       '("\\<\\(asm\\|break\\|c\\(atch\\|on\\(st_cast\\|tinue\\)\\)\\|d\\(elete\\|o\\|ynamic_cast\\)\\|else\\|for\\|if\\|new\\|re\\(interpret_cast\\|turn\\)\\|s\\(izeof\\|tatic_cast\\|witch\\)\\|t\\(h\\(is\\|row\\)\\|ry\\)\\|while\\)\\>"
-	 (0 font-lock-keyword-face))
-       '("\\<\\(false\\|true\\)\\>"
-	 (0 font-lock-constant-face))
-       ;; '("\\<\\(auto\\|bool\\|c\\(har\\|o\\(mplex\\|nst\\)\\)\\|double\\|e\\(num\\|x\\(p\\(licit\\|ort\\)\\|tern\\)\\)\\|f\\(loat\\|riend\\)\\|in\\(line\\|t\\)\\|long\\|mutable\\|namespace\\|register\\|s\\(hort\\|igned\\|t\\(atic\\|ruct\\)\\)\\|t\\(emplate\\|ypedef\\)\\|u\\(n\\(ion\\|signed\\)\\|sing\\)\\|v\\(irtual\\|o\\(id\\|latile\\)\\)\\|JBF[a-zA-Z0-9_]*\\|eZ[a-zA-Z0-9_]*\\|Q[a-zA-Z_]*\\|uint\\|ulong\\|string\\)\\>\\([ 	]*<\\([^>\n]+\\)[ 	*&]*>\\)?\\([ 	]*::[ 	*~]*\\(\\sw+\\)\\)*\\([ 	*&]+\\(\\sw+\\)\\>\\([ 	]*<\\([^>\n]+\\)[ 	*&]*>\\)?\\([ 	]*::[ 	*~]*\\(\\sw+\\)\\)*\\)*"
-       ;;   (font-lock-match-c-style-declaration-item-and-skip-to-next
-       ;;    (goto-char
-       ;;     (or
-       ;;      (match-beginning 20)
-       ;;      (match-end 1)))
-       ;;    (goto-char
-       ;;     (match-end 1))
-       ;;    (1
-       ;;     (cond
-       ;;      ((or
-       ;;        (match-beginning 2)
-       ;;        (match-beginning 4))
-       ;;       font-lock-type-face)
-       ;;      ((match-beginning 6)
-       ;;       font-lock-function-name-face)
-       ;;      (t font-lock-variable-name-face)))
-       ;;    (3 font-lock-function-name-face nil t)
-       ;;    (5
-       ;;     (if
-       ;;         (match-beginning 6)
-       ;;         font-lock-function-name-face font-lock-variable-name-face)
-       ;;     nil t)))
-       ;; '("\\(}\\)[ 	*]*\\sw"
-       ;;   (font-lock-match-c-style-declaration-item-and-skip-to-next
-       ;;    (goto-char
-       ;;     (match-end 1))
-       ;;    nil
-       ;;    (1
-       ;;     (if
-       ;;         (match-beginning 6)
-       ;;         font-lock-function-name-face font-lock-variable-name-face))))
-       ;; '("^\\(\\(\\sw+\\)\\>\\([ 	]*<\\([^>\n]+\\)[ 	*&]*>\\)?\\([ 	]*::[ 	*~]*\\(\\sw+\\)\\)*[ 	*&]*\\)+"
-       ;;   (font-lock-match-c-style-declaration-item-and-skip-to-next
-       ;;    (goto-char
-       ;;     (match-beginning 1))
-       ;;    (goto-char
-       ;;     (match-end 1))
-       ;;    (1
-       ;;     (cond
-       ;;      ((or
-       ;;        (match-beginning 2)
-       ;;        (match-beginning 4))
-       ;;       font-lock-type-face)
-       ;;      ((match-beginning 6)
-       ;;       font-lock-function-name-face)
-       ;;      (t font-lock-variable-name-face)))
-       ;;    (3 font-lock-function-name-face nil t)
-       ;;    (5
-       ;;     (if
-       ;;         (match-beginning 6)
-       ;;         font-lock-function-name-face font-lock-variable-name-face)
-       ;;     nil t)))
-       '("[{}()<>=;:+\\*\\/\\[]\\|\\]\\|\\-" (0 font-lock-keys-face))
-       '("\\<[0-9]+\\>" (0 font-lock-number-face))
-       '("\\<0x[0-9a-fA-F]+\\>" (0 font-lock-hexnumber-face))
-					;     ((concat "\\<"
-					; 	     (regexp-opt '("Q_OBJECT" "emit" "connect" "disconnect" "SIGNAL" "SLOT" "Q_EXPORT"))
-					; 	     "\\>" )
-					;      (0 font-lock-qt-face))
-       '("\\<\\(Q_\\(EXPORT\\|OBJECT\\|PROPERTY\\)\\|S\\(IGNAL\\|LOT\\)\\|connect\\|disconnect\\|emit\\)\\>"
-         (0 font-lock-qt-face))
-       )))
+(defconst c++-new-font-lock-keywords
+  (list
+   '("\\<[0-9]+\\.[0-9]+\\>" (0 font-lock-floatnumber-face))
+   '("^#[ 	]*error[ 	]+\\(.+\\)"
+     (1 font-lock-warning-face prepend))
+   '("^#[ 	]*\\(import\\|include\\)[ 	]*\\(<[^>\"\n]*>?\\)"
+     (2 font-lock-string-face))
+   '("^#[ 	]*define[ 	]+\\(\\sw+\\)("
+     (1 font-lock-function-name-face))
+   '("^#[ 	]*\\(elif\\|if\\)\\>"
+     ("\\<\\(defined\\)\\>[ 	]*(?\\(\\sw+\\)?" nil nil
+      (1 font-lock-builtin-face)
+      (2 font-lock-variable-name-face nil t)))
+   '("^#[ 	]*\\(\\sw+\\)\\>[ 	!]*\\(\\sw+\\)?"
+     (1 font-lock-builtin-face)
+     (2 font-lock-variable-name-face nil t))
+   '("\\<\\(public\\|private\\|protected\\)\\>[ \t]+\\(\\<\\(signals\\|slots\\)\\>\\)[ \t]*:"
+     (1 font-lock-type-face)
+     (2 font-lock-type-face)
+     )
+   '("\\<\\(class\\|public\\|private\\|protected\\|typename\\|signals\\|slots\\)\\>[ 	]*\\(\\(\\sw+\\)\\>\\([ 	]*<\\([^>\n]+\\)[ 	*&]*>\\)?\\([ 	]*::[ 	*~]*\\(\\sw+\\)\\)*\\)?"
+     (1 font-lock-type-face)
+     (3
+      (if
+          (match-beginning 6)
+          font-lock-type-face font-lock-function-name-face)
+      nil t)
+     (5 font-lock-function-name-face nil t)
+     (7 font-lock-function-name-face nil t))
+   '("^\\(\\sw+\\)\\>\\([ 	]*<\\([^>\n]+\\)[ 	*&]*>\\)?\\([ 	]*::[ 	*~]*\\(\\sw+\\)\\)*[ 	]*("
+     (1
+      (if
+          (or
+           (match-beginning 2)
+           (match-beginning 4))
+          font-lock-type-face font-lock-function-name-face))
+     (3 font-lock-function-name-face nil t)
+     (5 font-lock-function-name-face nil t))
+   '("\\<\\(operator\\)\\>[ 	]*\\(!=\\|%=\\|&[&=]\\|()\\|\\*=\\|\\+[+=]\\|-\\(>\\*\\|[=>-]\\)\\|/=\\|<\\(<=\\|[<=]\\)\\|==\\|>\\(>=\\|[=>]\\)\\|\\[\\]\\|\\^=\\||[=|]\\|[!%&*+,/<=>|~^-]\\)?"
+     (1 font-lock-keyword-face)
+     (2 font-lock-builtin-face nil t))
+   '("\\<\\(case\\|goto\\)\\>[ 	]*\\(-?\\sw+\\)?"
+     (1 font-lock-keyword-face)
+     (2 font-lock-constant-face nil t))
+   '(":"
+     ("^[ 	]*\\(\\sw+\\)[ 	]*:\\($\\|[^:]\\)"
+      (beginning-of-line)
+      (end-of-line)
+      (1 font-lock-constant-face)))
+   '("\\<\\(asm\\|break\\|c\\(atch\\|on\\(st_cast\\|tinue\\)\\)\\|d\\(elete\\|o\\|ynamic_cast\\)\\|else\\|for\\|if\\|new\\|re\\(interpret_cast\\|turn\\)\\|s\\(izeof\\|tatic_cast\\|witch\\)\\|t\\(h\\(is\\|row\\)\\|ry\\)\\|while\\)\\>"
+     (0 font-lock-keyword-face))
+   '("\\<\\(false\\|true\\)\\>"
+     (0 font-lock-constant-face))
+   '("[{}()<>=;,:+\\*\\/\\[]\\|\\]\\|\\-" (0 font-lock-keys-face))
+   '("\\<[0-9]+\\>" (0 font-lock-number-face))
+   '("\\<0x[0-9a-fA-F]+\\>" (0 font-lock-hexnumber-face))
+   '("\\<\\(Q_\\(EXPORT\\|OBJECT\\|PROPERTY\\)\\|S\\(IGNAL\\|LOT\\)\\|connect\\|disconnect\\|emit\\)\\>"
+     (0 font-lock-qt-face))
+   ))
 
 (dolist (mode '(c-mode c++-mode java-mode php-mode)) (font-lock-add-keywords mode c++-new-font-lock-keywords))
 
@@ -193,8 +129,8 @@
                                    (insert "* "))))
   (define-key esc-map "\t" 'project-expand-symbol)
 
-  (setq c-opt-access-key "\\(p\\(?:r\\(?:ivate\\|otected\\)\\|ublic\\)\\|slots\\|signals\\)[ 	\n\f]*\\(?:[ 	\n\f]slots\\)?:")
-)
+  ;; Qt specific : correct indentation with "public slots" and friends
+  (setq c-opt-access-key "\\(p\\(?:r\\(?:ivate\\|otected\\)\\|ublic\\)\\|slots\\|signals\\)[ 	\n\f]*\\(?:[ 	\n\f]slots\\)?:"))
 
 (defun my-php-mode-hook()
   (interactive)
@@ -463,10 +399,6 @@
     )
   "eZ systems Programming Style")
 
-;; PHP related stuff
-
-;(require 'php-mode)
-
 (defconst ezsystems-php-style
   ;; Always indent c/c++ sources, never insert tabs
   '((c-tab-always-indent        . t)
@@ -506,18 +438,6 @@
 (c-add-style "camille" camille-c-style)
 (c-add-style "eZSystems" ezsystems-c-style)
 (c-add-style "eZPHP" ezsystems-php-style)
-
-(autoload 'python-mode "python-mode" "Python Mode." t)
-(add-to-list 'auto-mode-alist '("\\.py\\'" . python-mode))
-(add-to-list 'interpreter-mode-alist '("python" . python-mode))
-
-(add-hook 'python-mode-hook
-          (lambda ()
-            (set (make-variable-buffer-local 'beginning-of-defun-function)
-                 'py-beginning-of-def-or-class)))
-
-;; (autoload 'py-complete-init "py-complete")
-;; (add-hook 'python-mode-hook 'py-complete-init)
 
 (provide 'mycode)
 ;;; mycode.el ends here

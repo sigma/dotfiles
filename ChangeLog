@@ -1,3 +1,17 @@
+2007-04-09  Yann Hodique  <Yann.Hodique@lifl.fr>
+
+	* lib/magpie.el: initial checkin
+
+	* lib/javascript.el: initial checkin
+
+	* dotemacs-cust.el (custom-set-variables): disable auto update for ecb methods
+
+	* config/python-config.el: initial checkin
+
+	* config/cc-config.el: initial checkin
+
+	* config/bm-config.el: initial checkin
+
 2007-03-07  Yann Hodique  <Yann.Hodique@lifl.fr>
 
 	* dotgnus.el: disable broken signature

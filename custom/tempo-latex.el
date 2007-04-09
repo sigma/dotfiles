@@ -34,10 +34,9 @@
 ;;
 
 ;;; Description:
-;;   latex-tempo.el  makes it easier to write LaTeX documents. This mode
-;;   handles inserting LaTeX codes in a variety of ways (keybindings,
-;;   completion in the buffer, running auctex functions both for command and
-;;   environment ).
+;; tempo-latex.el makes it easier to write LaTeX documents. This mode handles
+;; inserting LaTeX codes in a variety of ways (keybindings, completion in the
+;; buffer, running auctex functions both for command and environment ).
 
 (defvar latex-tempo-env-tags nil
   "List of LaTeX environments tags.")
