@@ -1,3 +1,7 @@
+2007-04-11  Yann Hodique  <Yann.Hodique@lifl.fr>
+
+	* icicles: package is now maintained separately
+
 2007-04-09  Yann Hodique  <Yann.Hodique@lifl.fr>
 
 	* lib/magpie.el: initial checkin
