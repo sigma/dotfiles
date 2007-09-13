@@ -39,9 +39,11 @@
       org-log-done t
       org-agenda-include-all-todo nil
       org-archive-stamp-time nil
-      org-lowest-priority 69
+      org-highest-priority ?A
+      org-default-priority ?C
+      org-lowest-priority ?E
       org-tags-column -79
-      org-todo-keywords '("TODO" "STARTED" "DONE"))
+      org-todo-keywords '((type "NEXTACTION" "WAITING" "MAYBE" "|" "DONE")))
 
 (when (request 'remember)
   (setq remember-annotation-functions '(org-remember-annotation))
@@ -49,8 +51,7 @@
   (add-hook 'remember-mode-hook 'org-remember-apply-template)
 
   (setq org-remember-templates
-        `((?t "* TODO %?\n  %i\n  %a" ,org-default-notes-file "Misc")
-          (?n "* NEXTACTION %?\n  %i\n  %a" ,org-default-notes-file "Misc")
+        `((?n "* NEXTACTION %?\n  %i\n  %a" ,org-default-notes-file "Misc")
           (?w "* WAITING %?\n  %i\n  %a" ,org-default-notes-file "Misc")
           (?m "* MAYBE %?\n  %i\n  %a" ,org-default-notes-file "Misc"))))
 
@@ -67,7 +68,7 @@
         (find-file notes-file)))))
 
 (defun yh/looking-at-tags ()
-  (looking-at "\s*:\\([a-zA-Z_@0-9:]+\\):[ \t]*\\([\n\r]\\|\\'\\)"))
+  (looking-at "[ \t]*:\\([a-zA-Z_@0-9:]+\\):[ \t]*\\([\n\r]\\|\\'\\)"))
 
 (defadvice org-insert-heading (before org-insert-heading-before act)
   "If the cursor is between heading and tags list, then open

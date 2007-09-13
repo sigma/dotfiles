@@ -27,7 +27,7 @@
 ;; LCD Archive Entry:
 ;; metamail|Masanobu UMEDA|umerin@mse.kyutech.ac.jp|
 ;; Metamail interface for GNU Emacs|
-;; $Date$|$Revision: 1.1 $|~/misc/metamail.el.Z|
+;; $Date: 2006-06-25 17:37:05 +0200 (Sun, 25 Jun 2006) $|$Revision: 1.1 $|~/misc/metamail.el.Z|
 
 ;; Note: Metamail does not have all options which is compatible with
 ;; the environment variables.  For that reason, matamail.el have to

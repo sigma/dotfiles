@@ -7,7 +7,7 @@
 ;; Maintainer: Drew Adams
 ;; Copyright (C) 1999-2004, Drew Adams, all rights reserved.
 ;; Created: Fri Apr  2 09:08:55 1999
-;; Version: $Id$
+;; Version: $Id: def-face-const.el 195 2006-06-25 15:37:05Z yann $
 ;; Last-Updated: Wed Apr 28 22:35:18 2004
 ;;           By: dradams
 ;;     Update #: 65

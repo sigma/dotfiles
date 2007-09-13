@@ -131,7 +131,7 @@
 ;; LCD Archive Entry:
 ;; mime|Masanobu UMEDA|umerin@mse.kyutech.ac.jp|
 ;; Simple MIME Composer|
-;; $Date$|$Revision: 1.1 $|‾/misc/mime.el.Z|
+;; $Date: 2006-06-26 15:35:08 +0200 (Mon, 26 Jun 2006) $|$Revision: 1.1 $|‾/misc/mime.el.Z|
 
 ;;; Code:
 

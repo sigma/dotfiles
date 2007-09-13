@@ -1,10 +1,5 @@
 ;; -*- mode: emacs-lisp; mode: hi-lock; auto-compile-lisp: nil; -*-
-;; $Id$
-
-;; Hi-lock: (("^;;;_\\* \\(.*\\)" (1 'hi-black-hb t)))
-;; Hi-lock: (("^;;;_ \\+ \\(.*\\)" (1 'hi-black-b t)))
-;; Hi-lock: ((";; \\(.*\\)" (1 'italic append)))
-;; Hi-lock: end
+;; $Id: dotemacs.el 230 2007-04-09 09:10:18Z yann $
 
 ;; (toggle-debug-on-error)
 
@@ -36,7 +31,7 @@
 ;; Hacked scroll margin
 (set-scroll-margin 5 5 '("*eshell*" "*compile*" "*Calendar*"))
 (setq scroll-step 1
-      scroll-conservatively 15)
+      scroll-conservatively 50)
 ;; (setq scroll-margin 5
 ;;       scroll-conservatively 50
 ;;       scroll-step 1)
@@ -192,10 +187,11 @@
 (when-configuration 'code
   (request 'bm-config)
   (request 'changelog-config)
+  (request 'cc-config)
   (request 'compile-config)
   (request 'ediff-config)
   ;; (request 'speedbar-config)
-  (request 'doxymacs-config)
+  ;; (request 'doxymacs-config)
   (request 'latex-config)
   ;; (request 'highlight-changes-config)
   ;; (request 'fracc-config)
@@ -211,7 +207,7 @@
   ;; (request 'flashcard-config)
   (request 'vc-config))
 
-;;;_* Utils/Functions
+;; _* Utils/Functions
 
 (make-double-command my-home ()
   "Go to beginning of line, or beginning of buffer."
@@ -449,12 +445,19 @@
 
 ;;;_* Experimental
 
+;; Doc-mode
+(require 'doc-mode)
+(add-hook 'c++-mode-hook 'doc-mode)
+(add-hook 'java-mode-hook 'doc-mode)
+
+;; Compagny-mode
+(require 'company-mode)
+(require 'company-bundled-completions)
+(company-install-bundled-completions-rules)
+
 ;; Just in case compose is broken...
 (define-key key-translation-map (kbd "<Multi_key>") 'iso-transl-ctl-x-8-map)
 (autoload 'iso-transl-ctl-x-8-map "iso-transl" "Keymap for C-x 8 prefix." t 'keymap)
-
-(when (request 'linkd)
-  (add-hook 'org-mode-hook 'linkd-mode))
 
 (when (request 'pp-c-l)
   (pretty-control-l-mode 1))
@@ -466,6 +469,11 @@
 
 (autoload 'javascript-mode "javascript" nil t)
 (add-to-list 'auto-mode-alist '("\\.js\\'" . javascript-mode))
+
+(eval-after-load "javascript"
+  '(add-hook 'javascript-mode (lambda ()
+                                (glasses-mode 1)
+                                (c-subword-mode 1))))
 
 (when (request 'incr)
   (delq 'rotate incr-enable-feature))
@@ -505,6 +513,14 @@
   (eshell))
 
 (global-hl-line-hack-mode 1)
+
+(autoload 'predictive-mode "predictive" "predictive" t)
+(set-default 'predictive-auto-add-to-dict t)
+(setq predictive-main-dict 'dict-english
+      predictive-auto-learn t
+      predictive-add-to-dict-ask nil
+      predictive-use-auto-learn-cache nil
+      predictive-which-dict t)
 
 ;; setup *scratch* correctly
 (kill-scratch-buffer)

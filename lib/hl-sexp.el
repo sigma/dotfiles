@@ -6,7 +6,7 @@
 ;; Author:  Edward O'Connor <ted@oconnor.cx>
 ;; Created: 2002-03-03
 ;; Keywords: faces, frames, emulation
-;; CVS Id: $Id$
+;; CVS Id: $Id: hl-sexp.el 195 2006-06-25 15:37:05Z yann $
 
 ;; This file is NOT part of GNU Emacs, but is very much a derived work
 ;; of hl-line.el, which is a part of GNU Emacs.

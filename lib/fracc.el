@@ -1,10 +1,10 @@
-;;; $Id$
+;;; $Id: fracc.el 195 2006-06-25 15:37:05Z yann $
 ;;; Copyright (C) 1994-1997 by C.Queinnec (Polytechnique & INRIA)
 
 ;;; LCD Archive Entry:
 ;;; fracc|Christian Queinnec|Christian.Queinnec@inria.fr|
 ;;; French accent towards Latin1, TeX, BibTeX, HTML.|
-;;; $Date$|$Revision: 1.3 $|
+;;; $Date: 2006-06-25 17:37:05 +0200 (Sun, 25 Jun 2006) $|$Revision: 1.3 $|
 ;;; ~/misc/fracc.el.Z|
 
 ;;; This file is not part of GNU Emacs.

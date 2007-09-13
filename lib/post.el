@@ -1,4 +1,4 @@
-;	$Id$	
+;	$Id: post.el 195 2006-06-25 15:37:05Z yann $	
 ;; post.el --- Use (X?)Emacs(client) as an external editor for mail and news.
  
 ;; Authors: Eric Kidd <eric.kidd@pobox.com>,

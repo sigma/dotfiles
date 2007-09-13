@@ -1,7 +1,7 @@
 ;;; color-moccur.el ---  multi-buffer occur mode
 ;; -*- Mode: Emacs-Lisp -*-
 
-;; $Id$
+;; $Id: color-moccur.el 195 2006-06-25 15:37:05Z yann $
 
 ;; This program is free software; you can redistribute it and/or
 ;; modify it under the terms of the GNU General Public License as

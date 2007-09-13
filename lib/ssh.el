@@ -7,7 +7,7 @@
 ;; Keywords: unix, comm
 ;; Created: 1996-07-03
 
-;; $Id$
+;; $Id: ssh.el 195 2006-06-25 15:37:05Z yann $
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by

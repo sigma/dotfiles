@@ -158,7 +158,8 @@
 ;; Thanks to Klaus Berndl for code
 (require 'hippie-exp)
 (setq hippie-expand-try-functions-list
-      '(tempo-complete-tag
+      '(tempo-snippets-complete-tag
+        tempo-complete-tag
 	try-expand-dabbrev
 	try-expand-dabbrev-all-buffers
 	try-expand-dabbrev-from-kill
@@ -184,7 +185,8 @@
 ;; all expansion is done by 'my-hippie-expand bound to C-Return!
 (global-set-key (quote [(control return)]) (quote my-hippie-expand))
 
-;; Tempo
+;; Tempo-snippets
+(require 'tempo-snippets)
 
 (defun tempo-insert-prompt-default (prompt default &optional save-name no-insert)
   "Prompt for a text string and insert it in the current buffer.
@@ -253,7 +255,7 @@ never prompted."
       (insert " ")))
 
 (defun yh/tempo-define-template (name key list elements &optional tag documentation taglist)
-  (tempo-define-template name elements tag documentation taglist)
+  (tempo-define-snippet name elements tag documentation taglist)
   (add-to-list list (cons name key)))
 
 (defun yh/tempo-build-local-map (alist)

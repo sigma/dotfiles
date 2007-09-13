@@ -1,10 +1,5 @@
 ;; -*- mode: emacs-lisp; mode: hi-lock; mode: page-break; auto-compile-lisp: nil; -*-
-;; $Id$
-
-;; Hi-lock: (("^;;; \\(.*\\)" (1 'hi-black-hb t)))
-;; Hi-lock: (("^ +;;; \\(.*\\)" (1 'hi-black-b t)))
-;; Hi-lock: ((";; \\(.*\\)" (1 'italic append)))
-;; Hi-lock: end
+;; $Id: dotgnus.el 229 2007-03-07 21:10:37Z yann $
 
 ;;; Basis
 ;; Load site-specific stuff
@@ -50,8 +45,63 @@
  gnus-inhibit-startup-message t
  gnus-use-cache t
  gnus-agent t
+ nnmail-message-id-cache-file (concat nbc-gnus-dir "nnmail-cache")
+
  ;; Split mails
- nnmail-split-methods 'nnmail-split-fancy)
+ nnmail-message-id-cache-length 10000
+ nnmail-cache-accepted-message-ids t
+ nnmail-treat-duplicates 'warn
+
+ nnmail-split-methods 'nnmail-split-fancy
+ nnmail-split-fancy '(| (: nnmail-split-fancy-with-parent)
+                        (| ("from" mail (| ("subject" "warn.*" "mail.warning")
+                                           "mail.misc"))
+                           ;; Non-error messages are crossposted to all relevant
+                           ;; groups, but we don't crosspost between the group for the
+                           ;; (ding) list and the group for other (ding) related mail.
+                           (& (any "sig\\.cdj@gmail\\.com" "fondation")
+                              (any "SmartList@informatik\\.rwth-aachen\\.de" "SmartList.list")
+                              (any "debian-\\b\\(\\w+\\)@lists.debian.org" "mail.debian.\\1")
+                              ;; People...
+                              ;; (any "ceanova74@hotmail\\.com" "people.Ceanova")
+                              ;; Tasks
+                              ("to" ".*\\+Task@gmail.com" "todo")
+                              ;; CFP
+                              ("subject" "CFP" "cfp")
+                              ;; Mailing
+                              ("from" "Dell" "mailing")
+                              ("from" "Internaute" "mailing")
+                              ("subject" "newsletter" "mailing")
+                              )
+                           ;; Unmatched mail goes to the catch all group.
+                           "misc");; other splits go here
+                        )
+
+ nnimap-split-inbox "INBOX"
+ nnimap-split-rule 'nnimap-split-fancy
+ nnimap-split-fancy '(| (: nnmail-split-fancy-with-parent)
+                        (| ("from" mail (| ("subject" "warn.*" "mail.warning")
+                                           "mail.misc"))
+                           ;; Non-error messages are crossposted to all relevant
+                           ;; groups, but we don't crosspost between the group for the
+                           ;; (ding) list and the group for other (ding) related mail.
+                           (& (any "sig\\.cdj@gmail\\.com" "INBOX.fondation")
+                              (any "SmartList@informatik\\.rwth-aachen\\.de" "SmartList.list")
+                              (any "debian-\\b\\(\\w+\\)@lists.debian.org" "mail.debian.\\1")
+                              ;; People...
+                              ;; (any "ceanova74@hotmail\\.com" "people.Ceanova")
+                              ;; Tasks
+                              ("to" ".*\\+Task@gmail.com" "INBOX.todo")
+                              ;; CFP
+                              ("subject" "CFP" "INBOX.cfp")
+                              ;; Mailing
+                              ("from" "Dell" "INBOX.mailing")
+                              ("from" "Internaute" "INBOX.mailing")
+                              ("subject" "newsletter" "INBOX.mailing")
+                              )
+                           ;; Unmatched mail goes to the catch all group.
+                           "INBOX.misc");; other splits go here
+                        ))
 
 (add-hook 'gnus-select-article-hook 'gnus-agent-fetch-selected-article)
 
@@ -108,8 +158,23 @@
 
 (setq
  gnus-home-score-file "all.SCORE"
- gnus-permanently-visible-groups ".*"
+ gnus-permanently-visible-groups "INBOX.*"
  gnus-large-newsgroup 100)
+
+(setq gnus-default-adaptive-score-alist
+      '((gnus-unread-mark)
+        (gnus-ticked-mark (from 4))
+        (gnus-dormant-mark (from 5))
+        (gnus-del-mark (from -4) (subject -1))
+        (gnus-read-mark (from 4) (subject 2))
+        (gnus-expirable-mark (from -1) (subject -1))
+        (gnus-killed-mark (from -1) (subject -3))
+        (gnus-kill-file-mark)
+        (gnus-ancient-mark)
+        (gnus-low-score-mark)
+        (gnus-catchup-mark (from -1) (subject -1))))
+
+(add-hook 'message-sent-hook 'gnus-score-followup-thread)
 
 
 ;;; Summary buffer
@@ -299,12 +364,6 @@
 
 (add-hook 'gnus-message-setup-hook 'font-lock-fontify-buffer)
 
-(setq nnmail-message-id-cache-file (concat nbc-gnus-dir "nnmail-cache"))
-(setq nnmail-message-id-cache-length 5000)
-(setq nnmail-cache-accepted-message-ids t)
-
-(setq nnmail-treat-duplicates 'warn)
-
 
 ;;; Mail sending
 
@@ -317,7 +376,7 @@
 			     "^--$"		; Die OE Die !
 			     "^-- *$"        ; A common mangling
 			     "^-------*$"    ; Many people just use a looong
-					; line of dashes.  Shame!
+                                        ; line of dashes.  Shame!
 			     "^ *--------*$" ; Double-shame!
 			     "^________*$"   ; Underscores are also popular
 			     "^========*$" ; Pervert!
@@ -337,7 +396,7 @@
 ;; Tell gnus into which group to store messages
 (setq gnus-message-archive-group
        '((if (message-news-p)
- 	     "news"
+ 	     (concat "news." (format-time-string "%Y-%m" (current-time)))
            (list gnus-newsgroup-name
                  (concat "mail." (format-time-string "%Y-%m" (current-time)))))))
 

@@ -1,7 +1,7 @@
 ;; message-x.el -- customizable completion in message headers
 ;; Copyright (C) 1998 Kai Groﬂjohann
 
-;; $Id$
+;; $Id: message-x.el 195 2006-06-25 15:37:05Z yann $
 
 ;; Author: Kai Grossjohann <grossjohann@ls6.informatik.uni-dortmund.de>
 ;; Keywords: news, mail, compose, completion
@@ -72,7 +72,7 @@
 
 ;;; Setup Code:
 
-(defconst message-x-version "$Id$"
+(defconst message-x-version "$Id: message-x.el 195 2006-06-25 15:37:05Z yann $"
   "Version of message-x.")
 
 (require 'message)

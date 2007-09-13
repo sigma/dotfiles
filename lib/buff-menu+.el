@@ -8,7 +8,7 @@
 ;; Maintainer: Drew Adams
 ;; Copyright (C) 1996-2004, Drew Adams, all rights reserved.
 ;; Created: Mon Sep 11 10:29:56 1995
-;; Version: $Id$
+;; Version: $Id: buff-menu+.el 195 2006-06-25 15:37:05Z yann $
 ;; Last-Updated: Wed Jul 21 15:01:33 2004
 ;;           By: dradams
 ;;     Update #: 741

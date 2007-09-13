@@ -27,7 +27,7 @@
 ;; LCD Archive Entry:
 ;; rmailmime|Masanobu UMEDA|umerin@mse.kyutech.ac.jp|
 ;; Rmail: MIME message support.|
-;; $Date$|$Revision: 1.1 $|~/misc/rmailmime.el.Z|
+;; $Date: 2006-06-25 17:37:05 +0200 (Sun, 25 Jun 2006) $|$Revision: 1.1 $|~/misc/rmailmime.el.Z|
 
 ;; Usage examples:
 ;; First of all, define the following autoload entries:

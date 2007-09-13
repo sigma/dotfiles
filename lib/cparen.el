@@ -94,7 +94,7 @@
 ;;;  '(font-lock-builtin-face ((((class color) (background light)) (:bold t :foreground "RoyalBlue")))))
 
 ;;; Change Log:
-;;; $Id$
+;;; $Id: cparen.el 195 2006-06-25 15:37:05Z yann $
 ;;;
 ;;; Version 1.0 (March 27th, 2001)
 ;;;  * Initial release.
@@ -292,10 +292,9 @@ buffer."
             (font-lock-add-keywords mode cparen-font-lock-keywords))
           '(scheme-mode inferior-scheme-mode))
   (mapcar (lambda (mode)
-;;            (font-lock-add-keywords mode cparen-mini-font-lock-keywords))
             (font-lock-add-keywords mode cparen-font-lock-keywords))
           '(emacs-lisp-mode lisp-mode lisp-interaction-mode
-                            inferior-lisp-mode sawfish-mode)))
+                            inferior-lisp-mode)))
 
 (provide 'cparen)
 

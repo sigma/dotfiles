@@ -43,6 +43,7 @@
 
 ;; Fancy paren highlighting
 (when (request 'cparen)
+  (setq cparen-mini-font-lock-keywords cparen-font-lock-keywords)
   (cparen-activate))
 
 (provide 'paren-config)

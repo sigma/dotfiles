@@ -2,7 +2,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;
 ; File:         xcscope.el
-; RCS:          $RCSfile: xcscope.el,v $ $Revision: 1.1 $ $Date$ $Author$
+; RCS:          $RCSfile: xcscope.el,v $ $Revision: 1.1 $ $Date: 2006-06-25 17:37:05 +0200 (Sun, 25 Jun 2006) $ $Author: yann $
 ; Description:  cscope interface for (X)Emacs
 ; Author:       Darryl Okahata
 ; Created:      Wed Apr 19 17:03:38 2000

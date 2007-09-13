@@ -1,7 +1,7 @@
 ;;; moccur-edit.el
 ;; -*- Mode: Emacs-Lisp -*-
 
-;;  $Id$
+;;  $Id: moccur-edit.el 195 2006-06-25 15:37:05Z yann $
 
 ;; Author: Matsushita Akihisa <akihisa@mail.ne.jp>
 ;; Keywords: moccur edit

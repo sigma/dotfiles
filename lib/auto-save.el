@@ -1,7 +1,7 @@
 ;;;; auto-save.el - safer autosaving with support for ange-ftp and /tmp
 
 (defconst auto-save-version (substring "$Revision: 1.3 $" 11 -2)
-  "$Id$")
+  "$Id: auto-save.el 195 2006-06-25 15:37:05Z yann $")
 
 ;;;; Copyright (C) 1992 by Sebastian Kremer <sk@thp.uni-koeln.de>
 

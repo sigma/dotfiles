@@ -1,5 +1,5 @@
 ;;; @(#) gnus-alias.el -- an alternative to gnus-posting-styles
-;;; @(#) $Id$
+;;; @(#) $Id: gnus-alias.el 195 2006-06-25 15:37:05Z yann $
 
 ;; This file is not part of Emacs
 

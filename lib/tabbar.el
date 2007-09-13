@@ -6,7 +6,7 @@
 ;; Maintainer: David Ponce <david@dponce.com>
 ;; Created: 25 February 2003
 ;; Keywords: convenience
-;; Revision: $Id$
+;; Revision: $Id: tabbar.el 195 2006-06-25 15:37:05Z yann $
 
 (defconst tabbar-version "1.3")
 

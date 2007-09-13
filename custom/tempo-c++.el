@@ -122,7 +122,8 @@
 (yh/tempo-define-template "c-for-i"
                           "F"
                           'c-tempo-keys-alist
-                          '(> "for(" (p "variable: " var) " = 0; " (s var)
+                          '(> "for(" (p "Type: " type) " "
+                              (p "variable: " var) " = 0; " (s var)
                               " < "(p "upper bound: " ub)"; " (s var) "++) {" > n> r> n
                               "}" > n>)
                           "fori"
@@ -172,6 +173,15 @@
                           "Insert a C case statement"
                           'c-tempo-tags)
 
+(yh/tempo-define-template "f-func"
+                          "("
+                          'c-tempo-keys-alist
+                          '(> (p "Type: " rtype)
+                              " " (p "Name: " name)
+                              "() {" n> "}" > n>)
+                          "func"
+                          "Insert a C function"
+                          'c-tempo-tags)
 
 ;;;C++-Mode Templates
 
@@ -180,9 +190,7 @@
 (yh/tempo-define-template "c++-class"
                           "C"
                           'c-tempo-keys-alist
-                          '("class " (z "classname: "
-                                        (capitalize (file-name-nondirectory (file-name-sans-extension buffer-file-name)))
-                                        class) " {" n "public:" n>
+                          '("class " (p "classname: " class) " {" n "public:" n>
 
                                         (s class) "(" ~ "); //the default constructor()" n>
                                         n > "~" (s class) "(); //the destructor" n n>

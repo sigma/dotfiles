@@ -340,8 +340,6 @@ activate-mark-hook"
     (add-hook 'kill-buffer-query-functions 'kill-scratch-buffer)))
 
 (defun kill-scratch-buffer ()
-  ;; The next line is just in case someone calls this manually
-  (set-buffer (get-buffer-create "*scratch*"))
   ;; Kill the current (*scratch*) buffer
   (remove-hook 'kill-buffer-query-functions 'kill-scratch-buffer)
   (kill-buffer (current-buffer))
