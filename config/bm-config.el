@@ -26,33 +26,36 @@
 
 ;;; Code:
 
-(setq bm-restore-repository-on-load t)
-(require 'bm)
+(require 'patches)
 
-(global-set-key (kbd "C-c b C-m") 'bm-toggle)
-(global-set-key (kbd "C-c b n")   'bm-next)
-(global-set-key (kbd "C-c b p") 'bm-previous)
-(global-set-key (kbd "C-c b s") 'bm-show)
-(global-set-key (kbd "C-c b a") 'bm-bookmark-annotate)
+(setq bm-restore-repository-on-load t)
+
+(when (request 'bm)
+
+  (global-set-key (kbd "C-c b C-m") 'bm-toggle)
+  (global-set-key (kbd "C-c b n")   'bm-next)
+  (global-set-key (kbd "C-c b p") 'bm-previous)
+  (global-set-key (kbd "C-c b s") 'bm-show)
+  (global-set-key (kbd "C-c b a") 'bm-bookmark-annotate)
 
 ;; make bookmarks persistent as default
-(setq-default bm-buffer-persistence t)
+  (setq-default bm-buffer-persistence t)
 
 ;; Saving the repository to file when on exit.
 ;; kill-buffer-hook is not called when emacs is killed, so we
 ;; must save all bookmarks first.
-(add-hook 'kill-emacs-hook '(lambda nil
-                              (bm-buffer-save-all)
-                              (bm-repository-save)))
+  (add-hook 'kill-emacs-hook '(lambda nil
+                                (bm-buffer-save-all)
+                                (bm-repository-save)))
 
 ;; Update bookmark repository when saving the file.
-(add-hook 'after-save-hook 'bm-buffer-save)
+  (add-hook 'after-save-hook 'bm-buffer-save)
 
 ;; Restore bookmarks when buffer is reverted.
-(add-hook 'after-revert-hook 'bm-buffer-restore)
+  (add-hook 'after-revert-hook 'bm-buffer-restore)
 
 ;; make sure bookmarks is saved before check-in (and revert-buffer)
-(add-hook 'vc-before-checkin-hook 'bm-buffer-save)
+  (add-hook 'vc-before-checkin-hook 'bm-buffer-save))
 
 (provide 'bm-config)
 ;;; bm-config.el ends here
