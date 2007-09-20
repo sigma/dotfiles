@@ -1,3 +1,7 @@
+2007-09-20  Yann Hodique  <Yann.Hodique@lifl.fr>
+
+	* dotemacs-cust.el: sanest defaults
+
 2007-09-18  Yann Hodique  <Yann.Hodique@lifl.fr>
 
 	* config/bm-config.el: make package optional
