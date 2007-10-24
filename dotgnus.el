@@ -6,6 +6,10 @@
 (if (file-exists-p (expand-file-name "~/.gnus-local.el"))
     (load-file (expand-file-name "~/.gnus-local.el")))
 
+(require 'nnmairix)
+(require 'gnuslog)
+(require 'nnir)
+
 (require 'gnus-dired)
 (add-hook 'dired-mode-hook 'turn-on-gnus-dired-mode)
 
@@ -14,17 +18,6 @@
 ;; Define url catchers
 (setq browse-url-browser-function '(("^mailto:" . gnus-url-mailto)
 				    ("." . browse-url-netscape)))
-
-;; No primary select method
-(setq
- gnus-select-method
- '(nnnil ""))
-
-;; use bbdb
-(setq nbc-bbdb t)
-
-;; use nnir
-(setq nbc-nnir nil)
 
 ;; global parameters
 (setq
@@ -50,58 +43,7 @@
  ;; Split mails
  nnmail-message-id-cache-length 10000
  nnmail-cache-accepted-message-ids t
- nnmail-treat-duplicates 'warn
-
- nnmail-split-methods 'nnmail-split-fancy
- nnmail-split-fancy '(| (: nnmail-split-fancy-with-parent)
-                        (| ("from" mail (| ("subject" "warn.*" "mail.warning")
-                                           "mail.misc"))
-                           ;; Non-error messages are crossposted to all relevant
-                           ;; groups, but we don't crosspost between the group for the
-                           ;; (ding) list and the group for other (ding) related mail.
-                           (& (any "sig\\.cdj@gmail\\.com" "fondation")
-                              (any "SmartList@informatik\\.rwth-aachen\\.de" "SmartList.list")
-                              (any "debian-\\b\\(\\w+\\)@lists.debian.org" "mail.debian.\\1")
-                              ;; People...
-                              ;; (any "ceanova74@hotmail\\.com" "people.Ceanova")
-                              ;; Tasks
-                              ("to" ".*\\+Task@gmail.com" "todo")
-                              ;; CFP
-                              ("subject" "CFP" "cfp")
-                              ;; Mailing
-                              ("from" "Dell" "mailing")
-                              ("from" "Internaute" "mailing")
-                              ("subject" "newsletter" "mailing")
-                              )
-                           ;; Unmatched mail goes to the catch all group.
-                           "misc");; other splits go here
-                        )
-
- nnimap-split-inbox "INBOX"
- nnimap-split-rule 'nnimap-split-fancy
- nnimap-split-fancy '(| (: nnmail-split-fancy-with-parent)
-                        (| ("from" mail (| ("subject" "warn.*" "mail.warning")
-                                           "mail.misc"))
-                           ;; Non-error messages are crossposted to all relevant
-                           ;; groups, but we don't crosspost between the group for the
-                           ;; (ding) list and the group for other (ding) related mail.
-                           (& (any "sig\\.cdj@gmail\\.com" "INBOX.fondation")
-                              (any "SmartList@informatik\\.rwth-aachen\\.de" "SmartList.list")
-                              (any "debian-\\b\\(\\w+\\)@lists.debian.org" "mail.debian.\\1")
-                              ;; People...
-                              ;; (any "ceanova74@hotmail\\.com" "people.Ceanova")
-                              ;; Tasks
-                              ("to" ".*\\+Task@gmail.com" "INBOX.todo")
-                              ;; CFP
-                              ("subject" "CFP" "INBOX.cfp")
-                              ;; Mailing
-                              ("from" "Dell" "INBOX.mailing")
-                              ("from" "Internaute" "INBOX.mailing")
-                              ("subject" "newsletter" "INBOX.mailing")
-                              )
-                           ;; Unmatched mail goes to the catch all group.
-                           "INBOX.misc");; other splits go here
-                        ))
+ nnmail-treat-duplicates 'warn)
 
 (add-hook 'gnus-select-article-hook 'gnus-agent-fetch-selected-article)
 
@@ -119,26 +61,14 @@
 
 (setq
  ;; archiving backend
- my-archived-group-backend "nnml"
+ my-archived-group-backend "nnmaildir"
  ;; set expiry target to a function call
  nnmail-expiry-target 'my-gnus-expiry-target)
 
 (setq
-;;  gnus-use-procmail t
-;;  nnmail-spool-file 'procmail
-;;  nnmail-procmail-directory "~/.mail/"
-;;  nnmail-procmail-suffix ""
-;;  mail-sources
-;;  (list '(directory
-;; 	 :path "~/.mail/"
-;; 	 :suffix ""
-;; 	 )
-;;        )
-
  gnus-auto-expirable-newsgroups "mail.\\(root\\|delete\\)"
  nnmail-use-long-file-names t
- gnus-uncacheable-groups "^nnml"
-)
+ gnus-uncacheable-groups "^nnmaildir")
 
 ;; increase score for most read groups
 (add-hook 'gnus-summary-exit-hook 'gnus-summary-bubble-group)
@@ -146,19 +76,10 @@
 ;; Use topics
 (add-hook 'gnus-group-mode-hook 'gnus-topic-mode)
 
-(setq gnus-group-jump-to-group-prompt '((0 . "nnimap+ImapHome:INBOX")
-                                        (1 . "nnimap+ImapLifl:")
-                                        (2 . "nnml:")
-                                        (3 . "nntp+free:")))
-
 (setq
  gnus-thread-hide-subtree t
  gnus-suppress-duplicates t
- gnus-auto-select-first nil)
-
-(setq
- gnus-home-score-file "all.SCORE"
- gnus-permanently-visible-groups "INBOX.*"
+ gnus-auto-select-first nil
  gnus-large-newsgroup 100)
 
 (setq gnus-default-adaptive-score-alist
@@ -207,11 +128,11 @@
 
 ;; Some line format
 (when window-system
- (setq gnus-sum-thread-tree-root "\x4912f ")
- (setq gnus-sum-thread-tree-single-indent "\x4912e ")
- (setq gnus-sum-thread-tree-leaf-with-other "\x4903c\x49020\x490fa ")
- (setq gnus-sum-thread-tree-vertical "\x49022")
- (setq gnus-sum-thread-tree-single-leaf "\x490b0\x49020\x490fa "))
+  (setq gnus-sum-thread-tree-root "\x4912f ")
+  (setq gnus-sum-thread-tree-single-indent "\x4912e ")
+  (setq gnus-sum-thread-tree-leaf-with-other "\x4903c\x49020\x490fa ")
+  (setq gnus-sum-thread-tree-vertical "\x49022")
+  (setq gnus-sum-thread-tree-single-leaf "\x490b0\x49020\x490fa "))
 
 (setq gnus-summary-same-subject "")
 
@@ -255,7 +176,7 @@
 (setq
  gnus-group-line-format "%M%S%p%P%5y: %(%G%) (%t)\n"
  gnus-group-mode-line-format "Gnus: %%b"
-; gnus-summary-line-format "%U%R%z %[%-15,15n%] : %-55,55uZ (%d)\n"
+                                        ; gnus-summary-line-format "%U%R%z %[%-15,15n%] : %-55,55uZ (%d)\n"
  gnus-summary-mode-line-format "Gnus: %g [%r/%U]"
  gnus-article-mode-line-format "Gnus: %g [%r/%U] %m"
  gnus-topic-line-format "%i[ %u&topic-line; ] %v\n")
@@ -372,14 +293,14 @@
 (setq
  message-cite-function 'trivial-cite
 
- gnus-signature-separator  '("^-- $"        ; The standard
-			     "^--$"		; Die OE Die !
+ gnus-signature-separator  '("^-- $"         ; The standard
+			     "^--$"          ; Die OE Die !
 			     "^-- *$"        ; A common mangling
 			     "^-------*$"    ; Many people just use a looong
                                         ; line of dashes.  Shame!
 			     "^ *--------*$" ; Double-shame!
 			     "^________*$"   ; Underscores are also popular
-			     "^========*$" ; Pervert!
+			     "^========*$"   ; Pervert!
 			     ))
 
 
@@ -395,21 +316,14 @@
 
 ;; Tell gnus into which group to store messages
 (setq gnus-message-archive-group
-       '((if (message-news-p)
- 	     (concat "news." (format-time-string "%Y-%m" (current-time)))
-           (list gnus-newsgroup-name
-                 (concat "mail." (format-time-string "%Y-%m" (current-time)))))))
+      '((if (message-news-p)
+            (concat "news." (format-time-string "%Y-%m" (current-time)))
+          (list gnus-newsgroup-name
+                (concat "mail." (format-time-string "%Y-%m" (current-time)))))))
 
 (setq
  gnus-prompt-before-saving nil
- gnus-default-article-saver  'gnus-summary-save-in-rmail
- gnus-split-methods
- '(("^Newsgroups:.*\\(unix\\|linux\\|bsd\\)" "unix-stuff")
-   ("^Newsgroups:.*\\(tex\\|xml\\)" "xml-stuff")
-   ("^Newsgroups:.*perl" "perl-stuff")
-   ("^Newsgroups:.*emacs\\|^Newsgroups:.*gnus" "emacs-stuff")
-   ("^Newsgroups:.*lisp" "lisp-stuff")
-   (".*" "misc")))
+ gnus-default-article-saver  'gnus-summary-save-in-rmail)
 
 ;;; Misc
 
@@ -432,73 +346,53 @@
 
 ;;; BBDB
 
-(when nbc-bbdb
-  (require 'bbdb)
-  (bbdb-initialize 'gnus 'message 'sc)
-  (add-hook 'gnus-startup-hook 'bbdb-insinuate-gnus)
+(require 'bbdb)
+(bbdb-initialize 'gnus 'message 'sc)
+(add-hook 'gnus-startup-hook 'bbdb-insinuate-gnus)
 
-  (bbdb-insinuate-message)
+(bbdb-insinuate-message)
 
-  (add-hook 'mail-setup-hook 'bbdb-insinuate-sendmail)
-  (add-hook 'message-setup-hook 'bbdb-define-all-aliases)
+(add-hook 'mail-setup-hook 'bbdb-insinuate-sendmail)
+(add-hook 'message-setup-hook 'bbdb-define-all-aliases)
 
-  (setq
-   bbdb-offer-save 'yes
-   bbdb-electric-p t
-   bbdb-pop-up-target-lines 5
-   bbdb-use-pop-up nil
-   bbdb-north-american-phone-numbers-p nil)
+(setq
+ bbdb-offer-save 'yes
+ bbdb-electric-p t
+ bbdb-pop-up-target-lines 5
+ bbdb-use-pop-up nil
+ bbdb-north-american-phone-numbers-p nil)
 
-  (add-hook 'message-mode-hook
-	    (lambda () (local-set-key [(meta tab)] 'bbdb-complete-name)))
+(add-hook 'message-mode-hook
+          (lambda () (local-set-key [(meta tab)] 'bbdb-complete-name)))
 
-  (add-hook 'bbdb-list-hook 'my-bbdb-display-xface)
-  (defun my-bbdb-display-xface ()
-    "Search for face properties and display the faces."
-    (when (or (gnus-image-type-available-p 'xface)
-              (gnus-image-type-available-p 'pbm))
-      (save-excursion
-        (goto-char (point-min))
-        (let ((inhibit-read-only t); edit the BBDB buffer
-              (default-enable-multibyte-characters nil); prevents corruption
-              pbm faces)
-          (while (re-search-forward "^           face: \\(.*\\)" nil t)
-            (setq faces (match-string 1))
-            (replace-match "" t t nil 1)
-            (dolist (data (split-string faces ", "))
-              (condition-case nil
-                  (insert-image (create-image (gnus-convert-face-to-png data) nil t))
-                (error
-                 (insert-image (gnus-create-image (uncompface data) nil t :face 'tooltip))))
-              (insert " ")))))))
-  (add-hook 'bbdb-notice-hook 'bbdb-auto-notes-hook)
-  (setq bbdb-auto-notes-alist '(("X-Face" (".+" face 0 'replace))
-                                ("Face" (".+" face 0 'replace))))
-)
+(add-hook 'bbdb-list-hook 'my-bbdb-display-xface)
+(defun my-bbdb-display-xface ()
+  "Search for face properties and display the faces."
+  (when (or (gnus-image-type-available-p 'xface)
+            (gnus-image-type-available-p 'pbm))
+    (save-excursion
+      (goto-char (point-min))
+      (let ((inhibit-read-only t)                       ; edit the BBDB buffer
+            (default-enable-multibyte-characters nil)   ; prevents corruption
+            pbm faces)
+        (while (re-search-forward "^           face: \\(.*\\)" nil t)
+          (setq faces (match-string 1))
+          (replace-match "" t t nil 1)
+          (dolist (data (split-string faces ", "))
+            (condition-case nil
+                (insert-image (create-image (gnus-convert-face-to-png data) nil t))
+              (error
+               (insert-image (gnus-create-image (uncompface data) nil t :face 'tooltip))))
+            (insert " ")))))))
+(add-hook 'bbdb-notice-hook 'bbdb-auto-notes-hook)
+(setq bbdb-auto-notes-alist '(("X-Face" (".+" face 0 'replace))
+                              ("Face" (".+" face 0 'replace))))
+
 
 
 ;;; Gnus extensions
 
-(when nbc-nnir
-  (require 'nnir)
-;  (setq nnir-swish-e-index-file "~/.emacs.d/index.swish-e")
-  (setq nnir-mail-backend (nth 0 gnus-secondary-select-methods)
-	nnir-search-engine 'swish-e))
-
 (add-hook 'message-mode-hook 'flyspell-mode)
-
-(require 'osd)
-(osd-init)
-
-(defvar osd-group-list '("INBOX.thesis" "INBOX.teaching" "INBOX.lifl"))
-
-(defun osd-gnus-display-from ()
-  (goto-char (point-min))
-  (if (member group-in osd-group-list)
-      (osd-display (concat "Mail received for group " group-in))))
-
-(add-hook 'nnmail-read-incoming-hook 'osd-gnus-display-from)
-(add-hook 'gnus-exit-gnus-hook 'osd-close)
 
 ;;
 ;; automatic mail scan without manual effort.
@@ -536,53 +430,16 @@
   (interactive)
   ;; scan for news every 20 minutes
   (gnus-demon-add-handler 'gnus-demon-scan-news-and-update 20 2)
-  ;; scan for mails every 10 minutes
-  (gnus-demon-add-handler 'gnus-demon-scan-mail-and-update 10 2))
+  ;; scan for mails every 2 minutes
+  (gnus-demon-add-handler 'gnus-demon-scan-mail-and-update 2 2))
 
 (defun yh/gnus-demon-uninstall ()
   (interactive)
   (gnus-demon-cancel))
 
-(setq message-signature 'yh/fortune)
+(setq message-signature t)
 
 ;; (yh/gnus-demon-install)
-
-(defvar yh/fortune-program nil
-  "*Program used to generate epigrams, default \"fortune\".")
-
-(defvar yh/fortune-switches nil
-  "*List of extra arguments when `fortune-program' is invoked.")
-
-(setq yh/fortune-program "/usr/games/fortune")
-(add-to-list 'yh/fortune-switches "chapterhouse-dune")
-(add-to-list 'yh/fortune-switches "children-of-dune")
-(add-to-list 'yh/fortune-switches "dune")
-(add-to-list 'yh/fortune-switches "dune-messiah")
-(add-to-list 'yh/fortune-switches "god-emperor")
-(add-to-list 'yh/fortune-switches "heretics-of-dune")
-(add-to-list 'yh/fortune-switches "house-atreides")
-(add-to-list 'yh/fortune-switches "house-harkonnen")
-
-(defun yh/fortune (&optional long-p)
-  "Generate a random epigram.
-An optional prefix argument generates a long epigram.
-The epigram is inserted at point if called interactively."
-  (interactive "*P")
-  (let ((fortune-buffer (generate-new-buffer " fortune"))
-        (fortune-string "Have an adequate day."))
-    (unwind-protect
-        (save-excursion
-          (set-buffer fortune-buffer)
-          (apply 'call-process
-                 (append (list (or yh/fortune-program "fortune") nil t nil)
-                         yh/fortune-switches (list (if long-p "-l" "-s"))))
-          (dos2unix)
-          (skip-chars-backward "\n\t ")
-          (setq fortune-string (buffer-substring (point-min) (point))))
-      (kill-buffer fortune-buffer))
-    (if (interactive-p)
-        (insert fortune-string))
-    fortune-string))
 
 (setq mm-text-html-renderer 'w3m)
 
@@ -621,209 +478,48 @@ The epigram is inserted at point if called interactively."
 
 ;;; Supercite
 
-;; Supercite Settings
 (autoload 'sc-cite-original     "supercite" "Supercite 3.1" t)
 (autoload 'sc-submit-bug-report "supercite" "Supercite 3.1" t)
-(add-hook 'mail-citation-hook 'sc-cite-original)
 
-;; Do not insert the original author's signature when citing with supercite
-(add-hook 'sc-pre-hook
-	  (lambda ()
-	    (save-excursion
-	      (let ((start (point))
-		    (end (mark t)))
-		(goto-char end)
-		(when (re-search-backward "^-- $" start t)
-;		(when (re-search-backward gnus-signature-separator start t)
-		  (forward-line -1)
-		  (while (looking-at "[ \t]*$")
-		    (forward-line -1))
-		  (forward-line 1)
-		  (delete-region (point) end))))))
-
-;; Attibutions to use by preference - the first non-nil string wins
-(setq sc-preferred-attribution-list '("x-attribution"
-				      "firstname"
-				      "initials"
-				      "sc-lastchoice"
-				      "lastname"))
+(setq message-cite-function 'sc-cite-original)
 
 
-;;; SpamAssassin-related stuff for Gnus
 
-;; Show the SpamAssassin score of mails in mail groups
+;;; Crypto
 
-(defvar nix-spam-checked-groups '("nnml:spam" "nnml:mbox")
-  "The set of groups in which spam-checked mails may be placed.")
-
-(defun nix-select-group-show-spam-score ()
-  "Show the SpamAssassin score of mails in this group, if it is a mail group.
-Only those groups given in `nix-spam-checked-groups' are checked.
-
-Must be called from the `gnus-select-group-hook'."
-  (and (member gnus-newsgroup-name nix-spam-checked-groups)
-       (not (gnus-group-find-parameter (or gnus-newsgroup-name "")
-                                       'gnus-summary-line-format))
-       (gnus-group-add-parameter gnus-newsgroup-name
-                                 '(gnus-summary-line-format "%U%R%2,2ub%5,5us%5t%z%I%(%[%4L: %-20,20uB%]%) %s\n"))))
-
-(defun nix-return-spamassassin-score (header)
-  "Given a Gnus message header HEADER, return an indication of the spam score."
-  (let ((sa-score-header (gnus-extra-header 'X-Spam-Status header)))
-    ;; Is the header is a real SA header?
-    (save-match-data
-      (if (string-match "hits=\\([^ ]*\\)" sa-score-header)
-          (substring sa-score-header (match-beginning 1) (match-end 1))
-        " "))))
-
-(defalias 'gnus-user-format-function-s 'nix-return-spamassassin-score)
-
-;(add-hook 'gnus-select-group-hook 'nix-select-group-show-spam-score)
-
-;; Mail-specific stuff.
-
-;; Allow easy reporting of mail to duplicate-checking agents (Razor, Pyzor, DCC, &c)
-;; via SpamAssassin, and removal from the SpamAssassin autowhitelist.
-
-(defsubst nix-pipe-given-article-somewhere (article command &optional report-buffer temp-buffer background)
-  "Pipe the given ARTICLE through some COMMAND.
-Optionally use a specific TEMP-BUFFER and report the output
-in a particular REPORT-BUFFER.  If the piping happens in the BACKGROUND,
-output is discarded."
-  (let ((temp-buffer (or temp-buffer " *article pipe temp*"))
-        (report-buffer (or report-buffer "*Article Pipe Output*"))
-        (command (if background
-                     (concat "perl -e 'my $mail; while (<>) { $mail .= $_; } open STDIN, \"/dev/null\" or die \"Cannot read from /dev/null\"; open STDOUT, \">/dev/null\" or die \"Cannot write to /dev/null\"; defined (my $ret=fork()) or die \"Cannot fork: $!\"; exit if $ret; setsid; open STDERR, \">&STDOUT\" or die \"Cannot dup stdout: $!\"; open OUT,\"|"
-                             command "\" or die \"Subprocess fork failed: $!\"; print OUT $mail;'")
-                   command)))
-    (save-excursion
-      (if (gnus-request-article article gnus-newsgroup-name
-                                (get-buffer-create temp-buffer))
-          (unwind-protect
-              (progn
-                (set-buffer temp-buffer)
-                (shell-command-on-region (point-min) (point-max) command
-                                         (get-buffer-create report-buffer)))
-            (kill-buffer temp-buffer))))))
-
-;; All the sshing is to cater for a single host where SA is known to work;
-;; bugs in Perl 5.8.0 and UltraSPARC prevent it from working on most of my
-;; machines. (Why didn't they write it in elisp? ;} )
-
-(defun nix-report-spam ()
-  "Report the current message as spam."
-  (interactive)
-;  (nix-pipe-given-article-somewhere gnus-current-article "spamassassin -r" "*Spam Reporting*" nil t))
-  (nix-pipe-given-article-somewhere gnus-current-article "sa-learn --spam --no-rebuild --single" "*Spam Reporting*" nil t))
-
-(defun nix-report-spam-all ()
-  "Report all unread messages in the current group as spam."
-  (interactive)
-  (save-excursion
-    (when (gnus-summary-first-subject t t)
-      (while (and
-              (progn
-                                        ;                  (gnus-summary-mark-article-as-read gnus-read-mark)
-                (let ((gnus-visible-headers "^From: \\|^Subject: "))
-                  (gnus-summary-select-article))
-                (message "Reporting #%i" gnus-current-article)
-                (redisplay-device)
-;                (nix-pipe-given-article-somewhere (gnus-summary-article-number) "spamassassin -r" "*Spam Reporting*" nil nil))
-                (nix-pipe-given-article-somewhere (gnus-summary-article-number) "sa-learn --spam --no-rebuild --single" "*Spam Reporting*" nil nil))
-              (gnus-summary-find-next t nil nil))))))
-
-(defun nix-revoke-spam ()
-  "Report that current message is not spam after all.
-Only revokes from Razor 2 and the Bayes database, as other mechanisms have
-no revocation mechanism and because revocation is not worthwhile for
-mechanisms with no trust web."
-  (interactive)
-  ;(nix-pipe-given-article-somewhere gnus-current-article "spamassassin -d | razor-revoke" "*Spam Reporting*")
-  (nix-pipe-given-article-somewhere gnus-current-article "sa-learn --forget --single --no-rebuild" "*Spam Reporting*"))
-
-(defun nix-excise-addresses ()
-  "Excise the addresses in the current message from the autowhitelists."
-  (interactive)
-  (nix-pipe-given-article-somewhere gnus-current-article "spamassassin -R" "*Spam Reporting*"))
-
-;; When we expire or delete mails from groups where SA-scanned mails end up,
-;; we should --forget them from the Bayes database too.
-
-(defun nix-select-group-expire-forgets ()
-  "When a mail is deleted, SA and other learning systems should forget about it.
-This only applies to those groups given in `nix-spam-checked-groups'.
-
-Must be called from the `gnus-select-group-hook'."
-  (and (member gnus-newsgroup-name nix-spam-checked-groups)
-       (not (gnus-group-find-parameter (or gnus-newsgroup-name "")
-                                       'gnus-summary-line-format))
-       (gnus-group-add-parameter gnus-newsgroup-name
-                                 '(expiry-target 'nix-forget-mail))))
-
-(defun nix-forget-mail (group)
-  "Forget the mail in the current message."
-  (shell-command-on-region (point-min) (point-max) "sa-learn --forget --single --no-rebuild")
-  (and (boundp 'nix-sa-db-rebuild-needed) (setq nix-sa-db-rebuild-needed t))
-  (message "Forgotten a message.")
-  'delete)
-
-(defadvice gnus-request-expire-articles (around nix-rebuild-after-group-expire-articles activate preactivate)
-  "Rebuild the SA Bayes database if expiry took place."
-  (let ((nix-sa-db-rebuild-needed))
-    ad-do-it
-    (if nix-sa-db-rebuild-needed
-        (shell-command "sa-learn --rebuild > /dev/null"))))
-
-(add-hook 'gnus-select-group-hook 'nix-select-group-expire-forgets)
-
-(define-key gnus-summary-mode-map (kbd "M $") 'nix-report-spam)
-(define-key gnus-summary-mode-map (kbd "M a") 'nix-excise-addresses)
-;(define-key gnus-summary-mode-map (kbd "") 'nix-report-spam-all)
-(define-key gnus-summary-mode-map (kbd "M M-$") 'nix-revoke-spam)
-
-
-;;; PGG
 (require 'pgg)
+
+(autoload 'pgg-encrypt-region "pgg" "Encrypt the current region." t)
+(autoload 'pgg-decrypt-region "pgg" "Decrypt the current region." t)
+(autoload 'pgg-sign-region "pgg" "Sign the current region." t)
+(autoload 'pgg-verify-region "pgg" "Verify the current region." t)
+(autoload 'pgg-insert-key "pgg" "Insert the ASCII armored public key." t)
+(autoload 'pgg-snarf-keys-region "pgg" "Import public keys in the
+      current region." t)
+
 ;; verify/decrypt only if mml knows about the protocl used
 (setq mm-verify-option 'known)
 (setq mm-decrypt-option 'known)
 
-;;Here we make button for the multipart
+;; Here we make button for the multipart
 (setq gnus-buttonized-mime-types '("multipart/encrypted" "multipart/signed"))
 
-;; Automatically sign when sending mails
-;(add-hook 'message-send-hook 'mml-secure-message-sign-pgpmime)
+(setq mm-verify-option 'known)
+(setq mm-decrypt-option 'known)
+(setq gnus-article-emulate-mime t) ; already set in my gnus but you may need it.
+(setq gnus-buttonized-mime-types (append (list "multipart/signed"
+	    				       "multipart/encrypted")
+		    			 gnus-buttonized-mime-types))
 
-;; Enough explicit settings
-(setq pgg-passphrase-cache-expiry 600)
+(add-hook 'gnus-message-setup-hook 'mml-secure-message-sign-pgpmime)
 
-;; Tells Gnus to inline the part
-(eval-after-load "mm-decode"
-  '(add-to-list 'mm-inlined-types "application/pgp$"))
-;; Tells Gnus how to display the part when it is requested
-(eval-after-load "mm-decode"
-  '(add-to-list 'mm-inline-media-tests '("application/pgp$"
-                                         mm-inline-text identity)))
-;; Tell Gnus not to wait for a request, just display the thing
-;; straight away.
-(eval-after-load "mm-decode"
-  '(add-to-list 'mm-automatic-display "application/pgp$"))
-;; But don't display the signatures, please.
-(eval-after-load "mm-decode"
-  (quote (setq mm-automatic-display (remove "application/pgp-signature"
-                                            mm-automatic-display))))
-
-;; (add-hook 'gnus-message-setup-hook 'mml-secure-message-sign-pgpmime)
-
+;;; Misc
 (require 'gnus-sum)
-(require 'nntodo)
 
 (autoload 'bbdb/send-hook "moy-bbdb"
   "Function to be added to `message-send-hook' to notice records when sending messages" t)
 
 (add-hook 'message-send-hook 'bbdb/send-hook)
-
-(autoload 'trivial-cite "tc" t t)
 
 ;; (server-start)
 (calendar)

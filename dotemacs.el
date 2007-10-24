@@ -445,10 +445,16 @@
 
 ;;;_* Experimental
 
+(require 'epa-setup)
+
 ;; Doc-mode
 (require 'doc-mode)
 (add-hook 'c++-mode-hook 'doc-mode)
 (add-hook 'java-mode-hook 'doc-mode)
+
+;; Anything
+(require 'anything)
+(require 'anything-config)
 
 ;; Compagny-mode
 (require 'company-mode)

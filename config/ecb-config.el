@@ -34,7 +34,8 @@
 (defun yh/compilation-predicate (buffer)
   (and (comint-check-proc buffer)
        (with-current-buffer buffer
-         (not (eq major-mode 'circe-server-mode)))))
+         (not (or (eq major-mode 'circe-server-mode)
+                  (eq major-mode 'message-mode))))))
 
 (defun yh/init-ecb ()
   (require 'ecb-winman-support)

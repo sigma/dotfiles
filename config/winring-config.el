@@ -36,7 +36,10 @@
     "Creation of new configuration if only one existing"
     (condition-case nil
         ad-do-it
-      (error (winring-new-configuration t)))))
+      (error (winring-new-configuration t))))
+  ;; for some reason, this is improper in my configuration...
+  (defadvice winring-initialize (after winring-fix act)
+    (remove-hook 'after-make-frame-functions 'winring-create-frame-hook)))
 
 (eval-after-load 'winring
   '(yh/winring-fix-switch))

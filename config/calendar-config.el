@@ -48,5 +48,71 @@
              (< cycle limit))
         (cons mark (format entry cycle (diary-ordinal-suffix cycle))))))
 
+;; (defun calendar-iso-week-string (&optional date)
+;;   "String of ISO week number of Gregorian DATE."
+;;   (format "W%02d "
+;; 	  (extract-calendar-month
+;; 	   (calendar-iso-from-absolute
+;; 	    (calendar-absolute-from-gregorian date)))))
+
+;; (defun generate-calendar-month (month year indent)
+;;   "Produce a calendar for MONTH, YEAR on the Gregorian calendar.
+;; The calendar is inserted at the top of the buffer in which point is currently
+;; located, but indented INDENT spaces.  The indentation is done from the first
+;; character on the line and does not disturb the first INDENT characters on the
+;; line."
+;;   (let* ((blank-days ;; at start of month
+;;           (mod
+;;            (- (calendar-day-of-week (list month 1 year))
+;;               calendar-week-start-day)
+;;            7))
+;; 	 (last (calendar-last-day-of-month month year)))
+;;     (goto-char (point-min))
+;;     (calendar-insert-indented
+;;      (calendar-string-spread
+;;       (list (format "%s %d" (calendar-month-name month) year)) ?  20)
+;;      indent t)
+;;     (calendar-insert-indented "" indent) ;; Go to proper spot
+;;     ;; Use the first two characters of each day to head the columns.
+;;     (dotimes (i 7)
+;;       (insert
+;;        (let ((string
+;;               (calendar-day-name (mod (+ calendar-week-start-day i) 7) nil t)))
+;;          (if enable-multibyte-characters
+;;              (truncate-string-to-width string 2)
+;;            (substring string 0 2)))
+;;        " "))
+
+;;     ;; HACK
+;;     (setq indent (- indent 4))
+
+;;     (calendar-insert-indented "" 0 t) ;; Force onto following line
+
+;;     ;; HACK
+;;     (calendar-insert-indented  ;; Go to proper spot
+;;      (calendar-iso-week-string ;; Insert ISO week number.
+;;       (list
+;;        month
+;;        (if (and (= 0 blank-days) (= 0 calendar-week-start-day))
+;;            2 ;; Use 2nd day if 1st day of calendar month is Sunday.
+;;          1) year)) indent)
+
+;;     ;; Add blank days before the first of the month
+;;     (dotimes (idummy blank-days) (insert "   "))
+;;     ;; Put in the days of the month
+;;     (calendar-for-loop i from 1 to last do
+;;                        (insert (format "%2d " i))
+;;                        (add-text-properties
+;;                         (- (point) 3) (1- (point))
+;;                         '(mouse-face highlight
+;;                                      help-echo "mouse-2: menu of operations for this date"))
+;;                        (and (zerop (mod (+ i blank-days) 7))
+;;                             (/= i last)
+;;                             (calendar-insert-indented "" 0 t) ;; Force onto following line
+;;                             (calendar-insert-indented ;; Go to proper spot
+;;                              (calendar-iso-week-string ;; Insert ISO week number.
+;;                               (list month (+ 2 i) year))
+;;                              indent))))) ;; Go to proper spot
+
 (provide 'calendar-config)
 ;;; calendar-config.el ends here

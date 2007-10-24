@@ -36,14 +36,18 @@
 (define-key global-map "\C-ca" 'org-agenda)
 
 (setq org-agenda-include-diary t
-      org-log-done t
+      org-log-done '(state)
       org-agenda-include-all-todo nil
       org-archive-stamp-time nil
       org-highest-priority ?A
       org-default-priority ?C
       org-lowest-priority ?E
       org-tags-column -79
-      org-todo-keywords '((type "NEXTACTION" "WAITING" "MAYBE" "|" "DONE")))
+      org-todo-keywords '((type "TODO(t)" "WAITING(w@)" "MAYBE(m)" "|" "DONE(d)" "CANCELED(c@)"))
+      org-agenda-custom-commands '(("t" . "Open tasks")
+                                   ("tn" tags-todo "URGENT|NORMAL/TODO|WAITING")
+                                   ("tu" tags-todo "URGENT/TODO|WAITING"))
+      )
 
 (when (request 'remember)
   (setq remember-annotation-functions '(org-remember-annotation))
@@ -51,7 +55,7 @@
   (add-hook 'remember-mode-hook 'org-remember-apply-template)
 
   (setq org-remember-templates
-        `((?n "* NEXTACTION %?\n  %i\n  %a" ,org-default-notes-file "Misc")
+        `((?t "* TODO %?\n  %i\n  %a" ,org-default-notes-file "Misc")
           (?w "* WAITING %?\n  %i\n  %a" ,org-default-notes-file "Misc")
           (?m "* MAYBE %?\n  %i\n  %a" ,org-default-notes-file "Misc"))))
 
