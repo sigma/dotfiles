@@ -191,7 +191,7 @@ is not nil, then in case of no success, this value is returned"
                     (list 'face 'minibuff-face))))))
 
 ;; Adapt open-line behavior when arg <= 0
-(defadvice open-line( around open-line-around (arg) act )
+(defadvice open-line (around open-line-around (arg) act)
   "Open new line(s) at end of line if arg is <= 0."
   (if (<= arg 0)
       (let ((var (if (equal arg 0) -1 arg)))

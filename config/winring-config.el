@@ -44,5 +44,34 @@
 (eval-after-load 'winring
   '(yh/winring-fix-switch))
 
+(defun winring-by-name (name)
+  (let* ((ring (winring-get-ring))
+	 (n (1- (ring-length ring)))
+	 (current (winring-name-of-current))
+	 (table (list (cons current -1))))
+    ;; populate the completion table
+    (while (<= 0 n)
+      (setq table (cons (cons (winring-name-of (ring-ref ring n)) n) table)
+	    n (1- n)))
+    (cdr (assoc name table))))
+
+(defun winring-select (name)
+  (interactive "sWinring: ")
+  (flet ((winring-complete-name () (winring-by-name name)))
+    (winring-jump-to-configuration)))
+
+(defmacro with-selected-winring (name &rest body)
+  "Execute the forms in BODY with FRAME as the selected frame.
+The value returned is the value of the last form in BODY.
+See also `with-temp-buffer'."
+  (declare (indent 1) (debug t))
+  (let ((old-ring (make-symbol "old-ring")))
+    `(let ((,old-ring (winring-name-of-current)))
+       (unless (string= ,old-ring ,name)
+         (unwind-protect
+             (progn (winring-select ,name)
+                    ,@body)
+           (winring-select ,old-ring))))))
+
 (provide 'winring-config)
 ;;; winring-config.el ends here

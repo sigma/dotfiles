@@ -4,17 +4,18 @@
 ;; http://sacha.free.net.ph/notebook/emacs/dev/remember
 
 (request 'remember)
-(request 'planner)
-;; (require 'planner-rss)
-(request 'remember-planner)
-;; (require 'remember-bibl)
 
-(setq remember-save-after-remembering t)
-(setq remember-handler-functions '(remember-planner-append))
+(defvar remember-original-winring nil)
 
-(defvaralias 'remember-annotation-functions 'planner-annotation-functions)
+(add-hook 'remember-before-remember-hook
+          (lambda ()
+            (setq remember-original-winring (winring-name-of-current))
+            (winring-select ecb-winman-winring-name)))
 
-(setq remember-append-to-planner-hook
-      '(remember-planner-add-timestamp remember-planner-add-xref planner-rss-add-note))
+(defadvice remember-destroy (after remember-destroy-after-ecb () act)
+  (winring-select remember-original-winring))
+
+(defadvice remember-buffer (after remember-buffer-after-ecb () act)
+  (winring-select remember-original-winring))
 
 (provide 'remember-config)

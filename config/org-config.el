@@ -38,16 +38,33 @@
 (setq org-agenda-include-diary t
       org-log-done '(state)
       org-agenda-include-all-todo nil
+      org-agenda-skip-deadline-if-done t
+      org-agenda-skip-scheduled-if-done t
+      org-reverse-note-order t
       org-archive-stamp-time nil
       org-highest-priority ?A
       org-default-priority ?C
       org-lowest-priority ?E
       org-tags-column -79
+      org-agenda-start-on-weekday nil
       org-todo-keywords '((type "TODO(t)" "WAITING(w@)" "MAYBE(m)" "|" "DONE(d)" "CANCELED(c@)"))
       org-agenda-custom-commands '(("t" . "Open tasks")
                                    ("tn" tags-todo "URGENT|NORMAL/TODO|WAITING")
-                                   ("tu" tags-todo "URGENT/TODO|WAITING"))
-      )
+                                   ("tu" tags-todo "URGENT/TODO|WAITING")
+                                   ("d" todo "DELEGATED" nil)
+                                   ("c" todo "DONE|DEFERRED|CANCELLED" nil)
+                                   ("w" todo "WAITING" nil)
+                                   ("W" agenda "" ((org-agenda-ndays 21)))
+                                   ("A" "Today's Priority #A tasks: " agenda ""
+                                    ((org-agenda-skip-function
+                                      (lambda nil
+                                        (org-agenda-skip-entry-if (quote notregexp) "\\=.*\\[#A\\]")))
+                                     (org-agenda-ndays 1)))
+                                   ("u" "Unscheduled TODO entries: " alltodo ""
+                                    ((org-agenda-skip-function
+                                      (lambda nil
+                                        (org-agenda-skip-entry-if (quote scheduled) (quote deadline)
+                                                                  (quote regexp) "<[^>\n]+>")))))))
 
 (when (request 'remember)
   (setq remember-annotation-functions '(org-remember-annotation))

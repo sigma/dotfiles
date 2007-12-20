@@ -35,6 +35,7 @@
   (and (comint-check-proc buffer)
        (with-current-buffer buffer
          (not (or (eq major-mode 'circe-server-mode)
+                  (eq major-mode 'rcirc-mode)
                   (eq major-mode 'message-mode))))))
 
 (defun yh/init-ecb ()

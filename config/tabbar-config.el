@@ -52,7 +52,7 @@ Return only one group for each buffer."
             '(emacs-lisp-mode inferior-emacs-lisp-mode lisp-mode lisp-interaction-mode scheme-mode sawfish-mode))
       '("Lisp"))
      ((memq major-mode
-            '(circe-server-mode circe-channel-mode circe-query-mode))
+            '(circe-server-mode circe-channel-mode circe-query-mode rcirc-mode))
       '("IRC"))
      ((or (get-buffer-process (current-buffer))
           (memq major-mode

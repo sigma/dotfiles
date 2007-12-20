@@ -161,6 +161,7 @@
 (request 'buffer-config)
 (request 'outline-config)
 (request 'org-config)
+(request 'remember-config)
 (request 'calendar-config)
 
 (unless-configuration 'proof
@@ -173,7 +174,8 @@
     (request 'ecb-config)
     (request 'winring-config)
     ;; (request 'planner-config)
-    (request 'circe-config)
+;; (request 'circe-config)
+    (request 'rcirc-config)
     (request 'tramp-config)
     (request 'eshell-config)
     (request 'help-config)
@@ -507,7 +509,7 @@
 (autoload 'anchored-transpose "anchored-transpose" nil t)
 
 (when-configuration 'code
-  (try (server-mode 1)))
+  (server-start))
 
 ;;; Startup code
 (require 'org)
@@ -530,5 +532,7 @@
 
 ;; setup *scratch* correctly
 (kill-scratch-buffer)
+
+(indent-region-mode -1)
 
 (message ".emacs loaded")
