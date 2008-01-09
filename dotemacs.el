@@ -449,6 +449,11 @@
 
 (require 'epa-setup)
 
+(require 'tl-fdd)
+(add-to-list 'auto-mode-alist '("\\.fdd\\'" . tl-fdd-mode))
+(add-to-list 'auto-mode-alist '("\\.tlfdd\\'" . tl-fdd-mode))
+(add-to-list 'auto-mode-alist '("\\.tldoc\\'" . tl-fdd-mode))
+
 ;; Doc-mode
 (require 'doc-mode)
 (add-hook 'c++-mode-hook 'doc-mode)
@@ -501,7 +506,7 @@
 
 (add-hook 'php-mode-user-hook 'turn-on-font-lock)
 
-(add-to-list 'auto-mode-alist '("\\.[hi]\\'" . c++-mode))
+(add-to-list 'auto-mode-alist '("\\.[chi]\\'" . c++-mode))
 (add-to-list 'auto-mode-alist '("\\.djava\\'" . java-mode))
 (add-to-list 'auto-mode-alist '("\\.pro\\'" . makefile-mode))
 

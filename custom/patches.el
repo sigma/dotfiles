@@ -240,36 +240,6 @@ is not nil, then in case of no success, this value is returned"
   (yank-pop (- arg)))
 (global-set-key "\M-Y" 'yank-rpop)
 
-(defun yh/completion-setup-function ()
-  (if minibuffer-completing-file-name
-      (file-completion-setup-function)
-    (completion-setup-function)))
-
-;; The default completion-setup-function conflicts with my dircolors settings
-(defun file-completion-setup-function ()
-  (let ((mainbuf (current-buffer))
-	(mbuf-contents (minibuffer-contents)))
-    (with-current-buffer mainbuf
-      (setq default-directory (file-name-directory mbuf-contents)))
-    (when (and partial-completion-mode (not (eobp)))
-      (setq mbuf-contents
-	    (substring mbuf-contents 0 (- (point) (point-max)))))
-    (with-current-buffer standard-output
-      (completion-list-mode)
-      (make-local-variable 'completion-reference-buffer)
-      (setq completion-reference-buffer mainbuf)
-      ;; Insert help string.
-      (goto-char (point-min))
-      (if (display-mouse-p)
-	  (insert (substitute-command-keys
-		   "Click \\[mouse-choose-completion] on a completion to select it.\n")))
-      (insert (substitute-command-keys
-	       "In this buffer, type \\[choose-completion] to \
-select the completion near point.\n\n")))))
-
-(remove-hook 'completion-setup-hook 'completion-setup-function)
-(add-hook 'completion-setup-hook 'yh/completion-setup-function)
-
 ;; Suppress annoying messages. Needs some work
 ;; (defadvice message (around message-around act)
 ;;   "Don't let annoying messages popup while using the minibuffer"

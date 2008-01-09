@@ -111,7 +111,6 @@
            (foreground-color . "wheat")
            (background-color . "darkslategray")
            (cursor-color . "yellow")
-           (font . "fixed")
            )))
 
 (if (> emacs-major-version 20) (custom-set-variables '(tool-bar-mode nil nil (tool-bar))))
