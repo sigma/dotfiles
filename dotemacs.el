@@ -444,6 +444,7 @@
   (xterm-extra-keys))
 
 (request 'w3m-load)
+
 
 ;;;_* Experimental
 
@@ -525,7 +526,7 @@
   (call-interactively 'org-agenda-list)
   (eshell))
 
-(global-hl-line-hack-mode 1)
+(global-hl-line-mode 1)
 
 (autoload 'predictive-mode "predictive" "predictive" t)
 (set-default 'predictive-auto-add-to-dict t)
@@ -539,5 +540,9 @@
 (kill-scratch-buffer)
 
 (indent-region-mode -1)
+
+(require 'gtags)
+(defadvice gtags-visit-tagrecord (after gtags-recenter-after-visit-tagrecord act)
+  (recenter))
 
 (message ".emacs loaded")

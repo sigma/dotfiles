@@ -52,6 +52,7 @@
                ("C(++)" (or
                          (mode . c-mode)
                          (mode . c++-mode)))
+               ("FDD" (mode . tl-fdd-mode))
                ("Java" (mode . java-mode))
                ("lisp" (or
                         (mode . emacs-lisp-mode)

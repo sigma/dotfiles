@@ -61,14 +61,14 @@
 
 (setq
  ;; archiving backend
- my-archived-group-backend "nnmaildir"
+ my-archived-group-backend "nnfolder+archive"
  ;; set expiry target to a function call
  nnmail-expiry-target 'my-gnus-expiry-target)
 
 (setq
  gnus-auto-expirable-newsgroups "mail.\\(root\\|delete\\)"
  nnmail-use-long-file-names t
- gnus-uncacheable-groups "^nnmaildir")
+ gnus-uncacheable-groups "^nnml")
 
 ;; increase score for most read groups
 (add-hook 'gnus-summary-exit-hook 'gnus-summary-bubble-group)

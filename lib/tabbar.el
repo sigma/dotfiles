@@ -49,7 +49,7 @@
 ;; - `tabbar-forward' select the next available tab.
 ;; - `tabbar-backward' select the previous available tab.
 ;;
-;; It is worth defining keys for them.  For example: 
+;; It is worth defining keys for them.  For example:
 ;;
 ;;   (global-set-key [(control shift tab)] 'tabbar-backward)
 ;;   (global-set-key [(control tab)]       'tabbar-forward)
@@ -861,7 +861,7 @@ See the variable `tabbar-button-widget' for details."
 
  ;; These functions can be called at compilation time.
 (eval-and-compile
-  
+
   (defun tabbar-make-select-tab-command (tab)
     "Return a command to handle TAB selection.
 That command calls `tabbar-select-tab-function' with the received

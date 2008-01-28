@@ -151,10 +151,11 @@ set's view to build a list of template elements for
         (tabset (tabbar-current-tabset)))
     (while (not (yh/tabbar-current-index))
       (tabbar-scroll tabset -1))
-    (while (>= (apply '+ (mapcar #'(lambda (e) (length (car e)))
-                                 (subseq (tabbar-view tabset)
-                                         0
-                                         (yh/tabbar-current-index))))
+    (while (>= (+ (length (format "%s" tabset))
+                  (apply '+ (mapcar #'(lambda (e) (+ 3 (length (car e))))
+                                    (subseq (tabbar-view tabset)
+                                            0
+                                            (1+ (yh/tabbar-current-index))))))
                width)
       (tabbar-scroll tabset 1))))
 

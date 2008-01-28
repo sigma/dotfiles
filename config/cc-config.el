@@ -432,12 +432,54 @@
     )
   "eZ systems PHP Programming Style")
 
+(defconst jtop-c-style
+  ;; Always indent c/c++ sources, never insert tabs
+  '((c-tab-always-indent        . t)
+    ;; Offset for line only comments
+    (c-basic-offset . 2)
+    (indent-tabs-mode . t)
+    (c-comment-only-line-offset . 0)
+    ;; Controls the insertion of newlines before and after braces.
+    (c-hanging-braces-alist     . ((substatement-open after)
+                                   (defun-open after)
+                                   (class-open after)
+                                   (inline-open after)
+                                   (block-open after)
+				   (brace-list-open after)
+                                   (extern-lang-open after)
+                                   (namespace-open after)))
+    ;; Controls the insertion of newlines before and after certain colons.
+    (c-hanging-colons-alist     . ((member-init-intro before)
+				   (inher-intro)
+				   (case-label after)
+				   (label after)
+				   (access-label after)))
+    ;; List of various C/C++/ObjC constructs to "clean up".
+    (c-cleanup-list             . (scope-operator
+				   empty-defun-braces
+				   defun-close-semi
+                                   brace-else-brace
+                                   brace-elseif-brace))
+    ;; Association list of syntactic element symbols and indentation offsets.
+    (c-offsets-alist            . ((arglist-close . c-lineup-arglist)
+				   (substatement-open . 0)
+				   (case-label        . +)
+				   (block-open        . 0)
+				   (access-label      . -)
+				   (label	      . 0)
+				   (knr-argdecl-intro . -)
+                                   (innamespace . nil)))
+					;	(c-echo-syntactic-information-p . t)
+    )
+  "Blind-Assist C/C++ Programming Style")
+
 ;; add my personal style.
 (c-add-style "personal" my-c-style)
 (c-add-style "bassist" ba-c-style)
 (c-add-style "camille" camille-c-style)
 (c-add-style "eZSystems" ezsystems-c-style)
 (c-add-style "eZPHP" ezsystems-php-style)
+(c-add-style "jtop" jtop-c-style)
 
 (provide 'mycode)
 ;;; mycode.el ends here
