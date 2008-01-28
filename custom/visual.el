@@ -96,8 +96,6 @@
 (setq font-lock-support-mode 'jit-lock-mode)
 (setq jit-lock-stealth-time 1)
 
-(request 'dircolors)
-
 ;; Frame appearence
 (setq default-frame-alist '((left-fringe)
                             (right-fringe)

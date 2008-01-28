@@ -107,5 +107,31 @@ a new heading WITHOUT moving the tags"
   (flet ((ecb-toggle-compile-window (&rest args) nil))
     ad-do-it))
 
+(require 'appt)
+(setq appt-time-msg-list nil)
+(org-agenda-to-appt)
+
+(defadvice  org-agenda-redo (after org-agenda-redo-add-appts act)
+  "Pressing `r' on the agenda will also add appointments."
+  (progn
+    (setq appt-time-msg-list nil)
+    (org-agenda-to-appt)))
+
+(progn
+  (appt-activate 1)
+  (setq appt-display-format 'window)
+  (setq appt-disp-window-function (function my-appt-disp-window))
+  (defun my-appt-disp-window (min-to-app new-time msg)
+    (call-process "remind.sh" nil 0 nil min-to-app msg new-time)))
+
+;;; remind.sh contains something like :
+;; #!/bin/sh
+
+;; minutes=$1
+;; shift
+;; text="$*"
+
+;; notify-send -i /usr/share/icons/crystalsvg/32x32/apps/bell.png "Appt in $minutes mins" "$text"
+
 (provide 'org-config)
 ;;; org-config.el ends here

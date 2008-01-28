@@ -1,9 +1,7 @@
-;; -*- mode: emacs-lisp; mode: hi-lock; auto-compile-lisp: nil; -*-
+;; -*- mode: emacs-lisp; mode: hi-lock; mode: orgstruct; auto-compile-lisp: nil; -*-
 ;; $Id: dotemacs.el 230 2007-04-09 09:10:18Z yann $
 
 ;; (toggle-debug-on-error)
-
-;;;_* Basis
 
 ;; load code specific to some major version
 (if (file-exists-p (expand-file-name (format "~/.emacs-%d" emacs-major-version)))
@@ -29,12 +27,12 @@
     (load-file (expand-file-name "~/.emacs-cust")))
 
 ;; Hacked scroll margin
-(set-scroll-margin 5 5 '("*eshell*" "*compile*" "*Calendar*"))
-(setq scroll-step 1
-      scroll-conservatively 50)
-;; (setq scroll-margin 5
-;;       scroll-conservatively 50
-;;       scroll-step 1)
+;; (set-scroll-margin 5 5 '("*eshell*" "*compile*" "*Calendar*"))
+;; (setq scroll-step 1
+;;       scroll-conservatively 50)
+(setq scroll-margin 5
+      scroll-conservatively 50
+      scroll-step 1)
 
 
 ;; Save minibuffer history between sessions
@@ -100,7 +98,7 @@
 (setq read-file-name-completion-ignore-case t)
 
 (require 'autoloads)
-
+
 ;;;_* Charsets & languages
 
 (add-to-list 'ispell-dictionary-alist '("latin" "[A-Za-z]" "[^A-Za-z]" "[']" nil nil "~tex" iso-8859-1))
@@ -118,7 +116,7 @@
     (unify-8859-on-encoding-mode 1)
     (unify-8859-on-decoding-mode 1)))
 
-(defun sk-insert-euro (&optional arg) "Insert €"
+(defun sk-insert-euro (&optional arg) "Insert euro symbol"
   (interactive "*P")
   (if arg
       (insert (make-char 'mule-unicode-0100-24ff 116 76))
@@ -126,12 +124,12 @@
 
 (global-set-key (kbd "H-5") 'sk-insert-euro)
 
-(defun sk-insert-oe (&optional arg) "Insert œ"
+(defun sk-insert-oe (&optional arg) "Insert oe"
   (interactive "*P")
   (insert (make-char 'latin-iso8859-15 #xBD)))
 
 (global-set-key (kbd "H-o H-e") 'sk-insert-oe)
-
+
 ;;;_* Packages configuration
 
 ;; I use emacs in 4 different ways from the command line:
@@ -208,7 +206,7 @@
   (request 'crontab-config)
   ;; (request 'flashcard-config)
   (request 'vc-config))
-
+
 ;; _* Utils/Functions
 
 (make-double-command my-home ()
@@ -312,7 +310,7 @@
       (kill-buffer buf))))
 
 (add-hook 'kill-buffer-hook 'kill-associated-diff-buf)
-
+
 ;;;_* Global key bindings
 
 (global-set-key (kbd "<C-backspace>") 'kill-syntax-backward)
@@ -445,10 +443,9 @@
 
 (request 'w3m-load)
 
-
 ;;;_* Experimental
 
-(require 'epa-setup)
+;; (require 'epa-setup)
 
 (require 'tl-fdd)
 (add-to-list 'auto-mode-alist '("\\.fdd\\'" . tl-fdd-mode))
@@ -526,8 +523,6 @@
   (call-interactively 'org-agenda-list)
   (eshell))
 
-(global-hl-line-mode 1)
-
 (autoload 'predictive-mode "predictive" "predictive" t)
 (set-default 'predictive-auto-add-to-dict t)
 (setq predictive-main-dict 'dict-english
@@ -539,10 +534,59 @@
 ;; setup *scratch* correctly
 (kill-scratch-buffer)
 
-(indent-region-mode -1)
+(when (fboundp 'indent-region-mode)
+  (indent-region-mode -1))
+
+(require 'hl-line+)
+(defun hl-line-toggle-when-idle (&optional arg)
+"Turn on or off using `global-hl-line-mode' when Emacs is idle.
+When on, use `global-hl-line-mode' whenever Emacs is idle.
+With prefix argument, turn on if ARG > 0; else turn off."
+  (interactive "P")
+  (setq hl-line-when-idle-p
+        (if arg (> (prefix-numeric-value arg) 0) (not hl-line-when-idle-p)))
+  (cond (hl-line-when-idle-p
+         (timer-activate-when-idle hl-line-idle-timer)
+         (message "Turned ON using `global-hl-line-mode' when Emacs is idle."))
+        (t
+         (cancel-timer hl-line-idle-timer)
+         (message "Turned OFF using `global-hl-line-mode' when Emacs is idle."))))
+
+(defun hl-line-highlight-now ()
+  "Turn on `global-hl-line-mode' and highlight current line now."
+  (unless global-hl-line-mode
+    (global-hl-line-mode 1)
+    (global-hl-line-highlight)
+    (add-hook 'pre-command-hook 'hl-line-unhighlight-now)
+    ))
+
+(defun hl-line-unhighlight-now ()
+  "Turn off `global-hl-line-mode' and unhighlight current line now."
+  (global-hl-line-mode -1)
+  (global-hl-line-unhighlight)
+  (remove-hook 'pre-command-hook 'hl-line-unhighlight-now))
+
+(toggle-hl-line-when-idle 1)
+(hl-line-when-idle-interval 1)
+
 
 (require 'gtags)
 (defadvice gtags-visit-tagrecord (after gtags-recenter-after-visit-tagrecord act)
   (recenter))
 
 (message ".emacs loaded")
+
+;; Local Variables:
+;; outline-regexp: ";+ "
+;; End:
+
+
+;;; This was installed by package-install.el.
+;;; This provides support for the package system and
+;;; interfacing with ELPA, the package archive.
+;;; Move this code earlier if you want to reference
+;;; packages in your .emacs.
+(when
+    (load
+     (expand-file-name "~/.emacs.d/elpa/package.el"))
+  (package-initialize))

@@ -126,13 +126,24 @@
      (format "%s %d" name total-number-of-articles)
      'face topic-face)))
 
-;; Some line format
+;; ASCII-Art (default)
+(setq gnus-sum-thread-tree-indent "  ")
+(setq gnus-sum-thread-tree-root "")
+(setq gnus-sum-thread-tree-false-root "o ")
+(setq gnus-sum-thread-tree-single-indent "")
+(setq gnus-sum-thread-tree-leaf-with-other "+-> ")
+(setq gnus-sum-thread-tree-vertical "| ")
+(setq gnus-sum-thread-tree-single-leaf "`-> ")
+
+;; Unicode
 (when window-system
-  (setq gnus-sum-thread-tree-root "\x4912f ")
-  (setq gnus-sum-thread-tree-single-indent "\x4912e ")
-  (setq gnus-sum-thread-tree-leaf-with-other "\x4903c\x49020\x490fa ")
-  (setq gnus-sum-thread-tree-vertical "\x49022")
-  (setq gnus-sum-thread-tree-single-leaf "\x490b0\x49020\x490fa "))
+  (setq gnus-sum-thread-tree-indent "  ")
+  (setq gnus-sum-thread-tree-root "● ")
+  (setq gnus-sum-thread-tree-false-root "◯ ")
+  (setq gnus-sum-thread-tree-single-indent "◎ ")
+  (setq gnus-sum-thread-tree-leaf-with-other "├─► ")
+  (setq gnus-sum-thread-tree-vertical "│")
+  (setq gnus-sum-thread-tree-single-leaf "╰─► "))
 
 (setq gnus-summary-same-subject "")
 

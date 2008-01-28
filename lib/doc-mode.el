@@ -57,7 +57,10 @@
 ;;; Code:
 
 (eval-when-compile (require 'cl))
-(require 'semantic)
+
+(eval-when (load)
+  (require 'semantic))
+
 (require 'cc-mode)
 (require 'newcomment) ;comment-fill-column
 
@@ -583,7 +586,7 @@ Returns (length LIST) if no occurrence was found."
              (b-param (cadr b))
              (a-pos (doc-mode-position a-param args))
              (b-pos (doc-mode-position b-param args)))
-        (if (= a-pos b-pos) 
+        (if (= a-pos b-pos)
              (string< a-param b-param)
           (< a-pos b-pos)))
     (string< (cadr a) (cadr b))))

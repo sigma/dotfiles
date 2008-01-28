@@ -77,7 +77,9 @@
      (add-hook 'ido-make-buffer-list-hook 'ido-summary-buffers-to-end)
      (add-hook 'ido-make-buffer-list-hook 'yh/ido-make-buffer-list)
 
-     (add-hook 'ido-setup-hook 'yh/ido-setup)))
+     (add-hook 'ido-setup-hook 'yh/ido-setup)
+
+     ))
 
 (when (request 'ido)
   (setq ido-confirm-unique-completion t

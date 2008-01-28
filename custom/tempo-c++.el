@@ -194,16 +194,7 @@
 
                                         (s class) "(" ~ "); //the default constructor()" n>
                                         n > "~" (s class) "(); //the destructor" n n>
-
-                                        (s class)
-                                        "(const " (s class) "& ref); //the copy constructor" n>
-
-                                        (s class)
-                                        "& operator=(const " (s class) "& ref); //the assignment operator" n>
-
-                                        p n
-                                        "protected:" n> p n
-                                        "private:" n> p n
+                                        p "private:" > n> p n
                                         "};\t// end of class " (s class) n>)
                           "class"
                           "Insert a class skeleton"
@@ -256,6 +247,19 @@
                           "qforcit"
                           "Insert a C++ for loop: for(container::ConstIterator it = a.begin(); it != a.end(); ++it)"
                           'c-tempo-tags)
+
+(yh/tempo-define-template "c++-getset"
+                          "g"
+                          'c-tempo-keys-alist
+                          '((tempo-save-named 'virtual (if (y-or-n-p  "virtual?") "virtual " ""))
+                            > (s virtual) (p "Type: " type) " get" (upcase-initials (tempo-lookup-named 'var))
+                            "() const { return " (p "Name: " var)  "; }" > n n
+                            > (s virtual) "void set" (upcase-initials (tempo-lookup-named 'var))
+                            "(" (s type) " val) { "
+                            > (s var) " = val; }" > n)
+                          "getset"
+                          "Insert get set methods"
+                          'c++-tempo-tags)
 
 (add-hook 'c-mode-common-hook
           (lambda ()
