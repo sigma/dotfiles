@@ -133,5 +133,15 @@ a new heading WITHOUT moving the tags"
 
 ;; notify-send -i /usr/share/icons/crystalsvg/32x32/apps/bell.png "Appt in $minutes mins" "$text"
 
+(defun org-get-repeat ()
+  "Check if tere is a deadline/schedule with repeater in this entry."
+  (save-match-data
+    (save-excursion
+      (org-back-to-heading t)
+      (or (org-entry-get (point) "Recurring" t)
+          (if (re-search-forward
+               org-repeat-re (save-excursion (outline-next-heading) (point)) t)
+              (match-string 1))))))
+
 (provide 'org-config)
 ;;; org-config.el ends here

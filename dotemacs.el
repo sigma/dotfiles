@@ -504,7 +504,6 @@
 
 (add-hook 'php-mode-user-hook 'turn-on-font-lock)
 
-(add-to-list 'auto-mode-alist '("\\.[chi]\\'" . c++-mode))
 (add-to-list 'auto-mode-alist '("\\.djava\\'" . java-mode))
 (add-to-list 'auto-mode-alist '("\\.pro\\'" . makefile-mode))
 
@@ -571,8 +570,18 @@ With prefix argument, turn on if ARG > 0; else turn off."
 
 
 (require 'gtags)
-(defadvice gtags-visit-tagrecord (after gtags-recenter-after-visit-tagrecord act)
-  (recenter))
+(add-hook 'c-mode-common-hook 'gtags-mode)
+
+(require 'bookmark)
+(defun switch-to-bookmark (bname)
+  "Interactively switch to bookmark as `iswitchb' does."
+  (interactive (list (flet ((ido-make-buffer-list
+                             (default)
+                             (bookmark-all-names)))
+                       (ido-read-buffer "Jump to bookmark: " nil t))))
+  (bookmark-jump bname))
+
+(global-set-key (kbd "C-x B") 'switch-to-bookmark)
 
 (message ".emacs loaded")
 
