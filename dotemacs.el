@@ -30,7 +30,7 @@
 ;; (set-scroll-margin 5 5 '("*eshell*" "*compile*" "*Calendar*"))
 ;; (setq scroll-step 1
 ;;       scroll-conservatively 50)
-(setq scroll-margin 5
+(setq ;; scroll-margin 5
       scroll-conservatively 50
       scroll-step 1)
 
@@ -240,7 +240,7 @@
 (add-hook 'after-save-hook 'executable-make-buffer-file-executable-if-script-p)
 
 ;; I hate trailing whitespaces (use with caution)
-(add-hook 'write-file-hooks 'delete-trailing-whitespace)
+;; (add-hook 'write-file-hooks 'delete-trailing-whitespace)
 
 ;; I also hate additional blank-lines (use with extreme caution)
 ;;(add-hook 'write-file-hooks 'simplify-blank-lines)

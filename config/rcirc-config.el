@@ -214,6 +214,8 @@ will be part of the list returned."
                          (setq commands (cons (concat"/" (downcase (substring name 10)))
                                               commands))))))
          commands))
+
+     (require 'rcirc-late-fix)
      ))
 
 (provide 'rcirc-config)

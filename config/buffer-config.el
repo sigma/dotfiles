@@ -62,11 +62,12 @@
                         (mode . slime-repl-mode)))
                ("python" (mode . python-mode))
                ("dired" (mode . dired-mode))
-               ("circe" (or
+               ("irc" (or
                          (mode . circe-mode)
                          (mode . circe-server-mode)
                          (mode . circe-query-mode)
-                         (mode . circe-channel-mode)))
+                         (mode . circe-channel-mode)
+                         (mode . rcirc-mode)))
                ("gnus" (or
                         (mode . message-mode)
                         (mode . bbdb-mode)

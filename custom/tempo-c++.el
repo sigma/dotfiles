@@ -53,8 +53,7 @@
                           "#f"
                           'c-tempo-keys-alist
                           '("#ifdef " (p "ifdef-clause: " clause) > n> p n
-                            "#else /* !(" (s clause) ") */" n> p n
-                            "#endif /* " (s clause)" */" n>)
+                            "#endif /*" (s clause) "*/" n>)
                           "#ifdef"
                           "Insert a #ifdef #else #endif statement"
                           'c-tempo-tags)

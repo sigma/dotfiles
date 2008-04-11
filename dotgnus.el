@@ -57,7 +57,9 @@
   "Extracts the date from the current article and converts it to Emacs time"
   (save-excursion
     (goto-char (point-min))
-    (gnus-date-get-time (message-fetch-field "date"))))
+    (condition-case nil
+        (gnus-date-get-time (message-fetch-field "date"))
+      (error (current-time)))))
 
 (setq
  ;; archiving backend

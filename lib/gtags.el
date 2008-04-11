@@ -97,9 +97,9 @@
 (if (not gtags-running-xemacs) nil
  (define-key gtags-mode-map 'button3 'gtags-pop-stack)
  (define-key gtags-mode-map 'button2 'gtags-find-tag-by-event))
-(if gtags-running-xemacs nil
- (define-key gtags-mode-map [mouse-3] 'gtags-pop-stack)
- (define-key gtags-mode-map [mouse-2] 'gtags-find-tag-by-event))
+;; (if gtags-running-xemacs nil
+;;  (define-key gtags-mode-map [mouse-3] 'gtags-pop-stack)
+;;  (define-key gtags-mode-map [mouse-2] 'gtags-find-tag-by-event))
 
 (defvar gtags-select-mode-map (make-sparse-keymap)
   "Keymap used in gtags select mode.")
@@ -363,8 +363,8 @@
     (if (and (not (equal gtags-current-buffer nil))
              (not (equal gtags-current-buffer (current-buffer))))
          (switch-to-buffer gtags-current-buffer)
-      (if (not (gtags-exist-in-stack (current-buffer)))
-	  (setq delete t))
+      ;; (if (not (gtags-exist-in-stack (current-buffer)))
+      ;;     (setq delete t))
       (setq context (gtags-pop-context))
       (if (not context)
 	  (message "The tags stack is empty.")

@@ -1,11 +1,11 @@
 ;;; tempo-snippets.el --- visual insertion of tempo templates
 ;;
-;; Copyright (C) 2007 Nikolaj Schumacher;;
+;; Copyright (C) 2007-2008 Nikolaj Schumacher;;
 ;; Author: Nikolaj Schumacher <bugs * nschum de>
-;; Version: 0.1.2
+;; Version: 0.1.4pre
 ;; Keywords: abbrev convenience
 ;; URL: http://nschum.de/src/emacs/tempo-snippets/
-;; Compatibility: GNU Emacs 22.2
+;; Compatibility: GNU Emacs 22.1.90
 ;;
 ;; This file is NOT part of GNU Emacs.
 ;;
@@ -32,7 +32,7 @@
 ;;
 ;; http://lists.gnu.org/archive/html/emacs-devel/2007-08/msg00303.html
 ;;
-;; Currently that's CVS Emacs only!
+;; It will NOT work in GNU Emacs 22.1!
 ;;
 ;;
 ;; Add the following to your .emacs file:
@@ -66,8 +66,19 @@
 ;; Note the forms in the second example.  It calls `upcase-initials' every time
 ;; you change the first variable name.
 ;;
+;; You can navigate between input forms with `tempo-snippets-next-field' and
+;; `tempo-snippets-next-field'.  When the point is on an input field, those
+;; commands are bound to M-n and M-p by default.  You can use
+;; `tempo-snippets-keymap' to bind keys for input fields.
+;;
 ;;
 ;;; Changes Log:
+;;
+;; 2008-03-21 (0.1.4pre)
+;;    Added `tempo-snippets-keymap'.
+;;
+;; 2008-02-27 (0.1.3)
+;;    Added support for `tempo-save-named'.
 ;;
 ;; 2007-08-23 (0.1.2)
 ;;    Added `tempo-snippets-complete-tag'.
@@ -125,6 +136,13 @@ tempo-interactive set to nil."
   :group 'tempo-snippets
   :type '(choice (const :tag "Off" nil)
                  (const :tag "On" t)))
+
+(defvar tempo-snippets-keymap
+  (let ((keymap (make-sparse-keymap)))
+    (define-key keymap "\M-n" 'tempo-snippets-next-field)
+    (define-key keymap "\M-p" 'tempo-snippets-previous-field)
+    keymap)
+  "*Keymap used for tempo-nippets input fields.")
 
 ;;; tools ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -211,6 +229,8 @@ tempo-interactive set to nil."
 
 (defun tempo-snippets-finish-source (overlay)
   "Clear OVERLAY and its mirrors."
+  (let ((o (overlay-get overlay 'tempo-snippets-keymap-overlay)))
+    (when o (delete-overlay o)))
   (dolist (o (overlay-get overlay 'tempo-snippets-mirrors))
     (delete-overlay o))
   (delete-overlay overlay)
@@ -253,7 +273,10 @@ tempo-interactive set to nil."
     ;; FIXME: check for handlers
     (flet ((tempo-lookup-named (name)
               (setq lookup-used t)
-              (tempo-snippets-overlay-text (tempo-snippets-find-source name))))
+              ;; Get value from `tempo-save-named' or snippet source
+              (or (cdr (assq name tempo-named-insertions))
+                  (tempo-snippets-overlay-text
+                   (tempo-snippets-find-source name)))))
       (setq eval-result (eval form)))
     (if lookup-used
       (let ((beg (point)))
@@ -277,6 +300,7 @@ tempo-interactive set to nil."
 
 (defun tempo-snippets-update (ov after-p beg end &optional r)
   "Called when a snippet input field is modified."
+  (assert (overlay-start ov)) ;; FIXME
   (when (and after-p (>= beg (overlay-start ov)) (<= beg (overlay-end ov)))
     ;; grow overlay
     (move-overlay ov (overlay-start ov) (max end (overlay-end ov)))
@@ -285,8 +309,9 @@ tempo-interactive set to nil."
       (if (> r 1)
           ;; delete overlay and mirrors
           (tempo-snippets-finish-source ov)
-          nil
         ;; let's be nice and give back a prompt
+        (let ((o (overlay-get ov 'tempo-snippets-keymap-overlay)))
+          (when o (delete-overlay o)))
         (tempo-snippets-set-overlay-text
          ov (overlay-get ov 'tempo-snippets-prompt))
         (tempo-snippets-propagate-source ov)
@@ -307,7 +332,12 @@ tempo-interactive set to nil."
                    '(tempo-snippets-dont-grow-overlay)))
     (let ((inhibit-modification-hooks t))
       (delete-region end (overlay-end overlay))
-      (tempo-snippets-update overlay t beg end nil))))
+      (tempo-snippets-update overlay t beg end nil))
+    ;; keymap overlay for the 1 character behind the input
+    (let ((keymap-overlay (make-overlay end (1+ end))))
+      (overlay-put keymap-overlay 'evaporate t)
+      (overlay-put keymap-overlay 'keymap tempo-snippets-keymap)
+      (overlay-put overlay 'tempo-snippets-keymap-overlay keymap-overlay))))
 
 ;; Stores removed text for `tempo-snippets-delete-overlay'.
 ;; We need this, because fontification will call modification hooks, and we want
@@ -349,25 +379,31 @@ tempo-interactive set to nil."
     (overlay-put overlay 'modification-hooks '(tempo-snippets-update))
     (overlay-put overlay 'insert-in-front-hooks '(tempo-snippets-replace))
     (overlay-put overlay 'tempo-snippets-source t)
+    (overlay-put overlay 'keymap tempo-snippets-keymap)
     (push overlay tempo-snippets-sources)
-    (tempo-snippets-propagate-source overlay)))
+    (tempo-snippets-propagate-source overlay)
+    ))
 
 (defun tempo-snippets-insert-mirror (save-name)
   "Insert another instance of a snippet variable at point."
-  (let ((beg (point))
-        (source (tempo-snippets-find-source save-name))
-        overlay)
-    (when source
-      (insert (tempo-snippets-overlay-text source))
-      (setq overlay (make-overlay beg (point)))
-      (let ((mirrors (overlay-get source 'tempo-snippets-mirrors)))
-        (push overlay mirrors)
-        (overlay-put source 'tempo-snippets-mirrors mirrors))
-      (overlay-put overlay 'face 'tempo-snippets-auto-face)
-      (overlay-put overlay 'modification-hooks
-                   '(tempo-snippets-delete-overlay))
-      (overlay-put overlay 'insert-in-front-hooks
-                   '(tempo-snippets-dont-grow-overlay)))))
+  (let ((saved (cdr (assq name tempo-named-insertions))))
+    (if saved
+        ;; static saved value found, no need to mirror
+        (insert saved)
+      (let ((beg (point))
+            (source (tempo-snippets-find-source save-name))
+            overlay)
+        (when source
+          (insert (tempo-snippets-overlay-text source))
+          (setq overlay (make-overlay beg (point)))
+          (let ((mirrors (overlay-get source 'tempo-snippets-mirrors)))
+            (push overlay mirrors)
+            (overlay-put source 'tempo-snippets-mirrors mirrors))
+          (overlay-put overlay 'face 'tempo-snippets-auto-face)
+          (overlay-put overlay 'modification-hooks
+                       '(tempo-snippets-delete-overlay))
+          (overlay-put overlay 'insert-in-front-hooks
+                       '(tempo-snippets-dont-grow-overlay)))))))
 
 ;;; navigation ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
