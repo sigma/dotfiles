@@ -178,7 +178,7 @@
                                 "%2{%-10&user-date;%}"
                                 "%4{|%}"
                                 "%4{|%}"
-                                "%2{ %}%(%-24,24n"
+                                "%2{ %}%(%-24,24uB"
                                 "%4{|%}"
                                 "%2{%5i%}"
                                 "%4{|%}"
@@ -355,52 +355,6 @@
 
 (define-key gnus-summary-mode-map [(right)] 'my-gnus-summary-show-thread)
 (define-key gnus-summary-mode-map [(left)]  'gnus-summary-hide-thread)
-
-
-;;; BBDB
-
-(require 'bbdb)
-(bbdb-initialize 'gnus 'message 'sc)
-(add-hook 'gnus-startup-hook 'bbdb-insinuate-gnus)
-
-(bbdb-insinuate-message)
-
-(add-hook 'mail-setup-hook 'bbdb-insinuate-sendmail)
-(add-hook 'message-setup-hook 'bbdb-define-all-aliases)
-
-(setq
- bbdb-offer-save 'yes
- bbdb-electric-p t
- bbdb-pop-up-target-lines 5
- bbdb-use-pop-up nil
- bbdb-north-american-phone-numbers-p nil)
-
-(add-hook 'message-mode-hook
-          (lambda () (local-set-key [(meta tab)] 'bbdb-complete-name)))
-
-(add-hook 'bbdb-list-hook 'my-bbdb-display-xface)
-(defun my-bbdb-display-xface ()
-  "Search for face properties and display the faces."
-  (when (or (gnus-image-type-available-p 'xface)
-            (gnus-image-type-available-p 'pbm))
-    (save-excursion
-      (goto-char (point-min))
-      (let ((inhibit-read-only t)                       ; edit the BBDB buffer
-            (default-enable-multibyte-characters nil)   ; prevents corruption
-            pbm faces)
-        (while (re-search-forward "^           face: \\(.*\\)" nil t)
-          (setq faces (match-string 1))
-          (replace-match "" t t nil 1)
-          (dolist (data (split-string faces ", "))
-            (condition-case nil
-                (insert-image (create-image (gnus-convert-face-to-png data) nil t))
-              (error
-               (insert-image (gnus-create-image (uncompface data) nil t :face 'tooltip))))
-            (insert " ")))))))
-(add-hook 'bbdb-notice-hook 'bbdb-auto-notes-hook)
-(setq bbdb-auto-notes-alist '(("X-Face" (".+" face 0 'replace))
-                              ("Face" (".+" face 0 'replace))))
-
 
 
 ;;; Gnus extensions

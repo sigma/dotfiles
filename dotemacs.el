@@ -169,6 +169,7 @@
 (unless-configuration 'minimal
   (unless-configuration 'proof
     ;; (request 'muse-config)
+    (require 'bbdb-config)
     (request 'ecb-config)
     (request 'winring-config)
     ;; (request 'planner-config)
@@ -300,6 +301,7 @@
 
 (make-main-frame)
 (init)
+                                        ;
 
 ;; tidy up diffs when closing the file
 (defun kill-associated-diff-buf ()
@@ -583,19 +585,17 @@ With prefix argument, turn on if ARG > 0; else turn off."
 
 (global-set-key (kbd "C-x B") 'switch-to-bookmark)
 
+;; (require 'radio)
+
+(autoload 'js2-mode "js2" nil t)
+(add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
+
+(setq js2-basic-offset 2)
+(setq js2-use-font-lock-faces t)
+
+(add-hook 'dired-mode-hook 'epa-dired-mode)
+(epa-file-enable)
+
+(add-hook 'mail-mode-hook 'epa-mail-mode)
+
 (message ".emacs loaded")
-
-;; Local Variables:
-;; outline-regexp: ";+ "
-;; End:
-
-
-;;; This was installed by package-install.el.
-;;; This provides support for the package system and
-;;; interfacing with ELPA, the package archive.
-;;; Move this code earlier if you want to reference
-;;; packages in your .emacs.
-(when
-    (load
-     (expand-file-name "~/.emacs.d/elpa/package.el"))
-  (package-initialize))
