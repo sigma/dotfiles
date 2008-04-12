@@ -304,6 +304,8 @@
  '(muse-header-2 ((t (:foreground "lightblue" :weight bold))))
  '(muse-header-3 ((t (:foreground "grey" :weight bold))))
  '(muse-header-4 ((t (:weight bold))))
+ '(org-agenda-date ((t (:foreground "orange"))) t)
+ '(org-agenda-date-weekend ((t (:inherit org-agenda-date :strike-through t :weight bold))) t)
  '(org-done ((t (:background "green4" :foreground "yellow" :weight bold))))
  '(org-hide ((((background dark)) (:foreground "gray23"))))
  '(org-todo ((t (:background "red" :foreground "yellow" :weight bold))))
