@@ -58,41 +58,45 @@
  bbdb-use-pop-up nil
  bbdb-north-american-phone-numbers-p nil)
 
-(add-hook 'bbdb-list-hook 'my-bbdb-display-xface)
-
-(defun my-bbdb-display-xface ()
+(autoload 'gnus-convert-face-to-png "gnus-fun")
+(defun my-bbdb-display-faces ()
   "Search for face properties and display the faces."
-  (when (or (gnus-image-type-available-p 'xface)
-            (gnus-image-type-available-p 'pbm))
-    (save-excursion
-      (goto-char (point-min))
-      (let ((inhibit-read-only t); edit the BBDB buffer
-            (default-enable-multibyte-characters nil); prevents corruption
-            pbm faces)
-        (while (re-search-forward "^           face: \\(.*\\)" nil t)
-          (setq faces (match-string 1))
-          (replace-match "" t t nil 1)
-          (dolist (data (split-string faces ", "))
-            (setq pbm (uncompface data))
-            (if (gnus-image-type-available-p 'xface)
-                (insert-image
-                 (gnus-create-image
-                  (concat "X-Face: " data)
-                  'xface t :ascent 'center :face 'gnus-x-face))
+  (let ((inhibit-read-only t)
+        (default-enable-multibyte-characters nil)
+        (all-records bbdb-records)
+        face x-face record)
+    (goto-char (point-min))
+    (mapc
+     (lambda (record)
+       (setq x-face (bbdb-record-getprop (car record) 'x-face)
+             face (bbdb-record-getprop (car record) 'face))
+       ;; Display Face
+       (when face
+         (insert-image (create-image (gnus-convert-face-to-png face)
+                                     nil t))
+         (insert " "))
+       ;; Display X-Face
+       (when x-face
+         (insert-image (gnus-create-image (uncompface x-face)
+                                          nil t :face 'tooltip))
+         (insert " "))
+       ;; Move to the next record, suppress error on reaching last
+       (condition-case nil
+           (bbdb-next-record 1)
+         (error nil)))
+     all-records)
+    ;; Remove all x-face and face lines from the display
+    (goto-char (point-min))
+    (save-match-data
+      (while (re-search-forward "^ *\\(x-\\)?face: " nil t)
+        (beginning-of-line)
+        (kill-line 1)))))
+(add-hook 'bbdb-list-hook 'my-bbdb-display-faces)
 
-              (let ((png (gnus-convert-face-to-png data)))
-                (insert-image (gnus-create-image png 'png t)))
-              ;; (when pbm
-              ;;   (insert-image
-              ;;    (gnus-create-image
-              ;;     pbm 'pbm t :ascent 'center :face 'gnus-x-face)))
-              )
-            (insert " ")))))))
-
-(add-hook 'bbdb-notice-hook 'bbdb-auto-notes-hook)
-
-(setq bbdb-auto-notes-alist '(("X-Face" (".+" face 0 'replace))
+;; Pick these headers from email messages and store them
+(setq bbdb-auto-notes-alist '(("X-Face" (".+" x-face 0 'replace))
                               ("Face" (".+" face 0 'replace))))
+(add-hook 'bbdb-notice-hook 'bbdb-auto-notes-hook)
 
 (provide 'bbdb-config)
 ;;; bbdb-config.el ends here
