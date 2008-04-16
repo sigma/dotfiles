@@ -38,7 +38,7 @@
 
      (setq gnus-score-find-score-files-function
            '(gnus-score-find-bnews bbdb/gnus-score))
-     (setq bbdb/gnus-score-default 15)))
+     (setq bbdb/gnus-score-default nil)))
 
 (eval-after-load 'message
   '(progn

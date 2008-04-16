@@ -593,6 +593,7 @@ With prefix argument, turn on if ARG > 0; else turn off."
 (setq js2-basic-offset 2)
 (setq js2-use-font-lock-faces t)
 
+(require 'epa-dired)
 (add-hook 'dired-mode-hook 'epa-dired-mode)
 (epa-file-enable)
 

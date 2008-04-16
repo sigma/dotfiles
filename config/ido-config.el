@@ -67,7 +67,8 @@
   '(progn
      (setq ido-ignore-directories '("\\`\\.\\./" "\\`\\./")
            ido-ignore-files '("\\`#" "\\`.#" "\\`\\.\\./" "\\`\\./")
-           ido-read-file-name-as-directory-commands '(ediff-directories ediff-directories3 change-context)
+           ido-read-file-name-as-directory-commands 
+           '(ediff-directories ediff-directories3 change-context gnus-summary-save-parts)
            ido-use-filename-at-point 'guess
            ido-use-url-at-point t
            ido-max-dir-file-cache 20

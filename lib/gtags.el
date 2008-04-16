@@ -91,12 +91,12 @@
 ;         (define-key gtags-mode-map "\ev" 'gtags-visit-rootdir)
 ; ))
 
-(if (not gtags-running-xemacs) nil
- (define-key gtags-mode-map 'button3 'gtags-pop-stack)
- (define-key gtags-mode-map 'button2 'gtags-find-tag-by-event))
-(if gtags-running-xemacs nil
- (define-key gtags-mode-map [mouse-3] 'gtags-pop-stack)
- (define-key gtags-mode-map [mouse-2] 'gtags-find-tag-by-event))
+;; (if (not gtags-running-xemacs) nil
+;;  (define-key gtags-mode-map 'button3 'gtags-pop-stack)
+;;  (define-key gtags-mode-map 'button2 'gtags-find-tag-by-event))
+;; (if gtags-running-xemacs nil
+;;  (define-key gtags-mode-map [mouse-3] 'gtags-pop-stack)
+;;  (define-key gtags-mode-map [mouse-2] 'gtags-find-tag-by-event))
 
 (defvar gtags-select-mode-map (make-sparse-keymap)
   "Keymap used in gtags select mode.")
