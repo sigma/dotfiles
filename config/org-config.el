@@ -128,13 +128,13 @@ a new heading WITHOUT moving the tags"
          (call-process "remind.sh" nil 0 nil min-to-app msg new-time)))
 
 ;;; remind.sh contains something like :
-;; #!/bin/sh
+     ;; #!/bin/sh
 
-;; minutes=$1
-;; shift
-;; text="$*"
+     ;; minutes=$1
+     ;; shift
+     ;; text="$*"
 
-;; notify-send -i /usr/share/icons/crystalsvg/32x32/apps/bell.png "Appt in $minutes mins" "$text"
+     ;; notify-send -i /usr/share/icons/crystalsvg/32x32/apps/bell.png "Appt in $minutes mins" "$text"
 
      (defun org-get-repeat ()
        "Check if tere is a deadline/schedule with repeater in this entry."
@@ -144,7 +144,31 @@ a new heading WITHOUT moving the tags"
            (or (org-entry-get (point) "Recurring" t)
                (if (re-search-forward
                     org-repeat-re (save-excursion (outline-next-heading) (point)) t)
-                   (match-string 1))))))))
+                   (match-string 1))))))
+
+     (defun org-property-visibility ()
+       "Switch subtree visibility according to :visibility: property."
+       (interactive)
+       (let (state)
+         (save-excursion
+           (goto-char (point-min))
+           (while (re-search-forward
+                   "^[ \t]*:visibility:[ \t]+\\([a-z]+\\)"
+                   nil t)
+             (setq state (match-string 1))
+             (save-excursion
+               (org-back-to-heading t)
+               (hide-subtree)
+               (org-reveal)
+               (cond
+                ((equal state "children")
+                 (org-show-hidden-entry)
+                 (show-children))
+                ((equal state "all")
+                 (show-subtree)))))
+           (org-cycle-hide-drawers 'all))))
+
+     (add-hook 'org-mode-hook 'org-property-visibility)))
 
 (provide 'org-config)
 ;;; org-config.el ends here
