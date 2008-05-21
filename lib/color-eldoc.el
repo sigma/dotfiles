@@ -1,6 +1,7 @@
-;; color-eldoc.el -- Eldoc add-on to colorize the current argument
+;;; color-eldoc.el -- Eldoc add-on to colorize the current argument
 
-;; Time-stamp: <2004-08-21 22:37:55 bojohan>
+;; Version: 1.1.2
+;; Time-stamp: <16/05/2008 12:15:11 Yann Hodique>
 ;; at <http://www.dd.chalmers.se/~bojohan/emacs/lisp/>
 
 ;;; Commentary:
@@ -9,10 +10,7 @@
 ;; default.)
 
 ;; TODO:
-;; * Check `eldoc-print-current-symbol-info-function' (in CVS Emacs)
-;; * Deal with &key args (in CVS Emacs)
-;; * Make it a minor mode?
-;;
+;; * Deal with &key args (in CVS Emacs) and other stuff
 
 ;;; Code:
 
@@ -49,12 +47,6 @@
 				 font-lock-variable-name-face)
 	   (color-eldoc-add-face (nth (if (= (logand n 1) 1) 2 3) args)	; oddp
 				 font-lock-variable-name-face))
-	  ;; ((and (eq 'setq-default sym) (> n 2))
-	  ;;  ;; setq-default: (SYMBOL VALUE [SYMBOL VALUE...])
-	  ;;  (cond ((= (logand n 1) 1) (color-eldoc-add-face
-	  ;; 			      (nth 2 args) font-lock-variable-name-face 1))
-	  ;; 	 (t (color-eldoc-add-face
-	  ;; 	     (nth 3 args) font-lock-variable-name-face nil -4))))
 
 	  ;; Normal case
 	  (args
@@ -72,7 +64,7 @@
 				       arg))))
 	     (when (eq ?& (aref (car arg) 0))
 	       (shiftf ampersand arg (cdr arg)))
-	     
+
 	     ;; [DOCSTRING] is optional docstring. Maybe skip to next
 	     ;; argument.
 	     (and (string-match "\\[DOC" (car arg))
@@ -122,13 +114,15 @@
 		       string))
 
 (defun color-eldoc-inside-string-p (&optional pos)
-  (save-excursion
-    (when pos (goto-char pos))
-    (let ((parse (parse-partial-sexp
-		  (save-excursion (beginning-of-defun) (point))
-		  (point))))
-      ;; Return string start position
-      (and (nth 3 parse) (nth 8 parse)))))
+  (let ((parse (save-excursion
+		 (if (fboundp 'syntax-ppss)
+		     (syntax-ppss pos)
+		   (when pos (goto-char pos))
+		   (parse-partial-sexp
+		    (save-excursion (beginning-of-defun) (point))
+		    (point))))))
+    ;; Return string start position
+    (and (nth 3 parse) (nth 8 parse))))
 
 ;; Count args, return current arg's number
 (defun color-eldoc-current-arg ()
@@ -140,7 +134,7 @@
 	  (while (< (point) opoint)
 	    (forward-sexp)
 	    (incf arg))
-	(error (incf arg))))
+	(scan-error (incf arg))))
     (max arg 0)))
 
 ;; Return the colorized message
@@ -156,52 +150,57 @@
 		(color-eldoc-current-arg))))
       (color-eldoc-arg n name doc type))))
 
-(defadvice eldoc-get-fnsym-args-string (after color-eldoc activate)
-  ;; eldoc-get-fnsym-args-string: (SYM)
-  (setq ad-return-value (color-eldoc-message ad-return-value 'fn)))
 
-(defadvice eldoc-get-var-docstring (after color-eldoc activate)
-  ;; eldoc-get-fnsym-args-string: (SYM)
-  (setq ad-return-value (and (not (color-eldoc-inside-string-p))
-			     (color-eldoc-message ad-return-value 'var))))
+(when (boundp 'eldoc-documentation-function)
+  (defun color-eldoc-documentation-function ()
+    ;; Taken from the body of eldoc-print-current-symbol-info
+    (let* ((current-symbol (eldoc-current-symbol))
+	   (current-fnsym  (eldoc-fnsym-in-current-sexp))
+	   (fnsym (lambda ()
+		    (let ((sym current-fnsym))
+		      (color-eldoc-message
+		       (eldoc-get-fnsym-args-string current-fnsym)
+		       'fn))))
+	   (var (lambda ()
+		  (let ((sym current-symbol))
+		    (color-eldoc-message
+		     (eldoc-get-var-docstring current-symbol)
+		     'var))))
+	   (doc (cond
+		 ((eq current-symbol current-fnsym)
+		  (or (funcall fnsym) (funcall var)))
+		 (t
+		  (or (funcall var) (funcall fnsym))))))
+      doc))
 
-;; (defadvice eldoc-fnsym-in-current-sexp (after color-eldoc activate)
-;;   (when (color-eldoc-inside-string-p) (setq ad-return-value nil)))
+  (add-hook 'emacs-lisp-mode-hook
+	    (lambda ()
+	      (set (make-local-variable 'eldoc-documentation-function)
+		   'color-eldoc-documentation-function)))
+  )
+
+(unless (boundp 'eldoc-documentation-function)
+  (defadvice eldoc-get-fnsym-args-string (after color-eldoc activate)
+    ;; eldoc-get-fnsym-args-string: (SYM)
+    (setq ad-return-value (color-eldoc-message ad-return-value 'fn)))
+
+  (defadvice eldoc-get-var-docstring (after color-eldoc activate)
+    ;; eldoc-get-var-docstring: (SYM)
+    (setq ad-return-value (and (not (color-eldoc-inside-string-p))
+			       (color-eldoc-message ad-return-value 'var))))
+  )
+
+  ;; (defadvice eldoc-fnsym-in-current-sexp (after color-eldoc activate)
+  ;;   (when (color-eldoc-inside-string-p) (setq ad-return-value nil)))
 
 ;; Fix the "code-in-strings" bug
 (defadvice eldoc-beginning-of-sexp (around color-eldoc activate)
   (let ((start (color-eldoc-inside-string-p)))
-    (when start (goto-char start))
-    ad-do-it))
+    (when start (goto-char start)))
+  ad-do-it)
 
 (eldoc-add-command-completions "newline")
 
 (provide 'color-eldoc)
 
 ;;; color-eldoc.el ends here
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-;; (defadvice eldoc-beginning-of-sexp (around color-eldoc activate)
-;;    (with-syntax-table (syntax-table)
-;;      (modify-syntax-entry ?\" ".")
-;;      ad-do-it))
-
-;; (defadvice eldoc-docstring-format-sym-doc (after color-eldoc activate)
-;;   ;; (defun eldoc-get-fnsym-args-string (sym)
-;;   (setq ad-return-value
-;; 	(color-eldoc-message (copy-seq (symbol-name sym)) ad-return-value 'var)))
-
-;; (defadvice eldoc-message (before color-eldoc activate)
-;;    ;; (defun eldoc-message (&rest args)
-;;   (setq args "foo"))
-
-;; Tests:
-;; create-image: (FILE-OR-DATA &optional TYPE DATA-P &rest PROPS)
-;;   (create-image file type data props props props)
-;; autoload: (FUNCTION FILE &optional DOCSTRING INTERACTIVE TYPE)
-;;   (autoload function file docstring interactive type)
-;; setq: (SYM VAL SYM VAL ...)
-;;   (setq sym val sym val sym val sym val)
-
-;; color-eldoc.el ends here

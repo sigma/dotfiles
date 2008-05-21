@@ -28,7 +28,7 @@
 
 ;;; Lisp
 
-(request 'color-eldoc)
+;; (request 'color-eldoc)
 
 (require 'patches)
 

@@ -296,6 +296,18 @@
 ;; I want plain/text mails
 (setq mm-discouraged-alternatives '("text/html" "text/richtext"))
 
+(setq gnus-default-charset (quote iso-8859-1)
+      message-default-charset (quote iso-8859-1)
+      mm-coding-system-priorities '(us-ascii iso-latin-1 iso-latin-9 utf-8))
+
+(add-to-list 'mm-body-charset-encoding-alist '(iso-8859-1 . 8bit))
+(add-to-list 'mm-body-charset-encoding-alist '(iso-8859-15 . 8bit))
+
+(add-to-list 'mm-charset-synonym-alist '(iso8859-15 . iso-8859-15))
+(add-to-list 'mm-charset-synonym-alist '(iso885915 . iso-8859-15))
+(add-to-list 'mm-charset-synonym-alist '(ISO-8859-1 . iso-8859-1))
+(add-to-list 'mm-charset-synonym-alist '(fr_FR . iso-8859-1))
+
 (add-hook 'gnus-message-setup-hook 'font-lock-fontify-buffer)
 
 

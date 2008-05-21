@@ -29,7 +29,8 @@
 (eval-when-compile
   '(progn
      (require 'winring)
-     (require 'ecb)))
+     (require 'ecb)
+     (require 'linemark)))
 
 (defun yh/compilation-predicate (buffer)
   (and (comint-check-proc buffer)
@@ -43,7 +44,13 @@
   (ecb-winman-winring-enable-support)
   (winring-initialize)
   (winring-rename-configuration ecb-winman-winring-name)
-  (setq ecb-compilation-predicates '(yh/compilation-predicate)))
+  (setq ecb-compilation-predicates '(yh/compilation-predicate))
+
+  (require 'linemark)
+  (define-key global-map (kbd "C-c b b") 'viss-bookmark-toggle)
+  (define-key global-map (kbd "C-c b p") 'viss-bookmark-prev-buffer)
+  (define-key global-map (kbd "C-c b n") 'viss-bookmark-next-buffer)
+  (define-key global-map (kbd "C-c b c") 'viss-bookmark-clear-all-buffer))
 
 (eval-after-load 'ecb
   '(yh/init-ecb))

@@ -34,7 +34,6 @@
       scroll-conservatively 50
       scroll-step 1)
 
-
 ;; Save minibuffer history between sessions
 (when (request 'savehist)
   (savehist-mode 1)
@@ -186,7 +185,7 @@
     (request 'psvn-config)))
 
 (when-configuration 'code
-  (request 'bm-config)
+  ;; (request 'bm-config)
   (request 'changelog-config)
   (request 'cc-config)
   (request 'compile-config)
@@ -449,10 +448,10 @@
 
 ;; (require 'epa-setup)
 
-(require 'tl-fdd)
-(add-to-list 'auto-mode-alist '("\\.fdd\\'" . tl-fdd-mode))
-(add-to-list 'auto-mode-alist '("\\.tlfdd\\'" . tl-fdd-mode))
-(add-to-list 'auto-mode-alist '("\\.tldoc\\'" . tl-fdd-mode))
+(require 'tlfdd)
+(add-to-list 'auto-mode-alist '("\\.fdd\\'" . tlfdd-mode))
+(add-to-list 'auto-mode-alist '("\\.tlfdd\\'" . tlfdd-mode))
+(add-to-list 'auto-mode-alist '("\\.tldoc\\'" . tlfdd-mode))
 
 ;; Doc-mode
 (require 'doc-mode)
@@ -594,7 +593,7 @@ With prefix argument, turn on if ARG > 0; else turn off."
 (setq js2-use-font-lock-faces t)
 
 (require 'epa-dired)
-(add-hook 'dired-mode-hook 'epa-dired-mode)
+(add-hook 'dired-mode-hook 'epa-dired-mode-hook)
 (epa-file-enable)
 
 (add-hook 'mail-mode-hook 'epa-mail-mode)

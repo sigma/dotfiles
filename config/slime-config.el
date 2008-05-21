@@ -35,10 +35,12 @@
      ;; default
      (setq slime-edit-definition-fallback-function 'find-tag)
      (setq slime-complete-symbol-function 'slime-fuzzy-complete-symbol)
-     (slime-setup :autodoc t)
+     (slime-setup '(slime-fancy slime-asdf slime-tramp))
      (global-set-key (kbd "C-c SPC") 'slime-selector)
      (setq slime-lisp-implementations
-           '((sbcl ("sbcl" "--noinform" "--no-linedit"))
+           '((clisp ("clisp" "-K" "full"))
+             (cmucl ("cmucl"))
+             (sbcl ("sbcl" "--noinform"))
              (s48 ("scheme48") :init slime48-init-command)))
      (setq slime-default-lisp 'sbcl)))
 
