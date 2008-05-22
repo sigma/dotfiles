@@ -50,7 +50,10 @@
            org-lowest-priority ?E
            org-tags-column -79
            org-agenda-start-on-weekday nil
-           org-todo-keywords '((type "TODO(t)" "WAITING(w@)" "MAYBE(m)" "|" "DONE(d)" "CANCELED(c@)"))
+           org-todo-keywords '((type "TODO(t)" "WAITING(w@/!)" "MAYBE(m)" "|" "DONE(d!)" "CANCELED(c@)")) 
+           org-todo-keyword-faces '(("WAITING" . shadow)
+                                    ("MAYBE" . shadow)
+                                    ("CANCELED" . (:foreground "blue" :weight bold)))
            org-agenda-custom-commands '(("t" . "Open tasks")
                                         ("tn" tags-todo "URGENT|NORMAL/TODO|WAITING")
                                         ("tu" tags-todo "URGENT/TODO|WAITING")
@@ -135,40 +138,7 @@ a new heading WITHOUT moving the tags"
      ;; text="$*"
 
      ;; notify-send -i /usr/share/icons/crystalsvg/32x32/apps/bell.png "Appt in $minutes mins" "$text"
-
-     (defun org-get-repeat ()
-       "Check if tere is a deadline/schedule with repeater in this entry."
-       (save-match-data
-         (save-excursion
-           (org-back-to-heading t)
-           (or (org-entry-get (point) "Recurring" t)
-               (if (re-search-forward
-                    org-repeat-re (save-excursion (outline-next-heading) (point)) t)
-                   (match-string 1))))))
-
-     (defun org-property-visibility ()
-       "Switch subtree visibility according to :visibility: property."
-       (interactive)
-       (let (state)
-         (save-excursion
-           (goto-char (point-min))
-           (while (re-search-forward
-                   "^[ \t]*:visibility:[ \t]+\\([a-z]+\\)"
-                   nil t)
-             (setq state (match-string 1))
-             (save-excursion
-               (org-back-to-heading t)
-               (hide-subtree)
-               (org-reveal)
-               (cond
-                ((equal state "children")
-                 (org-show-hidden-entry)
-                 (show-children))
-                ((equal state "all")
-                 (show-subtree)))))
-           (org-cycle-hide-drawers 'all))))
-
-     (add-hook 'org-mode-hook 'org-property-visibility)))
+     ))
 
 (provide 'org-config)
 ;;; org-config.el ends here

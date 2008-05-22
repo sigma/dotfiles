@@ -36,63 +36,13 @@
 ;; DONT'T MESS WITH IT
 (defconst c++-new-font-lock-keywords
   (list
-   '("\\<[0-9]+\\.[0-9]+\\>" (0 font-lock-floatnumber-face))
-   '("^#[ 	]*error[ 	]+\\(.+\\)"
-     (1 font-lock-warning-face prepend))
-   '("^#[ 	]*\\(import\\|include\\)[ 	]*\\(<[^>\"\n]*>?\\)"
-     (2 font-lock-string-face))
-   '("^#[ 	]*define[ 	]+\\(\\sw+\\)("
-     (1 font-lock-function-name-face))
-   '("^#[ 	]*\\(elif\\|if\\)\\>"
-     ("\\<\\(defined\\)\\>[ 	]*(?\\(\\sw+\\)?" nil nil
-      (1 font-lock-builtin-face)
-      (2 font-lock-variable-name-face nil t)))
-   '("^#[ 	]*\\(\\sw+\\)\\>[ 	!]*\\(\\sw+\\)?"
-     (1 font-lock-builtin-face)
-     (2 font-lock-variable-name-face nil t))
-   '("\\<\\(public\\|private\\|protected\\)\\>[ \t]+\\(\\<\\(signals\\|slots\\)\\>\\)[ \t]*:"
-     (1 font-lock-type-face)
-     (2 font-lock-type-face)
-     )
-   '("\\<\\(class\\|public\\|private\\|protected\\|typename\\|signals\\|slots\\)\\>[ 	]*\\(\\(\\sw+\\)\\>\\([ 	]*<\\([^>\n]+\\)[ 	*&]*>\\)?\\([ 	]*::[ 	*~]*\\(\\sw+\\)\\)*\\)?"
-     (1 font-lock-type-face)
-     (3
-      (if
-          (match-beginning 6)
-          font-lock-type-face font-lock-function-name-face)
-      nil t)
-     (5 font-lock-function-name-face nil t)
-     (7 font-lock-function-name-face nil t))
-   '("^\\(\\sw+\\)\\>\\([ 	]*<\\([^>\n]+\\)[ 	*&]*>\\)?\\([ 	]*::[ 	*~]*\\(\\sw+\\)\\)*[ 	]*("
-     (1
-      (if
-          (or
-           (match-beginning 2)
-           (match-beginning 4))
-          font-lock-type-face font-lock-function-name-face))
-     (3 font-lock-function-name-face nil t)
-     (5 font-lock-function-name-face nil t))
-   '("\\<\\(operator\\)\\>[ 	]*\\(!=\\|%=\\|&[&=]\\|()\\|\\*=\\|\\+[+=]\\|-\\(>\\*\\|[=>-]\\)\\|/=\\|<\\(<=\\|[<=]\\)\\|==\\|>\\(>=\\|[=>]\\)\\|\\[\\]\\|\\^=\\||[=|]\\|[!%&*+,/<=>|~^-]\\)?"
-     (1 font-lock-keyword-face)
-     (2 font-lock-builtin-face nil t))
-   '("\\<\\(case\\|goto\\)\\>[ 	]*\\(-?\\sw+\\)?"
-     (1 font-lock-keyword-face)
-     (2 font-lock-constant-face nil t))
-   '(":"
-     ("^[ 	]*\\(\\sw+\\)[ 	]*:\\($\\|[^:]\\)"
-      (beginning-of-line)
-      (end-of-line)
-      (1 font-lock-constant-face)))
    '("\\<\\(asm\\|break\\|c\\(atch\\|on\\(st_cast\\|tinue\\)\\)\\|d\\(elete\\|o\\|ynamic_cast\\)\\|else\\|for\\|if\\|new\\|re\\(interpret_cast\\|turn\\)\\|s\\(izeof\\|tatic_cast\\|witch\\)\\|t\\(h\\(is\\|row\\)\\|ry\\)\\|while\\)\\>"
      (0 font-lock-keyword-face))
    '("\\<\\(false\\|true\\)\\>"
      (0 font-lock-constant-face))
    '("[{}()<>=;,:+\\*\\/\\[]\\|\\]\\|\\-" (0 font-lock-keys-face))
    '("\\<[0-9]+\\>" (0 font-lock-number-face))
-   '("\\<0x[0-9a-fA-F]+\\>" (0 font-lock-hexnumber-face))
-   '("\\<\\(Q_\\(EXPORT\\|OBJECT\\|PROPERTY\\)\\|S\\(IGNAL\\|LOT\\)\\|connect\\|disconnect\\|emit\\)\\>"
-     (0 font-lock-qt-face))
-   ))
+   '("\\<0x[0-9a-fA-F]+\\>" (0 font-lock-hexnumber-face))))
 
 (dolist (mode '(c-mode c++-mode java-mode php-mode)) (font-lock-add-keywords mode c++-new-font-lock-keywords))
 

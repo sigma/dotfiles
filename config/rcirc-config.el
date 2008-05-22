@@ -218,5 +218,32 @@ will be part of the list returned."
      (require 'rcirc-late-fix)
      ))
 
+(defun-rcirc-command retake (arg)
+     "Retake your nick from NickServ.
+This sends a RECOVER <nick> <password> to NickServ,
+followed by a RELEASE <nick> <password> and a NICK
+command. This uses `rcirc-default-nick'."
+     (let ((password (catch 'pwd
+		       (with-rcirc-server-buffer
+			 (dolist (i rcirc-authinfo)
+			   (let ((server (car i))
+				 (nick (caddr i))
+				 (method (cadr i))
+				 (args (cdddr i)))
+			     (when (and (string-match server rcirc-server)
+					(string-match nick rcirc-default-nick)
+					(eq method 'nickserv))
+			       (throw 'pwd (car args)))))))))
+       (unless password
+	 (setq password (read-from-minibuffer "Password: ")))
+       (rcirc-send-message process "NickServ"
+			   (concat "RECOVER " rcirc-default-nick " " password))
+       (sit-for 1)
+       (rcirc-send-message process "NickServ"
+			   (concat "RELEASE " rcirc-default-nick " " password))
+       (sit-for 1)
+       (rcirc-send-string process (concat "NICK " rcirc-default-nick))))
+
+
 (provide 'rcirc-config)
 ;;; rcirc-config.el ends here

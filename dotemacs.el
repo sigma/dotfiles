@@ -100,8 +100,10 @@
 
 ;;;_* Charsets & languages
 
-(add-to-list 'ispell-dictionary-alist '("latin" "[A-Za-z]" "[^A-Za-z]" "[']" nil nil "~tex" iso-8859-1))
-(setq ispell-program-name "aspell")
+(eval-after-load 'ispell
+  '(progn
+     (add-to-list 'ispell-dictionary-alist '("latin" "[A-Za-z]" "[^A-Za-z]" "[']" nil nil "~tex" iso-8859-1))
+     (setq ispell-program-name "aspell")))
 
 ;; (set-language-environment 'latin-1)
 ;; (prefer-coding-system 'latin-1)
