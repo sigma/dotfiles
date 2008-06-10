@@ -22,6 +22,15 @@
 ;; How emacs should look like
 (request 'visual)
 
+(request 'project)
+
+(request 'cedet)
+
+(when (request 'package)
+  (package-initialize))
+
+(request 'yasnippet)
+
 ;; Customizations are in a separate file
 (if (file-exists-p (expand-file-name "~/.emacs-cust"))
     (load-file (expand-file-name "~/.emacs-cust")))
@@ -599,5 +608,8 @@ With prefix argument, turn on if ARG > 0; else turn off."
 (epa-file-enable)
 
 (add-hook 'mail-mode-hook 'epa-mail-mode)
+
+(require 'compile-bookmarks)
+(compile-bookmarks-mode 1)
 
 (message ".emacs loaded")

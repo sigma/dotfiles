@@ -52,6 +52,8 @@
   "Stack for tag browsing.")
 (defvar gtags-point-stack nil
   "Stack for tag browsing.")
+(defvar gtags-delete-stack nil
+  "Stack for tag browsing.")
 (defvar gtags-history-list nil
   "Gtags history list.")
 (defconst gtags-symbol-regexp "[A-Za-z_][A-Za-z_0-9]*"
@@ -403,8 +405,8 @@
       (setq context (gtags-pop-context))
       (if (not context)
 	  (message "The tags stack is empty.")
-        (if delete
-	    (kill-buffer (current-buffer)))
+        ;; (if delete
+	;;     (kill-buffer (current-buffer)))
         (switch-to-buffer (nth 0 context))
         (setq gtags-current-buffer (current-buffer))
         (goto-char (nth 1 context))))))

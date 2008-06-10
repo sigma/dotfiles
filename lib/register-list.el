@@ -147,7 +147,7 @@ If FORCE-LINE is non-nil, force moving to this line."
 	 (col (current-column)))
      ,@body
      (goto-char (point-min))
-     (line-move ,(or (eval force-line) '(1- line)))
+     (line-move ,(or force-line '(1- line)))
      (line-move-to-column col)))
 
 (defun register-list-execute-deletions nil
@@ -202,9 +202,8 @@ An optional TYPE argument restrict the list these types."
   (interactive "P")
   (register-list-preserve-pos
    (if type 2)
-   ;; 2 
    (register-list (or type register-list-current-type)
-		  register-list-current-fontification)))
+                  register-list-current-fontification)))
 
 (defun register-list-quit nil
   "Quit the register list and kill its buffer."
