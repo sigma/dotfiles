@@ -604,7 +604,6 @@ With prefix argument, turn on if ARG > 0; else turn off."
 (setq js2-use-font-lock-faces t)
 
 (require 'epa-dired)
-(add-hook 'dired-mode-hook 'epa-dired-mode-hook)
 (epa-file-enable)
 
 (add-hook 'mail-mode-hook 'epa-mail-mode)

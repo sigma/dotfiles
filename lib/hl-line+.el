@@ -7,9 +7,9 @@
 ;; Copyright (C) 2006-2008, Drew Adams, all rights reserved.
 ;; Created: Sat Aug 26 18:17:18 2006
 ;; Version: 22.0
-;; Last-Updated: Mon Jan 21 00:17:35 2008 (Pacific Standard Time)
+;; Last-Updated: Mon Jan 28 10:04:35 2008 (Pacific Standard Time)
 ;;           By: dradams
-;;     Update #: 217
+;;     Update #: 230
 ;; URL: http://www.emacswiki.org/cgi-bin/wiki/hl-line+.el
 ;; Keywords: highlight, cursor, accessibility
 ;; Compatibility: GNU Emacs 22.x
@@ -96,6 +96,9 @@
 ;; 
 ;;; Change log:
 ;;
+;; 2008/01/28 dadams
+;;     Fix from Yann Yodique: Moved adding/removing hl-line-unhighlight-now as
+;;     pre-command-hook from hl-line-toggle-when-idle to hl-line-(un)highlight-now.
 ;; 2008/01/20 dadams
 ;;     Renamed: line-show-period to hl-line-flash-show-period.
 ;; 2007/10/11 dadams
@@ -168,7 +171,7 @@ Do NOT change this yourself; instead, use `\\[toggle-hl-line-when-idle]'.")
 
 (defalias 'toggle-hl-line-when-idle 'hl-line-toggle-when-idle)
 (defun hl-line-toggle-when-idle (&optional arg)
-"Turn on or off using `global-hl-line-mode' when Emacs is idle.
+  "Turn on or off using `global-hl-line-mode' when Emacs is idle.
 When on, use `global-hl-line-mode' whenever Emacs is idle.
 With prefix argument, turn on if ARG > 0; else turn off."
   (interactive "P")
@@ -176,11 +179,9 @@ With prefix argument, turn on if ARG > 0; else turn off."
         (if arg (> (prefix-numeric-value arg) 0) (not hl-line-when-idle-p)))
   (cond (hl-line-when-idle-p
          (timer-activate-when-idle hl-line-idle-timer)
-         (add-hook 'pre-command-hook 'hl-line-unhighlight-now)
          (message "Turned ON using `global-hl-line-mode' when Emacs is idle."))
         (t
          (cancel-timer hl-line-idle-timer)
-         (remove-hook 'pre-command-hook 'hl-line-unhighlight-now)
          (message "Turned OFF using `global-hl-line-mode' when Emacs is idle."))))
 
 (defun hl-line-when-idle-interval (secs)
@@ -191,20 +192,20 @@ will be turned on.
 To turn on or off using `global-hl-line-mode' when idle,
 use `\\[toggle-hl-line-when-idle]."
   (interactive "nSeconds to idle, before using `global-hl-line-mode': ")
-  (timer-set-idle-time hl-line-idle-timer
-                       (setq hl-line-idle-interval secs)
-                       t))
+  (timer-set-idle-time hl-line-idle-timer (setq hl-line-idle-interval secs) t))
 
 (defun hl-line-highlight-now ()
   "Turn on `global-hl-line-mode' and highlight current line now."
   (unless global-hl-line-mode
     (global-hl-line-mode 1)
-    (global-hl-line-highlight)))
-
+    (global-hl-line-highlight)
+    (add-hook 'pre-command-hook 'hl-line-unhighlight-now)))
+    
 (defun hl-line-unhighlight-now ()
   "Turn off `global-hl-line-mode' and unhighlight current line now."
   (global-hl-line-mode -1)
-  (global-hl-line-unhighlight))
+  (global-hl-line-unhighlight)
+  (remove-hook 'pre-command-hook 'hl-line-unhighlight-now))
 
 (defalias 'flash-line-highlight 'hl-line-flash)
 (defun hl-line-flash (&optional arg)
