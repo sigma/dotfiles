@@ -1,0 +1,34 @@
+#!/bin/zsh
+
+export LC_ALL=en_US.UTF-8
+
+zdotdir=${ZDOTDIR:-$HOME}
+export ZDOTDIR="$zdotdir"
+if [[ "$ZDOTDIR" == "$HOME" ]]; then
+  zdotdirpath=( $ZDOTDIR )
+else
+  zdotdirpath=( $ZDOTDIR $HOME )
+  export OTHER_USER=1
+fi
+
+[[ -e $zdotdir/.shared_env ]] && . $zdotdir/.shared_env
+
+typeset -U path # No duplicates
+
+# notice nasty hack for old zsh
+path=( $path /usr/local/bin /usr/local/sbin /usr/sbin /sbin /[u]sr/X11R6/bin(N) )
+path=( $zdotdir/{[l]ocal/bin,[p]ackbin,[b]in,[b]in/{backgrounds,palm,shortcuts}}(N) $path )
+
+typeset -U manpath # No duplicates
+
+for dirname in $fpath; do
+  case "$dirname" in
+    $zdotdir/.zsh*) fns=( $dirname/*~*~(N.x:t) ) ;;
+                 *) fns=( $dirname/*~*~(N.:t)  ) ;;
+  esac
+  (( $#fns )) && autoload "$fns[@]"
+done
+
+typeset -T LD_LIBRARY_PATH ld_library_path
+
+typeset -U ld_library_path # No duplicates
