@@ -232,6 +232,7 @@
  '(smtpmail-debug-verb t)
  '(speedbar-frame-parameters (quote ((width . 20) (border-width . 0) (menu-bar-lines . 0) (tool-bar-lines . 0) (unsplittable . t))))
  '(speedbar-use-images nil)
+ '(split-width-threshold nil)
  '(tabbar-inhibit-functions (quote (tabbar-default-inhibit-function yh/tabbar-inhibit-function)))
  '(tc-make-attribution (quote kai-tc-simple-attribution))
  '(tc-mouse-overlays t)
