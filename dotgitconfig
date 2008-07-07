@@ -19,6 +19,9 @@
 [user]
 	name = Yann Hodique
 	email = yann.hodique@gmail.com
+	name = Yann Hodique
+[branch]
+	autosetupmerge = true
 [alias]
 	ci = commit
 	co = checkout

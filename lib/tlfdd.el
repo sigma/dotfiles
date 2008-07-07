@@ -29,6 +29,9 @@
 ;; (add-to-list 'auto-mode-alist '("\\.tlfdd\\'" . tlfdd-mode))
 ;; (add-to-list 'auto-mode-alist '("\\.tldoc\\'" . tlfdd-mode))
 
+;;; Todo: Fix the various places in the code where "TODO" occurs. This mostly
+;;; involves hardcoded constants that will prevent proper customization.
+
 ;;; Code:
 
 (require 'cl)
@@ -40,12 +43,19 @@
 
 (defmacro tlfdd-defvar (var &optional def doc &rest args)
   (declare (indent 1))
-  (cond ((boundp var)
-         `(setq ,var ,def))
-        (args
-         `(defcustom ,var ,def ,doc ,@args))
-        (t
-         `(defvar ,var ,def ,doc))))
+  (cond 
+   ;; TODO : when code is stabilized, remove this SEGMENT for it prevents
+   ;; proper customization in .emacs
+   ;;
+   ;; With it enabled, you have to customize variables *after* loading this
+   ;; mode
+   ((boundp var)
+    `(setq ,var ,def))
+   ;; END of SEGMENT
+   (args
+    `(defcustom ,var ,def ,doc ,@args))
+   (t
+    `(defvar ,var ,def ,doc))))
 
 (defmacro tlfdd-defface (face spec doc &rest args)
   (declare (indent 1))
@@ -82,12 +92,13 @@
 
 (tlfdd-defvar tlfdd-list-rx
   (rx (and (* space)
-	   (group (and (any "+-") (* space)))
+	   (group (and (or (any "+-")
+                           (and "[" (* (any alpha)) "]")) (* space)))
 	   (* not-newline)))
   "Regular expression to match a list item.")
 
 (tlfdd-defvar tlfdd-paragraph-start
-  (rx (and (* space) (group (or "#" "@" "-" "+" "[" "%" "$$" (and "<" (* (any "/a-zA-Z")) ">")))))
+  (rx (and (* space) (group (or "#" "@" "-" "+" "[" "%" "$$" (and "<" (* (any "/:a-zA-Z")) ">")))))
   "Regexp for beginning of a line that starts OR separates paragraphs.")
 
 (tlfdd-defvar tlfdd-paragraph-separate
@@ -98,8 +109,7 @@
 
 
 (tlfdd-defvar tlfdd-markups
-  '(
-    ("#define" :type prepro)
+  '(("#define" :type prepro)
     ("#elif" :type prepro :align ("#if" "#ifdef" "#ifndef"))
     ("#else" :type prepro :align ("#if" "#ifdef" "#ifndef"))
     ("#endif" :type prepro :align ("#if" "#ifdef" "#ifndef") :close t)
@@ -204,10 +214,15 @@
     ("<pre>" :type block :end "</pre>")
     ("<div>" :type block :end "</div>")
     ("<ul>" :type block :end "</ul>")
-    ("<ol>" :type block :end "</ol>"))
+    ("<ol>" :type block :end "</ol>")
+    ;; This is some kind of a hack, since the above litterals are interpreted
+    ;; in a `rx' environment. Note the double parentheses pair for the :end
+    ;; keyword, it is needed as well
+    ((regexp "<if:[[:alpha:]]*>") :type block :end ((regexp "<endif:[[:alpha:]]*>"))))
   "List of supported markups, and associated types.")
 
 (defmacro tlfdd--get-markups-filter (&rest filters)
+  "Apply a filter on tlfdd-markups"
   (let ((members
          (loop for f in filters collect
                (list 'eq (cadr f) `(plist-get (cdr markup) ,(car f))))))
@@ -276,10 +291,12 @@
                   (car markup)))))
 
 (defun tlfdd--flatten-list (list)
-  (cond ((consp list)
-	 (apply 'append (mapcar 'tlfdd--flatten-list list)))
-	(list
-	 (list list))))
+  "Make a list of the elements of any sublist, at a max depth of 1. For example :
+(tlfdd--flatten-list '((1 2 3) 4 5 ((6 7) (8 9 10)))) => (1 2 3 4 5 (6 7) (8 9 10))"
+  (apply 'append (loop for item in list collect
+                       (if (consp item)
+                           item
+                         (list item)))))
 
 (tlfdd-defvar tlfdd-prepro-block-markups
   (delete-duplicates
@@ -336,47 +353,49 @@
   :group 'tlfdd)
 
 (defun tlfdd--looking-at (regexp)
+  "Case insensitive version of `looking-at'"
   (let ((case-fold-search t))
     (looking-at regexp)))
 
 (defun tlfdd--re-search-backward (regexp &optional bound noerror count)
+  "Case insensitive version of `re-search-backward'"
   (let ((case-fold-search t))
     (re-search-backward regexp bound noerror count)))
 
 (defun tlfdd--re-search-forward (regexp &optional bound noerror count)
+  "Case insensitive version of `re-search-forward'"
   (let ((case-fold-search t))
     (re-search-forward regexp bound noerror count)))
 
 (defvar tlfdd--position nil)
 
-(defun tlfdd--store-position ()
-  (setq tlfdd--position (point)))
-
-(defun tlfdd--restore-position ()
-  (goto-char tlfdd--position)
-  (setq tlfdd--position nil))
-
 (defun tlfdd--compute-font-lock-keywords ()
+  "Define the font-locking rules from the keywords lists"
   (list
+   ;; preprocessor markups
    (list
     (eval `(rx (and (group (or ,@tlfdd-prepro-markups)) word-end
                     (group (* not-newline)))))
     '(1 tlfdd-preprocessor-command-face)
     '(2 tlfdd-preprocessor-arg-face))
+   ;; markups with arguments to the end of line
    (list
     (eval `(rx (and (group (or ,@tlfdd-args-markups)) word-end
                     (group (* not-newline)))))
     '(1 tlfdd-markup-face)
     '(2 tlfdd-argument-face))
+   ;; markups with exactly one argument
    (list
     (eval `(rx (and (group (or ,@tlfdd-single-markups)) word-end
                     (group (* not-newline)))))
     '(1 tlfdd-markup-face)
     '(2 tlfdd-constant-face))
+   ;; "spec" markups for views
    (list
     (eval `(rx (and (group (or ,@tlfdd-spec-markups)))))
     '(1 tlfdd-markup-face)
     '(":" nil nil(0 tlfdd-operator-face)))
+   ;; properties affectations
    (list
     (eval `(rx (and (group (or ,@tlfdd-aff-markups)) (1+ space)
                     (group (* (any "a-zA-Z"))) 
@@ -386,17 +405,21 @@
     '(2 tlfdd-argument-face)
     '(3 tlfdd-operator-face)
     '(4 tlfdd-constant-face))
+   ;; markups without arguments
    (list
     (eval `(rx (and (group (or ,@tlfdd-simple-markups)))))
     '(1 tlfdd-markup-face))
+   ;; [constant]
    (list (rx (and (group "[") (group (1+ (not (any "]")))) (group "]"))) 
          '(1 tlfdd-operator-face t)
          '(2 tlfdd-constant-face t)
          '(3 tlfdd-operator-face t))
+   ;; {constant}
    (list (rx (and (group "{") (group (1+ (not (any "}")))) (group "}"))) 
          '(1 tlfdd-operator-face t)
          '(2 tlfdd-constant-face t)
          '(3 tlfdd-operator-face t))
+   ;; <markup>
    (list (rx (and (group (and "<" (? (or "u:" "/")))) 
                   (group (1+ (not (any "\n>")))) 
                   (group (and (? "/") ">")))) 
@@ -407,6 +430,11 @@
 (tlfdd-defvar tlfdd-font-lock-keywords
   (tlfdd--compute-font-lock-keywords)
   "Keyword highlighting specification for `tlfdd-mode'.")
+
+(defun tlfdd-in-comment-p ()
+  ;; rely in syntax to separate comments from text.
+  ;; TODO: Needs improvement
+  (nth 4 (syntax-ppss)))
 
 ;;; Indentation
 
@@ -442,25 +470,35 @@
   (eval `(rx (and (0+ space) (or ,@tlfdd-prepro-end-markups)))))
 
 (defun tlfdd--internal-indentation ()
+  "Indentation helper, mostly for regular lines of text"
   (save-excursion 
     (let ((not-indented t) 
           (at-item (tlfdd--looking-at tlfdd-list-rx))
+          ;; TODO: there should be some kind of constant or computation for
+          ;; this '#' (preprocessor prefix)
           (at-prepro (tlfdd--looking-at (rx (and (* space) "#"))))
           (init-point (point))
           cur-indent)
+      ;; Find the start of the paragraph that will determine the indentation
+      ;; level.
       (while not-indented
         (tlfdd--re-search-backward (concat "^" tlfdd-paragraph-start))
-        (cond ((tlfdd--looking-at tlfdd--prepro-end-rx)
+        (cond ((tlfdd--looking-at tlfdd--prepro-end-rx) ;skip entire
+                                                        ;preprocessing section
                (tlfdd--goto-matching-block-start t)) 
-              ((tlfdd--looking-at tlfdd--prepro-unindent-rx)
+              ((tlfdd--looking-at tlfdd--prepro-unindent-rx) ;ignore #else and
+                                                             ;its variants
                nil)
-              ((tlfdd--looking-at tlfdd--end-rx) 
+              ((tlfdd--looking-at tlfdd--end-rx)  ;align on this block
+               (tlfdd--goto-matching-block-start)
+               (if at-item (forward-line -1))
                (setq cur-indent (current-indentation))
                (setq not-indented nil))
-              ((tlfdd--looking-at tlfdd--start-rx) 
+              ((tlfdd--looking-at tlfdd--start-rx)  ;indent relatively to this
+                                                    ;block opening
                (setq cur-indent (+ (current-indentation) tlfdd-indent-step))
                (setq not-indented nil))
-              ((tlfdd--looking-at tlfdd-list-rx) 
+              ((tlfdd--looking-at tlfdd-list-rx) ;align on this list
                (setq cur-indent 
                      (if (or at-item
                              at-prepro
@@ -470,10 +508,11 @@
                        (+ (current-indentation) 
                           (- (match-end 1) (match-beginning 1)))))
                (setq not-indented nil))
-              ((bobp)
+              ((bobp)                   ;very start of buffer => 0
                (setq cur-indent 0)
                (setq not-indented nil))
-              (t
+              (t                        ;if everything else failed, just
+                                        ;continue at the same level
                (setq cur-indent (current-indentation))
                (setq not-indented nil))))
       cur-indent)))
@@ -482,25 +521,36 @@
   (plist-get (cdr (assoc (downcase markup) tlfdd-markups)) :indent))
 
 (defun tlfdd--goto-matching-block-start (&optional prepro)
+  "Move to the beginning of the current block. If `prepro' is t,
+the block is meant as an #if ... #endif form. If `prepro' is nil,
+then use the (potentially implicit) markup blocks"
   (let ((start-markups (if prepro tlfdd-prepro-block-markups tlfdd-block-markups))
         (skip-markups (if prepro tlfdd-prepro-skip-markups))
         (end-markups (if prepro tlfdd-prepro-unindent-markups tlfdd-end-markups)))
-    (let ((start-rx (eval `(rx (and line-start (* space) (or ,@start-markups)))))
+    (let ((start-rx (eval `(rx (and line-start (* space) (? (regexp ,tlfdd-list-rx)) (or ,@start-markups)))))
           (end-rx (eval `(rx (and line-start (* space) (or ,@end-markups)))))
-          (both-rx (eval `(rx (and line-start (* space) (or ,@start-markups ,@end-markups)))))
+          (both-rx (eval `(rx (and line-start (* space) (or (and (? (regexp ,tlfdd-list-rx))
+                                                                 (or ,@start-markups)) 
+                                                            ,@end-markups)))))
           (skip-rx (when skip-markups (eval `(rx (and line-start (* space) (or ,@skip-markups))))))
           (found nil))
       (while (not found)
         (tlfdd--re-search-backward both-rx)
-        (cond ((tlfdd--looking-at start-rx)
+        (cond ((or (tlfdd-in-comment-p) 
+                   (and skip-rx (tlfdd--looking-at skip-rx)))
+               nil) 
+              ((tlfdd--looking-at start-rx)
                (setq found t))
-              ((and skip-rx (tlfdd--looking-at skip-rx))
-               nil)
               ((tlfdd--looking-at end-rx)
                (tlfdd--goto-matching-block-start prepro)))))))
 
 (defun tlfdd--in-pre-p ()
-  (or (nth 4 (syntax-ppss))
+  "Return t if and only if point is in a preformatted block,
+which happens if the current syntax is comment or we are in
+a <pre> ... </pre> block."
+  (or (tlfdd-in-comment-p) 
+      ;; TODO: <pre> ... </pre> is hardcoded, which is Bad(tm). Find
+      ;; a better way.
       (let ((open (save-excursion (tlfdd--re-search-backward (rx "<pre>") nil t)))
             (close (save-excursion (tlfdd--re-search-backward (rx "</pre>") nil t))))
         (and open 
@@ -508,29 +558,32 @@
                  (< close open))))))
 
 (defun tlfdd--implicit-block-indent (markup)
+  "Indentation helper for indenting implicit blocks like
+@chapter, @section, ..."
   (save-excursion
     (let ((level (tlfdd--get-toc-level markup))
           (found nil)
           (indent 0))
       (while (not found)
-        (if (tlfdd--re-search-backward (concat "^" tlfdd--toc-rx "\\|" tlfdd--end-rx "\\|" tlfdd--container-rx))
-            (cond ((nth 4 (syntax-ppss)) 
+        (if (tlfdd--re-search-backward (concat "^\\(?:" tlfdd--toc-rx "\\|" tlfdd--end-rx "\\|" tlfdd--container-rx "\\)"))
+            (cond ((tlfdd-in-comment-p)  ;hack for commented section markups
                    (beginning-of-line))
-                  ((tlfdd--looking-at tlfdd--end-rx)
+                  ((tlfdd--looking-at tlfdd--end-rx) ;skip sibling nested blocks
                    (tlfdd--goto-matching-block-start))
-                  ((tlfdd--looking-at tlfdd--container-rx)
+                  ((tlfdd--looking-at tlfdd--container-rx) ;indent relatively to container
                    (setq found t 
                          indent (+ (current-indentation) tlfdd-indent-step)))
-                  (t (let ((l (tlfdd--get-toc-level (match-string 1))))
-                       (cond ((eq l '=)
-                              nil)
-                             ((eq level '=)
-                              (setq found t indent (current-indentation)))
-                             ((> l level)
-                              nil) 
-                             (t
-                              (setq found t indent (+ (current-indentation)
-                                                      (if (= l level) 0 tlfdd-indent-step))))))))
+                  (t     ;indent depending on the level of this sibling section
+                   (let ((l (tlfdd--get-toc-level (match-string 1)))) 
+                     (cond ((eq l '=)
+                            nil)
+                           ((eq level '=)
+                            (setq found t indent (current-indentation)))
+                           ((> l level)
+                            nil) 
+                           (t
+                            (setq found t indent (+ (current-indentation)
+                                                    (if (= l level) 0 tlfdd-indent-step))))))))
           (setq found t)))
       indent)))
 
@@ -542,57 +595,70 @@
     (cond ((equal (line-beginning-position) 0) 
            0)
           ((tlfdd--in-pre-p)
-           (cond ((looking-at (rx (and (* space) "$$")))
+           ;; TODO: hardcoded constants ard Bad(tm). Find a better way (yes,
+           ;; I like to repeat myself)
+           (cond ((looking-at (rx (and (* space) "$$"))) ;align closing $$
                   (re-search-backward (rx "$$") nil t)
                   (current-indentation))
-                 ((tlfdd--looking-at (rx "</pre>"))
+                 ((tlfdd--looking-at (rx "</pre>")) ;same with </pre>
                   (tlfdd--re-search-backward (rx "<pre>") nil t)
                   (current-indentation))
                  ((not (looking-at (rx (and (* space) line-end))))
+                                        ;leave indentation unchanged
                   (current-indentation))
-                 (t
+                 (t                     ;for newlines, indent at same level
                   (forward-line -1)
                   (current-indentation)))) 
           ((tlfdd--looking-at tlfdd--prepro-unindent-rx)
+           ;; #else and its kinds are indented at #if level
            (tlfdd--goto-matching-block-start t)
            (current-indentation))
           (t
            (let (cur-indent)
              (cond ((tlfdd--looking-at tlfdd--end-rx)
+                    ;; align end with start
                     (progn
                       (save-excursion
                         (tlfdd--goto-matching-block-start) 
                         (setq cur-indent (current-indentation)))))
                    ((tlfdd--looking-at tlfdd--implicit-block-rx)
+                    ;; indent implicit block
                     (setq cur-indent (tlfdd--implicit-block-indent (match-string 1))))
                    (t 
+                    ;; default case
                     (setq cur-indent (tlfdd--internal-indentation))))
-             (if (< cur-indent 0)
+             (if (< cur-indent 0)       ;should not happen, still...
                  0
                cur-indent))))))
 
 (defun tlfdd-fill-paragraph-function (&rest ignore)
+  "Fill the current paragraph. $$ marks are left alone (but not
+their content). ;; marks define internal paragraphes, so reflect
+that"
   (save-excursion
     (mark-paragraph)
     (when (looking-at (rx (* whitespace) eol))
       (forward-line 1))
     (skip-syntax-forward " ")
+    ;; TODO: guess what? this is Bad(tm) :)
     (when (tlfdd--looking-at (rx (or "$$" "<pre>")))
       (forward-line 1))
     (let ((point (point))
              indented
              tmp)      
-         (while (setq tmp (re-search-forward ";;" (mark) t))
-           (setq indented (looking-at "$"))
-           (fill-region point tmp)
-           (if indented
-               (setq point tmp)
-             (backward-char)
-             (newline-and-indent)
-             (setq point (1+ tmp))))
-         (fill-region point (mark)))))
+      ;; TODO: same here
+      (while (setq tmp (re-search-forward ";;" (mark) t))
+        (setq indented (looking-at "$"))
+        (fill-region point tmp)
+        (if indented
+            (setq point tmp)
+          (backward-char)
+          (newline-and-indent)
+          (setq point (1+ tmp))))
+      (fill-region point (mark)))))
 
 (defun tlfdd-create-index ()
+  "Generate an index for `imenu'"
   (let ((toc-rx (eval `(rx (and (group (or ,@tlfdd-toc-markups))
                                 (group (* not-newline))))))
         toc)

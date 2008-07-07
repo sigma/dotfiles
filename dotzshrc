@@ -127,6 +127,12 @@ WATCHFMT="[%B%t%b] %B%n%b has %a %B%l%b from %B%M%b"
 
 # Prompts
 
+# get the name of the branch we are on
+git_prompt_info() {
+  ref=$(git-symbolic-ref HEAD 2> /dev/null) || return
+  echo "[${ref#refs/heads/}]"
+}
+
 autoload -U colors
 colors
 
@@ -154,11 +160,6 @@ PROMPT="[%B$login%b%B@$host%b %B%~%b]%(#.$root_invite.$user_invite) "
 date_normal="%T"
 date_error="%{$fg[$error_color]%}%T%{$reset_color%}"
 RPROMPT="`color_suspend [`%B%(?.$date_normal.$date_error)%b`color_suspend ]`"
-
-git_prompt_info() {
-  ref=$(git-symbolic-ref HEAD 2> /dev/null) || return
-  echo "[${ref#refs/heads/}]"
-}
 
 # Completions
 
@@ -209,7 +210,7 @@ zstyle ':completion:*:history-words' remove-all-dups yes
 zstyle ':completion:*:history-words' list false
 zstyle ':completion:*:history-words' menu yes
 
-users=( yann hodique sigma )
+users=( yann yhodique )
 
 zstyle ':completion:*' users $users
 
@@ -421,29 +422,22 @@ export QTDIR=/usr/lib/qt4
 export QMAKESPEC=linux-g++
 export WANT_AUTOCONF_2_5=1
 
-export EMACSCLIENT=emacsclient-cvs
-export EDITOR="$EMACSCLIENT -t -a zile"
-
-my_most_editor() {
-    file=$1
-    line=$2
-    $EMACSCLIENT -t +$line $file -a zile +$line
-}
-
-export MOST_EDITOR='(file=%s; line=%d; $EMACSCLIENT -t +$line $file -a zile +$line)'
-
+export EDITOR=zile
 export BROWSER=mozilla-firefox
 
 export TEXINPUTS=$TEXINPUTS:~/texmf:~/LaTeX/macros:~/LaTeX/fig
-export JAVA_HOME=/usr/lib/jvm/java-6-sun/
+#export JAVA_HOME=/usr/lib/jvm/java-1.5.0-sun/
+export JAVA_HOME=/usr/lib/j2se/1.4
 
 PATH=$QTDIR/bin:$KDEDIR/bin:$PATH
-export PATH=.:~/bin/:~/apps/bin/:/usr/local/bin:/usr/games/:$JAVA_HOME/bin:$PATH
+export PATH=.:~/bin/:~/apps/bin/:/usr/local/bin:/usr/games/:$JAVA_HOME/bin:~/apps/apache-maven-2.0.8/bin:$PATH
+
+typeset -U path # No duplicates
 
 export DISTCC_HOSTS='localhost hodique@faxe,lzo'
 export CCACHE_PREFIX='distcc'
 
-export MOZILLA_FIVE_HOME=/usr/lib/firefox
+export MOZILLA_FIVE_HOME=~/apps/MozillaFirebird/
 
 export MPD_HOST=deby
 export MPD_PORT=6600
@@ -685,69 +679,20 @@ $PR_CYAN$PR_SHIFT_IN$PR_HBAR$PR_SHIFT_OUT$PR_NO_COLOUR '
 
 setprompt
 
-extract_archive () {
-    local old_dirs current_dirs lower
-    lower=${(L)1}
-    old_dirs=( *(N/) )
-    if [[ $lower == *.tar.gz || $lower == *.tgz ]]; then
-        tar zxfv $1
-    elif [[ $lower == *.gz ]]; then
-        gunzip $1
-    elif [[ $lower == *.tar.bz2 || $lower == *.tbz ]]; then
-        bunzip2 -c $1 | tar xfv -
-    elif [[ $lower == *.bz2 ]]; then
-        bunzip2 $1
-    elif [[ $lower == *.zip ]]; then
-        unzip $1
-    elif [[ $lower == *.rar ]]; then
-        unrar e $1
-    elif [[ $lower == *.tar ]]; then
-        tar xfv $1
-    elif [[ $lower == *.lha ]]; then
-        lha e $1
-    else
-        print "Unknown archive type: $1"
-        return 1
-    fi
-    # Change in to the newly created directory, and
-    # list the directory contents, if there is one.
-    current_dirs=( *(N/) )
-    for i in {1..${#current_dirs}}; do
-        if [[ $current_dirs[$i] != $old_dirs[$i] ]]; then
-            cd $current_dirs[$i]
-            ls
-            break
-        fi
-    done
-}
+# if [ -f "${HOME}/.gpg-agent-info" ]; then
+#    . "${HOME}/.gpg-agent-info"
+#    export GPG_AGENT_INFO
+#    export SSH_AUTH_SOCK
+#    export SSH_AGENT_PID
+# fi
 
-alias ex=extract_archive
-compdef '_files -g "*.gz *.tgz *.bz2 *.tbz *.zip *.rar *.tar *.lha"' extract_archive
+export http_proxy='http://192.168.1.201:3128'
 
-# Prefer ipython for interactive shell
-smart_python () {
-    # this function is actually rather dumb
-    if [[ -n $1 ]]; then
-        python $argv
-    else
-        #if no parameters were given, then assume we want an ipython shell
-        if [[ -n $commands[ipython] ]]; then
-            ipython
-        else
-            python
-        fi
-    fi
-}
+export CDPATH=.:~/Projects/tl
+export S_DIR=~/Projects/tl/S
 
-alias py=smart_python
+export JDK_HOME=/usr/lib/jvm/java-1.5.0-sun
 
-# tab-complete options for smart_python just like for python
-compdef _python smart_python
-
-alias edit=$EMACSCLIENT -t
-
-for i in ~/Projects/bzr/hachoir.d/hachoir.mine/hachoir-*; do export PYTHONPATH=$PYTHONPATH:$i; done
-
-export LIBXCB_ALLOW_SLOPPY_LOCK=1
+export PYTHONPATH=~/apps/python
 
 eval `keychain -q --nogui --eval --agents ssh id_rsa id_dsa`
