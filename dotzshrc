@@ -511,6 +511,12 @@ fi
 # Fix weird sequence that rxvt produces
 bindkey -s '^[[Z' '\t'
 
+bindkey -s '^|l' " | less"                           # c-| l  pipe to less
+bindkey -s '^|g' ' | grep ""^[OD'                    # c-| g  pipe to grep
+bindkey -s '^|a' " | awk '{print $}'^[OD^[OD"        # c-| a  pipe to awk
+bindkey -s '^|s' ' | sed -e "s///g"^[OD^[OD^[OD^[OD' # c-| s  pipe to sed
+bindkey -s '^|w' " | wc -l"                          # c-| w  pipe to wc
+
 bindkey "$key[Up]" up-line-or-search
 bindkey "$key[Down]" down-line-or-search
 
