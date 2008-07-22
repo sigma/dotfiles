@@ -204,7 +204,7 @@
  '(proof-assistants (quote (isar coq acl2)))
  '(ps-lpr-command "kprinter")
  '(rcirc-buffer-maximum-lines 500)
- '(rcirc-fill-column 120)
+ '(rcirc-fill-column 105)
  '(read-quoted-char-radix 16)
  '(recentf-exclude (quote (":\\|#")))
  '(recentf-mode t)

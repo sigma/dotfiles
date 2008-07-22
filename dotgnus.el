@@ -416,9 +416,45 @@
   (interactive)
   (gnus-demon-cancel))
 
-(setq message-signature t)
+(setq message-signature 'fortune)
+ 
+(defvar fortune-program nil
+  "*Program used to generate epigrams, default \"fortune\".")
+ 
+(defvar fortune-switches nil
+  "*List of extra arguments when `fortune-program' is invoked.")
+ 
+(setq fortune-program "/usr/games/fortune")
 
-;; (yh/gnus-demon-install)
+(add-to-list 'fortune-switches "chapterhouse-dune")
+(add-to-list 'fortune-switches "children-of-dune")
+(add-to-list 'fortune-switches "dune")
+(add-to-list 'fortune-switches "dune-messiah")
+(add-to-list 'fortune-switches "god-emperor")
+(add-to-list 'fortune-switches "heretics-of-dune")
+(add-to-list 'fortune-switches "house-atreides")
+(add-to-list 'fortune-switches "house-harkonnen")
+ 
+(defun fortune (&optional long-p)
+  "Generate a random epigram.
+An optional prefix argument generates a long epigram.
+The epigram is inserted at point if called interactively."
+  (interactive "*P")
+  (let ((fortune-buffer (generate-new-buffer " fortune"))
+        (fortune-string "Have an adequate day."))
+    (unwind-protect
+        (save-excursion
+          (set-buffer fortune-buffer)
+          (apply 'call-process
+                 (append (list (or fortune-program "fortune") nil t nil)
+                         fortune-switches (list (if long-p "-l" "-s"))))
+          (dos2unix)
+          (skip-chars-backward "\n\t ")
+          (setq fortune-string (buffer-substring (point-min) (point))))
+      (kill-buffer fortune-buffer))
+    (if (interactive-p)
+        (insert fortune-string))
+    fortune-string))
 
 (setq mm-text-html-renderer 'w3m)
 

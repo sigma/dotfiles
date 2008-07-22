@@ -338,6 +338,8 @@ alias ll='ls -l'
 
 alias grep='command grep --color'
 
+alias git='PAGER=less git'
+
 alias -g ...=../..
 alias -g ....=../../..
 alias -g .....=../../../..
@@ -691,11 +693,6 @@ setprompt
 #    export SSH_AUTH_SOCK
 #    export SSH_AGENT_PID
 # fi
-
-export http_proxy='http://192.168.1.201:3128'
-
-export CDPATH=.:~/Projects/tl
-export S_DIR=~/Projects/tl/S
 
 export JDK_HOME=/usr/lib/jvm/java-1.5.0-sun
 
