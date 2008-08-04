@@ -29,8 +29,6 @@
 (when (request 'package)
   (package-initialize))
 
-(request 'yasnippet)
-
 ;; Customizations are in a separate file
 (if (file-exists-p (expand-file-name "~/.emacs-cust"))
     (load-file (expand-file-name "~/.emacs-cust")))
@@ -640,5 +638,8 @@ With prefix argument, turn on if ARG > 0; else turn off."
   "Search the kill ring in the minibuffer."
   (interactive))
 (global-set-key "\M-\C-y" 'kill-ring-search)
+
+(when (request 'pymacs)
+  (pymacs-load "ropemacs" "rope-"))
 
 (message ".emacs loaded")

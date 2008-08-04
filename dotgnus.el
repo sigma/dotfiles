@@ -526,7 +526,7 @@ The epigram is inserted at point if called interactively."
 	    				       "multipart/encrypted")
 		    			 gnus-buttonized-mime-types))
 
-(add-hook 'gnus-message-setup-hook 'mml-secure-message-sign-pgpmime)
+;;(add-hook 'gnus-message-setup-hook 'mml-secure-message-sign-pgpmime)
 
 ;;; Misc
 (require 'gnus-sum)

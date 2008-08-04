@@ -2,7 +2,7 @@ Config { font = "xft:Consolas-11:style=bold"
        , bgColor = "black"
        , fgColor = "lightskyblue"
        , position = Top
-       , commands = [ Run Weather "LOWZ" ["-t","<station>: <tempC>C, <skyCondition>","-L","18","-H","25","--normal","aquamarine2","--high","chocolate1","--low","lightskyblue"] 36000 
+       , commands = [ Run Weather "LOWZ" ["-t","<station>: <tempC>C, <skyCondition>","-L","18","-H","25","--normal","aquamarine2","--high","chocolate1","--low","lightskyblue"] 36000
                       , Run Network "eth0" ["-L","0","-H","32","--normal","aquamarine2","--high","chocolate1"] 10
                     , Run Cpu ["-L","15","-H","50","--normal","aquamarine2","--high","chocolate1"] 10
                     , Run Memory ["-t","Mem: <usedratio>%"] 10

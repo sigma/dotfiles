@@ -118,5 +118,11 @@
 (setq-default even-window-heights nil
               resize-mini-windows nil)
 
+;; Window Fringes
+(require 'fringe)
+(setq default-indicate-buffer-boundaries 'left) ; Indicate the
+(setq default-indicate-empty-lines t)           ; Display an in
+(fringe-mode 'default)
+
 (provide 'visual)
 ;;; visual.el ends here

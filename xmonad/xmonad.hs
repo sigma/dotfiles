@@ -22,14 +22,14 @@ import XMonad.Actions.UpdatePointer
 import XMonad.Hooks.UrgencyHook
 import XMonad.Util.Run (spawnPipe)
 import XMonad.Util.Scratchpad
-import System.IO 
+import System.IO
 import XMonad.Prompt
 import XMonad.Prompt.Shell
 import XMonad.Util.WorkspaceCompare
 import XMonad.Util.EZConfig
 import XMonad.Actions.Warp
 import Data.Ratio
- 
+
 myTerminal      = "urxvt"
 myScreenLock    = "/usr/bin/gnome-screensaver-command -l"
 myBorderWidth   = 1
@@ -38,7 +38,7 @@ myNumlockMask   = mod2Mask
 myWorkspaces    = ["α", "β" ,"γ", "δ", "ε", "ζ", "η", "θ", "ι"]
 myNormalBorderColor  = "#111"
 myFocusedBorderColor = "cadetblue3"
- 
+
 myKeys = \conf -> mkKeymap conf $
                 [ ("M-S-<Return>", spawn $ XMonad.terminal conf)
                 , ("C-S-<Esc>",    spawn $ myScreenLock)
@@ -65,7 +65,7 @@ myKeys = \conf -> mkKeymap conf $
                 , ("M-p",          shellPrompt oxyXPConfig)
                 , ("M-o",          shellPrompt oxyXPConfig)
                 , ("M-S-<Right>",  shiftToNext >> nextWS)
-                , ("M-S-<Left>",   shiftToPrev >> prevWS) 
+                , ("M-S-<Left>",   shiftToPrev >> prevWS)
                 , ("M-<Down>",     nextScreen)
                 , ("M-S-<Down>",   shiftNextScreen >> nextScreen)
                 , ("M-<Left>",     prevNonEmptyWS )
@@ -95,15 +95,15 @@ myKeys = \conf -> mkKeymap conf $
                     | (i, j) <- zip (map show [1..9]) (XMonad.workspaces conf)
                     , (m, f) <- [("M-", W.view), ("M-S-", W.shift)]
                 ]
-    where 
+    where
       nextNonEmptyWS = moveTo Next (WSIs (liftM (not .) isVisible))
       prevNonEmptyWS = moveTo Prev (WSIs (liftM (not .) isVisible))
- 
+
 isVisible :: X (WindowSpace -> Bool)
 isVisible = do
   vs <- gets (map (W.tag . W.workspace) . W.visible . windowset)
   return (\w -> (W.tag w) `elem` vs)
- 
+
 -- Config for Prompt
 oxyXPConfig :: XPConfig
 oxyXPConfig = defaultXPConfig { font              = "xft:Consolas-12"
@@ -117,7 +117,7 @@ oxyXPConfig = defaultXPConfig { font              = "xft:Consolas-12"
                               , height            = 24
                               , defaultText       = []
                               }
- 
+
 myMouseBindings (XConfig {XMonad.modMask = modMask}) = M.fromList $
     -- mod-button1, Set the window to floating mode and move by dragging
     [ ((modMask, button1), (\w -> focus w >> mouseMoveWindow w))
@@ -133,14 +133,14 @@ myMouseBindings (XConfig {XMonad.modMask = modMask}) = M.fromList $
     , ((controlMask .|. modMask, button5), nextNonEmptyWS)
     , ((controlMask .|. modMask, button4), prevNonEmptyWS)
     ]
-    where 
+    where
       nextNonEmptyWS = \_ -> moveTo Next (WSIs (liftM (not .) isVisible))
       prevNonEmptyWS = \_ -> moveTo Prev (WSIs (liftM (not .) isVisible))
- 
+
 -- layouts
 
-imLayout = avoidStruts $ 
-           IM (1%7) (And (ClassName "Skype")  (And (Role "") (Not (Title "Options")))) 
+imLayout = avoidStruts $
+           IM (1%7) (And (ClassName "Skype")  (And (Role "") (Not (Title "Options"))))
 
 genericLayouts = avoidStrutsOn[U] $ tabs
                  ||| tiled
@@ -176,7 +176,7 @@ oxyTheme = defaultTheme { inactiveBorderColor = "#000"
                         , urgentColor = "#000"
                         , urgentTextColor = "#63b8ff"
                         }
- 
+
 oxyDarkTheme :: Theme
 oxyDarkTheme = defaultTheme { inactiveBorderColor = "#777"
                             , activeBorderColor = myFocusedBorderColor
@@ -185,7 +185,7 @@ oxyDarkTheme = defaultTheme { inactiveBorderColor = "#777"
                             , inactiveTextColor = "aquamarine4"
                             , activeTextColor = "aquamarine1"
                             , fontName = "xft:Dejavu Sans Mono-8"
-                            , decoHeight = 15 
+                            , decoHeight = 15
                             , urgentColor = "#000"
                             , urgentTextColor = "#63b8ff"
                         }
@@ -202,18 +202,18 @@ myManageHook =  manageDocks <+> (composeAll . concat $
       ] ])
       where floats = ["MPlayer", ".", "feh"]
             webs   = ["Firefox-bin", "Firefox", "Minefield"]
-    
+
 -- Status bars and logging
 myLogHook h = do
   ewmhDesktopsLogHook
-  dynamicLogWithPP $ oxyPP h 
+  dynamicLogWithPP $ oxyPP h
   updatePointer (Relative (1/20) (1/20))
- 
+
 oxyPP :: Handle -> PP
-oxyPP h = defaultPP  { ppCurrent = wrap "<fc=black,aquamarine3> " " </fc>" 
+oxyPP h = defaultPP  { ppCurrent = wrap "<fc=black,aquamarine3> " " </fc>"
                      , ppSep     = ""
                      , ppWsSep = ""
-                     , ppVisible = wrap "<fc=black,DarkSlateGray4> " " </fc>" 
+                     , ppVisible = wrap "<fc=black,DarkSlateGray4> " " </fc>"
                      , ppLayout = \x -> "<fc=aquamarine2,black>:: "
                                   ++ case x of
                                        "Mirror ResizableTall"   -> "MTiled"
@@ -229,25 +229,25 @@ oxyPP h = defaultPP  { ppCurrent = wrap "<fc=black,aquamarine3> " " </fc>"
                      , ppHidden = wrap "<fc=#aaa,black> " " </fc>"
                      , ppOutput = hPutStrLn h
                      }
- 
+
 shorten :: Int -> String -> String
 shorten n xs | length xs < n = xs
              | otherwise     = (take (n - length end) xs) ++ end
  where
     end = ""
- 
+
 myFocusFollowsMouse :: Bool
 myFocusFollowsMouse = True
- 
+
 ------------------------------------------------------------------------
 -- Now run xmonad with all the defaults we set up.
- 
+
 -- Run xmonad with the settings you specify. No need to modify this.
 --
 main = do
   pipe <- spawnPipe "xmobar"
   xmonad $ withUrgencyHook NoUrgencyHook $ defaults pipe
- 
+
 defaults pipe = defaultConfig {
       -- simple stuff
         terminal           = myTerminal,
