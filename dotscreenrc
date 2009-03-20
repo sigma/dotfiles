@@ -102,6 +102,18 @@ bind 'O' login off
 
 bind 'M' screen -t Music mocp
 
+#
+#  Toggle 'fullscreen' or not.
+#
+bind f eval "caption splitonly"
+bind F eval "caption always"
+
 # caption always "%{Yb} %Y-%02m-%02d %0c %{k}|%{C} %LD %{k}|%{G} %l %{k}|%{W} %-Lw%{+u}%n %t%{-u}%+Lw"
 
-caption always "%{=b bY} %D %Y-%02m-%02d %0c %{k}|%{-b G} %l %{k}|%{W} %-Lw%{+b Bd}%n-%f %t%{-b bd}%+Lw"
+# caption always "%{=b bY} %D %Y-%02m-%02d %0c %{k}|%{-b G} %l %{k}|%{W} %-Lw%{+b Bd}%n-%f %t%{-b bd}%+Lw"
+
+# hardstatus alwayslastline
+
+# hardstatus string '%{= kG}[ %{G}%H %{g}][%= %{=kw}%?%-Lw%?%{r}(%{W}%n*%f%t%?(%u)%?%{r})%{w}%?%+Lw%?%?%= %{g}][%{B}%Y-%m-%d %{W}%c %{g}]'
+
+caption always '%{= kG}[ %{G}%H %{g}][%=%{= kw}%?%-Lw%?%{r}[%n*%f %t%?(%u)%?%{r}]%{w}%?%+Lw%?%?%{g}%=][ %{B}%Y-%m-%d %{W}%c %{g}]'
