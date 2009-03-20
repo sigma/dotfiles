@@ -25,11 +25,11 @@
 (request 'project)
 
 (request 'cedet)
+(require 'semantic-gcc)
+(semantic-gcc-setup "gcc")
 
 (when (request 'package)
   (package-initialize))
-
-(request 'yasnippet)
 
 ;; Customizations are in a separate file
 (if (file-exists-p (expand-file-name "~/.emacs-cust"))
@@ -329,7 +329,7 @@
 
 (global-set-key (kbd "C-c +") 'incr-dwim)
 
-(global-set-key (kbd "<f3>") 'ecb-toggle-compile-window)
+;(global-set-key (kbd "<f3>") 'ecb-toggle-compile-window)
 ;; Depending on your keyboard you may want another one binding
 (global-set-key (kbd "C-x ~") 'previous-error)
 (global-set-key (kbd "C-c s") 'eshell)
@@ -415,11 +415,11 @@
       (occur (if isearch-regexp isearch-string
                (regexp-quote isearch-string))))))
 
-(global-set-key (kbd "<f5>")
-                (lambda () (interactive)
-                  (if (and (boundp 'ecb-minor-mode) ecb-minor-mode)
-                      (ecb-deactivate)
-                    (ecb-activate))))
+;; (global-set-key (kbd "<f5>")
+;;                 (lambda () (interactive)
+;;                   (if (and (boundp 'ecb-minor-mode) ecb-minor-mode)
+;;                       (ecb-deactivate)
+;;                     (ecb-activate))))
 
 (global-set-key (kbd "H-z") 'zap-upto-char)
 (global-set-key (kbd "H-M-z") 'zap-to-char)
@@ -605,7 +605,7 @@ With prefix argument, turn on if ARG > 0; else turn off."
 
 (require 'epa-dired)
 (epa-file-enable)
-
+(setq epa-file-cache-passphrase-for-symmetric-encryption t)
 (add-hook 'mail-mode-hook 'epa-mail-mode)
 
 (require 'compile-bookmarks)
@@ -641,4 +641,27 @@ With prefix argument, turn on if ARG > 0; else turn off."
   (interactive))
 (global-set-key "\M-\C-y" 'kill-ring-search)
 
+;; (when (request 'pymacs)
+;;   (pymacs-load "ropemacs" "rope-"))
+
 (message ".emacs loaded")
+
+;; update agenda file after changes to org files
+(defun th-org-mode-init ()
+  (add-hook 'after-save-hook 'th-org-update-agenda-file t t))
+
+(add-hook 'org-mode-hook 'th-org-mode-init)
+
+;; that's the export function
+(defun th-org-update-agenda-file (&optional force)
+  (interactive)
+  (save-excursion
+    (save-window-excursion
+      (let ((file "/tmp/org-agenda.txt"))
+        (org-agenda-list)
+        (org-write-agenda file)))))
+
+;; do it once at startup
+(th-org-update-agenda-file t)
+
+(request 'magit)

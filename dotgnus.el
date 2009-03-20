@@ -138,14 +138,14 @@
 (setq gnus-sum-thread-tree-single-leaf "`-> ")
 
 ;; Unicode
-(when window-system
-  (setq gnus-sum-thread-tree-indent "  ")
-  (setq gnus-sum-thread-tree-root "● ")
-  (setq gnus-sum-thread-tree-false-root "◯ ")
-  (setq gnus-sum-thread-tree-single-indent "◎ ")
-  (setq gnus-sum-thread-tree-leaf-with-other "├─► ")
-  (setq gnus-sum-thread-tree-vertical "│")
-  (setq gnus-sum-thread-tree-single-leaf "╰─► "))
+;; (when window-system
+;;   (setq gnus-sum-thread-tree-indent "  ")
+;;   (setq gnus-sum-thread-tree-root "● ")
+;;   (setq gnus-sum-thread-tree-false-root "◯ ")
+;;   (setq gnus-sum-thread-tree-single-indent "◎ ")
+;;   (setq gnus-sum-thread-tree-leaf-with-other "├─► ")
+;;   (setq gnus-sum-thread-tree-vertical "│")
+;;   (setq gnus-sum-thread-tree-single-leaf "╰─► "))
 
 (setq gnus-summary-same-subject "")
 
@@ -535,6 +535,9 @@ The epigram is inserted at point if called interactively."
   "Function to be added to `message-send-hook' to notice records when sending messages" t)
 
 (add-hook 'message-send-hook 'bbdb/send-hook)
+
+(add-hook 'mail-mode-hook 'turn-on-orgstruct)
+(add-hook 'message-mode-hook 'turn-on-orgstruct)
 
 ;; (server-start)
 (calendar)

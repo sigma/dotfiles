@@ -40,6 +40,7 @@
 
      (setq org-agenda-include-diary t
            org-log-done '(state)
+           org-agenda-skip-comment-trees nil
            org-agenda-include-all-todo nil
            org-agenda-skip-deadline-if-done t
            org-agenda-skip-scheduled-if-done t

@@ -158,7 +158,8 @@
 ;; Thanks to Klaus Berndl for code
 (require 'hippie-exp)
 (setq hippie-expand-try-functions-list
-      '(tempo-snippets-complete-tag
+      '(yas/hippie-try-expand
+        tempo-snippets-complete-tag
         tempo-complete-tag
         try-complete-file-name-partially
 	try-complete-file-name
