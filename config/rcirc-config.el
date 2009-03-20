@@ -45,6 +45,7 @@
                       8192)))
 
      (require 'rcirc-color)
+     (require 'rcirc-controls)
 
      (defun-rcirc-command reconnect (arg)
        "Reconnect the server process."
