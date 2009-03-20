@@ -868,6 +868,7 @@ If no rgb.txt file is found, return nil."
 	 (loop
 	  for f = face then (face-attribute f :inherit)
 	  until (eq f 'unspecified)
+          while f
 	  for h = (face-attribute f :height)
 	  collect (if (eq h 'unspecified) nil h))))
     (reduce 'htmlize-merge-size (cons nil size-list))))

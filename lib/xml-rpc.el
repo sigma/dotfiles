@@ -168,7 +168,6 @@
 (require 'custom)
 (require 'xml)
 (require 'url)
-(require 'url-http)
 (eval-when-compile
   (require 'cl))
 
@@ -258,7 +257,7 @@ Set it higher to get some info in the *Messages* buffer")
 (defun xml-rpc-xml-list-to-value (xml-list)
   "Convert an XML-RPC structure in an xml.el style XML-LIST to an elisp list, \
 interpreting and simplifying it while retaining its structure."
-  (cond
+  (cond 
    ((and (xml-rpc-caddar-safe xml-list)
 	 (listp (car-safe (cdr-safe (cdr-safe (car-safe xml-list))))))
 
@@ -417,7 +416,7 @@ the parsed XML response is returned."
       (setq xml-rpc-fault-string (nth 2 resp))
       (setq xml-rpc-fault-code   (nth 1 resp))
       (error "XML-RPC fault `%s'" xml-rpc-fault-string)))
-
+ 
    ;; Interpret the XML list and produce a more useful data structure
    (t
     (let ((valpart (cdr (cdaddr (caddar xml)))))
@@ -472,7 +471,7 @@ or nil if called with ASYNC-CALLBACK-FUNCTION."
 	      (url-mime-charset-string "utf-8;q=1, iso-8859-1;q=0.5")
 	      (url-request-coding-system 'utf-8)
 	      (url-http-attempt-keepalives t)
-	      (url-request-extra-headers (list
+	      (url-request-extra-headers (list 
                                           (cons "Connection" "keep-alive")
 					  (cons "Content-Type" "text/xml; charset=utf-8"))))
 	  (if (> xml-rpc-debug 1)
@@ -483,7 +482,7 @@ or nil if called with ASYNC-CALLBACK-FUNCTION."
 		     (setq url-be-asynchronous t
 			   url-current-callback-data (list
 						      async-callback-function
-						      (current-buffer))
+						      (current-buffer))	
 			   url-current-callback-func 'xml-rpc-request-callback-handler)
 		   (setq url-be-asynchronous nil))
 		 (url-retrieve server-url t)
@@ -492,7 +491,7 @@ or nil if called with ASYNC-CALLBACK-FUNCTION."
 		     nil
 		   (let ((result (xml-rpc-request-process-buffer
 				  url-working-buffer)))
-		     (if (> xml-rpc-debug 1)
+		     (if (> xml-rpc-debug 1) 
 			 (save-excursion
 			   (set-buffer (create-file-buffer "result-data"))
 			   (insert result)))
@@ -565,7 +564,7 @@ or nil if called with ASYNC-CALLBACK-FUNCTION."
 			;; A probable XML response
 			((looking-at "<\\?xml ")
 			 (xml-rpc-clean (xml-parse-region (point-min) (point-max))))
-
+			  
 			;; No HTTP status returned
 			((not status)
 			 (let ((errstart
@@ -591,7 +590,7 @@ handled from XML-BUFFER."
     (if (< xml-rpc-debug 1)
 	(kill-buffer xml-buffer))
     (funcall callback-fun (xml-rpc-xml-to-response xml-response))))
-
+  
 
 (defun xml-rpc-method-call-async (async-callback-func server-url method
 						      &rest params)
@@ -668,7 +667,7 @@ The first line is indented with INDENT-STRING."
 			  (stringp (car tree))))
 	    (insert ?\n indent-string))
 	  (insert ?< ?/ (symbol-name (xml-node-name xml)) ?>))))))
-
+    
 (provide 'xml-rpc)
 
 ;;; xml-rpc.el ends here
