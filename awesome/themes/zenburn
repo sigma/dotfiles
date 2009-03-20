@@ -1,0 +1,61 @@
+---------------------------
+-- awesome zenburn theme --
+-- anrxc_at_sysphere_org --
+---------------------------
+
+# Font styles for statusbars and titlebars
+font          = Profont 8
+fg_normal     = #DCDCCC
+fg_focus      = #F0DFAF
+fg_urgent     = #CC9393
+bg_normal     = #3F3F3F
+bg_focus      = #1E2320
+bg_urgent     = #3F3F3F
+
+# Windows border styles
+border_width  = 1
+border_normal = #3F3F3F
+border_focus  = #1E2320
+border_marked = #CC9393
+
+# Widget styles
+fg_widget        = #AECF96
+fg_center_widget = #88A175
+fg_end_widget    = #FF5656
+fg_off_widget    = #494B4F
+fg_netup_widget  = #7F9F7F
+fg_netdn_widget  = #CC9393
+bg_widget        = #3F3F3F
+border_widget    = #3F3F3F
+
+
+# Command used to set the wallpaper
+wallpaper_cmd = /usr/bin/nitrogen --restore
+
+
+# Taglist squares (4x14 pixels, zenburn colors)
+taglist_squares       = true
+taglist_squares_sel   = /home/yann/.config/awesome/icons/taglist/squarefz.png
+taglist_squares_unsel = /home/yann/.config/awesome/icons/taglist/squarezo.png
+
+# Statusbar icons for window management layouts (14x14 pixels, zenburn colors)
+layout_tile       = /home/yann/.config/awesome/icons/layouts/tile.png
+layout_tileleft   = /home/yann/.config/awesome/icons/layouts/tileleft.png
+layout_tilebottom = /home/yann/.config/awesome/icons/layouts/tilebottom.png
+layout_tiletop    = /home/yann/.config/awesome/icons/layouts/tiletop.png
+layout_fairv      = /home/yann/.config/awesome/icons/layouts/fairv.png
+layout_fairh      = /home/yann/.config/awesome/icons/layouts/fairh.png
+layout_max        = /home/yann/.config/awesome/icons/layouts/max.png
+layout_magnifier  = /home/yann/.config/awesome/icons/layouts/magnifier.png
+layout_floating   = /home/yann/.config/awesome/icons/layouts/floating.png
+
+# Widget icons (from dzen, zenburn colors)
+widget_cpu   = /home/yann/.config/awesome/icons/cpu.png
+widget_bat   = /home/yann/.config/awesome/icons/bat.png
+widget_mem   = /home/yann/.config/awesome/icons/mem.png
+widget_fs    = /home/yann/.config/awesome/icons/disk.png
+widget_net   = /home/yann/.config/awesome/icons/down.png
+widget_netup = /home/yann/.config/awesome/icons/up.png
+widget_mail  = /home/yann/.config/awesome/icons/mail.png
+widget_vol   = /home/yann/.config/awesome/icons/vol.png
+widget_date  = /home/yann/.config/awesome/icons/time.png
