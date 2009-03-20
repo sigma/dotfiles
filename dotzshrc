@@ -431,8 +431,12 @@ export TEXINPUTS=$TEXINPUTS:~/texmf:~/LaTeX/macros:~/LaTeX/fig
 #export JAVA_HOME=/usr/lib/jvm/java-1.5.0-sun/
 export JAVA_HOME=/usr/lib/j2se/1.4
 
+export GEM_HOME=/var/lib/gems/1.9.0/
+
+export LLVM_HOME=$HOME/Projects/svn/llvm
+
 PATH=$QTDIR/bin:$KDEDIR/bin:$PATH
-export PATH=.:~/bin/:~/apps/bin/:/usr/local/bin:/usr/games/:$JAVA_HOME/bin:~/apps/apache-maven-2.0.8/bin:$PATH
+export PATH=.:~/bin/:~/apps/bin/:/usr/local/bin:/usr/games/:$GEM_HOME/bin:$JAVA_HOME/bin:$LLVM_HOME/Release/bin:$PATH
 
 typeset -U path # No duplicates
 
@@ -696,6 +700,15 @@ setprompt
 
 export JDK_HOME=/usr/lib/jvm/java-1.5.0-sun
 
-export PYTHONPATH=~/apps/python
+export PYTHONPATH=.:~/apps/python:~/lib/python2.5/site-packages:~/apps/pyVC/vmodl
 
 eval `keychain -q --nogui --eval --agents ssh id_rsa id_dsa`
+
+function time2rate () {                                                                                                   
+    echo "26 * 1024 * 1024 / (60 * $1)" | bc
+}
+
+export GIBAK_DIR=/backup/yann/.git
+
+alias covertest='nocorrect ~/lib/python2.5/site-packages/coverage -x'
+alias coverreport='nocorrect ~/lib/python2.5/site-packages/coverage -rm -o /usr,/home/yann/lib,/home/yann/apps'
