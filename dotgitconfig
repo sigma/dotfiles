@@ -1,5 +1,3 @@
-[core]
-        pager = /usr/bin/less -$LESS -SFRX -SR +'/^---'
 [color]
 	diff = auto
 	status = auto
@@ -28,5 +26,6 @@
 	co = checkout
 	lc = log ORIG_HEAD.. --stat --no-merges
 	st = status
+        ll = log --graph --pretty=oneline --abbrev-commit
 [merge]
 	tool = emerge
