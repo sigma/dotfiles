@@ -342,6 +342,8 @@ function show_org_agenda ()
    text = text:gsub("([ ]+%w+:) ", "<span color='#FF7F24'>%1</span> ")
    org_agenda_pupup = naughty.notify(
       { text     = text,
+        font     = "Monospace 8",
+        icon     = "/usr/share/icons/oxygen/64x64/apps/kontact.png",
         timeout  = 999999999,
         width    = 600,
         position = "top_right",
