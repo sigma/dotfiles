@@ -1,0 +1,189 @@
+#ifdef COLOR
+*customization: -color
+#endif
+
+emacs-cvs*Background: DarkSlateGray
+emacs-cvs*Foreground: Wheat
+emacs-cvs*pointerColor: Orchid
+emacs-cvs*cursorColor: Yellow
+emacs-cvs*font: Liberation Mono-11
+emacs-cvs*bitmapIcon: on
+emacs-cvs.geometry: 120x50
+
+emacs*Background: DarkSlateGray
+emacs*Foreground: Wheat
+emacs*pointerColor: Orchid
+emacs*cursorColor: Yellow
+emacs*font: fixed
+emacs*bitmapIcon: on
+emacs.geometry: 120x50
+
+xterm*background: DarkSlateGray
+xterm*foreground: Wheat
+xterm*cursorColor: Yellow
+xterm*font: fixed
+xterm*reverseVideo: false
+xterm*scrollBar: false
+xterm*saveLines: 5000
+xterm*reverseWrap: true
+xterm.geometry: 80x25+20+20
+xterm*fullCursor: true
+xterm*scrollTtyOutput: off
+xterm*scrollKey: on
+xterm*titleBar: false
+
+mrxvt*background: DarkSlateGray
+mrxvt*foreground: Wheat
+mrxvt*cursorColor: Yellow
+mrxvt*font: fixed
+mrxvt*reverseVideo: false
+mrxvt*scrollBar: false
+mrxvt*saveLines: 5000
+mrxvt*reverseWrap: true
+mrxvt.geometry: 80x25+20+20
+mrxvt*fullCursor: true
+mrxvt*scrollTtyOutput: off
+mrxvt*scrollKey: on
+mrxvt*titleBar: false
+
+rxvt*background: DarkSlateGray
+rxvt*foreground: Wheat
+rxvt*cursorColor: Yellow
+rxvt*font: fixed
+rxvt*reverseVideo: false
+rxvt*scrollBar: false
+rxvt*saveLines: 5000
+rxvt*reverseWrap: true
+rxvt.geometry: 80x25+20+20
+rxvt*fullCursor: true
+rxvt*scrollTtyOutput: off
+rxvt*scrollKey: on
+rxvt*titleBar: false
+
+rxvt-unicode*background: DarkSlateGray
+rxvt-unicode*foreground: Wheat
+rxvt-unicode*cursorColor: Yellow
+rxvt-unicode*font: xft:Liberation Mono-11
+rxvt-unicode*reverseVideo: false
+rxvt-unicode*scrollBar: false
+rxvt-unicode*saveLines: 5000
+rxvt-unicode*reverseWrap: true
+rxvt-unicode.geometry: 80x25+20+20
+rxvt-unicode*fullCursor: true
+rxvt-unicode*scrollTtyOutput: off
+rxvt-unicode*scrollKey: on
+rxvt-unicode*titleBar: true
+rxvt-unicode*color12: #84bdd2
+
+urxvt*background: DarkSlateGray
+urxvt*foreground: Wheat
+urxvt*cursorColor: Yellow
+urxvt*font: xft:Liberation Mono-11
+urxvt*reverseVideo: false
+urxvt*scrollBar: false
+urxvt*saveLines: 5000
+urxvt*reverseWrap: true
+urxvt*fullCursor: true
+urxvt*scrollTtyOutput: off
+urxvt*scrollKey: on
+urxvt*titleBar: true
+urxvt*color12: #84bdd2
+urxvt*transparent: true
+urxvt*shading: 20
+urxvt.geometry: 80x25+20+20
+urxvt.perl-ext-common: default,matcher
+urxvt.urlLauncher: firefox-3.0
+urxvt.matcher.button: 1
+urxvt.keysym.C-S-b:    perl:matcher
+urxvt.matcher.pattern.1:  \\bwww\\.[\\w-]+\\.[\\w./?&@#-]*[\\w/-]
+urxvt.matcher.pattern.2:  \\B(/\\S+?):(\\d+)(?=:|$)
+urxvt.matcher.launcher.2: emacsclient-cvs -t +$2 $1
+urxvt.tabbed.tabbar-fg: 0
+urxvt.tabbed.tabbar-bg: 4
+urxvt.tabbed.tab-fg: 3
+urxvt.tabbed.tab-bg: 12
+
+mocp*background: DarkSlateGray
+mocp*foreground: Wheat
+mocp*cursorColor: Yellow
+mocp*font: xft:Liberation Mono-11
+mocp*reverseVideo: false
+mocp*scrollBar: false
+mocp*reverseWrap: true
+mocp*fullCursor: true
+mocp*scrollTtyOutput: off
+mocp*scrollKey: on
+mocp*titleBar: true
+mocp*color12: #84bdd2
+mocp*transparent: true
+mocp*shading: 20
+mocp.geometry: 100x30+120+120
+
+htop*background: DarkSlateGray
+htop*foreground: Wheat
+htop*cursorColor: Yellow
+htop*font: xft:Liberation Mono-11
+htop*reverseVideo: false
+htop*scrollBar: false
+htop*reverseWrap: true
+htop*fullCursor: true
+htop*scrollTtyOutput: off
+htop*scrollKey: on
+htop*titleBar: true
+htop*color12: #84bdd2
+htop*transparent: true
+htop*shading: 20
+htop.geometry: 100x30+120+120
+
+xterm*eightBitInput: 		false
+xterm*metaSendsEscape: 		true
+xterm*backarrowKey:    		false
+xterm*modifier:                     meta
+
+xterm.VT100.Translations: #override \
+ ~Ctrl ~Meta  Shift <Key> Tab:        string(0x1b) string("[z2a")     \n\
+ ~Ctrl  Meta ~Shift <Key> Tab:        string(0x1b) string("[z3a")     \n\
+ ~Ctrl  Meta  Shift <Key> Tab:        string(0x1b) string("[z4a")     \n\
+  Ctrl ~Meta ~Shift <Key> Tab:        string(0x1b) string("[z5a")     \n\
+  Ctrl ~Meta  Shift <Key> Tab:        string(0x1b) string("[z6a")     \n\
+  Ctrl  Meta ~Shift <Key> Tab:        string(0x1b) string("[z7a")     \n\
+  Ctrl  Meta  Shift <Key> Tab:        string(0x1b) string("[z8a")     \n\
+\
+ ~Ctrl ~Meta  Shift <Key> Return:     string(0x1b) string("[z2b")     \n\
+ ~Ctrl  Meta ~Shift <Key> Return:     string(0x1b) string("[z3b")     \n\
+ ~Ctrl  Meta  Shift <Key> Return:     string(0x1b) string("[z4b")     \n\
+  Ctrl ~Meta ~Shift <Key> Return:     string(0x1b) string("[z5b")     \n\
+  Ctrl ~Meta  Shift <Key> Return:     string(0x1b) string("[z6b")     \n\
+  Ctrl  Meta ~Shift <Key> Return:     string(0x1b) string("[z7b")     \n\
+  Ctrl  Meta  Shift <Key> Return:     string(0x1b) string("[z8b")     \n\
+\
+ ~Ctrl ~Meta  Shift <Key> BackSpace:     string(0x1b) string("[z2c")  \n\
+ ~Ctrl  Meta  Shift <Key> BackSpace:     string(0x1b) string("[z4c")  \n\
+  Ctrl ~Meta ~Shift <Key> BackSpace:     string(0x1b) string("[z5c")  \n\
+  Ctrl ~Meta  Shift <Key> BackSpace:     string(0x1b) string("[z6c")  \n\
+  Ctrl  Meta ~Shift <Key> BackSpace:     string(0x1b) string("[z7c")  \n\
+  Ctrl  Meta  Shift <Key> BackSpace:     string(0x1b) string("[z8c")  \n\
+\
+ ~Ctrl ~Meta ~Shift <Key> Pause:       string(0x1b) string("[zd")     \n\
+ ~Ctrl ~Meta  Shift <Key> Pause:       string(0x1b) string("[z2d")    \n\
+ ~Ctrl  Meta ~Shift <Key> Pause:       string(0x1b) string("[z3d")    \n\
+ ~Ctrl  Meta  Shift <Key> Pause:       string(0x1b) string("[z4d")    \n\
+  Ctrl ~Meta ~Shift <Key> Pause:       string(0x1b) string("[z5d")    \n\
+  Ctrl ~Meta  Shift <Key> Pause:       string(0x1b) string("[z6d")    \n\
+  Ctrl  Meta ~Shift <Key> Pause:       string(0x1b) string("[z7d")    \n\
+  Ctrl  Meta  Shift <Key> Pause:       string(0x1b) string("[z8d")    \n\
+\
+ ~Ctrl ~Meta ~Shift <Key> Sys_Req:     string(0x1b) string("[ze")     \n\
+ ~Ctrl ~Meta  Shift <Key> Sys_Req:     string(0x1b) string("[z2e")    \n\
+  Ctrl ~Meta ~Shift <Key> Sys_Req:     string(0x1b) string("[z5e")    \n\
+  Ctrl ~Meta  Shift <Key> Sys_Req:     string(0x1b) string("[z6e")    \n
+
+Gkrellm*font: fixed
+
+emacs-snapshot-gtk*Background: DarkSlateGray
+emacs-snapshot-gtk*Foreground: Wheat
+emacs-snapshot-gtk*pointerColor: Orchid
+emacs-snapshot-gtk*cursorColor: Yellow
+emacs-snapshot-gtk*bitmapIcon: on
+emacs-snapshot-gtk.geometry: 120x50
+emacs-snapshot-gtk*font: Liberation Mono-11
