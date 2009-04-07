@@ -474,9 +474,7 @@
 (require 'anything-config)
 
 ;; Compagny-mode
-(require 'company-mode)
-(require 'company-bundled-completions)
-(company-install-bundled-completions-rules)
+(require 'company-autoloads)
 
 ;; Just in case compose is broken...
 (define-key key-translation-map (kbd "<Multi_key>") 'iso-transl-ctl-x-8-map)
