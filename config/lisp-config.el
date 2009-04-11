@@ -43,7 +43,8 @@
 
 (defun yh/lisp-hook()
   (turn-on-eldoc-mode)
-  (paredit-mode +1))
+  (hs-minor-mode 1)
+  (paredit-mode 1))
 
 (add-mhook '(emacs-lisp-mode-hook lisp-interaction-mode-hook ielm-mode-hook lisp-mode-hook slime-repl-mode-hook)
            'yh/lisp-hook t)

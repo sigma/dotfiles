@@ -48,6 +48,7 @@
 
 (add-hook 'python-mode-hook
           (lambda ()
+            (hs-minor-mode 1)
             (glasses-mode 1)
             (c-subword-mode 1)))
 

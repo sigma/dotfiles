@@ -48,6 +48,8 @@
 
 (defun my-c-mode-common-hook()
   (interactive)
+  (hs-minor-mode 1)
+
   ;; offset customizations not in my-c-style
   (c-set-offset 'member-init-intro '++)
 

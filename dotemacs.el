@@ -171,6 +171,7 @@
 (request 'org-config)
 (request 'remember-config)
 (request 'calendar-config)
+(request 'hideshow-config)
 
 (unless-configuration 'proof
   (request 'ido-config))
