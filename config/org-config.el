@@ -131,6 +131,9 @@ a new heading WITHOUT moving the tags"
        (defun my-appt-disp-window (min-to-app new-time msg)
          (call-process "remind.sh" nil 0 nil min-to-app msg new-time)))
 
+     (when (request 'org-crypt)
+       (define-key org-mode-map (kbd "C-c C-/") 'org-decrypt-entry))
+
 ;;; remind.sh contains something like :
      ;; #!/bin/sh
 
