@@ -431,7 +431,7 @@ export TEXINPUTS=$TEXINPUTS:~/texmf:~/LaTeX/macros:~/LaTeX/fig
 #export JAVA_HOME=/usr/lib/jvm/java-1.5.0-sun/
 export JAVA_HOME=/usr/lib/j2se/1.4
 
-export GEM_HOME=/var/lib/gems/1.9.0/
+export GEM_HOME=/var/lib/gems/1.8/
 
 export LLVM_HOME=$HOME/Projects/svn/llvm
 
@@ -599,12 +599,12 @@ function precmd {
     fi
 }
 
-preexec () {
-    if [[ "$TERM" == "screen" ]]; then
-        local CMD=${1[(wr)^(*=*|sudo|-*)]}
-        echo -n "\ek$CMD\e\\"
-    fi
-}
+# preexec () {
+#     if [[ "$TERM" == "screen" ]]; then
+#         local CMD=${1[(wr)^(*=*|sudo|-*)]}
+#         echo -n "\ek$CMD\e\\"
+#     fi
+# }
 
 
 setprompt () {
@@ -657,11 +657,11 @@ setprompt () {
 
     ###
     # Decide whether to set a screen title
-    if [[ "$TERM" == "screen" ]]; then
-	PR_STITLE=$'%{\ekzsh\e\\%}'
-    else
-	PR_STITLE=''
-    fi
+    # if [[ "$TERM" == "screen" ]]; then
+    #     PR_STITLE=$'%{\ekzsh\e\\%}'
+    # else
+    #     PR_STITLE=''
+    # fi
 
     ###
     # Finally, the prompt.
