@@ -29,54 +29,13 @@
 ;;; Buffers
 
 (eval-when-compile
-
+  
   (require 'patches)
   (require 'dired)
   (require 'dired-x))
 
-;; (eval-after-load "buff-menu" '(request 'buff-menu+))
-;; (global-set-key (kbd "C-x C-b") 'buffer-menu)
-
+(require 'ibuf-ext)
 (global-set-key (kbd "C-x C-b") 'ibuffer)
-
-;; default groups for ibuffer
-(setq ibuffer-saved-filter-groups
-      (quote (("default"
-               ("emacs" (or
-                         (name . "^\\*scratch\\*$")
-                         (name . "^\\*Messages\\*$")))
-               ("org" (mode . org-mode))
-               ("latex" (or
-                         (mode . LaTeX-mode)
-                         (mode . latex-mode)))
-               ("C(++)" (or
-                         (mode . c-mode)
-                         (mode . c++-mode)))
-               ("FDD" (mode . tl-fdd-mode))
-               ("Java" (mode . java-mode))
-               ("lisp" (or
-                        (mode . emacs-lisp-mode)
-                        (mode . lisp-interaction-mode)
-                        (mode . ielm-mode)
-                        (mode . lisp-mode)
-                        (mode . slime-repl-mode)))
-               ("python" (mode . python-mode))
-               ("dired" (mode . dired-mode))
-               ("irc" (or
-                         (mode . circe-mode)
-                         (mode . circe-server-mode)
-                         (mode . circe-query-mode)
-                         (mode . circe-channel-mode)
-                         (mode . rcirc-mode)))
-               ("gnus" (or
-                        (mode . message-mode)
-                        (mode . bbdb-mode)
-                        (mode . mail-mode)
-                        (mode . gnus-group-mode)
-                        (mode . gnus-summary-mode)
-                        (mode . gnus-article-mode)
-                        (name . "^\\.bbdb$")
-                        (name . "^\\.newsrc-dribble")))))))
 
 ;; ibuffer, I like my buffers to be grouped
 (add-hook 'ibuffer-mode-hook
