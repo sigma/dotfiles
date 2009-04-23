@@ -12,6 +12,7 @@
     (load-file (expand-file-name (format "~/.emacs-%d-%d" emacs-major-version emacs-minor-version))))
 
 ;; Load site-specific stuff: paths, accounts, passwords, projects...
+;; see http://gist.github.com/97984 for an example
 (if (file-exists-p (expand-file-name "~/.emacs-local"))
     (load-file (expand-file-name "~/.emacs-local")))
 
@@ -475,7 +476,7 @@
 (require 'anything-config)
 
 ;; Compagny-mode
-(require 'company-autoloads)
+(request 'company-autoloads)
 
 ;; Just in case compose is broken...
 (define-key key-translation-map (kbd "<Multi_key>") 'iso-transl-ctl-x-8-map)

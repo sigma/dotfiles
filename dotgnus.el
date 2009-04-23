@@ -3,6 +3,7 @@
 
 ;;; Basis
 ;; Load site-specific stuff
+;; See http://gist.github.com/97986 for an example
 (if (file-exists-p (expand-file-name "~/.gnus-local.el"))
     (load-file (expand-file-name "~/.gnus-local.el")))
 
