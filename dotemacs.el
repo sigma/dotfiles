@@ -16,6 +16,10 @@
 (if (file-exists-p (expand-file-name "~/.emacs-local"))
     (load-file (expand-file-name "~/.emacs-local")))
 
+;; Customizations are in a separate file
+(if (file-exists-p (expand-file-name "~/.emacs-cust"))
+    (load-file (expand-file-name "~/.emacs-cust")))
+
 ;; Fix various "bad" default behaviors
 ;; add some personal features
 (require 'patches)
@@ -23,7 +27,19 @@
 ;; How emacs should look like
 (request 'visual)
 
-(request 'project)
+(when (request 'package)
+  (package-initialize))
+
+(when (request 'yasnippet) ;; not yasnippet-bundle
+  (yas/initialize)
+  (yas/load-directory (expand-file-name "~/.emacs.d/yasnippet/snippets"))
+  (add-hook 'org-mode-hook
+            (lambda ()
+              ;; yasnippet
+              (make-variable-buffer-local 'yas/trigger-key)
+              (setq yas/trigger-key [tab])
+              (define-key yas/keymap [tab] 'yas/next-field-group)
+              (flyspell-mode 1))))
 
 (request 'cedet)
 (require 'semantic-gcc)
@@ -31,10 +47,6 @@
 
 (when (request 'package)
   (package-initialize))
-
-;; Customizations are in a separate file
-(if (file-exists-p (expand-file-name "~/.emacs-cust"))
-    (load-file (expand-file-name "~/.emacs-cust")))
 
 ;; Hacked scroll margin
 ;; (set-scroll-margin 5 5 '("*eshell*" "*compile*" "*Calendar*"))
@@ -330,18 +342,19 @@
 (global-set-key (kbd "<C-backspace>") 'kill-syntax-backward)
 
 (global-set-key (kbd "C-c +") 'incr-dwim)
+(global-set-key (kbd "C-c -") 'decr-dwim)
 
 ;(global-set-key (kbd "<f3>") 'ecb-toggle-compile-window)
 ;; Depending on your keyboard you may want another one binding
 (global-set-key (kbd "C-x ~") 'previous-error)
 (global-set-key (kbd "C-c s") 'eshell)
 (global-set-key (kbd "C-c c") 'compile)
-(global-set-key (kbd "C-c g") 'goto-line)
 (global-set-key (kbd "C-c o") 'my-occur)
 (global-set-key (kbd "C-c u") 'remember)
 (global-set-key (kbd "C-c e") 'fc-eval-and-replace)
 (global-set-key (kbd "C-c f") 'find-function)
 (global-set-key (kbd "C-c F") 'find-function-on-key)
+(global-set-key (kbd "C-c v") 'find-variable)
 
 ;; Enter a recursive edit. C-M-c will bring back exactly there
 (global-set-key (kbd "C-c r") (lambda ()
@@ -439,8 +452,26 @@
   (global-set-key (kbd "<H-return>") multi-region-map))
 
 ;; versioning keys
-(global-set-key (kbd "<M-f12>") 'svn-status)
-(global-set-key (kbd "<C-f12>") 'cvs-update)
+(defvar yh/vcs-backends
+  '((git . magit-status)
+    (svn . svn-status)
+    (cvs . cvs-status)))
+
+(defun yh/vcs-backend (file)
+  (cond ((vc-git-registered file)
+         'git)
+        ((vc-svn-registered file)
+         'svn)
+        ((vc-cvs-registered file)
+         'cvs)
+        (t nil)))
+
+(defun yh/vcs-status ()
+  (interactive)
+  (let ((backend (yh/vcs-backend (buffer-file-name))))
+    (call-interactively (cdr (assoc backend yh/vcs-backends)))))
+
+(global-set-key (kbd "<f12>") 'yh/vcs-status)                                 
 
 ;;; windmove :)
 (mapc #'eval
@@ -472,8 +503,8 @@
 (add-hook 'java-mode-hook 'doc-mode)
 
 ;; Anything
-(require 'anything)
-(require 'anything-config)
+;; (require 'anything)
+;; (require 'anything-config)
 
 ;; Compagny-mode
 (request 'company-autoloads)
@@ -489,14 +520,6 @@
 (add-to-list 'auto-mode-alist '("\\.dot\\'" . graphviz-dot-mode))
 
 (add-to-list 'auto-mode-alist '("\\.hlal\\'" . c-mode))
-
-(autoload 'javascript-mode "javascript" nil t)
-(add-to-list 'auto-mode-alist '("\\.js\\'" . javascript-mode))
-
-(eval-after-load "javascript"
-  '(add-hook 'javascript-mode (lambda ()
-                                (glasses-mode 1)
-                                (c-subword-mode 1))))
 
 (when (request 'incr)
   (delq 'rotate incr-enable-feature))
@@ -522,7 +545,8 @@
 (global-set-key (kbd "C-x t") 'anchored-transpose)
 (autoload 'anchored-transpose "anchored-transpose" nil t)
 
-(when-configuration 'code
+(setq server-socket-file "/tmp/emacs1000/server")
+(unless (file-exists-p server-socket-file)
   (server-start))
 
 ;;; Startup code
@@ -597,10 +621,14 @@ With prefix argument, turn on if ARG > 0; else turn off."
 
 ;; (require 'radio)
 
-(autoload 'js2-mode "js2" nil t)
-(add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
+;; (autoload 'js2-mode "js2-mode" nil t)
+;; (add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
 
-(setq js2-basic-offset 2)
+(eval-after-load "js2-mode"
+  '(add-hook 'js2-mode (lambda ()
+                         (glasses-mode 1)
+                         (c-subword-mode 1))))
+
 (setq js2-use-font-lock-faces t)
 
 (require 'epa-dired)
@@ -665,3 +693,4 @@ With prefix argument, turn on if ARG > 0; else turn off."
 (th-org-update-agenda-file t)
 
 (request 'magit)
+(request 'ipa)

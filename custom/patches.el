@@ -127,8 +127,16 @@ is not nil, then in case of no success, this value is returned"
 (setq backup-directory-alist `(("." . "~/.backups") ; centralize backup files
                                (,tramp-file-name-regexp . nil))) ; disable for tramp
 
-;; don't break links
-(setq backup-by-copying t)
+(setq 
+ ;; don't break links
+ backup-by-copying t
+ ;; use numbered backups
+ version-control t
+ ;; keep only 20 latest versions
+ kept-old-versions 0
+ kept-new-versions 20
+ ;; and always delete the others without confirmation
+ delete-old-versions t)
 
 ;; Put autosaves files in a single directory too
 (when (request 'auto-save)

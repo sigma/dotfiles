@@ -158,7 +158,7 @@ directory or directories specified."
 				  (concat "^[^=.].*" (regexp-opt tmp t) "\\'"))
 		       (unless (string-match "\\.elc" suf) (push suf tmp)))))
 	 (files (directory-files (expand-file-name dir)
-                                 t files-re))
+                                 nil files-re))
 	 (this-time (current-time))
 	 (no-autoloads nil)		;files with no autoload cookies.
 	 (autoloads-file
@@ -171,8 +171,8 @@ directory or directories specified."
       (save-excursion
 
         ;; Canonicalize file names and remove the autoload file itself.
-        (setq files (delete (autoload-trim-file-name buffer-file-name)
-			    (mapcar 'autoload-trim-file-name files)))
+        (setq files (delete (file-relative-name buffer-file-name (expand-file-name dir))
+			    files))
 
 	(goto-char (point-min))
 	(while (search-forward generate-autoload-section-header nil t)

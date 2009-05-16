@@ -29,11 +29,10 @@
 ;;; Buffers
 
 (eval-when-compile
-  
-  (require 'patches)
-  (require 'dired)
-  (require 'dired-x))
+  (require 'patches))
 
+(require 'dired)
+(require 'dired-x)
 (require 'ibuf-ext)
 (global-set-key (kbd "C-x C-b") 'ibuffer)
 

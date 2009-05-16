@@ -25,6 +25,14 @@
 ;;
 
 ;;; Code:
+(if (request 'python-mode)
+    (add-to-list 'hs-special-modes-alist
+                 `(python-mode "^\\s-*\\(?:def\\|class\\)\\>" nil "#"
+                               ,(lambda (arg)
+                                  (py-end-of-def-or-class 'either)
+                                  (skip-chars-backward " \t\n"))
+                               nil))
+  (require 'python))
 
 (add-to-list 'auto-mode-alist '("\\.py\\'" . python-mode))
 
@@ -33,21 +41,24 @@
 
 (add-to-list 'interpreter-mode-alist '("ipython" . python-mode))
 
-(eval-after-load 'python
-  '(progn
-     (setq python-font-lock-keywords
-           ;; same additional font-locking as in cc-mode
-           (append python-font-lock-keywords
-                   (list
-                    '("[{}()<>=;,:+\\*\\/\\[]\\|\\]\\|\\-" (0 font-lock-keys-face))
-                    '("\\<[0-9]+\\>" (0 font-lock-number-face))
-                    '("\\<0x[0-9a-fA-F]+\\>" (0 font-lock-hexnumber-face))
-                    ;; PyQt specific
-                    '("\\<\\(S\\(IGNAL\\|LOT\\)\\|connect\\|disconnect\\|emit\\)\\>"
-                      (0 font-lock-qt-face)))))))
+(request 'ipython)
+
+(setq python-font-lock-keywords
+      ;; same additional font-locking as in cc-mode
+      (append python-font-lock-keywords
+              (list
+               '("[{}()<>=;,:+\\*\\/\\[]\\|\\]\\|\\-" (0 font-lock-keys-face))
+               '("\\<[0-9]+\\>" (0 font-lock-number-face))
+               '("\\<0x[0-9a-fA-F]+\\>" (0 font-lock-hexnumber-face))
+               ;; PyQt specific
+               '("\\<\\(S\\(IGNAL\\|LOT\\)\\|connect\\|disconnect\\|emit\\)\\>"
+                 (0 font-lock-qt-face)))))
 
 (add-hook 'python-mode-hook
           (lambda ()
+            (make-variable-buffer-local 'beginning-of-defun-function)
+            (setq beginning-of-defun-function 'py-beginning-of-def-or-class)
+            (setq outline-regexp "def\\|class ")
             (hs-minor-mode 1)
             (glasses-mode 1)
             (c-subword-mode 1)))

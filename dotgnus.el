@@ -102,15 +102,10 @@
 
 
 ;;; Summary buffer
-(add-hook 'gnus-summary-mode-hook
-	  (lambda ()
-	    (if (or (gnus-news-group-p gnus-newsgroup-name)
-		    (string-match "^nnml:list" gnus-newsgroup-name))
-		(setq gnus-thread-sort-functions
-		      '(gnus-thread-sort-by-subject
-			gnus-thread-sort-by-total-score))
-	      (setq gnus-thread-sort-functions
-		    '(gnus-thread-sort-by-date)))))
+(setq gnus-thread-sort-functions
+      '(gnus-thread-sort-by-number
+        (not gnus-thread-sort-by-most-recent-date)
+        gnus-thread-sort-by-total-score))
 
 (setq
  gnus-extra-headers '(Newsgroups X-Spam-Status)
@@ -315,6 +310,16 @@
 ;;; Mail sending
 
 (add-hook 'message-mode-hook 'turn-on-auto-fill)
+
+(autoload 'bbdb/send-hook "moy-bbdb"
+  "Function to be added to `message-send-hook' to notice records when sending messages" t)
+
+(add-hook 'message-send-hook 'bbdb/send-hook)
+
+(add-hook 'mail-mode-hook 'turn-on-orgstruct++)
+(add-hook 'message-mode-hook 'turn-on-orgstruct++)
+
+(add-hook 'message-mode-hook 'bbdb-define-all-aliases)
 
 (setq
  message-cite-function 'trivial-cite
@@ -531,14 +536,6 @@ The epigram is inserted at point if called interactively."
 
 ;;; Misc
 (require 'gnus-sum)
-
-(autoload 'bbdb/send-hook "moy-bbdb"
-  "Function to be added to `message-send-hook' to notice records when sending messages" t)
-
-(add-hook 'message-send-hook 'bbdb/send-hook)
-
-(add-hook 'mail-mode-hook 'turn-on-orgstruct)
-(add-hook 'message-mode-hook 'turn-on-orgstruct)
 
 ;; (server-start)
 (calendar)
