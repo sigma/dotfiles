@@ -196,6 +196,7 @@
  '(org-enforce-todo-dependencies t)
  '(org-export-language-setup (quote (("en" "Author" "Date" "Table of Contents") ("cs" "Autor" "Datum" "Obsah") ("da" "Ophavsmand" "Dato" "Indhold") ("de" "Autor" "Datum" "Inhaltsverzeichnis") ("es" "Autor" "Fecha" "\314ndice") ("fr" "Auteur" "Date" "Table des Matières") ("it" "Autore" "Data" "Indice") ("nl" "Auteur" "Datum" "Inhoudsopgave") ("nn" "Forfattar" "Dato" "Innhold") ("sv" "F\366rfattarens" "Datum" "Inneh\345ll"))))
  '(org-export-publishing-directory (quote ((:html . "./html") (:LaTeX . "./latex") (:ascii . "./txt") (:ical . "./ical") (:xoxo . "./xoxo"))) t)
+ '(org-outline-path-complete-in-steps nil)
  '(org-refile-targets (quote ((org-agenda-files :maxlevel . 3))))
  '(org-remember-interactive-interface (quote outline))
  '(org-remove-highlights-with-change nil)
