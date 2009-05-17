@@ -33,19 +33,16 @@
 (eval-after-load 'org
   '(progn
      (define-key org-mode-map (kbd "<C-tab>") nil)
-     (define-key org-mode-map (kbd "C-c p") 'org-insert-property-drawer)
-
      (define-key global-map "\C-cl" 'org-store-link)
      (define-key global-map "\C-ca" 'org-agenda)
 
      (setq org-agenda-include-diary t
-           org-log-done '(state)
+           org-log-done '(time note)
            org-agenda-skip-comment-trees nil
            org-agenda-include-all-todo nil
            org-agenda-skip-deadline-if-done t
            org-agenda-skip-scheduled-if-done t
-           org-reverse-note-order t
-           org-archive-stamp-time nil
+           org-reverse-note-order t 
            org-highest-priority ?A
            org-default-priority ?C
            org-lowest-priority ?E
@@ -94,19 +91,6 @@
                              (expand-file-name (buffer-file-name))))
                (bury-buffer)
              (find-file notes-file)))))
-
-     (defun yh/looking-at-tags ()
-       (looking-at "[ \t]*:\\([a-zA-Z_@0-9:]+\\):[ \t]*\\([\n\r]\\|\\'\\)"))
-
-     (defadvice org-insert-heading (before org-insert-heading-before act)
-       "If the cursor is between heading and tags list, then open
-a new heading WITHOUT moving the tags"
-       (when (yh/looking-at-tags)
-         (goto-char (point-at-eol))))
-
-     (defadvice org-priority (after org-priority-after act)
-       "Restore the tags alignment after changing priorities"
-       (and org-auto-align-tags (org-set-tags nil t)))
 
      (defmadvice (org-agenda)
        (around ecb-org act)
