@@ -622,51 +622,51 @@ parameters."
 	  (t
 	   (xml-rpc-xml-to-response response)))))
 
-(eval-when-compile
-  (unless (fboundp 'xml-print)
-    (defun xml-debug-print (xml &optional indent-string)
-      "Outputs the XML in the current buffer.
+
+(unless (fboundp 'xml-print)
+  (defun xml-debug-print (xml &optional indent-string)
+    "Outputs the XML in the current buffer.
 XML can be a tree or a list of nodes.
 The first line is indented with the optional INDENT-STRING."
-      (setq indent-string (or indent-string ""))
-      (dolist (node xml)
-	(xml-debug-print-internal node indent-string)))
+    (setq indent-string (or indent-string ""))
+    (dolist (node xml)
+      (xml-debug-print-internal node indent-string)))
 
-    (defalias 'xml-print 'xml-debug-print)
+  (defalias 'xml-print 'xml-debug-print)
 
-    (defun xml-debug-print-internal (xml indent-string)
-      "Outputs the XML tree in the current buffer.
+  (defun xml-debug-print-internal (xml indent-string)
+    "Outputs the XML tree in the current buffer.
 The first line is indented with INDENT-STRING."
-      (let ((tree xml)
-	    attlist)
-	(insert indent-string ?< (symbol-name (xml-node-name tree)))
+    (let ((tree xml)
+          attlist)
+      (insert indent-string ?< (symbol-name (xml-node-name tree)))
 
-	;;  output the attribute list
-	(setq attlist (xml-node-attributes tree))
-	(while attlist
-	  (insert ?\  (symbol-name (caar attlist)) "=\"" (cdar attlist) ?\")
-	  (setq attlist (cdr attlist)))
+      ;;  output the attribute list
+      (setq attlist (xml-node-attributes tree))
+      (while attlist
+        (insert ?\  (symbol-name (caar attlist)) "=\"" (cdar attlist) ?\")
+        (setq attlist (cdr attlist)))
 
-	(setq tree (xml-node-children tree))
+      (setq tree (xml-node-children tree))
 
-	(if (null tree)
-	    (insert ?/ ?>)
-	  (insert ?>)
+      (if (null tree)
+          (insert ?/ ?>)
+        (insert ?>)
 
-	  ;;  output the children
-	  (dolist (node tree)
-	    (cond
-	     ((listp node)
-	      (insert ?\n)
-	      (xml-debug-print-internal node (concat indent-string "  ")))
-	     ((stringp node) (insert node))
-	     (t
-	      (error "Invalid XML tree"))))
+        ;;  output the children
+        (dolist (node tree)
+          (cond
+           ((listp node)
+            (insert ?\n)
+            (xml-debug-print-internal node (concat indent-string "  ")))
+           ((stringp node) (insert node))
+           (t
+            (error "Invalid XML tree"))))
 
-	  (when (not (and (null (cdr tree))
-			  (stringp (car tree))))
-	    (insert ?\n indent-string))
-	  (insert ?< ?/ (symbol-name (xml-node-name xml)) ?>))))))
+        (when (not (and (null (cdr tree))
+                        (stringp (car tree))))
+          (insert ?\n indent-string))
+        (insert ?< ?/ (symbol-name (xml-node-name xml)) ?>)))))
     
 (provide 'xml-rpc)
 
