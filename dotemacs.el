@@ -694,3 +694,5 @@ With prefix argument, turn on if ARG > 0; else turn off."
 
 (request 'magit)
 (request 'ipa)
+
+(eval-after-load "info" '(require 'info+))
