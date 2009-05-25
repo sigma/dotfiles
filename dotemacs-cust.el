@@ -73,7 +73,7 @@
  '(ecb-sources-menu-user-extension-function (quote ignore))
  '(ecb-tip-of-the-day nil)
  '(ecb-vc-supported-backends (quote ((ecb-vc-dir-managed-by-CVS . vc-state) (ecb-vc-dir-managed-by-RCS . vc-state) (ecb-vc-dir-managed-by-SCCS . vc-state) (ecb-vc-dir-managed-by-SVN . vc-state))))
- '(ediff-keep-variants nil)
+ '(ediff-keep-variants t)
  '(enable-multibyte-characters t)
  '(enable-recursive-minibuffers t)
  '(erc-bbdb-auto-create-on-whois-p t)
@@ -185,6 +185,8 @@
  '(nxhtml-global-validation-header-mode t)
  '(org-CUA-compatible t)
  '(org-agenda-skip-archived-trees nil)
+ '(org-agenda-start-with-clockreport-mode t)
+ '(org-agenda-start-with-log-mode t)
  '(org-clock-into-drawer 2)
  '(org-crypt-key "yann.hodique@gmail.com")
  '(org-crypt-tag-matcher "CRYPT")
@@ -204,6 +206,7 @@
  '(org-special-ctrl-a/e t)
  '(org-stuck-projects (quote ("+LEVEL=2/-DONE" ("TODO" "NEXT" "NEXTACTION") ("quotes"))))
  '(org-todo-keywords (quote ((type "TODO(t)" "WAITING(w@/!)" "MAYBE(m)" "|" "DONE(d!)" "CANCELED(c@)"))))
+ '(org-track-ordered-property-with-tag t)
  '(org-use-fast-todo-selection t)
  '(osd-args (quote ("--delay=3" "--age=3" "--pos=bottom" "--offset=70" "--outline=5" "--outlinecolour=grey" "--font=-microsoft-verdana-medium-r-normal--10-*-*-*-*-*-*")))
  '(paren-dont-load-timer nil)
@@ -242,7 +245,7 @@
  '(safe-local-variable-values (quote ((org-export-html-style . "   <style type=\"text/css\">
       p {font-weight: normal; color: gray; }
       h1 {color: black; }
-  </style>") (folded-file . t) (TeX-master . main\.tex) (Package . Memoization) (Base . 10) (Syntax . Common-Lisp) (unibyte . t) (auto-recompile . t) (TeX-master . "main") (TeX-master . t) (auto-compile-lisp))))
+  </style>") (folded-file . t) (TeX-master . main\.tex) (Package . Memoization) (Base . 10) (Syntax . Common-Lisp) (unibyte . t) (auto-recompile . t) (TeX-master . "main") (TeX-master . t) (auto-compile-lisp) (before-save-hook org-encrypt-entries))))
  '(save-abbrevs (quote silently))
  '(save-place-limit 100)
  '(sawfish-extra-keyword-list (quote ("add-frame-style" "call-after-load" "call-after-property-changed" "call-after-state-changed" "custom-set-property" "define" "define-structure" "export" "open")))
@@ -355,6 +358,7 @@
  '(hs-face ((t (:background "#656565" :box 1))))
  '(icicle-Completions-instruction-1 ((t (:foreground "lightblue"))))
  '(icicle-prompt-suffix ((((type x w32 mac) (class color)) (:foreground "dark blue"))))
+ '(info-string ((t (:inherit font-lock-string-face))))
  '(italic ((t (:foreground "Orchid" :slant italic))))
  '(lui-irc-colors-fg-1-face ((t (:foreground "darkgray"))))
  '(lui-irc-colors-fg-10-face ((((class color)) (:foreground "cyan3"))))

@@ -71,7 +71,7 @@
   (interactive)
   (with-current-buffer
       (ediff-get-buffer
-       (ediff-char-to-buftype (or key last-command-char)))
+       (ediff-char-to-buftype (or key last-command-event)))
     (add-change-log-entry-other-window)))
 
 (defun yh/install-ediff-changelog-keys ()
@@ -85,6 +85,13 @@
      (add-hook 'ediff-after-setup-windows-hook 'my-ediff-ash)
      (add-hook 'ediff-quit-hook 'my-ediff-qh t)
      (add-hook 'ediff-keymap-setup-hook 'yh/install-ediff-changelog-keys)))
+
+(defun command-line-diff (switch)
+  (let ((file1 (pop command-line-args-left))
+        (file2 (pop command-line-args-left)))
+    (ediff file1 file2)))
+
+(add-to-list 'command-switch-alist '("diff" . command-line-diff))
 
 (provide 'ediff-config)
 ;;; ediff-config.el ends here
