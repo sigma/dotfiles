@@ -64,6 +64,15 @@
     (dokuwiki-populate-pages store 
                              (xml-rpc-method-call (oref wiki :url) 'wiki.getAllPages))))
 
+(defmethod dokuwiki-org-index ((wiki dokuwiki-wiki))
+  (let ((buffer
+         (get-buffer-create (format "*%s Index*" (oref wiki :name)))))
+    (with-current-buffer buffer
+      (dokuwiki-children-as-org (oref (oref wiki :pages) :fake-root))
+      (org-mode)
+      (toggle-read-only 1))
+    (pop-to-buffer buffer)))
+
 (defclass dokuwiki-wiki-provider (eieio-singleton)
   ((wikis :initform nil
           :type list
@@ -88,6 +97,7 @@
 
 (defclass dokuwiki-page ()
   ((id :initarg :id
+       :initform ""
        :type string
        :documentation "Page Id")
    (perms :initarg :perms
@@ -112,7 +122,16 @@
 (defmethod dokuwiki-children-index ((page dokuwiki-page))
   (dokuwiki-mappage page
                     (lambda (n p)
-                      (list n (dokuwiki-children-index p)))))
+                      (list n (oref p :id) (dokuwiki-children-index p)))))
+
+(defmethod dokuwiki-children-as-org ((page dokuwiki-page) &optional level)
+  (unless level
+    (setq level 1))
+  (let ((prefix (make-string level ?*)))
+    (dokuwiki-mappage page
+                      (lambda (n p)
+                        (insert prefix " " n "\n")
+                        (dokuwiki-children-as-org p (1+ level))))))
 
 (defclass dokuwiki-page-store ()
   ((fake-root :initarg :fake-root
@@ -126,6 +145,7 @@
 
 (defmethod dokuwiki-pages-index ((store dokuwiki-page-store))
   (dokuwiki-children-index (oref store :fake-root)))
+
 
 (defmethod dokuwiki-record-page ((store dokuwiki-page-store) page)
   (let* ((id (cdr (assoc "id" page)))
