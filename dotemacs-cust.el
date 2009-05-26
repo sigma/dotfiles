@@ -358,6 +358,8 @@
  '(hs-face ((t (:background "#656565" :box 1))))
  '(icicle-Completions-instruction-1 ((t (:foreground "lightblue"))))
  '(icicle-prompt-suffix ((((type x w32 mac) (class color)) (:foreground "dark blue"))))
+ '(info-elisp-reference-item ((t (:background "DarkGrey"))))
+ '(info-elisp-special-form-ref-item ((t (:background "DarkGray" :foreground "DarkMagenta"))))
  '(info-string ((t (:inherit font-lock-string-face))))
  '(italic ((t (:foreground "Orchid" :slant italic))))
  '(lui-irc-colors-fg-1-face ((t (:foreground "darkgray"))))
