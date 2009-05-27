@@ -702,6 +702,8 @@ export JDK_HOME=/usr/lib/jvm/java-1.5.0-sun
 
 export PYTHONPATH=.:~/apps/python:~/lib/python2.5/site-packages:~/apps/pyVC/vmodl
 
+export INFOPATH=/usr/share/info:/usr/local/share/info:~/share/info
+
 eval `keychain -q --nogui --eval --agents ssh id_rsa id_dsa`
 
 function time2rate () {                                                                                                   
