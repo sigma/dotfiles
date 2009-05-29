@@ -310,3 +310,5 @@ which check_hist_size >&/dev/null && check_hist_size
 
 autoload -U zsh-mime-setup
 zsh-mime-setup
+
+autoload -U ~/.zsh/functions/**/*(:t)

@@ -26,17 +26,9 @@ path=( $path /usr/local/bin /usr/local/sbin /usr/sbin /sbin )
 typeset -U manpath # No duplicates
 
 fpath=(
-       $zdotdir/{.[z]sh/*.zwc,{.[z]sh,[l]ib/zsh}/{functions{,.local,.$HOST},scripts}}(N)
+       $zdotdirpath/{.[z]sh/*.zwc,{.[z]sh,[l]ib/zsh}/{functions{,.local,.$HOST}/{Completion,Misc,Prompts},scripts}}(N)
        $fpath
       )
-
-for dirname in $fpath; do
-  case "$dirname" in
-    $zdotdir/.zsh*) fns=( $dirname/*~*~(N.x:t) ) ;;
-                 *) fns=( $dirname/*~*~(N.:t)  ) ;;
-  esac
-  (( $#fns )) && autoload "$fns[@]"
-done
 
 typeset -T LD_LIBRARY_PATH ld_library_path
 

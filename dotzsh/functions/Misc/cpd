@@ -1,0 +1,18 @@
+#! /bin/zsh -f
+cpd() {
+    TRAPINT () {
+        bindkey "^M" accept-line
+        trap - INT
+        builtin let "$1 > 0" && return $[128+$1]
+    }
+
+    bindkey -s "^M" "^X^W"
+    bindkey "^[k" kill-region
+    bindkey -s "" "^[2^[|^A cd ^A^@^[<^[k^E^@^[>^E^[k^[a^X^K"
+
+    cpd_var=` builtin print -l \`dirs \``
+
+    vared cpd_var
+    bindkey "^M" accept-line
+    eval $cpd_var
+}

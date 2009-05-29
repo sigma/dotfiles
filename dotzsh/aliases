@@ -216,25 +216,6 @@ alias -s dvi=xdvi
 alias -s html=html
 alias -s tgz='tar zxvf'
 
-
-cpd() {
-    TRAPINT () {
-        bindkey "^M" accept-line
-        trap - INT
-        builtin let "$1 > 0" && return $[128+$1]
-    }
-
-    bindkey -s "^M" "^X^W"
-    bindkey "^[k" kill-region
-    bindkey -s "" "^[2^[|^A cd ^A^@^[<^[k^E^@^[>^E^[k^[a^X^K"
-
-    cpd_var=` builtin print -l \`dirs \``
-
-    vared cpd_var
-    bindkey "^M" accept-line
-    eval $cpd_var
-}
-
 alias pvs='pvs -emacs emacs-cvs'
 
 flv2avi () {
@@ -247,13 +228,7 @@ function time2rate () {
     echo "26 * 1024 * 1024 / (60 * $1)" | bc
 }
 
-function @ () {
-    url="$*"
-    [ -e "$url" ] && url="file://$url"
-    echo $url
-    uzbl --uri $url
-}
+alias @=openurl
 
 alias covertest='nocorrect ~/lib/python2.5/site-packages/coverage -x'
-#alias coverreport='nocorrect ~/lib/python2.5/site-packages/coverage -rm -o /usr,/home/yann/lib,/home/yann/apps'
 alias coverreport='nocorrect ~/lib/python2.5/site-packages/coverage -b -d html && @ html/index.html'
