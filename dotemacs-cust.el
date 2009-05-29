@@ -157,6 +157,7 @@
  '(js2-bounce-indent-flag nil)
  '(js2-highlight-level 3)
  '(large-file-warning-threshold 1000000)
+ '(line-move-visual nil)
  '(log-edit-common-indent -7)
  '(lui-fill-column 100)
  '(mark-diary-entries-in-calendar t)
