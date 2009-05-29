@@ -1,9 +1,14 @@
 #!/bin/zsh
 
-export LC_ALL=en_US.UTF-8
+function request() {
+    for file in "$@"; do
+        [[ -f "$file" ]] && . "$file"
+    done
+}
 
-zdotdir=${ZDOTDIR:-$HOME}
-export ZDOTDIR="$zdotdir"
+export LC_ALL=en_US.UTF-8
+export ZDOTDIR=${ZDOTDIR:-$HOME}
+
 if [[ "$ZDOTDIR" == "$HOME" ]]; then
   zdotdirpath=( $ZDOTDIR )
 else
@@ -16,18 +21,13 @@ fi
 typeset -U path # No duplicates
 
 # notice nasty hack for old zsh
-path=( $path /usr/local/bin /usr/local/sbin /usr/sbin /sbin /[u]sr/X11R6/bin(N) )
-path=( $zdotdir/{[l]ocal/bin,[p]ackbin,[b]in,[b]in/{backgrounds,palm,shortcuts}}(N) $path )
+path=( $path /usr/local/bin /usr/local/sbin /usr/sbin /sbin )
 
 typeset -U manpath # No duplicates
 
 fpath=(
        $zdotdir/{.[z]sh/*.zwc,{.[z]sh,[l]ib/zsh}/{functions{,.local,.$HOST},scripts}}(N)
-
        $fpath
-
-       # very old versions
-       /usr/doc/zsh*/[F]unctions(N)
       )
 
 for dirname in $fpath; do

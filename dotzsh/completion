@@ -1,0 +1,83 @@
+#!/bin/zsh
+
+# Completions
+
+zshrc_load_status 'completion system'
+
+autoload -U compinit
+compinit -C # don't perform security check
+zmodload -i zsh/complist
+
+zstyle ':completion:*' completer _complete _prefix _ignored _complete:-extended
+
+zstyle ':completion::prefix-1:*' completer _complete
+zstyle ':completion:incremental:*' completer _complete _correct
+zstyle ':completion:predict:*' completer _complete
+
+zstyle ':completion:*:approximate-one:*'  max-errors 1
+zstyle ':completion:*:approximate-four:*' max-errors 4
+
+zstyle ':completion:*:complete-extended:*' matcher 'r:|[.,_-]=* r:|=*'
+
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
+
+zstyle ':completion::complete:*' use-cache 1
+zstyle ':completion::complete:*' cache-path ~/.zsh/cache/$HOST
+
+zstyle ':completion:*' expand 'yes'
+zstyle ':completion:*' squeeze-slashes 'yes'
+
+zstyle ':completion:*:complete:-command-::commands' ignored-patterns '*\~'
+
+zstyle ':completion:*:*:*:users' ignored-patterns \
+    adm apache bin daemon distccd games gdm haldaemon halt ident junkbust lp mail mailnull \
+    messagebus named news nfsnobody nobody nscd ntp operator pcap postfix postgres radvd \
+    rpc rpcuser rpm shutdown squid sshd sync uucp vcsa xfs
+
+zstyle '*' single-ignored show
+
+zstyle ':completion:*:*:-subscript-:*' tag-order indexes parameters
+
+zstyle ':completion:*:*:kill:*' menu yes select
+zstyle ':completion:*:kill:*' force-list always
+zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#)*=0=01;31'
+
+zstyle ':completion:*:*:lpr:*' file-patterns '*.pdf *.ps *(-/)' '*:all-files'
+
+zstyle ':completion:*:history-words' stop yes
+zstyle ':completion:*:history-words' remove-all-dups yes
+zstyle ':completion:*:history-words' list false
+zstyle ':completion:*:history-words' menu yes
+
+users=( yann yhodique )
+
+zstyle ':completion:*' users $users
+
+: ${(A)_etc_hosts:=${(s: :)${(ps:\t:)${${(f)~~"$(</etc/hosts)"}%%\#*}##[:blank:]#[^[:blank:]]#}}}
+#_ssh_known_hosts=(${${${${(f)"$(<$HOME/.ssh/known_hosts)"}:#[0-9]*}%%\ *}%%,*})
+
+hosts=(
+    "$_etc_hosts[@]"
+#    "$_ssh_known_hosts[@]"
+    )
+
+zstyle ':completion:*' hosts $hosts
+
+if which dircolors >&/dev/null && [[ -e "${zdotdir}/.colors" ]]; then
+    eval "`dircolors -b $zdotdir/.colors`"
+fi
+
+zstyle ':completion:*' list-colors "$LS_COLORS"
+
+zle -C all-matches complete-word _generic
+bindkey '^Xa' all-matches
+zstyle ':completion:all-matches:*' old-matches only
+zstyle ':completion:all-matches::::' completer _all_matches
+
+zle -C force-menu menu-complete _generic
+bindkey '^Xm' force-menu
+zstyle ':completion:force-menu:*' menu yes select
+
+compdef _functions reload
+compdef _users lh
+compdef _finger f
