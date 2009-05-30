@@ -1,0 +1,180 @@
+#!/bin/zsh
+
+zshrc_load_status 'setting options'
+
+# export LC_ALL=C
+
+setopt \
+    always_last_prompt \
+    append_history \
+    auto_cd \
+    auto_list \
+    auto_menu \
+    auto_param_keys \
+    auto_param_slash \
+    auto_pushd \
+    auto_remove_slash \
+    bad_pattern \
+    bang_hist \
+    cdable_vars \
+    complete_aliases \
+    complete_in_word \
+    correct_all \
+    correct_all \
+    equals \
+    extended_glob \
+    function_argzero \
+    glob \
+    glob_complete \
+    hash_cmds \
+    hash_dirs \
+    hash_list_all \
+    hist_allow_clobber \
+    hist_beep \
+    hist_expire_dups_first \
+    hist_ignore_all_dups \
+    hist_ignore_dups \
+    hist_ignore_space \
+    hist_reduce_blanks \
+    hist_verify \
+    inc_append_history \
+    interactive_comments \
+    list_packed \
+    list_types \
+    long_list_jobs \
+    magic_equal_subst \
+    multios \
+    nomatch \
+    notify \
+    numeric_glob_sort \
+    path_dirs \
+    posix_builtins \
+    prompt_subst \
+    pushd_ignore_dups \
+    pushd_silent \
+    pushd_to_home \
+    rc_expand_param \
+    sh_option_letters \
+    short_loops \
+    unset \
+    zle \
+    NO_all_export \
+    NO_always_to_end \
+    NO_auto_name_dirs \
+    NO_auto_resume \
+    NO_beep \
+    NO_brace_ccl \
+    NO_bsd_echo \
+    NO_chase_links \
+    NO_clobber \
+    NO_correct \
+    NO_csh_junkie_history \
+    NO_csh_junkie_loops \
+    NO_csh_junkie_quotes \
+    NO_csh_null_glob \
+    NO_extended_history \
+    NO_glob_assign \
+    NO_glob_dots \
+    NO_hist_no_functions \
+    NO_hist_no_store \
+    NO_hist_save_no_dups \
+    NO_hup \
+    NO_ignore_braces \
+    NO_ignore_eof \
+    NO_list_ambiguous \
+    NO_list_beep \
+    NO_mail_warning \
+    NO_mark_dirs \
+    NO_menu_complete \
+    NO_null_glob \
+    NO_overstrike \
+    NO_print_exit_value \
+    NO_prompt_cr \
+    NO_pushd_minus \
+    NO_rc_quotes \
+    NO_rm_star_silent \
+    NO_rm_star_wait \
+    NO_sh_file_expansion \
+    NO_sh_word_split \
+    NO_single_line_zle \
+    NO_sun_keyboard_hack \
+    NO_verbose
+
+zshrc_load_status 'setting environment'
+
+WORDCHARS=''
+
+HISTFILE=~/.zshhistory
+HISTSIZE=3000
+SAVEHIST=3000
+HIST_IGNORE_SPACE=1
+
+LISTMAX=1000  # "Never" ask
+export PAGER='most'
+export MOST_EDITOR='most_editor %s %d'
+
+LOGCHECK=60
+
+WATCHFMT="[%B%t%b] %B%n%b has %a %B%l%b from %B%M%b"
+
+export JDK_HOME=/usr/lib/jvm/java-1.5.0-sun
+export JAVA_HOME=$JDK_HOME
+export PYTHONPATH=.:~/apps/python:~/lib/python2.5/site-packages:~/apps/pyVC/vmodl
+export INFOPATH=/usr/share/info:/usr/local/share/info:~/share/info
+export XDG_CONFIG_HOME=~/.config
+export XDG_DATA_HOME=~/.data
+export XDG_CACHE_HOME=~/.cache
+
+# don't polute ~/ with a .git
+export GIBAK_DIR=/backup/yann/.git
+
+export CVS_RSH=ssh
+export DISTCC_HOSTS='localhost hal,lzo'
+export CCACHE_PREFIX='distcc'
+
+export MOZILLA_FIVE_HOME=~/apps/MozillaFirebird/
+
+export MPD_HOST=deby
+export MPD_PORT=6600
+
+export MALLOC_CHECK_=0
+
+export KDEDIR=/usr
+export QTDIR=/usr/lib/qt4
+export QMAKESPEC=linux-g++
+export WANT_AUTOCONF_2_5=1
+
+export EDITOR=zile
+export BROWSER=mozilla-firefox
+
+export TEXINPUTS=$TEXINPUTS:~/texmf:~/LaTeX/macros:~/LaTeX/fig
+export GEM_HOME=/var/lib/gems/1.8/
+export LLVM_HOME=$HOME/Projects/svn/llvm
+
+PATH=$QTDIR/bin:$KDEDIR/bin:$PATH
+export PATH=.:~/bin/:~/apps/bin/:/usr/local/bin:/usr/games/:$GEM_HOME/bin:$JAVA_HOME/bin:$LLVM_HOME/Release/bin:$PATH
+
+typeset -U path # No duplicates
+
+which check_hist_size >&/dev/null && check_hist_size
+
+#autoloads
+autoload -U ~/.zsh/functions/**/*(:t)
+
+autoload -U promptinit
+promptinit
+prompt sigma
+
+autoload -U zsh-mime-setup
+zsh-mime-setup
+
+autoload zrecompile
+autoload run-help
+
+autoload zcalc
+
+autoload zmv
+
+autoload -U compinit
+compinit -C # don't perform security check
+zmodload -i zsh/complist
