@@ -4,10 +4,6 @@
 
 zshrc_load_status 'completion system'
 
-autoload -U compinit
-compinit -C # don't perform security check
-zmodload -i zsh/complist
-
 zstyle ':completion:*' completer _complete _prefix _ignored _complete:-extended
 
 zstyle ':completion::prefix-1:*' completer _complete
@@ -49,16 +45,15 @@ zstyle ':completion:*:history-words' remove-all-dups yes
 zstyle ':completion:*:history-words' list false
 zstyle ':completion:*:history-words' menu yes
 
-users=( yann yhodique )
-
+users=( yann yhodique sigma )
 zstyle ':completion:*' users $users
 
 : ${(A)_etc_hosts:=${(s: :)${(ps:\t:)${${(f)~~"$(</etc/hosts)"}%%\#*}##[:blank:]#[^[:blank:]]#}}}
-#_ssh_known_hosts=(${${${${(f)"$(<$HOME/.ssh/known_hosts)"}:#[0-9]*}%%\ *}%%,*})
+_ssh_known_hosts=(${${${${(f)"$(<$HOME/.ssh/known_hosts)"}:#[0-9]*}%%\ *}%%,*})
 
 hosts=(
     "$_etc_hosts[@]"
-#    "$_ssh_known_hosts[@]"
+    "$_ssh_known_hosts[@]"
     )
 
 zstyle ':completion:*' hosts $hosts
@@ -70,14 +65,13 @@ fi
 zstyle ':completion:*' list-colors "$LS_COLORS"
 
 zle -C all-matches complete-word _generic
-bindkey '^Xa' all-matches
 zstyle ':completion:all-matches:*' old-matches only
 zstyle ':completion:all-matches::::' completer _all_matches
 
 zle -C force-menu menu-complete _generic
-bindkey '^Xm' force-menu
 zstyle ':completion:force-menu:*' menu yes select
 
 compdef _functions reload
 compdef _users lh
 compdef _finger f
+compdef _typeset ts
