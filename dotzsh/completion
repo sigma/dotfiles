@@ -49,11 +49,17 @@ users=( yann yhodique sigma )
 zstyle ':completion:*' users $users
 
 : ${(A)_etc_hosts:=${(s: :)${(ps:\t:)${${(f)~~"$(</etc/hosts)"}%%\#*}##[:blank:]#[^[:blank:]]#}}}
-_ssh_known_hosts=(${${${${(f)"$(<$HOME/.ssh/known_hosts)"}:#[0-9]*}%%\ *}%%,*})
+: ${(A)_ssh_config_hosts:=${${${${(@M)${(f)"$(<$HOME/.ssh/config)"}:#Host *}#Host }:#*\**}:#*\?*}}
+
+# this supposes you have "HashKnownHosts no" in your ~/.ssh/config
+: ${(A)_ssh_known_hosts:=${${${(f)"$(<$HOME/.ssh/known_hosts)"}%%\ *}%%,*}}
+: ${(A)_ssh_known_ips:=${${${(f)"$(<$HOME/.ssh/known_hosts)"}%%\ *}##*,}}
 
 hosts=(
     "$_etc_hosts[@]"
+    "$_ssh_config_hosts[@]"
     "$_ssh_known_hosts[@]"
+    "$_ssh_known_ips[@]"
     )
 
 zstyle ':completion:*' hosts $hosts
