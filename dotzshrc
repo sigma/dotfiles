@@ -3,7 +3,7 @@
 autoload _list_files
 autoload _canonical_paths
 
-source ~/.zkbd/$TERM-$VENDOR-$OSTYPE
+#source ~/.zkbd/$TERM-$VENDOR-$OSTYPE
 
 zshrc_load_status () {
     echo -n "\r.zshrc load: $* ... \e[0K"
@@ -424,15 +424,15 @@ export QTDIR=/usr/lib/qt4
 export QMAKESPEC=linux-g++
 export WANT_AUTOCONF_2_5=1
 
-export EDITOR=zile
+export EDITOR=~/bin/editor
 export BROWSER=mozilla-firefox
 
 export TEXINPUTS=$TEXINPUTS:~/texmf:~/LaTeX/macros:~/LaTeX/fig
-#export JAVA_HOME=/usr/lib/jvm/java-1.5.0-sun/
-export JAVA_HOME=/usr/lib/j2se/1.4
+export JAVA_HOME=/usr/lib/jvm/java-6-sun/
+#export JAVA_HOME=/usr/lib/j2se/1.4
 
 PATH=$QTDIR/bin:$KDEDIR/bin:$PATH
-export PATH=.:~/bin/:~/apps/bin/:/usr/local/bin:/usr/games/:$JAVA_HOME/bin:~/apps/apache-maven-2.0.8/bin:$PATH
+export PATH=.:~/bin/:~/apps/bin/:/usr/local/bin:/usr/games/:$JAVA_HOME/bin:/build/trees/bin:/build/apps/bin:$PATH
 
 typeset -U path # No duplicates
 
@@ -519,8 +519,8 @@ bindkey -s '^|a' " | awk '{print $}'^[OD^[OD"        # c-| a  pipe to awk
 bindkey -s '^|s' ' | sed -e "s///g"^[OD^[OD^[OD^[OD' # c-| s  pipe to sed
 bindkey -s '^|w' " | wc -l"                          # c-| w  pipe to wc
 
-bindkey "$key[Up]" up-line-or-search
-bindkey "$key[Down]" down-line-or-search
+#bindkey "$key[Up]" up-line-or-search
+#bindkey "$key[Down]" down-line-or-search
 
 bindkey "^[[z3c" backward-kill-word
 
@@ -545,6 +545,13 @@ alias -s dvi=xdvi
 alias -s html=html
 alias -s tgz='tar zxvf'
 
+bug_path() {
+    echo "/bugs/files"`printf '%.8d' "$1" | sed 's:\(.\):/\1:g'`
+}
+
+cdb() {
+   builtin cd `bug_path $1`
+}
 
 cpd() {
     TRAPINT () {
@@ -596,10 +603,10 @@ function precmd {
 }
 
 preexec () {
-    if [[ "$TERM" == "screen" ]]; then
-        local CMD=${1[(wr)^(*=*|sudo|-*)]}
-        echo -n "\ek$CMD\e\\"
-    fi
+    # if [[ "$TERM" == "screen" ]]; then
+    #     local CMD=${1[(wr)^(*=*|sudo|-*)]}
+    #     echo -n "\ek$CMD\e\\"
+    # fi
 }
 
 
@@ -651,13 +658,7 @@ setprompt () {
     esac
 
 
-    ###
-    # Decide whether to set a screen title
-    if [[ "$TERM" == "screen" ]]; then
-	PR_STITLE=$'%{\ekzsh\e\\%}'
-    else
-	PR_STITLE=''
-    fi
+    PR_STITLE=''
 
     ###
     # Finally, the prompt.
@@ -694,8 +695,37 @@ setprompt
 #    export SSH_AGENT_PID
 # fi
 
-export JDK_HOME=/usr/lib/jvm/java-1.5.0-sun
-
-export PYTHONPATH=~/apps/python
+export JDK_HOME=/usr/lib/jvm/java-6-sun
 
 eval `keychain -q --nogui --eval --agents ssh id_rsa id_dsa`
+
+export P4CONFIG=.p4config
+# export P4CLIENT=git-p4
+export P4PORT=build-p4proxy.eng.vmware.com:1667
+export P4USER=yhodique
+
+export ECLIPSE_HOME=/home/yann/apps/eclipse/
+export VMO_SERVER=10.23.167.41
+export VMO_USER=lcmadmin
+export VMO_PASSWORD=admin
+export VMO_API=/home/yann/workspace-qa/vmo/bin/
+
+export ESX40VMTREE=~/Projects/git/vmware/esx40/
+export PYTHONSTARTUP=~/.pythonrc.py
+export PYTHONPATH=~/lib/python2.5/site-packages:~/apps/python:${ESX40VMTREE}/vim/py:${ESX40VMTREE}/build/vmodl
+
+alias assh="ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"
+alias ascp="scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"
+
+export TCROOT=/build/toolchain
+export BUILDAPPSROOT=/build/apps
+export SCMTREESROOT=/build/trees/bin
+
+export TWSRCROOT=~/Projects/git/vmware/testware/vmo-testware-buzzell
+export VMTREE=~/Projects/git/vmware/testware/vmo-testware-buzzell/bora-make
+export MAINSRCROOT=~/Projects/p4/bfg-main/bora
+export KROOT=~/apps/kroot
+
+export VMQAHOME=~/git/vmware/testware/vmo-testware-buzzell/build/vmqa
+
+alias cdjs="cd ~/Projects/git/vmware/testware/vmo-testware-buzzell/tests/VMO/Javascript"

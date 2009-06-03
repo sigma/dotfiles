@@ -7,8 +7,6 @@
     (load-file (expand-file-name "~/.gnus-local.el")))
 
 (require 'gnuslog)
-(require 'nnir)
-(setq nnir-search-engine 'swish++)
 
 (require 'gnus-dired)
 (add-hook 'dired-mode-hook 'turn-on-gnus-dired-mode)
@@ -27,7 +25,7 @@
  gnus-signature-limit '(5.0 "^---*Forwarded article"))
 
 (setq
- gnus-check-new-newsgroups t
+ gnus-check-new-newsgroups 'ask-server
  gnus-read-active-file 'some
  gnus-save-killed-list t
  gnus-save-newsrc-file nil
@@ -68,7 +66,7 @@
  nnmail-expiry-target 'my-gnus-expiry-target)
 
 (setq
- gnus-auto-expirable-newsgroups "mail.\\(root\\|delete\\)"
+ gnus-total-expirable-newsgroups ".*"
  nnmail-use-long-file-names t
  gnus-uncacheable-groups "^nnml")
 
@@ -138,14 +136,14 @@
 (setq gnus-sum-thread-tree-single-leaf "`-> ")
 
 ;; Unicode
-(when window-system
-  (setq gnus-sum-thread-tree-indent "  ")
-  (setq gnus-sum-thread-tree-root "● ")
-  (setq gnus-sum-thread-tree-false-root "◯ ")
-  (setq gnus-sum-thread-tree-single-indent "◎ ")
-  (setq gnus-sum-thread-tree-leaf-with-other "├─► ")
-  (setq gnus-sum-thread-tree-vertical "│")
-  (setq gnus-sum-thread-tree-single-leaf "╰─► "))
+;; (when window-system
+;;   (setq gnus-sum-thread-tree-indent "  ")
+;;   (setq gnus-sum-thread-tree-root "● ")
+;;   (setq gnus-sum-thread-tree-false-root "◯ ")
+;;   (setq gnus-sum-thread-tree-single-indent "◎ ")
+;;   (setq gnus-sum-thread-tree-leaf-with-other "├─► ")
+;;   (setq gnus-sum-thread-tree-vertical "│")
+;;   (setq gnus-sum-thread-tree-single-leaf "╰─► "))
 
 (setq gnus-summary-same-subject "")
 
@@ -194,8 +192,7 @@
  gnus-article-mode-line-format "Gnus: %g [%r/%U] %m"
  gnus-topic-line-format "%i[ %u&topic-line; ] %v\n")
 
-(if (eq window-system 'x)
-    (progn
+(progn
       (gnus-add-configuration
        `(group
 	 (vertical 1.0
@@ -268,7 +265,7 @@
                                          (article 0.3)
                                          (message 1.0 point))))))
       )
-  )
+
 
 (setq
  nbc-gnus-visible-headers
@@ -417,13 +414,13 @@
   (gnus-demon-cancel))
 
 (setq message-signature 'fortune)
- 
+
 (defvar fortune-program nil
   "*Program used to generate epigrams, default \"fortune\".")
- 
+
 (defvar fortune-switches nil
   "*List of extra arguments when `fortune-program' is invoked.")
- 
+
 (setq fortune-program "/usr/games/fortune")
 
 (add-to-list 'fortune-switches "chapterhouse-dune")
@@ -434,7 +431,7 @@
 (add-to-list 'fortune-switches "heretics-of-dune")
 (add-to-list 'fortune-switches "house-atreides")
 (add-to-list 'fortune-switches "house-harkonnen")
- 
+
 (defun fortune (&optional long-p)
   "Generate a random epigram.
 An optional prefix argument generates a long epigram.
