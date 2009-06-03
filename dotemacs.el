@@ -15,6 +15,10 @@
 (if (file-exists-p (expand-file-name "~/.emacs-local"))
     (load-file (expand-file-name "~/.emacs-local")))
 
+;; Customizations are in a separate file
+(if (file-exists-p (expand-file-name "~/.emacs-cust"))
+    (load-file (expand-file-name "~/.emacs-cust")))
+
 ;; Fix various "bad" default behaviors
 ;; add some personal features
 (require 'patches)
@@ -29,17 +33,13 @@
 (when (request 'package)
   (package-initialize))
 
-;; Customizations are in a separate file
-(if (file-exists-p (expand-file-name "~/.emacs-cust"))
-    (load-file (expand-file-name "~/.emacs-cust")))
-
 ;; Hacked scroll margin
 ;; (set-scroll-margin 5 5 '("*eshell*" "*compile*" "*Calendar*"))
 ;; (setq scroll-step 1
 ;;       scroll-conservatively 50)
 (setq ;; scroll-margin 5
-      scroll-conservatively 50
-      scroll-step 1)
+ scroll-conservatively 50
+ scroll-step 1)
 
 ;; Save minibuffer history between sessions
 (when (request 'savehist)
@@ -76,8 +76,8 @@
 
 ;; Enable dynamic highlighting
 (if (functionp 'global-hi-lock-mode)
-            (global-hi-lock-mode 1)
-          (hi-lock-mode 1))
+    (global-hi-lock-mode 1)
+  (hi-lock-mode 1))
 
 ;; Throw away the mouse when typing
 (mouse-avoidance-mode 'exile)
@@ -112,7 +112,7 @@
      (add-to-list 'ispell-dictionary-alist '("latin" "[A-Za-z]" "[^A-Za-z]" "[']" nil nil "~tex" iso-8859-1))
      (setq ispell-program-name "aspell")))
 
-;; (set-language-environment 'latin-1)
+;; (set-language-environment 'utf-8)
 ;; (prefer-coding-system 'latin-1)
 (prefer-coding-system 'mule-utf-8)
 
@@ -181,7 +181,7 @@
     (request 'ecb-config)
     (request 'winring-config)
     ;; (request 'planner-config)
-;; (request 'circe-config)
+    ;; (request 'circe-config)
     (request 'rcirc-config)
     (request 'tramp-config)
     (request 'eshell-config)
@@ -308,14 +308,13 @@
   (other-window -1))
 
 (make-main-frame)
-(init)
+                                        ;(init)
                                         ;
-
 ;; tidy up diffs when closing the file
 (defun kill-associated-diff-buf ()
   (let ((buf (get-buffer (concat "*Assoc file diff: "
-                             (buffer-name)
-                             "*"))))
+                                 (buffer-name)
+                                 "*"))))
     (when (bufferp buf)
       (kill-buffer buf))))
 
@@ -326,18 +325,19 @@
 (global-set-key (kbd "<C-backspace>") 'kill-syntax-backward)
 
 (global-set-key (kbd "C-c +") 'incr-dwim)
+(global-set-key (kbd "C-c -") 'decr-dwim)
 
 (global-set-key (kbd "<f3>") 'ecb-toggle-compile-window)
 ;; Depending on your keyboard you may want another one binding
 (global-set-key (kbd "C-x ~") 'previous-error)
 (global-set-key (kbd "C-c s") 'eshell)
 (global-set-key (kbd "C-c c") 'compile)
-(global-set-key (kbd "C-c g") 'goto-line)
 (global-set-key (kbd "C-c o") 'my-occur)
 (global-set-key (kbd "C-c u") 'remember)
 (global-set-key (kbd "C-c e") 'fc-eval-and-replace)
 (global-set-key (kbd "C-c f") 'find-function)
 (global-set-key (kbd "C-c F") 'find-function-on-key)
+(global-set-key (kbd "C-c v") 'find-variable)
 
 ;; Enter a recursive edit. C-M-c will bring back exactly there
 (global-set-key (kbd "C-c r") (lambda ()
@@ -435,8 +435,26 @@
   (global-set-key (kbd "<H-return>") multi-region-map))
 
 ;; versioning keys
-(global-set-key (kbd "<M-f12>") 'svn-status)
-(global-set-key (kbd "<C-f12>") 'cvs-update)
+(defvar yh/vcs-backends
+  '((git . magit-status)
+    (svn . svn-status)
+    (cvs . cvs-status)))
+
+(defun yh/vcs-backend (file)
+  (cond ((vc-git-registered file)
+         'git)
+        ((vc-svn-registered file)
+         'svn)
+        ((vc-cvs-registered file)
+         'cvs)
+        (t nil)))
+
+(defun yh/vcs-status ()
+  (interactive)
+  (let ((backend (yh/vcs-backend (buffer-file-name))))
+    (call-interactively (cdr (assoc backend yh/vcs-backends)))))
+
+(global-set-key (kbd "<f12>") 'yh/vcs-status)
 
 ;;; windmove :)
 (mapc #'eval
@@ -487,14 +505,6 @@
 (add-to-list 'auto-mode-alist '("\\.dot\\'" . graphviz-dot-mode))
 
 (add-to-list 'auto-mode-alist '("\\.hlal\\'" . c-mode))
-
-(autoload 'javascript-mode "javascript" nil t)
-(add-to-list 'auto-mode-alist '("\\.js\\'" . javascript-mode))
-
-(eval-after-load "javascript"
-  '(add-hook 'javascript-mode (lambda ()
-                                (glasses-mode 1)
-                                (c-subword-mode 1))))
 
 (when (request 'incr)
   (delq 'rotate incr-enable-feature))
@@ -548,7 +558,7 @@
 
 (require 'hl-line+)
 (defun hl-line-toggle-when-idle (&optional arg)
-"Turn on or off using `global-hl-line-mode' when Emacs is idle.
+  "Turn on or off using `global-hl-line-mode' when Emacs is idle.
 When on, use `global-hl-line-mode' whenever Emacs is idle.
 With prefix argument, turn on if ARG > 0; else turn off."
   (interactive "P")
@@ -595,12 +605,6 @@ With prefix argument, turn on if ARG > 0; else turn off."
 
 ;; (require 'radio)
 
-(autoload 'js2-mode "js2" nil t)
-(add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
-
-(setq js2-basic-offset 2)
-(setq js2-use-font-lock-faces t)
-
 (require 'epa-dired)
 (epa-file-enable)
 
@@ -619,8 +623,8 @@ With prefix argument, turn on if ARG > 0; else turn off."
 (make-variable-buffer-local 'flymake-fringe-overlays)
 
 (defadvice flymake-make-overlay (after add-to-fringe first
-                                 (beg end tooltip-text face mouse-face)
-                                 activate compile)
+                                       (beg end tooltip-text face mouse-face)
+                                       activate compile)
   (push (fringe-helper-insert-region
          beg end
          (fringe-lib-load (if (eq face 'flymake-errline)
@@ -630,7 +634,7 @@ With prefix argument, turn on if ARG > 0; else turn off."
         flymake-fringe-overlays))
 
 (defadvice flymake-delete-own-overlays (after remove-from-fringe activate
-                                        compile)
+                                              compile)
   (mapc 'fringe-helper-remove flymake-fringe-overlays)
   (setq flymake-fringe-overlays nil))
 
@@ -641,5 +645,13 @@ With prefix argument, turn on if ARG > 0; else turn off."
 
 (when (request 'pymacs)
   (pymacs-load "ropemacs" "rope-"))
+
+(when (request 'haskell-mode)
+  (add-hook 'haskell-mode-hook
+            #'(lambda ()
+                (setq comment-padding " ")
+                (setq comment-start "--"))))
+
+(request 'magit)
 
 (message ".emacs loaded")

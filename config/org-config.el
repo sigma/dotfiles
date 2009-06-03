@@ -33,44 +33,71 @@
 (eval-after-load 'org
   '(progn
      (define-key org-mode-map (kbd "<C-tab>") nil)
-     (define-key org-mode-map (kbd "C-c p") 'org-insert-property-drawer)
 
      (define-key global-map "\C-cl" 'org-store-link)
      (define-key global-map "\C-ca" 'org-agenda)
-
+     (global-set-key "\C-cb" 'org-ido-switchb)
      (setq org-agenda-include-diary t
-           org-log-done '(state)
+           org-log-done '(time note)
            org-agenda-include-all-todo nil
            org-agenda-skip-deadline-if-done t
            org-agenda-skip-scheduled-if-done t
            org-reverse-note-order t
-           org-archive-stamp-time nil
            org-highest-priority ?A
            org-default-priority ?C
            org-lowest-priority ?E
            org-tags-column -79
            org-agenda-start-on-weekday nil
-           org-todo-keywords '((type "TODO(t)" "WAITING(w@/!)" "MAYBE(m)" "|" "DONE(d!)" "CANCELED(c@)")) 
-           org-todo-keyword-faces '(("WAITING" . shadow)
-                                    ("MAYBE" . shadow)
-                                    ("CANCELED" . (:foreground "blue" :weight bold)))
-           org-agenda-custom-commands '(("t" . "Open tasks")
-                                        ("tn" tags-todo "URGENT|NORMAL/TODO|WAITING")
-                                        ("tu" tags-todo "URGENT/TODO|WAITING")
-                                        ("d" todo "DELEGATED" nil)
-                                        ("c" todo "DONE|DEFERRED|CANCELLED" nil)
-                                        ("w" todo "WAITING" nil)
-                                        ("W" agenda "" ((org-agenda-ndays 21)))
-                                        ("A" "Today's Priority #A tasks: " agenda ""
-                                         ((org-agenda-skip-function
-                                           (lambda nil
-                                             (org-agenda-skip-entry-if (quote notregexp) "\\=.*\\[#A\\]")))
-                                          (org-agenda-ndays 1)))
-                                        ("u" "Unscheduled TODO entries: " alltodo ""
-                                         ((org-agenda-skip-function
-                                           (lambda nil
-                                             (org-agenda-skip-entry-if (quote scheduled) (quote deadline)
-                                                                       (quote regexp) "<[^>\n]+>")))))))
+           ;; Use IDO for target completion
+           org-completion-use-ido t
+           ;; Targets include this file and any file contributing to the agenda - up to 5 levels deep
+           org-refile-targets (quote ((org-agenda-files :maxlevel . 5) (nil :maxlevel . 5)))
+           ;; Targets start with the file name - allows creating level 1 tasks
+           org-refile-use-outline-path (quote file))
+
+     (setq org-todo-keywords (quote ((sequence "TODO(t)" "STARTED(s!)" "|" "DONE(d!/!)")
+                                     (sequence "WAITING(w@/!)" "MAYBE(m!)" "|" "CANCELLED(c@/!)"))))
+
+     (setq org-todo-keyword-faces (quote (("TODO" :foreground "red" :weight bold)
+                                          ("STARTED" :foreground "blue" :weight bold)
+                                          ("DONE" :foreground "forest green" :weight bold)
+                                          ("WAITING" :foreground "orange" :weight bold)
+                                          ("MAYBE" :foreground "magenta" :weight bold)
+                                          ("CANCELLED" :foreground "forest green" :weight bold))))
+
+     (setq org-todo-state-tags-triggers (quote (("CANCELLED" ("CANCELLED" . t))
+                                                ("WAITING" ("WAITING" . t) ("NEXT"))
+                                                ("MAYBE" ("WAITING" . t))
+                                                (done ("NEXT") ("WAITING"))
+                                                ("TODO" ("WAITING") ("CANCELLED"))
+                                                ("STARTED" ("WAITING")))))
+
+     (setq org-agenda-custom-commands
+           (quote (("s" "Started Tasks" todo "STARTED" ((org-agenda-todo-ignore-with-date nil)))
+                   ("w" "Tasks waiting on something" tags "WAITING" ((org-use-tag-inheritance nil)))
+                   ("r" "Refile New Notes and Tasks" tags "REFILE" ((org-agenda-todo-ignore-with-date nil)))
+                   ("n" "Notes" tags "NOTE" nil))))
+
+     ;; Resume clocking tasks when emacs is restarted
+     (setq org-clock-persistence-insinuate)
+     ;; Yes it's long... but more is better ;)
+     (setq org-clock-history-length 35)
+     ;; Resume clocking task on clock-in if the clock is open
+     (setq org-clock-in-resume t)
+     ;; Change task state to STARTED when clocking in
+     (setq org-clock-in-switch-to-state "STARTED")
+     ;; Save clock data and notes in the LOGBOOK drawer
+     (setq org-clock-into-drawer t)
+     ;; Sometimes I change tasks I'm clocking quickly - this just removes clocked tasks with 0:00 duration
+     (setq org-clock-out-remove-zero-time-clocks t)
+     ;; Don't clock out when moving task to a done state
+     (setq org-clock-out-when-done nil)
+     ;; Save the running clock and all clock history when exiting Emacs, load it on startup
+     (setq org-clock-persist t)
+     ;; Agenda clock reports parameters (no links, 2 levels deep)
+     (setq org-agenda-clockreport-parameter-plist (quote (:link nil :maxlevel 2)))
+     ;; Agenda log mode items to display (clock time only by default)
+     (setq org-agenda-log-mode-items (quote (clock)))
 
      (when (request 'remember)
        (setq remember-annotation-functions '(org-remember-annotation))
@@ -78,9 +105,9 @@
        (add-hook 'remember-mode-hook 'org-remember-apply-template)
 
        (setq org-remember-templates
-             `((?t "* TODO %?\n  %i\n  %a" ,org-default-notes-file "Misc")
-               (?w "* WAITING %?\n  %i\n  %a" ,org-default-notes-file "Misc")
-               (?m "* MAYBE %?\n  %i\n  %a" ,org-default-notes-file "Misc"))))
+             `((?t "* TODO %?\n  %i\n  %a" ,org-default-notes-file "Tasks")
+               (?w "* WAITING %?\n  %i\n  %a" ,org-default-notes-file "Tasks")
+               (?m "* MAYBE %?\n  %i\n  %a" ,org-default-notes-file "Tasks"))))
 
      (global-set-key (kbd "C-c t") 'fc-toggle-notes)
      (defun fc-toggle-notes ()
@@ -93,19 +120,6 @@
                              (expand-file-name (buffer-file-name))))
                (bury-buffer)
              (find-file notes-file)))))
-
-     (defun yh/looking-at-tags ()
-       (looking-at "[ \t]*:\\([a-zA-Z_@0-9:]+\\):[ \t]*\\([\n\r]\\|\\'\\)"))
-
-     (defadvice org-insert-heading (before org-insert-heading-before act)
-       "If the cursor is between heading and tags list, then open
-a new heading WITHOUT moving the tags"
-       (when (yh/looking-at-tags)
-         (goto-char (point-at-eol))))
-
-     (defadvice org-priority (after org-priority-after act)
-       "Restore the tags alignment after changing priorities"
-       (and org-auto-align-tags (org-set-tags nil t)))
 
      (defmadvice (org-agenda)
        (around ecb-org act)
