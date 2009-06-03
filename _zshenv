@@ -1,0 +1,35 @@
+#!/bin/zsh
+
+function request() {
+    for file in "$@"; do
+        [[ -f "$file" ]] && . "$file"
+    done
+}
+
+export LC_ALL=en_US.UTF-8
+export ZDOTDIR=${ZDOTDIR:-$HOME}
+
+if [[ "$ZDOTDIR" == "$HOME" ]]; then
+  zdotdirpath=( $ZDOTDIR )
+else
+  zdotdirpath=( $ZDOTDIR $HOME )
+  export OTHER_USER=1
+fi
+
+[[ -e $zdotdir/.shared_env ]] && . $zdotdir/.shared_env
+
+typeset -U path # No duplicates
+
+# notice nasty hack for old zsh
+path=( $path /usr/local/bin /usr/local/sbin /usr/sbin /sbin )
+
+typeset -U manpath # No duplicates
+
+fpath=(
+       $zdotdirpath/{.[z]sh/*.zwc,{.[z]sh,[l]ib/zsh}/{functions{,.local,.$HOST}/{Completion,Misc,Prompts},scripts}}(N)
+       $fpath
+      )
+
+typeset -T LD_LIBRARY_PATH ld_library_path
+
+typeset -U ld_library_path # No duplicates

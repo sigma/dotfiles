@@ -1,0 +1,5 @@
+#!/bin/zsh
+
+mencoder $1 -ofps 15 -vf scale=300:-2 -oac lavc -ovc lavc \
+    -lavcopts vcodec=msmpeg4v2:abitrate=64                \
+    -o `basename $1 .flv`.avi

@@ -1,0 +1,13 @@
+#!/bin/zsh
+
+zshrc_load_status () {
+    echo -n "\r.zshrc load: $* ... \e[0K"
+}
+
+request ~/.zsh/config ~/.zsh/aliases ~/.zsh/completion ~/.zsh/keys
+
+# use .localrc for settings specific to one system
+request ~/.localrc
+
+# finalize shell initialization
+request ~/.zsh/last

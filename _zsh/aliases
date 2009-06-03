@@ -1,0 +1,119 @@
+#!/bin/zsh
+
+# Aliases / functions
+zshrc_load_status 'aliases and functions'
+
+alias which >&/dev/null && unalias which
+
+alias wh=where
+
+alias run-help >&/dev/null && unalias run-help
+
+alias p='popd'
+
+alias ls='command ls -F --color=auto'
+
+alias ll='ls -l'
+
+alias grep='command grep --color'
+
+alias git='PAGER=less git'
+
+alias -g ...=../..
+alias -g ....=../../..
+alias -g .....=../../../..
+alias -g ......=../../../../..
+alias cd..='cd ..'
+alias cd...='cd ../..'
+alias cd....='cd ../../..'
+alias cd.....='cd ../../../..'
+
+alias cd/='cd /'
+
+alias 1='cd -'
+alias 2='cd +2'
+alias 3='cd +3'
+alias 4='cd +4'
+alias 5='cd +5'
+alias 6='cd +6'
+alias 7='cd +7'
+alias 8='cd +8'
+alias 9='cd +9'
+
+alias md='mkdir -p'
+alias rd=rmdir
+
+alias d='dirs -v'
+
+alias mmv='noglob zmv -W'
+
+alias j='jobs -l'
+alias dn=disown
+
+alias h='history -$LINES'
+
+alias ts=typeset
+
+alias cls='clear'
+alias term='echo $TERM'
+
+alias screen='ln -sf "$SSH_AUTH_SOCK" "$HOME/.screen/ssh-auth-sock.$HOSTNAME" ; export HOSTNAME=$(hostname) ; screen'
+
+alias info='pinfo'
+
+alias f=finger
+
+alias mv='nocorrect mv'
+alias cd='nocorrect cd'
+alias cp='nocorrect cp'
+alias mkdir='nocorrect mkdir'
+alias man='nocorrect man'
+alias find='noglob find'
+alias gcc='nocorrect gcc'
+alias mkdir='nocorrect mkdir'
+
+alias mysql='nocorrect mysql'
+alias mysqlshow='nocorrect mysqlshow'
+alias rj='nocorrect rj'
+
+alias sd='export DISPLAY=:0.0'
+
+alias mplayer=' mplayer'
+alias xine=' xine'
+
+# enable ^Z for nano
+alias nano='/usr/bin/nano -z'
+
+# change some applications
+alias vi='zile'
+alias top='htop'
+alias cat='dog'
+alias less='most'
+
+if which lftp >&/dev/null; then
+    alias ftp=lftp
+elif which ncftp >&/dev/null; then
+    alias ftp=ncftp
+fi
+
+alias tf='less +F'
+alias tfs='less -S +F'
+
+alias bz=bzip2
+alias buz=bunzip2
+
+alias -s pdf=xpdf
+alias -s ps=gv
+alias -s dvi=xdvi
+alias -s html=html
+alias -s tgz='tar zxvf'
+
+alias pvs='pvs -emacs emacs-cvs'
+
+alias @=openurl
+
+alias covertest='nocorrect ~/lib/python2.5/site-packages/coverage -x'
+alias coverreport='nocorrect ~/lib/python2.5/site-packages/coverage -b -d html && @ html/index.html'
+
+alias assh="ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"
+alias ascp="scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"

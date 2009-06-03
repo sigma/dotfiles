@@ -1,0 +1,4 @@
+#!/bin/zsh
+
+echo -n "\r" # erase last "load_status" line
+eval `keychain -q --nogui --eval --agents ssh id_rsa id_dsa`
