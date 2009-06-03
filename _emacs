@@ -641,27 +641,27 @@ With prefix argument, turn on if ARG > 0; else turn off."
 (require 'auto-dictionary)
 (add-hook 'flyspell-mode-hook '(lambda () (auto-dictionary-mode 1)))
 
-(require 'fringe-helper)
-(require 'flymake)
+;; (request 'fringe-helper)
+;; (request 'flymake)
 
-(defvar flymake-fringe-overlays nil)
-(make-variable-buffer-local 'flymake-fringe-overlays)
+;; (defvar flymake-fringe-overlays nil)
+;; (make-variable-buffer-local 'flymake-fringe-overlays)
 
-(defadvice flymake-make-overlay (after add-to-fringe first
-                                       (beg end tooltip-text face mouse-face)
-                                       activate compile)
-  (push (fringe-helper-insert-region
-         beg end
-         (fringe-lib-load (if (eq face 'flymake-errline)
-                              fringe-lib-exclamation-mark
-                            fringe-lib-question-mark))
-         'left-fringe 'font-lock-warning-face)
-        flymake-fringe-overlays))
+;; (defadvice flymake-make-overlay (after add-to-fringe first
+;;                                        (beg end tooltip-text face mouse-face)
+;;                                        activate compile)
+;;   (push (fringe-helper-insert-region
+;;          beg end
+;;          (fringe-lib-load (if (eq face 'flymake-errline)
+;;                               fringe-lib-exclamation-mark
+;;                             fringe-lib-question-mark))
+;;          'left-fringe 'font-lock-warning-face)
+;;         flymake-fringe-overlays))
 
-(defadvice flymake-delete-own-overlays (after remove-from-fringe activate
-                                              compile)
-  (mapc 'fringe-helper-remove flymake-fringe-overlays)
-  (setq flymake-fringe-overlays nil))
+;; (defadvice flymake-delete-own-overlays (after remove-from-fringe activate
+;;                                               compile)
+;;   (mapc 'fringe-helper-remove flymake-fringe-overlays)
+;;   (setq flymake-fringe-overlays nil))
 
 (autoload 'kill-ring-search "kill-ring-search"
   "Search the kill ring in the minibuffer."
