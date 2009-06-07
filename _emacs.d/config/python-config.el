@@ -63,5 +63,7 @@
             (glasses-mode 1)
             (c-subword-mode 1)))
 
+(remove-hook 'python-mode-hook 'wisent-python-default-setup)
+
 (provide 'python-config)
 ;;; python-config.el ends here

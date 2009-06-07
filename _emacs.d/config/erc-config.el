@@ -63,7 +63,7 @@
 
 (when (request 'erc-fill)
   (erc-fill-mode t)
-  (setq erc-fill-column 150))
+  (setq erc-fill-column 120))
 
 (when (request 'erc-ring)
   (erc-ring-mode t))
