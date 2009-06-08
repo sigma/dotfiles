@@ -190,7 +190,7 @@
  '(org-agenda-skip-archived-trees nil)
  '(org-agenda-start-with-clockreport-mode t)
  '(org-agenda-start-with-log-mode t)
- '(org-clock-into-drawer 2)
+ '(org-clock-into-drawer 2 t)
  '(org-crypt-key "yann.hodique@gmail.com")
  '(org-crypt-tag-matcher "CRYPT")
  '(org-cycle-open-archived-trees t)
