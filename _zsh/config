@@ -182,6 +182,8 @@ export KROOT=~/apps/kroot
 
 export VMQAHOME=~/git/vmware/testware/vmo-testware-buzzell/build/vmqa
 
+export PATH=$BUILDAPPSROOT/bin:$SCMTREESROOT:$PATH
+
 typeset -U path # No duplicates
 
 which check_hist_size >&/dev/null && check_hist_size
