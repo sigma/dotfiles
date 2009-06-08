@@ -153,6 +153,9 @@ mycpugraphwidget:plot_properties_set("cpu", {
 
 function get_temp()
     local filedescriptor = io.popen('awk \'{print $2 "°C"}\' /proc/acpi/thermal_zone/THRM/temperature')
+    if not filedescriptor then
+       return {"-"}
+    end
     local value = filedescriptor:read()
     filedescriptor:close()
     return {value}
