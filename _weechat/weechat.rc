@@ -421,7 +421,7 @@ ignore = "KaA,*,*,localhost"
 
 [server]
 server_name = "localhost"
-server_autoconnect = on
+server_autoconnect = off
 server_autoreconnect = on
 server_autoreconnect_delay = 30
 server_address = "localhost"
@@ -443,7 +443,7 @@ server_notify_levels = ""
 
 [server]
 server_name = "freenode"
-server_autoconnect = on
+server_autoconnect = off
 server_autoreconnect = on
 server_autoreconnect_delay = 30
 server_address = "irc.freenode.net"
@@ -465,7 +465,7 @@ server_notify_levels = ""
 
 [server]
 server_name = "epiknet"
-server_autoconnect = on
+server_autoconnect = off
 server_autoreconnect = on
 server_autoreconnect_delay = 30
 server_address = "irc.epiknet.org"
@@ -482,5 +482,49 @@ server_hostname = ""
 server_command = ""
 server_command_delay = 1
 server_autojoin = "#fondation"
+server_autorejoin = on
+server_notify_levels = ""
+
+[server]
+server_name = "bitlbee"
+server_autoconnect = off
+server_autoreconnect = on
+server_autoreconnect_delay = 30
+server_address = "localhost"
+server_port = 6667
+server_ipv6 = off
+server_ssl = off
+server_password = "MarionK"
+server_nick1 = "yhodique"
+server_nick2 = "yhodique_"
+server_nick3 = "sigma"
+server_username = "yann"
+server_realname = "Yann Hodique"
+server_hostname = ""
+server_command = ""
+server_command_delay = 0
+server_autojoin = ""
+server_autorejoin = on
+server_notify_levels = ""
+
+[server]
+server_name = "vmware"
+server_autoconnect = off
+server_autoreconnect = on
+server_autoreconnect_delay = 30
+server_address = "irc.eng.vmware.com"
+server_port = 6667
+server_ipv6 = off
+server_ssl = off
+server_password = ""
+server_nick1 = "yhodique"
+server_nick2 = "yhodique_"
+server_nick3 = "sigma"
+server_username = "weechat"
+server_realname = "realname"
+server_hostname = ""
+server_command = ""
+server_command_delay = 1
+server_autojoin = "#VMware,#python"
 server_autorejoin = on
 server_notify_levels = ""
