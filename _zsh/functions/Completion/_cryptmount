@@ -1,0 +1,32 @@
+#compdef cryptmount
+
+_encrypted_devices () {
+    local expl devs
+
+    devs=( $(sed -n 's/ *{ *//p' /etc/cryptmount/cmtab) )
+    _wanted devices expl 'encrypted devices' \
+        compadd "$@" - "${(@)devs%%:*}"
+}
+
+_key_size () {
+    _values 'key sizes' "1024" "2048"
+}
+
+_arguments \
+    '(-h --help)'{-h,--help}'[print a summary of usage]' \
+    '(-a --all)'{-a,--all}'[act on all available targets]' \
+    '(-c --change-password)'{-c,--change-password}"[change  the  password]:device:_encrypted_devices" \
+    '(-k --key-managers)'{-k,--key-managers}'[list all the available formats]' \
+    '(-l --list)'{-l,--list}'[list all available targets]' \
+    '(-m --mount)'{-m,--mount}'[mount the specified target]:device:_encrypted_devices' \
+    '(-u --unmount)'{-u,--unmount}'[unmount the specified target]:device:_encrypted_devices' \
+    '(-g --generate-key)'{-g,--generate-key}'[setup a decryption key]:size:_key_size' \
+    '(-e --reuse-key)'{-e,--reuse-key}'[setup an existing decryption key]:device:_encrypted_devices' \
+    '(-p --prepare)'{-p,--prepare}'[prepare all the devices needed]:device:_encrypted_devices' \
+    '(-r --release)'{-r,--release}'[release all the devices associated]:device:_encrypted_devices' \
+    '(-f --config-fd)'{-f,--config-fd}'[read configuration from file-descriptor]:fd:_file_descriptors' \
+    '(-w --passwd-fd)'{-w,--passwd-fd}'[read password from file-descriptor]:fd:_file_descriptors' \
+    '(-s --swapon)'{-s,--swapon}'[enable target for paging and swapping]:device:_encrypted_devices' \
+    '(-x --swapoff)'{-x,--swapoff}'[disable target for paging and swapping]:device:_encrypted_devices' \
+    '(-v --version)'{-v,--version}'[show the version-number]' \
+    ':device:_encrypted_devices'
