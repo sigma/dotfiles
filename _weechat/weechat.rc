@@ -1,5 +1,5 @@
 #
-# WeeChat configuration file, created by WeeChat v0.2.6.1 on Sun Jun  7 16:08:25 2009
+# WeeChat configuration file, created by WeeChat v0.2.6.1 on Mon Jun  8 23:12:42 2009
 # WARNING! Be careful when editing this file, WeeChat writes this file when exiting.
 #
 
@@ -418,6 +418,7 @@ WW = "whowas"
 ignore = "root,MODE,*,localhost"
 ignore = "defcon8,*,*,freenode"
 ignore = "KaA,*,*,localhost"
+ignore = "dfs,*,*,epiknet"
 
 [server]
 server_name = "localhost"
