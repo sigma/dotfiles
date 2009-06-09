@@ -38,8 +38,7 @@
               ;; yasnippet
               (make-variable-buffer-local 'yas/trigger-key)
               (setq yas/trigger-key [tab])
-              (define-key yas/keymap [tab] 'yas/next-field-group)
-              (flyspell-mode 1))))
+              (define-key yas/keymap [tab] 'yas/next-field-group))))
 
 (request 'cedet)
 (require 'semantic-gcc)
@@ -638,8 +637,8 @@ With prefix argument, turn on if ARG > 0; else turn off."
 (require 'compile-bookmarks)
 (compile-bookmarks-mode 1)
 
-(require 'auto-dictionary)
-(add-hook 'flyspell-mode-hook '(lambda () (auto-dictionary-mode 1)))
+;; (require 'auto-dictionary)
+;; (add-hook 'flyspell-mode-hook '(lambda () (auto-dictionary-mode 1)))
 
 ;; (request 'fringe-helper)
 ;; (request 'flymake)
@@ -668,8 +667,8 @@ With prefix argument, turn on if ARG > 0; else turn off."
   (interactive))
 (global-set-key "\M-\C-y" 'kill-ring-search)
 
-(when (request 'pymacs)
-  (pymacs-load "ropemacs" "rope-"))
+;; (when (request 'pymacs)
+;;   (pymacs-load "ropemacs" "rope-"))
 
 (when (request 'haskell-mode)
   (add-hook 'haskell-mode-hook
@@ -678,11 +677,15 @@ With prefix argument, turn on if ARG > 0; else turn off."
                 (setq comment-start "--"))))
 
 (request 'magit)
-(message ".emacs loaded")
 
 ;; update agenda file after changes to org files
 (defun th-org-mode-init ()
-  (add-hook 'after-save-hook 'th-org-update-agenda-file t t))
+  (let* ((name (buffer-file-name))
+         (current (and name (expand-file-name (buffer-file-name))))
+         (all (mapcar 'expand-file-name
+                      (org-agenda-files t))))
+    (when (member current all)
+      (add-hook 'after-save-hook 'th-org-update-agenda-file t t))))
 
 (add-hook 'org-mode-hook 'th-org-mode-init)
 
@@ -702,3 +705,5 @@ With prefix argument, turn on if ARG > 0; else turn off."
 (request 'ipa)
 
 (eval-after-load "info" '(require 'info+))
+
+(message ".emacs loaded")

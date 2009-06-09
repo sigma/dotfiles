@@ -245,7 +245,7 @@
  '(reftex-auto-recenter-toc t)
  '(reftex-revisit-to-follow t)
  '(reftex-toc-split-windows-horizontally nil)
- '(safe-local-variable-values (quote ((org-export-html-style-include-default) (org-export-html-style . "   <style type=\"text/css\">
+ '(safe-local-variable-values (quote ((org-export-html-table-tag . "<table border=\"1\" cellspacing=\"0\" cellpadding=\"6\" rules=\"groups\" frame=\"box\">") (org-export-html-style-include-default) (org-export-html-style . "   <style type=\"text/css\">
       p {font-weight: normal; color: gray; }
       h1 {color: black; }
   </style>") (folded-file . t) (TeX-master . main\.tex) (Package . Memoization) (Base . 10) (Syntax . Common-Lisp) (unibyte . t) (auto-recompile . t) (TeX-master . "main") (TeX-master . t) (auto-compile-lisp) (before-save-hook org-encrypt-entries))))

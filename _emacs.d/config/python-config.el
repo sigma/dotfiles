@@ -63,6 +63,7 @@
             (glasses-mode 1)
             (c-subword-mode 1)))
 
+;; just in case, semantic is a bit too intrusive and buggy here
 (remove-hook 'python-mode-hook 'wisent-python-default-setup)
 
 (provide 'python-config)
