@@ -1,1 +1,0 @@
-/usr/share/weechat/python/theme.py
