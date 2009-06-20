@@ -1,0 +1,6 @@
+#! /bin/zsh -f
+if [ -n "$VIRTUAL_ENV" ]; then
+    printf "%s" `basename "$VIRTUAL_ENV"`
+else
+    printf "default"
+fi
