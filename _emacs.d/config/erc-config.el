@@ -34,26 +34,20 @@
 
 (request 'erc-nicklist)
 
+(request 'erc-highlight-nicknames)
+
 (when (request 'erc-autojoin)
-  (erc-autojoin-mode 1)
-
-  (defvar my-erc-autojoin-channels-alist nil)
-
-  ;; This function overrides the default one to allow autojoining password
-  ;; protected chans
-  (defun erc-autojoin-channels (server nick)
-    (dolist (l my-erc-autojoin-channels-alist)
-      (when (string-match (car l) server)
-        (dolist (chan (cdr l))
-          (if (consp chan)
-              (erc-send-command (concat "join " (car chan) " " (cdr chan)))
-            (erc-send-command (concat "join " chan))))))))
+  (erc-autojoin-mode 1))
 
 (when (request 'erc-match)
   (erc-match-mode))
 
 (when (request 'erc-track)
-  (erc-track-mode t))
+  (erc-track-mode t)
+  (setq erc-track-exclude-types '("JOIN" "NICK" "PART" "QUIT" "MODE"
+                                  "324" "329" "332" "333" "353" "477")))
+
+;; (setq erc-hide-list '("JOIN" "PART" "QUIT" "NICK"))
 
 (add-hook 'erc-mode-hook
           '(lambda ()

@@ -197,7 +197,8 @@
     (request 'winring-config)
     ;; (request 'planner-config)
     ;; (request 'circe-config)
-    (request 'rcirc-config)
+    ;; (request 'rcirc-config)
+    (request 'erc-config)
     (request 'tramp-config)
     (request 'eshell-config)
     (request 'help-config)
@@ -456,7 +457,7 @@
     (cvs . cvs-status)))
 
 (defun yh/vcs-backend (file)
-  (cond ((vc-git-registered file)
+  (cond ((vc-git-root file)
          'git)
         ((vc-svn-registered file)
          'svn)
