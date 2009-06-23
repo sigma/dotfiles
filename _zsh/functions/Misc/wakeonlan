@@ -1,0 +1,21 @@
+#!/bin/zsh
+
+CONFIG_FILE=~/.wol
+
+host=$1
+while read name mac ip port rest; do
+    if [ "$name" = "$host" ]; then
+        if [ -z "$mac" ]; then
+            return 1
+        fi
+        if [ -n "$ip" ]; then
+            flags="$flags -i $ip"
+        fi
+        if [ -n "$port" ]; then
+            flags="$flags -p $port"
+        fi
+        command wakeonlan $flags $mac
+        return 0
+    fi
+done < $CONFIG_FILE
+return 1

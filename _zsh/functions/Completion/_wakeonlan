@@ -1,0 +1,12 @@
+#compdef wakeonlan
+
+_wolhosts () {
+    local expl hosts
+
+    : ${(A)hosts:=${${(f)"$(<$HOME/.wol)"}%%\ *}}
+
+    _wanted hosts expl 'wakable hosts' \
+        compadd "$@" - "${(@)hosts%%:*}"
+}
+
+_arguments ':wolhost:_wolhosts'
