@@ -635,8 +635,8 @@ With prefix argument, turn on if ARG > 0; else turn off."
 (setq epa-file-cache-passphrase-for-symmetric-encryption t)
 (add-hook 'mail-mode-hook 'epa-mail-mode)
 
-(require 'compile-bookmarks)
-(compile-bookmarks-mode 1)
+(when (request 'compile-bookmarks)
+  (compile-bookmarks-mode 1))
 
 ;; (require 'auto-dictionary)
 ;; (add-hook 'flyspell-mode-hook '(lambda () (auto-dictionary-mode 1)))
