@@ -58,6 +58,7 @@
           (lambda ()
             (make-variable-buffer-local 'beginning-of-defun-function)
             (setq beginning-of-defun-function 'py-beginning-of-def-or-class)
+            (font-lock-add-keywords nil '(("\\<\\(FIXME\\|TODO\\|BUG\\):" 1 font-lock-warning-face t)))
             (setq outline-regexp "def\\|class ")
             (hs-minor-mode 1)
             (glasses-mode 1)

@@ -62,7 +62,7 @@
 
 (setq
  ;; archiving backend
- my-archived-group-backend "nnfolder+archive"
+ my-archived-group-backend "nnml+archive"
  ;; set expiry target to a function call
  nnmail-expiry-target 'my-gnus-expiry-target)
 
