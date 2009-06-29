@@ -160,7 +160,7 @@ export P4PORT=build-p4proxy.eng.vmware.com:1667
 export P4USER=yhodique
 
 export ECLIPSE_HOME=/home/yann/apps/eclipse/
-export VMO_SERVER=10.23.167.41
+export VMO_SERVER=10.23.167.21
 export VMO_USER=lcmadmin
 export VMO_PASSWORD=admin
 export VMO_API=/home/yann/workspace-qa/vmo/bin/
