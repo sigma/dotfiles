@@ -114,6 +114,7 @@
  '(gnus-cacheable-groups ".*")
  '(gnus-decay-scores "\\.ADAPT\\'")
  '(gnus-fetch-old-headers nil)
+ '(gnus-group-default-list-level 4)
  '(gnus-registry-install t)
  '(gnus-score-interactive-default-score 100)
  '(gnus-score-thread-simplify t)
