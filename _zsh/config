@@ -155,7 +155,7 @@ PATH=$QTDIR/bin:$KDEDIR/bin:$PATH
 export PATH=.:~/bin/:~/apps/bin/:/usr/local/bin:/usr/games/:$GEM_HOME/bin:$JAVA_HOME/bin:$LLVM_HOME/Release/bin:$PATH
 
 export P4CONFIG=.p4config
-# export P4CLIENT=git-p4
+export P4CLIENT=git-p4
 export P4PORT=build-p4proxy.eng.vmware.com:1667
 export P4USER=yhodique
 
