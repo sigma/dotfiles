@@ -207,4 +207,8 @@ autoload zmv
 
 autoload -U compinit
 compinit -C # don't perform security check
+
+autoload -U bashcompinit
+bashcompinit
+
 zmodload -i zsh/complist
