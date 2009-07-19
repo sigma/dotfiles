@@ -39,7 +39,7 @@
 ;;; SCons files are just python code
 (add-to-list 'auto-mode-alist '("SCons\\(cript\\|truct\\)\\'" . python-mode))
 
-(add-to-list 'interpreter-mode-alist '("ipython" . python-mode))
+;;(add-to-list 'interpreter-mode-alist '("ipython" . python-mode))
 
 (request 'ipython)
 

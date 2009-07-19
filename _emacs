@@ -668,8 +668,8 @@ With prefix argument, turn on if ARG > 0; else turn off."
   (interactive))
 (global-set-key "\M-\C-y" 'kill-ring-search)
 
-;; (when (request 'pymacs)
-;;   (pymacs-load "ropemacs" "rope-"))
+(when (request 'pymacs)
+  (pymacs-load "ropemacs" "rope-"))
 
 (when (request 'haskell-mode)
   (add-hook 'haskell-mode-hook
