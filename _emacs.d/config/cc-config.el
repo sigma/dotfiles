@@ -42,7 +42,8 @@
      (0 font-lock-constant-face))
    '("[{}()<>=;,:+\\*\\/\\[]\\|\\]\\|\\-" (0 font-lock-keys-face))
    '("\\<[0-9]+\\>" (0 font-lock-number-face))
-   '("\\<0x[0-9a-fA-F]+\\>" (0 font-lock-hexnumber-face))))
+   '("\\<0x[0-9a-fA-F]+\\>" (0 font-lock-hexnumber-face))
+   '("\\\\\\(?:[abfnrtv'\"?\\0]\\|x[a-fA-F]\\{2\\}\\|[0-7]\\{3\\}\\)" (0 font-lock-escape-char-face prepend))))
 
 (dolist (mode '(c-mode c++-mode java-mode php-mode)) (font-lock-add-keywords mode c++-new-font-lock-keywords))
 
