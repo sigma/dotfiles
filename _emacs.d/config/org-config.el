@@ -30,6 +30,19 @@
 
 (add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
 
+(eval-after-load 'org-latex
+  '(add-to-list 'org-export-latex-classes
+                '("beamer"
+                  "\\documentclass{beamer}
+\\usepackage[utf8]{inputenc}
+\\usepackage[T1]{fontenc}
+\\usepackage{hyperref}"
+                  ("\\part{%s}" . "\\part*{%s}")
+                  ("\\frame{\\frametitle{%s}\\begin{itemize}" "\\end{itemize}}"
+                   "\\frame{\\frametitle{%s}\\begin{itemize}" "\\end{itemize}}")
+                  ("\\item{%s}"  "\\item*{%s}")
+                  ("" ""))))
+
 (eval-after-load 'org
   '(progn
      (define-key org-mode-map (kbd "<C-tab>") nil)

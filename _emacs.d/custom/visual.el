@@ -31,11 +31,17 @@
 ;;
 
 ;; New faces
+(defvar font-lock-escape-char-face 'font-lock-escape-char-face)
 (defvar font-lock-number-face 'font-lock-number-face)
 (defvar font-lock-hexnumber-face 'font-lock-hexnumber-face)
 (defvar font-lock-floatnumber-face 'font-lock-floatnumber-face)
 (defvar font-lock-keys-face 'font-lock-keys-face)
 (defvar font-lock-qt-face 'font-lock-qt-face)
+
+(defface font-lock-escape-char-face
+  '((((class color)) (:foreground "seagreen2")))
+  "highlight c escapes char like vim"
+  :group 'font-lock-faces)
 
 (defface font-lock-number-face
   '(
