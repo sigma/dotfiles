@@ -668,8 +668,8 @@ With prefix argument, turn on if ARG > 0; else turn off."
   (interactive))
 (global-set-key "\M-\C-y" 'kill-ring-search)
 
-;; (when (request 'pymacs)
-;;   (pymacs-load "ropemacs" "rope-"))
+(when (request 'pymacs)
+  (pymacs-load "ropemacs" "rope-"))
 
 (when (request 'haskell-mode)
   (add-hook 'haskell-mode-hook
@@ -677,7 +677,7 @@ With prefix argument, turn on if ARG > 0; else turn off."
                 (setq comment-padding " ")
                 (setq comment-start "--"))))
 
-(request 'magit)
+(request 'magit-config)
 
 ;; update agenda file after changes to org files
 (defun th-org-mode-init ()
@@ -705,6 +705,6 @@ With prefix argument, turn on if ARG > 0; else turn off."
 (request 'magit)
 (request 'ipa)
 
-(eval-after-load "info" '(require 'info+))
+;; (eval-after-load "info" '(require 'info+))
 
 (message ".emacs loaded")

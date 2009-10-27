@@ -60,6 +60,7 @@ rxvt*scrollTtyOutput: off
 rxvt*scrollKey: on
 rxvt*titleBar: false
 
+rxvt-unicode*modifier: mod1
 rxvt-unicode*background: DarkSlateGray
 rxvt-unicode*foreground: Wheat
 rxvt-unicode*cursorColor: Yellow
@@ -75,6 +76,7 @@ rxvt-unicode*scrollKey: on
 rxvt-unicode*titleBar: true
 rxvt-unicode*color12: #84bdd2
 
+urxvt*modifier: mod1
 urxvt*background: DarkSlateGray
 urxvt*foreground: Wheat
 urxvt*cursorColor: Yellow

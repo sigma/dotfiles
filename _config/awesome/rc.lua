@@ -514,7 +514,8 @@ globalkeys = {
                               awful.util.eval, awful.prompt.bash, awful.util.getdir("cache") .. "/history_eval")
                           end),
 
-    keybinding({ modkey }, "F12", function () awful.spawn('xlock') end),
+    key({ modkey }, "F12", function () awful.util.spawn('xlock') end),
+    key({ }, "Pause", function () awful.util.spawn('xlock') end),
 
     --
     -- Awesome controls

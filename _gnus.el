@@ -346,7 +346,7 @@
 (setq gnus-message-archive-group
       '((if (message-news-p)
             (concat "news." (format-time-string "%Y-%m" (current-time)))
-          (list gnus-newsgroup-name
+          (list ;; gnus-newsgroup-name
                 (concat "mail." (format-time-string "%Y-%m" (current-time)))))))
 
 (setq

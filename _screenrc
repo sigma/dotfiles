@@ -3,6 +3,7 @@ escape ^zz
 
 # monitor activity in each window by default
 defmonitor on
+msgwait .5
 
 # don't wipe out dead windows. Use "c" to close, and "r" to revive"
 zombie cr
