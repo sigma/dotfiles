@@ -30,16 +30,6 @@
 (when (request 'package)
   (package-initialize))
 
-(when (request 'yasnippet) ;; not yasnippet-bundle
-  (yas/initialize)
-  (yas/load-directory (expand-file-name "~/.emacs.d/yasnippet/snippets"))
-  (add-hook 'org-mode-hook
-            (lambda ()
-              ;; yasnippet
-              (make-variable-buffer-local 'yas/trigger-key)
-              (setq yas/trigger-key [tab])
-              (define-key yas/keymap [tab] 'yas/next-field-group))))
-
 (request 'cedet)
 (require 'semantic-gcc)
 (semantic-gcc-setup "gcc")
@@ -230,7 +220,8 @@
   (request 'completion-config)
   (request 'crontab-config)
   ;; (request 'flashcard-config)
-  (request 'vc-config))
+  (request 'vc-config)
+  (request 'yasnippet-config))
 
 ;; _* Utils/Functions
 
@@ -265,7 +256,7 @@
 (add-hook 'after-save-hook 'executable-make-buffer-file-executable-if-script-p)
 
 ;; I hate trailing whitespaces (use with caution)
-;; (add-hook 'write-file-hooks 'delete-trailing-whitespace)
+(add-hook 'write-file-hooks 'delete-trailing-whitespace)
 
 ;; I also hate additional blank-lines (use with extreme caution)
 ;;(add-hook 'write-file-hooks 'simplify-blank-lines)
@@ -667,9 +658,6 @@ With prefix argument, turn on if ARG > 0; else turn off."
   "Search the kill ring in the minibuffer."
   (interactive))
 (global-set-key "\M-\C-y" 'kill-ring-search)
-
-(when (request 'pymacs)
-  (pymacs-load "ropemacs" "rope-"))
 
 (when (request 'haskell-mode)
   (add-hook 'haskell-mode-hook

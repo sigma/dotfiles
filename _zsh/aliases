@@ -15,7 +15,8 @@ alias ls='command ls -F --color=auto'
 
 alias ll='ls -l'
 
-alias grep='command grep --color'
+#alias grep='command grep --color'
+alias grep='command ack-grep'
 
 alias git='PAGER=less git'
 
