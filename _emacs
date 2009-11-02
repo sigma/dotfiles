@@ -617,6 +617,7 @@ With prefix argument, turn on if ARG > 0; else turn off."
   (bookmark-jump bname))
 
 (global-set-key (kbd "C-x B") 'switch-to-bookmark)
+(request 'bookmark+)
 
 ;; (require 'radio)
 
