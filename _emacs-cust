@@ -95,6 +95,7 @@
  '(flyspell-issue-welcome-flag nil)
  '(font-latex-fontify-sectioning (quote color))
  '(gc-cons-threshold 4000000)
+ '(gdb-all-registers t)
  '(gdb-many-windows t)
  '(gdb-same-frame nil)
  '(gdb-show-main t)
@@ -314,7 +315,8 @@
  '(which-function-mode nil)
  '(winring-prompt-on-create (quote usually))
  '(winring-show-names t)
- '(x-select-enable-clipboard nil))
+ '(x-select-enable-clipboard nil)
+ '(yas/prompt-functions (quote (yas/dropdown-prompt yas/ido-prompt yas/no-prompt))))
 
 (custom-set-faces
   ;; custom-set-faces was added by Custom.
