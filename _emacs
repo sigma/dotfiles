@@ -31,8 +31,6 @@
   (package-initialize))
 
 (request 'cedet)
-;; (require 'semantic-gcc)
-;; (semantic-gcc-setup "gcc")
 
 (when (request 'package)
   (package-initialize))
