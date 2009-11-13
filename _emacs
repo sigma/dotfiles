@@ -31,8 +31,8 @@
   (package-initialize))
 
 (request 'cedet)
-(require 'semantic-gcc)
-(semantic-gcc-setup "gcc")
+;; (require 'semantic-gcc)
+;; (semantic-gcc-setup "gcc")
 
 (when (request 'package)
   (package-initialize))
@@ -695,5 +695,21 @@ With prefix argument, turn on if ARG > 0; else turn off."
 (request 'ipa)
 
 ;; (eval-after-load "info" '(require 'info+))
+
+(eval-after-load 'nxml-mode
+  '(defun bf-pretty-print-xml-region (begin end)
+     "Pretty format XML markup in region. You need to have nxml-mode
+http://www.emacswiki.org/cgi-bin/wiki/NxmlMode installed to do
+this.  The function inserts linebreaks to separate tags that have
+nothing but whitespace between them.  It then indents the markup
+by using nxml's indentation rules."
+     (interactive "r")
+     (save-excursion
+       (nxml-mode)
+       (goto-char begin)
+       (while (search-forward-regexp "\>[ \\t]*\<" nil t)
+         (backward-char) (insert "\n"))
+       (indent-region begin end))
+     (message "Ah, much better!")))
 
 (message ".emacs loaded")
