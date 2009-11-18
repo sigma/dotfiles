@@ -8,8 +8,12 @@
     (load-file (expand-file-name (format "~/.emacs-%d" emacs-major-version))))
 
 ;; load code specific to some minor version
-(if (file-exists-p (expand-file-name (format "~/.emacs-%d-%d" emacs-major-version emacs-minor-version)))
-    (load-file (expand-file-name (format "~/.emacs-%d-%d" emacs-major-version emacs-minor-version))))
+(if (file-exists-p (expand-file-name
+                    (format "~/.emacs-%d-%d"
+                            emacs-major-version emacs-minor-version)))
+    (load-file (expand-file-name
+                (format "~/.emacs-%d-%d"
+                        emacs-major-version emacs-minor-version))))
 
 ;; Load site-specific stuff: paths, accounts, passwords, projects...
 ;; see http://gist.github.com/97984 for an example
@@ -111,7 +115,9 @@
 
 (eval-after-load 'ispell
   '(progn
-     (add-to-list 'ispell-dictionary-alist '("latin" "[A-Za-z]" "[^A-Za-z]" "[']" nil nil "~tex" iso-8859-1))
+     (add-to-list 'ispell-dictionary-alist
+                  '("latin" "[A-Za-z]" "[^A-Za-z]" "[']"
+                    nil nil "~tex" iso-8859-1))
      (setq ispell-program-name "aspell")))
 
 ;; (set-language-environment 'utf-8)
@@ -261,11 +267,14 @@
 
 ;; Adaptative "exit" behavior
 (defun exit-no-gnuserv-or-frame ()
-  "If in a gnuserv-edit session, close it. If in a secondary frame, close it. Else, die"
+  "If in a gnuserv-edit session, close it. If in a secondary
+frame, close it. Else, die"
   (interactive)
-  (cond ((and (boundp 'gnuserv-minor-mode) gnuserv-minor-mode) (gnuserv-edit))
-	((or (not main-frame) (eq (selected-frame) main-frame)) (save-buffers-kill-emacs))
-	((delete-frame))))
+  (cond ((and (boundp 'gnuserv-minor-mode) gnuserv-minor-mode)
+         (gnuserv-edit))
+        ((or (not main-frame) (eq (selected-frame) main-frame))
+         (save-buffers-kill-emacs))
+        ((delete-frame))))
 
 ;; make active frame the main one
 (defun make-main-frame ()
@@ -280,9 +289,9 @@
     (let ((act (request 'winring)))
       (ecb-activate)
       (when act
-	(progn
-	  (ecb-winman-winring-enable-support)
-	  (winring-initialize))))))
+        (progn
+          (ecb-winman-winring-enable-support)
+          (winring-initialize))))))
 
 (request 'server)
 (defun root-portal ()
@@ -402,7 +411,11 @@
 (global-set-key (kbd "C-x 5 3") 'make-main-frame)
 (global-set-key (kbd "C-c d") 'diff-buffer-with-associated-file)
 (global-set-key (kbd "C-x k") 'de-context-kill)
-(global-set-key (kbd "C-x K") (lambda () (interactive) (dolist (buf (buffer-list)) (when (buffer-file-name buf) (kill-buffer buf)))))
+(global-set-key (kbd "C-x K")
+                (lambda () (interactive)
+                  (dolist (buf (buffer-list))
+                    (when (buffer-file-name buf)
+                      (kill-buffer buf)))))
 
 (global-set-key (kbd "C-c x") 'chmod-file)
 (global-set-key (kbd "C-c i") 'init)
@@ -499,7 +512,8 @@
 
 ;; Just in case compose is broken...
 (define-key key-translation-map (kbd "<Multi_key>") 'iso-transl-ctl-x-8-map)
-(autoload 'iso-transl-ctl-x-8-map "iso-transl" "Keymap for C-x 8 prefix." t 'keymap)
+(autoload 'iso-transl-ctl-x-8-map "iso-transl"
+  "Keymap for C-x 8 prefix." t 'keymap)
 
 (when (request 'pp-c-l)
   (pretty-control-l-mode 1))
@@ -540,7 +554,7 @@
 ;;; Startup code
 (require 'org)
 (when (and (boundp 'org-default-notes-file)
-	   (file-exists-p org-default-notes-file))
+           (file-exists-p org-default-notes-file))
   (find-file org-default-notes-file)
   (require 'calendar)
   (call-interactively 'org-agenda-list)
@@ -573,7 +587,8 @@ With prefix argument, turn on if ARG > 0; else turn off."
          (message "Turned ON using `global-hl-line-mode' when Emacs is idle."))
         (t
          (cancel-timer hl-line-idle-timer)
-         (message "Turned OFF using `global-hl-line-mode' when Emacs is idle."))))
+         (message "Turned OFF using `global-hl-line-mode' when
+         Emacs is idle."))))
 
 (defun hl-line-highlight-now ()
   "Turn on `global-hl-line-mode' and highlight current line now."
@@ -606,6 +621,7 @@ With prefix argument, turn on if ARG > 0; else turn off."
   (bookmark-jump bname))
 
 (global-set-key (kbd "C-x B") 'switch-to-bookmark)
+(request 'bookmark+)
 
 ;; (require 'radio)
 
@@ -692,5 +708,21 @@ With prefix argument, turn on if ARG > 0; else turn off."
 (request 'ipa)
 
 ;; (eval-after-load "info" '(require 'info+))
+
+(eval-after-load 'nxml-mode
+  '(defun bf-pretty-print-xml-region (begin end)
+     "Pretty format XML markup in region. You need to have nxml-mode
+http://www.emacswiki.org/cgi-bin/wiki/NxmlMode installed to do
+this.  The function inserts linebreaks to separate tags that have
+nothing but whitespace between them.  It then indents the markup
+by using nxml's indentation rules."
+     (interactive "r")
+     (save-excursion
+       (nxml-mode)
+       (goto-char begin)
+       (while (search-forward-regexp "\>[ \\t]*\<" nil t)
+         (backward-char) (insert "\n"))
+       (indent-region begin end))
+     (message "Ah, much better!")))
 
 (message ".emacs loaded")
