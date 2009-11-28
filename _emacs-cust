@@ -282,6 +282,7 @@
  '(temp-buffer-resize-mode t)
  '(tempo-insert-region nil)
  '(tempo-interactive t)
+ '(test-case-python-arguments "-W ignore::DeprecationWarning")
  '(test-case-python-executable "python")
  '(tla-arch-branch (quote baz))
  '(tool-bar-mode nil nil (tool-bar))
@@ -307,7 +308,8 @@
  '(winring-prompt-on-create (quote usually))
  '(winring-show-names t)
  '(x-select-enable-clipboard nil)
- '(yas/prompt-functions (quote (yas/dropdown-prompt yas/ido-prompt yas/no-prompt))))
+ '(yas/prompt-functions (quote (yas/dropdown-prompt yas/ido-prompt yas/no-prompt)))
+ '(yas/triggers-in-field nil))
 
 (custom-set-faces
   ;; custom-set-faces was added by Custom.

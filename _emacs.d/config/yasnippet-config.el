@@ -3,7 +3,7 @@
 ;; Copyright (C) 2009  Free Software Foundation, Inc.
 
 ;; Author: Yann Hodique <yann.hodique@gmail.com>
-;; Keywords: 
+;; Keywords:
 
 ;; This file is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -22,7 +22,7 @@
 
 ;;; Commentary:
 
-;; 
+;;
 
 ;;; Code:
 
@@ -30,6 +30,8 @@
           (lambda ()
             (make-variable-buffer-local 'yas/trigger-key)
             (setq yas/trigger-key [tab])))
+
+(define-key yas/keymap [tab] 'yas/expand)
 
 (provide 'yasnippet-config)
 ;;; yasnippet-config.el ends here
