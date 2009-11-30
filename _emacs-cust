@@ -278,6 +278,7 @@
  '(speedbar-use-images nil)
  '(split-width-threshold nil)
  '(tabbar-inhibit-functions (quote (tabbar-default-inhibit-function yh/tabbar-inhibit-function)))
+ '(tags-revert-without-query t)
  '(tc-make-attribution (quote kai-tc-simple-attribution))
  '(tc-mouse-overlays t)
  '(temp-buffer-resize-mode t)
