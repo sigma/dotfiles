@@ -20,6 +20,8 @@
 (if (file-exists-p (expand-file-name "~/.emacs-local"))
     (load-file (expand-file-name "~/.emacs-local")))
 
+(require 'undo-tree)
+
 ;; Customizations are in a separate file
 (if (file-exists-p (expand-file-name "~/.emacs-cust"))
     (load-file (expand-file-name "~/.emacs-cust")))

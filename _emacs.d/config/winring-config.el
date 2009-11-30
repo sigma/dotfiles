@@ -46,13 +46,13 @@
 
 (defun winring-by-name (name)
   (let* ((ring (winring-get-ring))
-	 (n (1- (ring-length ring)))
-	 (current (winring-name-of-current))
-	 (table (list (cons current -1))))
+         (n (1- (ring-length ring)))
+         (current (winring-name-of-current))
+         (table (list (cons current -1))))
     ;; populate the completion table
     (while (<= 0 n)
       (setq table (cons (cons (winring-name-of (ring-ref ring n)) n) table)
-	    n (1- n)))
+            n (1- n)))
     (cdr (assoc name table))))
 
 (defun winring-select (name)
