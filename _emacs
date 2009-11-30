@@ -607,8 +607,10 @@ With prefix argument, turn on if ARG > 0; else turn off."
 (hl-line-when-idle-interval 1)
 
 
-(require 'gtags)
-(add-hook 'c-mode-common-hook 'gtags-mode)
+;; (require 'gtags)
+;; (add-hook 'c-mode-common-hook 'gtags-mode)
+(require 'etags)
+(require 'etags-kill)
 
 (require 'bookmark)
 (defun switch-to-bookmark (bname)
