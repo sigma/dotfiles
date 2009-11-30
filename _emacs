@@ -31,9 +31,6 @@
 ;; How emacs should look like
 (request 'visual)
 
-(when (request 'package)
-  (package-initialize))
-
 (request 'cedet)
 
 (when (request 'package)
@@ -726,5 +723,9 @@ by using nxml's indentation rules."
          (backward-char) (insert "\n"))
        (indent-region begin end))
      (message "Ah, much better!")))
+
+(when (request 'test-case-mode)
+  (add-hook 'find-file-hook 'enable-test-case-mode-if-test))
+
 
 (message ".emacs loaded")

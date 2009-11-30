@@ -188,7 +188,6 @@
  '(nntp-authinfo-file "~/.authinfo.gpg")
  '(nxhtml-global-minor-mode t)
  '(nxhtml-global-validation-header-mode t)
- '(org-CUA-compatible t)
  '(org-agenda-skip-archived-trees nil)
  '(org-agenda-start-with-clockreport-mode t)
  '(org-agenda-start-with-log-mode t)
@@ -284,6 +283,8 @@
  '(temp-buffer-resize-mode t)
  '(tempo-insert-region nil)
  '(tempo-interactive t)
+ '(test-case-python-arguments "-W ignore::DeprecationWarning")
+ '(test-case-python-executable "python")
  '(tla-arch-branch (quote baz))
  '(tool-bar-mode nil nil (tool-bar))
  '(tooltip-frame-parameters (quote ((name . "tooltip") (internal-border-width . 1) (border-width . 0))))
@@ -308,7 +309,8 @@
  '(winring-prompt-on-create (quote usually))
  '(winring-show-names t)
  '(x-select-enable-clipboard nil)
- '(yas/prompt-functions (quote (yas/dropdown-prompt yas/ido-prompt yas/no-prompt))))
+ '(yas/prompt-functions (quote (yas/dropdown-prompt yas/ido-prompt yas/no-prompt)))
+ '(yas/triggers-in-field nil))
 
 (custom-set-faces
   ;; custom-set-faces was added by Custom.
