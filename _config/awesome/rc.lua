@@ -53,7 +53,7 @@ beautiful.init(theme_path)
 modkey = "Mod4" -- Super_L
 
 terminal = "urxvtcd"
-editor = "emacsclient-cvs -c"
+editor = "emacsclient -c"
 --
 -- Window titlebars
 use_titlebar = false
@@ -152,7 +152,7 @@ mycpugraphwidget:plot_properties_set("cpu", {
 })
 
 function get_temp()
-    local filedescriptor = io.popen('awk \'{print $2 "°C"}\' /proc/acpi/thermal_zone/THRM/temperature')
+    local filedescriptor = io.popen('awk \'{print $2 "°C"}\' /proc/acpi/thermal_zone/TZ00/temperature')
     if not filedescriptor then
        return {"-"}
     end
@@ -166,16 +166,16 @@ mycpugraphwidget:buttons({button({ }, 1, function () awful.util.spawn(terminal .
 
 --
 -- Battery percentage and state indicator
--- mybaticon       = widget({ type = "imagebox", name = "mybaticon", align = "right" })
--- mybaticon.image = image(beautiful.widget_bat)
--- mybatwidget     = widget({ type = "textbox", name = "mybatwidget", align = "right" })
--- function get_batstate()
---     local filedescriptor = io.popen('acpitool -b | awk \'{sub(\/discharging,\/,"-")sub(\/charging,|charged,\/,"+")sub(\/\\.\/," "); print $4 substr($5,1,3)"%%"}\'')
---     local value = filedescriptor:read()
---     filedescriptor:close()
---     return {value}
--- end
--- wicked.register(mybatwidget, get_batstate, "$1", 20)
+mybaticon       = widget({ type = "imagebox", name = "mybaticon", align = "right" })
+mybaticon.image = image(beautiful.widget_bat)
+mybatwidget     = widget({ type = "textbox", name = "mybatwidget", align = "right" })
+function get_batstate()
+    local filedescriptor = io.popen('acpitool -b | awk \'{sub(\/discharging,\/,"-")sub(\/charging,|charged,\/,"+")sub(\/\\.\/," "); print $4 substr($5,1,3)"%%"}\'')
+    local value = filedescriptor:read()
+    filedescriptor:close()
+    return {value}
+end
+wicked.register(mybatwidget, get_batstate, "$1", 20)
 
 --
 -- Memory usage bar
@@ -446,8 +446,8 @@ for s = 1, screen.count() do
                            mycpuicon, myspace,
                            mycputempwidget, myspace, mycpugraphwidget,
                            myseparator,
-                           -- mybaticon, mybatwidget, myspace,
-                           -- myseparator,
+                           mybaticon, mybatwidget, myspace,
+                           myseparator,
                            mymemicon, myspace, mymembarwidget, myspace,
                            myseparator,
                            -- myfsicon, myfsbarwidget, myspace,
@@ -514,7 +514,7 @@ globalkeys = {
                               awful.util.eval, awful.prompt.bash, awful.util.getdir("cache") .. "/history_eval")
                           end),
 
-    keybinding({ modkey }, "F12", function () awful.spawn('xlock') end),
+    key({ modkey }, "F12", function () awful.spawn('xlock') end),
 
     --
     -- Awesome controls
