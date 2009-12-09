@@ -3,7 +3,7 @@
 -- anrxc_at_sysphere_org --
 ---------------------------
 
--- From awesome 3.3 themes are written in Lua, if you need a theme for older 
+-- From awesome 3.3 themes are written in Lua, if you need a theme for older
 -- awesome versions check the previous versions of this page, in the history.
 theme = {}
 
@@ -43,7 +43,7 @@ theme.wallpaper_cmd = { "/usr/bin/nitrogen --restore" }
 -- Taglist squares (4x14 pixels, zenburn colors)
 theme.taglist_squares       = "true"
 theme.taglist_squares_sel   = awful.util.getdir("config") .. "/icons/taglist/squarefz.png"
-theme.taglist_squares_unsel = awful.util.getdir("config") .. "/icons/taglist/squareza.png"
+theme.taglist_squares_unsel = awful.util.getdir("config") .. "/icons/taglist/squarez.png"
 
 -- Statusbar icons for window management layouts (14x14 pixels, zenburn colors)
 theme.layout_tile       = awful.util.getdir("config") .. "/icons/layouts/tile.png"
