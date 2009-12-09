@@ -53,7 +53,7 @@ beautiful.init(theme_path)
 modkey = "Mod4" -- Super_L
 
 terminal = "urxvtcd"
-editor = "emacsclient-cvs -c"
+editor = os.getenv("EDITOR")
 --
 -- Window titlebars
 use_titlebar = false
@@ -416,6 +416,10 @@ mytasklist.buttons = { button({ }, 1, function (c)
                                           if client.focus then client.focus:raise() end
                                       end) }
 
+function yhOnScreen(current, target, item)
+   return current == target and item or nil
+end
+
 -- ...add it to each screen
 for s = 1, screen.count() do
     -- Create a promptbox
@@ -452,13 +456,16 @@ for s = 1, screen.count() do
                            myseparator,
                            -- myfsicon, myfsbarwidget, myspace,
                            -- myseparator,
-                           mymailicon, myspace, mymailwidget, myspace,
-                           myseparator,
+                           yhOnScreen(s, 1, mymailicon),
+                           yhOnScreen(s, 1, myspace),
+                           yhOnScreen(s, 1, mymailwidget),
+                           yhOnScreen(s, 1, myspace),
+                           yhOnScreen(s, 1, myseparator),
                            -- myvolicon, myvolwidget, myspace, myvolbarwidget, myspace,
                            -- myseparator,
                            mydateicon, mydatewidget,
                            myseparator,
-                           s == screen.count() and mysystray or nil
+                           yhOnScreen(s, screen.count(), mysystray)
     }
     mywibox[s].screen = s
 end
@@ -580,6 +587,12 @@ clientkeys = {
     key({ modkey }, "Up",    function () awful.client.moveresize(0, -20, 0, 0) end),
     key({ modkey }, "Left",  function () awful.client.moveresize(-20, 0, 0, 0) end),
     key({ modkey }, "Right", function () awful.client.moveresize(20, 0, 0, 0) end),
+
+    key({ modkey, "Control" }, "Down",  function () awful.client.moveresize(0, 1, 0, 0) end),
+    key({ modkey, "Control" }, "Up",    function () awful.client.moveresize(0, -1, 0, 0) end),
+    key({ modkey, "Control" }, "Left",  function () awful.client.moveresize(-1, 0, 0, 0) end),
+    key({ modkey, "Control" }, "Right", function () awful.client.moveresize(1, 0, 0, 0) end),
+
     key({ modkey, "Shift" }, "0",   function (c) c.sticky = not c.sticky end),
     key({ modkey, "Shift" }, "c",   function (c) awful.util.spawn("kill -CONT " .. c.pid) end),
     key({ modkey, "Shift" }, "s",   function (c) awful.util.spawn("kill -STOP " .. c.pid) end),

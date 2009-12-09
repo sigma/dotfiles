@@ -3,59 +3,97 @@
 -- anrxc_at_sysphere_org --
 ---------------------------
 
-# Font styles for statusbars and titlebars
-font          = Profont 8
-fg_normal     = #DCDCCC
-fg_focus      = #F0DFAF
-fg_urgent     = #CC9393
-bg_normal     = #3F3F3F
-bg_focus      = #1E2320
-bg_urgent     = #3F3F3F
+-- From awesome 3.3 themes are written in Lua, if you need a theme for older
+-- awesome versions check the previous versions of this page, in the history.
+theme = {}
 
-# Windows border styles
-border_width  = 1
-border_normal = #3F3F3F
-border_focus  = #1E2320
-border_marked = #CC9393
+-- Font styles for statusbars and titlebars
+theme.font          = "Profont 8"
+theme.fg_normal     = "#DCDCCC"
+theme.fg_focus      = "#F0DFAF"
+theme.fg_urgent     = "#CC9393"
+theme.bg_normal     = "#3F3F3F"
+theme.bg_focus      = "#1E2320"
+theme.bg_urgent     = "#3F3F3F"
 
-# Widget styles
-fg_widget        = #AECF96
-fg_center_widget = #88A175
-fg_end_widget    = #FF5656
-fg_off_widget    = #494B4F
-fg_netup_widget  = #7F9F7F
-fg_netdn_widget  = #CC9393
-bg_widget        = #3F3F3F
-border_widget    = #3F3F3F
+-- Windows border styles
+theme.border_width  = "1"
+theme.border_normal = "#3F3F3F"
+theme.border_focus  = "#1E2320"
+theme.border_marked = "#CC9393"
+
+-- Titlebar styles
+theme.titlebar_bg_focus  = "#3F3F3F"
+theme.titlebar_bg_normal = "#3F3F3F"
+
+-- Widget styles
+theme.fg_widget        = "#AECF96"
+theme.fg_center_widget = "#88A175"
+theme.fg_end_widget    = "#FF5656"
+theme.fg_off_widget    = "#494B4F"
+theme.fg_netup_widget  = "#7F9F7F"
+theme.fg_netdn_widget  = "#CC9393"
+theme.bg_widget        = "#3F3F3F"
+theme.border_widget    = "#3F3F3F"
+
+-- Command used to set the wallpaper
+theme.wallpaper_cmd = { "/usr/bin/nitrogen --restore" }
 
 
-# Command used to set the wallpaper
-wallpaper_cmd = /usr/bin/nitrogen --restore
+-- Taglist squares (4x14 pixels, zenburn colors)
+theme.taglist_squares       = "true"
+theme.taglist_squares_sel   = awful.util.getdir("config") .. "/icons/taglist/squarefz.png"
+theme.taglist_squares_unsel = awful.util.getdir("config") .. "/icons/taglist/squarez.png"
+
+-- Statusbar icons for window management layouts (14x14 pixels, zenburn colors)
+theme.layout_tile       = awful.util.getdir("config") .. "/icons/layouts/tile.png"
+theme.layout_tileleft   = awful.util.getdir("config") .. "/icons/layouts/tileleft.png"
+theme.layout_tilebottom = awful.util.getdir("config") .. "/icons/layouts/tilebottom.png"
+theme.layout_tiletop    = awful.util.getdir("config") .. "/icons/layouts/tiletop.png"
+theme.layout_fairv      = awful.util.getdir("config") .. "/icons/layouts/fairv.png"
+theme.layout_fairh      = awful.util.getdir("config") .. "/icons/layouts/fairh.png"
+theme.layout_max        = awful.util.getdir("config") .. "/icons/layouts/max.png"
+theme.layout_fullscreen = awful.util.getdir("config") .. "/icons/layouts/fullscreen.png"
+theme.layout_magnifier  = awful.util.getdir("config") .. "/icons/layouts/magnifier.png"
+theme.layout_floating   = awful.util.getdir("config") .. "/icons/layouts/floating.png"
+
+-- Widget icons (from dzen, zenburn colors)
+theme.widget_cpu   = awful.util.getdir("config") .. "/icons/cpu.png"
+theme.widget_bat   = awful.util.getdir("config") .. "/icons/bat.png"
+theme.widget_mem   = awful.util.getdir("config") .. "/icons/mem.png"
+theme.widget_fs    = awful.util.getdir("config") .. "/icons/disk.png"
+theme.widget_net   = awful.util.getdir("config") .. "/icons/down.png"
+theme.widget_netup = awful.util.getdir("config") .. "/icons/up.png"
+theme.widget_mail  = awful.util.getdir("config") .. "/icons/mail.png"
+theme.widget_vol   = awful.util.getdir("config") .. "/icons/vol.png"
+theme.widget_org   = awful.util.getdir("config") .. "/icons/cal.png"
+theme.widget_date  = awful.util.getdir("config") .. "/icons/time.png"
+
+-- Titlebar icons (17x17 pixels, zenburn colors)
+--
+-- Close
+theme.titlebar_close_button_focus = awful.util.getdir("config") .. "/icons/titlebar/close_focus.png"
+theme.titlebar_close_button_normal = awful.util.getdir("config") .. "/icons/titlebar/close_normal.png"
+-- On top
+theme.titlebar_ontop_button_focus_active = awful.util.getdir("config") .. "/icons/titlebar/ontop_focus_active.png"
+theme.titlebar_ontop_button_normal_active = awful.util.getdir("config") .. "/icons/titlebar/ontop_normal_active.png"
+theme.titlebar_ontop_button_focus_inactive = awful.util.getdir("config") .. "/icons/titlebar/ontop_focus_inactive.png"
+theme.titlebar_ontop_button_normal_inactive = awful.util.getdir("config") .. "/icons/titlebar/ontop_normal_inactive.png"
+-- Sticky
+theme.titlebar_sticky_button_focus_active = awful.util.getdir("config") .. "/icons/titlebar/sticky_focus_active.png"
+theme.titlebar_sticky_button_normal_active = awful.util.getdir("config") .. "/icons/titlebar/sticky_normal_active.png"
+theme.titlebar_sticky_button_focus_inactive = awful.util.getdir("config") .. "/icons/titlebar/sticky_focus_inactive.png"
+theme.titlebar_sticky_button_normal_inactive = awful.util.getdir("config") .. "/icons/titlebar/sticky_normal_inactive.png"
+-- Floating
+theme.titlebar_floating_button_focus_active = awful.util.getdir("config") .. "/icons/titlebar/floating_focus_active.png"
+theme.titlebar_floating_button_normal_active = awful.util.getdir("config") .. "/icons/titlebar/floating_normal_active.png"
+theme.titlebar_floating_button_focus_inactive = awful.util.getdir("config") .. "/icons/titlebar/floating_focus_inactive.png"
+theme.titlebar_floating_button_normal_inactive = awful.util.getdir("config") .. "/icons/titlebar/floating_normal_inactive.png"
+-- Maximized
+theme.titlebar_maximized_button_focus_active = awful.util.getdir("config") .. "/icons/titlebar/maximized_focus_active.png"
+theme.titlebar_maximized_button_normal_active = awful.util.getdir("config") .. "/icons/titlebar/maximized_normal_active.png"
+theme.titlebar_maximized_button_focus_inactive = awful.util.getdir("config") .. "/icons/titlebar/maximized_focus_inactive.png"
+theme.titlebar_maximized_button_normal_inactive = awful.util.getdir("config") .. "/icons/titlebar/maximized_normal_inactive.png"
 
 
-# Taglist squares (4x14 pixels, zenburn colors)
-taglist_squares       = true
-taglist_squares_sel   = /home/yann/.config/awesome/icons/taglist/squarefz.png
-taglist_squares_unsel = /home/yann/.config/awesome/icons/taglist/squarezo.png
-
-# Statusbar icons for window management layouts (14x14 pixels, zenburn colors)
-layout_tile       = /home/yann/.config/awesome/icons/layouts/tile.png
-layout_tileleft   = /home/yann/.config/awesome/icons/layouts/tileleft.png
-layout_tilebottom = /home/yann/.config/awesome/icons/layouts/tilebottom.png
-layout_tiletop    = /home/yann/.config/awesome/icons/layouts/tiletop.png
-layout_fairv      = /home/yann/.config/awesome/icons/layouts/fairv.png
-layout_fairh      = /home/yann/.config/awesome/icons/layouts/fairh.png
-layout_max        = /home/yann/.config/awesome/icons/layouts/max.png
-layout_magnifier  = /home/yann/.config/awesome/icons/layouts/magnifier.png
-layout_floating   = /home/yann/.config/awesome/icons/layouts/floating.png
-
-# Widget icons (from dzen, zenburn colors)
-widget_cpu   = /home/yann/.config/awesome/icons/cpu.png
-widget_bat   = /home/yann/.config/awesome/icons/bat.png
-widget_mem   = /home/yann/.config/awesome/icons/mem.png
-widget_fs    = /home/yann/.config/awesome/icons/disk.png
-widget_net   = /home/yann/.config/awesome/icons/down.png
-widget_netup = /home/yann/.config/awesome/icons/up.png
-widget_mail  = /home/yann/.config/awesome/icons/mail.png
-widget_vol   = /home/yann/.config/awesome/icons/vol.png
-widget_date  = /home/yann/.config/awesome/icons/time.png
+return theme
