@@ -148,11 +148,10 @@ export EDITOR=zile
 export BROWSER=mozilla-firefox
 
 export TEXINPUTS=$TEXINPUTS:~/texmf:~/LaTeX/macros:~/LaTeX/fig
-export GEM_HOME=/var/lib/gems/1.8/
 export LLVM_HOME=$HOME/Projects/svn/llvm
 
 PATH=$QTDIR/bin:$KDEDIR/bin:$PATH
-export PATH=~/bin/:~/apps/bin/:/usr/local/bin:/usr/games/:$GEM_HOME/bin:$JAVA_HOME/bin:$PATH
+export PATH=~/bin/:~/apps/bin/:/usr/local/bin:/usr/games/:$JAVA_HOME/bin:$PATH
 
 export P4CONFIG=.p4config
 export P4CLIENT=yhodique-git-p4
