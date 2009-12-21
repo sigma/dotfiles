@@ -737,5 +737,4 @@ by using nxml's indentation rules."
   ;; This is your old M-x.
   (global-set-key (kbd "C-c x") 'execute-extended-command))
 
-
 (message ".emacs loaded")
