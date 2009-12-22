@@ -733,8 +733,8 @@ by using nxml's indentation rules."
   (smex-initialize)
   (global-set-key (kbd "M-x") 'smex)
   (global-set-key (kbd "M-X") 'smex-major-mode-commands)
-  (global-set-key (kbd "A-x") 'smex-update-and-run)
+  (global-set-key (kbd "C-c x") 'smex-update-and-run)
   ;; This is your old M-x.
-  (global-set-key (kbd "C-c x") 'execute-extended-command))
+  (global-set-key (kbd "A-x") 'execute-extended-command))
 
 (message ".emacs loaded")
