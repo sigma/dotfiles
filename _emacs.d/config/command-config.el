@@ -35,5 +35,8 @@
      ;; This is your old M-x.
      (global-set-key (kbd "A-x") 'execute-extended-command)))
 
+(eval-after-load 'ecb
+  '(smex-update))
+
 (provide 'command-config)
 ;;; command-config.el ends here
