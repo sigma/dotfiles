@@ -171,6 +171,7 @@
      ,@body))
 
 ;; common
+(request 'command-config)
 (request 'buffer-config)
 (request 'outline-config)
 (request 'org-config)
@@ -416,10 +417,8 @@ frame, close it. Else, die"
                     (when (buffer-file-name buf)
                       (kill-buffer buf)))))
 
-(global-set-key (kbd "C-c x") 'chmod-file)
 (global-set-key (kbd "C-c i") 'init)
 (global-set-key (kbd "C-c h") 'auto-insert)
-;;(global-set-key (kbd "C-x C-f") 'find-file-guessing)
 
 (global-set-key (kbd "H-s") 'isearchb-activate)
 
@@ -429,12 +428,6 @@ frame, close it. Else, die"
     (let ((case-fold-search isearch-case-fold-search))
       (occur (if isearch-regexp isearch-string
                (regexp-quote isearch-string))))))
-
-;; (global-set-key (kbd "<f5>")
-;;                 (lambda () (interactive)
-;;                   (if (and (boundp 'ecb-minor-mode) ecb-minor-mode)
-;;                       (ecb-deactivate)
-;;                     (ecb-activate))))
 
 (global-set-key (kbd "H-z") 'zap-upto-char)
 (global-set-key (kbd "H-M-z") 'zap-to-char)
@@ -729,12 +722,7 @@ by using nxml's indentation rules."
 (when (request 'test-case-mode)
   (add-hook 'find-file-hook 'enable-test-case-mode-if-test))
 
-(when (request 'smex)
-  (smex-initialize)
-  (global-set-key (kbd "M-x") 'smex)
-  (global-set-key (kbd "M-X") 'smex-major-mode-commands)
-  (global-set-key (kbd "C-c x") 'smex-update-and-run)
-  ;; This is your old M-x.
-  (global-set-key (kbd "A-x") 'execute-extended-command))
+;; This must be last
+(request 'smex)
 
 (message ".emacs loaded")

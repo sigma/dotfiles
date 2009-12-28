@@ -33,6 +33,8 @@
 
 (require 'dired)
 (require 'dired-x)
+(request 'dired+)
+
 (require 'ibuf-ext)
 (global-set-key (kbd "C-x C-b") 'ibuffer)
 

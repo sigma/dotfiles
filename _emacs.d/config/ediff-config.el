@@ -93,5 +93,9 @@
 
 (add-to-list 'command-switch-alist '("diff" . command-line-diff))
 
+;; Needed to correctly highlight ediff sessions
+(add-to-list 'auto-mode-alist '("\\.\\(base\\|current\\|merged\\)\\'"
+                                nil ediff-merge-files))
+
 (provide 'ediff-config)
 ;;; ediff-config.el ends here
