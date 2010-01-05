@@ -389,6 +389,7 @@
  '(lui-irc-colors-fg-3-face ((t (:foreground "green2"))))
  '(lui-irc-colors-fg-4-face ((((class color)) (:foreground "orange"))))
  '(lui-irc-colors-fg-6-face ((((class color)) (:foreground "magenta"))))
+ '(magit-log-graph ((((class color) (background dark)) (:foreground "grey10"))))
  '(menu ((((type x-toolkit)) (:background "lightgrey" :foreground "black" :box (:line-width 1 :style released-button)))))
  '(message-header-name ((((class color) (background dark)) (:inherit highlight :foreground "LightGreen"))))
  '(message-header-name-face ((((class color) (background dark)) (:foreground "green3"))) t)
