@@ -38,15 +38,17 @@
     (setq ido-temp-list
           (delq nil
                 (mapcar #'(lambda (buf)
-                            (with-current-buffer buf
-                              (when (eq major-mode yh/ido-current-mode-buffers) buf)))
+                            (and (eq (buffer-local-value 'major-mode (get-buffer buf))
+                                     yh/ido-current-mode-buffers)
+                                 buf))
                         ido-temp-list)))))
 
 (defun yh/ido-specials-to-end ()
   (let ((specials
          (delq nil (mapcar
                     (lambda (x)
-                      (if (string-match "\\*\\(?:.*\\)\\*" x)
+                      (if (and (string-match "\\*\\(?:.*\\)\\*" x)
+                               (not (string= x "*scratch*")))
                           x))
                     ido-temp-list))))
     (ido-to-end specials)))
@@ -67,7 +69,7 @@
   '(progn
      (setq ido-ignore-directories '("\\`\\.\\./" "\\`\\./")
            ido-ignore-files '("\\`#" "\\`.#" "\\`\\.\\./" "\\`\\./")
-           ido-read-file-name-as-directory-commands 
+           ido-read-file-name-as-directory-commands
            '(ediff-directories ediff-directories3 change-context gnus-summary-save-parts)
            ido-use-filename-at-point 'guess
            ido-use-url-at-point t
