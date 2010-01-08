@@ -1,11 +1,11 @@
 ;;; doc-mode.el --- convenient editing of in-code documentation
 ;;
-;; Copyright (C) 2007 Nikolaj Schumacher;;
+;; Copyright (C) 2007, 2009 Nikolaj Schumacher
 ;; Author: Nikolaj Schumacher <bugs * nschum de>
-;; Version: 0.1.1
+;; Version: 0.2
 ;; Keywords: convenience tools
 ;; URL: http://nschum.de/src/emacs/doc-mode/
-;; Compatibility: GNU Emacs 22.x
+;; Compatibility: GNU Emacs 22.x, GNU Emacs 23.x
 ;;
 ;; This file is NOT part of GNU Emacs.
 ;;
@@ -20,8 +20,7 @@
 ;; GNU General Public License for more details.
 ;;
 ;; You should have received a copy of the GNU General Public License
-;; along with this program; if not, write to the Free Software
-;; Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ;;
 ;;; Commentary:
 ;;
@@ -34,18 +33,22 @@
 ;;
 ;; Add the following to your .emacs file:
 ;; (require 'doc-mode)
-;; (add-hook 'c++-mode-hook 'doc-mode)
-;; (add-hook 'java-mode-hook 'doc-mode)
-;; [...]
+;; (add-hook 'c-mode-common-hook 'doc-mode)
 ;;
-;; The command `doc-mode-fix-tag-doc' or "C-cd" adds or replaces the
+;; The command `doc-mode-fix-tag-doc' or "C-cdd" adds or replaces the
 ;; documentation for the function, variable, or class at point.
-;; `doc-mode-remove-tag-doc' or "C-cr" removes it.
+;; `doc-mode-remove-tag-doc' or "C-cdr" removes it.
 ;;
 ;; You can fold the comments by using `doc-mode-toggle-tag-doc-folding' or
 ;; `doc-mode-fold-all'.
 ;;
-;;; Changes Log:
+;;; Change Log:
+;;
+;; 2009-03-22 (0.2)
+;;    Added `doc-mode-keywords-from-tag-func' as customizable option.
+;;    Improved parameter list change recognition.
+;;    `doc-mode-jump-to-template' now enables jumping to the latest comment.
+;;    `doc-mode-first-template' now jumps to the first template in this buffer.
 ;;
 ;; 2007-09-09 (0.1.1)
 ;;    Fixed return value detection.
@@ -57,20 +60,13 @@
 ;;; Code:
 
 (eval-when-compile (require 'cl))
-
-(eval-when (load)
-  (require 'semantic))
-
+(require 'semantic)
 (require 'cc-mode)
 (require 'newcomment) ;comment-fill-column
 
-(setq debug-ignored-errors `("^No tag found$"
-                             "^Semantic can't parse buffer$"
-                             "^No template found$"
-                             "^doc-mode not enabled$"
-                             "^Beginning of buffer$"
-                             "^End of buffer$"
-                             . ,debug-ignored-errors))
+(dolist (err `("^No tag found$" "^Semantic can't parse buffer$"
+               "^No template found$" "^doc-mode not enabled$"))
+  (add-to-list 'debug-ignored-errors err))
 
 ;; semantic-after-auto-parse-hooks
 
@@ -78,13 +74,6 @@
   "Minor mode for editing in-code documentation."
   :group 'convenience
   :group 'tools)
-
-(defcustom doc-mode-prefix-key "\C-cd"
-  "*Prefix key to use for `doc-mode'.
-The value of this variable is checked as part of loading Outline mode.
-After that, changing the prefix key requires manipulating keymaps."
-  :group 'doc-mode
-  :type 'string)
 
 (defcustom doc-mode-auto-check-p t
   "*Should the buffer documentation be checked after a Semantic reparse."
@@ -183,31 +172,75 @@ If this is nil, `comment-fill-column' is used."
   :type '(choice (const :tag "Default" nil)
                  (integer :tag "Fill Column")))
 
-(defun doc-mode-current-tag ()
-  (when (semantic-parse-tree-unparseable-p)
-    (error "Semantic can't parse buffer"))
-  (when (or (semantic-parse-tree-needs-rebuild-p)
-            (semantic-parse-tree-needs-update-p))
-    (condition-case nil
-        (semantic-fetch-tags)
-      (error (error "Semantic can't parse buffer"))))
-  (save-excursion
-    (or (semantic-current-tag-of-class 'function)
-        (semantic-current-tag-of-class 'variable)
-        (progn (beginning-of-line) (skip-chars-forward " \t\n") nil)
-        (semantic-current-tag-of-class 'function)
-        (semantic-current-tag-of-class 'variable)
-        (if (not (looking-at "/\\*\\*"))
-            (semantic-current-tag-of-class 'type)
-          (progn (search-forward "*/" nil t)
-                 (skip-chars-forward " \t\n")
-                 nil))
-        (semantic-current-tag-of-class 'function)
-        (semantic-current-tag-of-class 'variable)
-        (semantic-current-tag-of-class 'type))))
+(defcustom doc-mode-keywords-from-tag-func 'doc-mode-keywords-from-tag
+  "*Function used to generate keywords for a tag.
+This must be a function that takes two arguments.  The first argument is the
+Semantic tag for which to generate keywords, the second is a list of existing
+keywords taken from the current doc comment.  It should return the new list of
+keywords.  Each element in a keyword list can be either a string or a list with
+a keyword, optional argument and optional description.  Additional entries with
+undetermined content should be created with `doc-mode-new-keyword'."
+  :group 'doc-mode
+  :type 'function)
 
-(defun doc-mode-current-tag-or-bust ()
-  (or (doc-mode-current-tag) (error "No tag found")))
+;;; keywords ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defconst doc-mode-font-lock-keywords
+  (eval-when-compile
+    `((,(concat "[\\@]"
+         (regexp-opt
+          '("addindex" "addtogroup" "anchor" "arg" "author" "brief" "callgraph"
+            "callergraph" "category" "code" "cond" "copydoc" "date" "defgroup"
+            "deprecated" "details" "dir" "dontinclude" "dot" "dotfile" "e"
+            "else" "elseif" "em" "endcode" "endcond" "enddot" "endhtmlonly"
+            "endif" "endlatexonly" "endlink" "endmanonly" "endmsc" "endverbatim"
+            "endxmlonly" "example" "f$" "f[" "f]" "file" "fn" "hideinitializer"
+            "htmlinclude" "htmlonly" "if" "ifnot" "image" "include"
+            "includelineno" "ingroup" "internal" "invariant" "latexonly" "li"
+            "line" "link" "mainpage" "manonly" "msc" "name" "nosubgrouping"
+            "note" "overload" "package" "page" "par" "paragraph"  "post" "pre"
+            "private" "privatesection" "property" "protected" "protectedsection"
+            "public" "publicsection" "ref" "remarks" "return" "retval" "sa"
+            "section" "see" "serial" "serialData" "serialField"
+            "showinitializer" "since" "skip" "skipline" "subpage" "subsection"
+            "subsubsection" "test" "typedef" "until" "defvar" "verbatim"
+            "verbinclude" "version" "weakgroup" "xmlonly" "xrefitem" "$" "@"
+            "\\" "&" "~" "<" ">" "#" "%") t)
+         "\\>")
+       (0 font-lock-keyword-face prepend))
+      ;; don't highlight \n, it's too common in code
+      ("@n" (0 font-lock-keyword-face prepend))
+      (,(concat "\\([@\\]"
+         (regexp-opt '("class" "struct" "union" "exception" "enum" "throw"
+                       "throws") t)
+         "\\)\\>\\(?:[ \t]+\\(\\sw+\\)\\)?")
+       (1 font-lock-keyword-face prepend)
+       (3 font-lock-type-face prepend))
+      (,(concat "\\([@\\]"
+         (regexp-opt '("param" "param[in]" "param[out]" "param[in+out]" "a"
+                       "namespace" "relates" "relatesalso" "def") t)
+         "\\)\\>\\(?:[ \t]+\\(\\sw+\\)\\)?")
+       (1 font-lock-keyword-face prepend)
+       (3 font-lock-variable-name-face prepend))
+      (,(concat "\\([@\\]retval\\)\\>\\(?:[ \t]+\\(\\sw+\\)\\)?")
+       (1 font-lock-keyword-face prepend)
+       (2 font-lock-function-name-face prepend))
+      (,(concat "[@\\]" (regexp-opt '("attention" "warning" "todo" "bug") t)
+                "\\>")
+       (0 font-lock-warning-face prepend))
+      (,(concat "{@"
+         (regexp-opt '("docRoot" "inheritDoc" "link" "linkplain" "value") t)
+         "}")
+       (0 font-lock-keyword-face prepend))
+      ("\\([@\\]b\\)[ \t\n]+\\([^ \t\n]+\\)"
+       (1 font-lock-keyword-face prepend)
+       (2 'bold prepend))
+      ("\\([@\\]em?\\)[ \t\n]+\\([^ \t\n]+\\)"
+       (1 font-lock-keyword-face prepend)
+       (2 'italic prepend))
+      ("\\([@\\][cp]\\)[ \t\n]+\\([^ \t\n]+\\)"
+       (1 font-lock-keyword-face prepend)
+       (2 'underline prepend)))))
 
 ;;; templates ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -237,47 +270,126 @@ If this is nil, `comment-fill-column' is used."
       (delete-region (overlay-start ov) (overlay-end ov)))))
 
 ;;;###autoload
-(defun doc-mode-next-template ()
-  "Jump to the next unfinished documentation template."
+(defun doc-mode-next-template (&optional pos limit)
+  "Jump to the next unfinished documentation template in this buffer."
   (interactive)
-  (let ((min-start (point-max))
-        (pos (point))
+  (unless pos (setq pos (point)))
+  (unless limit (setq limit (point-max)))
+  (let ((min-start limit)
         start)
     (dolist (ov doc-mode-templates)
       (setq start (overlay-start ov))
       (and (> start pos)
            (< start min-start)
            (setq min-start start)))
-    (when (= min-start (point-max))
+    (when (= min-start limit)
       (error "End of buffer"))
     (push-mark)
     (goto-char min-start)))
 
 ;;;###autoload
-(defun doc-mode-previous-template ()
-  "Jump to the previous unfinished documentation template."
+(defun doc-mode-previous-template (&optional pos limit)
+  "Jump to the previous unfinished documentation template in this buffer."
   (interactive)
-  (let ((max-start (point-min))
-        (pos (point))
+  (unless pos (setq pos (point)))
+  (unless limit (setq limit (point-min)))
+  (let ((max-start limit)
         start)
     (dolist (ov doc-mode-templates)
       (setq start (overlay-start ov))
       (and (< start pos)
            (> start max-start)
            (setq max-start start)))
-    (when (= max-start (point-min))
+    (when (= max-start limit)
       (error "Beginning of buffer"))
     (push-mark)
     (goto-char max-start)))
 
 ;;;###autoload
 (defun doc-mode-first-template ()
-  "Jump to the oldest unfinished documentation template."
+  "Jump to the first unfinished documentation template in this buffer."
   (interactive)
-  (unless doc-mode-templates
-    (error "No template found"))
-  (push-mark)
-  (goto-char (overlay-start (car (last doc-mode-templates)))))
+  (condition-case err
+      (doc-mode-next-template (point-min))
+    (error (error "No template found"))))
+
+;;; mode ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defvar doc-mode-lighter " doc")
+
+(defvar doc-mode-prefix-map
+  (let ((map (make-sparse-keymap)))
+    (define-key map "d" 'doc-mode-fix-tag-doc)
+    (define-key map "c" 'doc-mode-check-tag-doc)
+    (define-key map "t" 'doc-mode-toggle-tag-doc-folding)
+    (define-key map "f" 'doc-mode-fold-tag-doc)
+    (define-key map "u" 'doc-mode-unfold-tag-doc)
+    (define-key map "r" 'doc-mode-remove-tag-doc)
+    (define-key map "i" 'doc-mode-add-tag-doc)
+    (define-key map "e" 'doc-mode-next-faulty-doc)
+    (define-key map "n" 'doc-mode-next-template)
+    (define-key map "\C-c" 'doc-mode-check-buffer)
+    (define-key map "\C-f" 'doc-mode-fold-all)
+    (define-key map "\C-u" 'doc-mode-unfold-all)
+    map))
+
+(defvar doc-mode-map
+  (let ((map (make-sparse-keymap)))
+    (define-key map "\C-c\C-d" doc-mode-prefix-map)
+    map)
+  "Keymap used for `doc-mode'.")
+
+;;;###autoload
+(define-minor-mode doc-mode
+  "Minor mode for editing in-code documentation."
+  nil doc-mode-lighter doc-mode-map
+  (if doc-mode
+      (progn
+        (font-lock-add-keywords nil doc-mode-font-lock-keywords)
+        (when doc-mode-auto-check-p
+          (add-hook 'semantic-after-auto-parse-hooks 'doc-mode-check-buffer
+                    nil t)
+          (add-hook 'semantic-after-idle-scheduler-reparse-hooks
+                    'doc-mode-check-buffer nil t)))
+    (dolist (ov doc-mode-templates)
+      (delete-overlay ov))
+    (kill-local-variable 'doc-mode-templates)
+    (doc-mode-unfold-all)
+    (font-lock-remove-keywords nil doc-mode-font-lock-keywords)
+    (remove-hook 'semantic-after-auto-parse-hooks 'doc-mode-check-buffer t)
+    (remove-hook 'semantic-after-idle-scheduler-reparse-hooks
+                 'doc-mode-check-buffer t))
+
+  (when font-lock-mode
+    (font-lock-fontify-buffer)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defun doc-mode-current-tag ()
+  (when (semantic-parse-tree-unparseable-p)
+    (error "Semantic can't parse buffer"))
+  (when (or (semantic-parse-tree-needs-rebuild-p)
+            (semantic-parse-tree-needs-update-p))
+    (condition-case nil
+        (semantic-fetch-tags)
+      (error (error "Semantic can't parse buffer"))))
+  (save-excursion
+    (or (semantic-current-tag-of-class 'function)
+        (semantic-current-tag-of-class 'variable)
+        (progn (beginning-of-line) (skip-chars-forward " \t\n") nil)
+        (semantic-current-tag-of-class 'function)
+        (semantic-current-tag-of-class 'variable)
+        (if (not (looking-at "/\\*\\*"))
+            (semantic-current-tag-of-class 'type)
+          (progn (search-forward "*/" nil t)
+                 (skip-chars-forward " \t\n")
+                 nil))
+        (semantic-current-tag-of-class 'function)
+        (semantic-current-tag-of-class 'variable)
+        (semantic-current-tag-of-class 'type))))
+
+(defun doc-mode-current-tag-or-bust ()
+  (or (doc-mode-current-tag) (error "No tag found")))
 
 ;;; insertion ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -322,21 +434,21 @@ If this is nil, `comment-fill-column' is used."
 
 (defun doc-mode-insert-keyword (keyword indent)
   (indent-to-column indent)
-  (let* (;;(line (apply 'doc-mode-markup keyword))
-         (beg (point))
-         (fill-column (or doc-mode-fill-column comment-fill-column fill-column))
-         (fill-prefix (when doc-mode-align-keyword-arguments
-                        (concat (buffer-substring (point-at-bol) (point))
-                                doc-mode-template-continue
-                                (make-string (doc-mode-line-indent keyword) ? )
-                                ))))
+  (let ((fill-column (or doc-mode-fill-column comment-fill-column fill-column))
+        (fill-prefix (when doc-mode-align-keyword-arguments
+                       (concat (buffer-substring (point-at-bol) (point))
+                               doc-mode-template-continue
+                               (make-string (doc-mode-line-indent keyword)
+                                            ? )))))
     (doc-mode-insert-line keyword indent)))
 
 (defun doc-mode-insert-doc (keywords &optional pos)
   "Insert a documentation at POS.
 LINES is a list of keywords."
   (save-excursion
-    (when pos (goto-char pos))
+    (if pos
+        (goto-char pos)
+      (setq pos (point)))
     (let ((indent (current-column)))
 
       (if (and (not (cdr keywords)) doc-mode-allow-single-line-comments)
@@ -379,7 +491,7 @@ LINES is a list of keywords."
         (move-to-column indent t))))
 
     (and doc-mode-jump-to-template doc-mode-templates
-         (doc-mode-first-template)))
+         (ignore-errors (doc-mode-next-template pos (point)))))
 
 (defun doc-mode-remove-doc (point)
   "Remove the documentation before POINT."
@@ -433,11 +545,6 @@ returned.  Otherwise a cons of the doc's beginning and end is given."
 
 ;;; formating ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defun doc-mode-markup (markup &optional argument description)
-  (concat "@" markup
-          (when argument " ") argument
-          (when description " ") description))
-
 (defun doc-mode-new-keyword (keyword &optional argument)
   (if (equal keyword "param")
       (list keyword argument '(prompt "<doc>"))
@@ -454,15 +561,6 @@ returned.  Otherwise a cons of the doc's beginning and end is given."
                            (and (re-search-forward "\\(\\<int\\>\\)\\|{\\|;"
                                                    (semantic-tag-end tag) t)
                                 (match-beginning 1))))))
-
-(defun doc-mode-format-tag (tag)
-  (cons `(prompt ,(format "Description for %s." (semantic-tag-name tag)))
-        (nconc (mapcar (lambda (argument)
-                         (doc-mode-new-keyword "param"
-                                               (semantic-tag-name argument)))
-                       (semantic-tag-get-attribute tag :arguments))
-               (when (doc-mode-has-return-value-p tag)
-                 (list (doc-mode-new-keyword "return"))))))
 
 ;;; extracting ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -536,19 +634,22 @@ argument value) or (keyword argument)."
             results))
     (nreverse results)))
 
+(defun doc-mode-extract-keywords-for-tag (tag)
+  (let ((bounds (doc-mode-find-doc-bounds (semantic-tag-start tag))))
+    (when bounds (doc-mode-extract-keywords (plist-get bounds :beg)
+                                            (plist-get bounds :end)))))
+
 (defun doc-mode-find-keyword (keyword keywords)
-  (let (results)
-    (dolist (k keywords)
-      (when (and (consp k) (string= (car k) keyword))
-        (push k results)))
-    (nreverse results)))
+  (when keywords
+    (if (and (consp (car keywords)) (string= (car (car keywords)) keyword))
+        (cons (car keywords) (doc-mode-find-keyword keyword (cdr keywords)))
+      (doc-mode-find-keyword keyword (cdr keywords)))))
 
 (defun doc-mode-filter-keyword (keyword keywords)
-  (let (results)
-    (dolist (k keywords)
-      (unless (and (consp k) (string= (car k) keyword))
-        (push k results)))
-    (nreverse results)))
+  (when keywords
+    (if (and (consp (car keywords)) (string= (car (car keywords)) keyword))
+        (doc-mode-filter-keyword keyword (cdr keywords))
+      (cons (car keywords) (doc-mode-filter-keyword keyword (cdr keywords))))))
 
 (defun doc-mode-find-eligible-tags ()
   (when buffer-file-name
@@ -595,7 +696,7 @@ Returns (length LIST) if no occurrence was found."
   (let ((lists (make-vector (1+ (length doc-mode-template-keywords)) nil))
         description)
     (dolist (k keywords)
-      (if (stringp k)
+      (if (or (stringp k) (and (eq (car k) 'prompt)))
           (push k description)
         (push k (elt lists (doc-mode-position (car k)
                                               doc-mode-template-keywords)))))
@@ -606,106 +707,117 @@ Returns (length LIST) if no occurrence was found."
                             result)))
       (nconc (nreverse description) result))))
 
-(defun doc-mode-missing-parameters (keywords tag)
-  (let ((parameters (mapcar 'cadr (doc-mode-find-keyword "param" keywords)))
-        result)
-    (dolist (k (mapcar 'semantic-tag-name
-                       (semantic-tag-get-attribute tag :arguments)))
-      (unless (member k parameters)
-        (push (doc-mode-new-keyword "param" k) result)))
-    result))
+(defun doc-mode-update-parameters (old new)
+  "Cleanse and sort NEW parameters according to OLD parameter list."
+  (let (params car-new)
+    (while (setq car-new (pop new))
+      (push (or (dolist (p old) ;; search for match in old
+                  (when (equal (cadr p) car-new)
+                    (setq old (delete p old))
+                    (return p)))
+                ;; this parameter wasn't there before
+                (if (or (null old) (member (cadr (car old)) new))
+                    ;; insertion, new
+                    (doc-mode-new-keyword "param" car-new)
+                  ;; the old parameter at this pos isn't there anymore, rename
+                  (list* "param" car-new (cddr (pop old)))))
+            params))
+    (nreverse params)))
 
-(defun doc-mode-invalid-parameters (keywords tag)
-  (let ((parameters (mapcar 'semantic-tag-name
-                            (semantic-tag-get-attribute tag :arguments)))
-        result)
-    (dolist (k (doc-mode-find-keyword "param" keywords))
-      (unless (member (cadr k) parameters)
-        (push k result)))
-    result))
+(defun doc-mode-keywords-from-tag (tag keywords)
+  "Create keywords for a Semantic TAG, taking descriptions from old KEYWORDS"
+  (let ((old-params (doc-mode-find-keyword "param" keywords))
+        (new-params (mapcar 'semantic-tag-name
+                            (semantic-tag-get-attribute tag :arguments))))
+    ;; fix return value
+    (if (doc-mode-has-return-value-p tag)
+        ;; add
+        (unless (doc-mode-find-keyword "return" keywords)
+          (push (doc-mode-new-keyword "return") keywords))
+      ;; remove
+      (setq keywords (doc-mode-filter-keyword "return" keywords)))
+    (unless (stringp (car keywords))
+      (push `(prompt ,(format "Description for %s." (semantic-tag-name tag)))
+            keywords))
+    (doc-mode-sort-keywords (nconc (doc-mode-update-parameters old-params
+                                                               new-params)
+                                   (doc-mode-filter-keyword "param" keywords))
+                            tag)))
 
 ;;;###autoload
 (defun doc-mode-fix-tag-doc (tag)
   (interactive (list (doc-mode-current-tag-or-bust)))
-  (let ((bounds (doc-mode-find-doc-bounds (semantic-tag-start tag))))
-    (if (null bounds)
-        (doc-mode-add-tag-doc tag)
-      (let* ((beg (plist-get bounds :beg))
-             (end (plist-get bounds :end))
-             (keywords (doc-mode-extract-keywords beg end))
-             (missing (doc-mode-missing-parameters keywords tag))
-             (invalid (doc-mode-invalid-parameters keywords tag)))
-        ;; fix parameters
-        (if (= (length missing) (length invalid))
-            (while missing
-              (setcar (cdr (pop invalid)) (cadr (pop missing))))
-          (setq keywords (nconc keywords missing)))
-        ;; fix return value
-        (if (doc-mode-has-return-value-p tag)
-            ;; add
-            (unless (doc-mode-find-keyword "return" keywords)
-              (push (doc-mode-new-keyword "return") keywords))
-          ;; remove
-          (setq keywords (doc-mode-filter-keyword "return" keywords)))
-        (doc-mode-remove-tag-doc tag)
-        (doc-mode-insert-doc (doc-mode-sort-keywords keywords tag)
-                             (semantic-tag-start tag))))))
+  (let ((keywords (funcall doc-mode-keywords-from-tag-func
+                           tag (doc-mode-extract-keywords-for-tag tag))))
+    (doc-mode-remove-tag-doc tag)
+    (doc-mode-insert-doc keywords (semantic-tag-start tag))
+    ;; update lighter
+    (doc-mode-check-buffer)))
 
+;;;###autoload
+(defalias 'doc-mode-add-tag-doc 'doc-mode-fix-tag-doc)
 
-(defun doc-mode-format-message (type &optional parameters)
-  (if (eq type 'none)
-      "No documentation:"
-    (when parameters
-      (concat (case type
-                ('missing "Missing")
-                ('invalid "Invalid"))
-              " parameter" (when (cdr parameters) "s") ": "
-              (mapconcat 'identity (mapcar 'cadr parameters) ", ")))))
+(defun doc-mode-format-message (type parameters)
+  (when parameters
+    (concat (case type
+              ('missing "Missing")
+              ('invalid "Invalid"))
+            " parameter" (when (cdr parameters) "s") ": "
+            (mapconcat 'identity parameters ", "))))
 
-
-(defun doc-mode-check-tag-doc (tag)
-  (let ((bounds (doc-mode-find-doc-bounds (semantic-tag-start tag))))
-    (if bounds
-        (let* ((beg (plist-get bounds :beg))
-               (end (plist-get bounds :end))
-               (keywords (doc-mode-extract-keywords beg end))
-               (missing (doc-mode-format-message 'missing
-                                                 (doc-mode-missing-parameters
-                                                  keywords tag)))
-               (invalid (doc-mode-format-message 'invalid
-                                                 (doc-mode-invalid-parameters
-                                                  keywords tag))))
-          (or (and invalid missing
-                   (concat invalid "\n" missing))
-              invalid
-              missing))
-      (doc-mode-format-message 'none))))
-
-(defun doc-mode-first-faulty-tag-doc ()
-  (let ((tags (doc-mode-find-eligible-tags)) invalid)
-    (while tags
-      (if (setq invalid (doc-mode-check-tag-doc (car tags)))
-          (setq invalid (cons (car tags) invalid) tags nil)
-        (pop tags)))
-    invalid))
+;;;###autoload
+(defun doc-mode-check-tag-doc (tag &optional print-message-p)
+  (interactive (list (doc-mode-current-tag-or-bust) t))
+  (let* ((actual (doc-mode-extract-keywords-for-tag tag))
+         (expected (mapcar 'semantic-tag-name
+                           (semantic-tag-get-attribute tag :arguments))))
+    (if actual
+        (let ((no-doc-p (not (stringp (car actual))))
+              ;; we only report parameters
+              (actual (mapcar 'cadr (doc-mode-find-keyword "param"
+                                                           actual)))
+              invalid)
+          (dolist (keyword actual)
+            (if (member keyword expected)
+                (setq expected (delete keyword expected))
+              (push keyword invalid)))
+          (when print-message-p
+            (message "%s" (concat (and no-doc-p "Missing documentation")
+                                  (and no-doc-p expected "\n")
+                                  (doc-mode-format-message 'missing expected)
+                                  (and (or no-doc-p expected) invalid "\n")
+                                  (doc-mode-format-message 'invalid invalid))))
+          (or no-doc-p expected invalid))
+      (when print-message-p
+        (message "Missing comment"))
+      t)))
 
 ;;;###autoload
 (defun doc-mode-check-buffer ()
   (interactive)
-  (let ((invalid-p (doc-mode-first-faulty-tag-doc)))
-    (setq doc-mode-lighter (if invalid-p " doc!" " doc"))
-    invalid-p))
+  (kill-local-variable 'doc-mode-lighter)
+  (dolist (tag (doc-mode-find-eligible-tags))
+    (when (doc-mode-check-tag-doc tag)
+      (set (make-local-variable 'doc-mode-lighter) " doc!")
+      (return t))))
+
+(defun doc-mode-first-faulty-tag-doc ()
+  (dolist (tag (sort (doc-mode-find-eligible-tags)
+                     (lambda (a b) (< (semantic-tag-start a)
+                                      (semantic-tag-start b)))))
+    (when (doc-mode-check-tag-doc tag)
+      (return tag))))
 
 ;;;###autoload
 (defun doc-mode-next-faulty-doc ()
   "Jump to the next faulty documentation and print error."
   (interactive)
-  (let ((tag (doc-mode-first-faulty-tag-doc)))
-    (if (null tag)
-        (message "Documentation checked")
-      (push-mark)
-      (goto-char (semantic-tag-start (car tag)))
-      (message "%s" (cdr tag)))))
+  (let ((tag (or (doc-mode-first-faulty-tag-doc)
+                 (error "End of buffer"))))
+    (push-mark)
+    (goto-char (semantic-tag-start tag))
+    ;; check again with message
+    (doc-mode-check-tag-doc tag t)))
 
 ;;; folding ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -784,8 +896,6 @@ If called interactively, use the tag given by `doc-mode-current-tag'."
     (error "doc-mode not enabled"))
   (doc-mode-unfold-doc (semantic-tag-start tag)))
 
-;;; all
-
 ;;;###autoload
 (defun doc-mode-fold-all (&optional arg)
   (interactive "P")
@@ -812,114 +922,6 @@ If called interactively, use the tag given by `doc-mode-current-tag'."
   (interactive (list (doc-mode-current-tag-or-bust)))
   (or (doc-mode-unfold-tag-doc tag)
       (doc-mode-fold-tag-doc tag)))
-
-;;; keywords ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(defconst doc-mode-font-lock-keywords
-  (eval-when-compile
-    `((,(concat "[\\@]"
-         (regexp-opt
-          '("addindex" "addtogroup" "anchor" "arg" "author" "brief" "callgraph"
-            "callergraph" "category" "code" "cond" "copydoc" "date" "defgroup"
-            "deprecated" "details" "dir" "dontinclude" "dot" "dotfile" "e"
-            "else" "elseif" "em" "endcode" "endcond" "enddot" "endhtmlonly"
-            "endif" "endlatexonly" "endlink" "endmanonly" "endmsc" "endverbatim"
-            "endxmlonly" "example" "f$" "f[" "f]" "file" "fn" "hideinitializer"
-            "htmlinclude" "htmlonly" "if" "ifnot" "image" "include"
-            "includelineno" "ingroup" "internal" "invariant" "latexonly" "li"
-            "line" "link" "mainpage" "manonly" "msc" "n" "name" "nosubgrouping"
-            "note" "overload" "package" "page" "par" "paragraph"  "post" "pre"
-            "private" "privatesection" "property" "protected" "protectedsection"
-            "public" "publicsection" "ref" "remarks" "return" "retval" "sa"
-            "section" "see" "serial" "serialData" "serialField"
-            "showinitializer" "since" "skip" "skipline" "subpage" "subsection"
-            "subsubsection" "test" "typedef" "until" "defvar" "verbatim"
-            "verbinclude" "version" "weakgroup" "xmlonly" "xrefitem" "$" "@"
-            "\\" "&" "~" "<" ">" "#" "%") t)
-         "\\>")
-       (0 font-lock-keyword-face prepend))
-      (,(concat "\\([@\\]"
-         (regexp-opt '("class" "struct" "union" "exception" "enum" "throw"
-                       "throws") t)
-         "\\)\\>\\(?:[ \t]+\\(\\sw+\\)\\)?")
-       (1 font-lock-keyword-face prepend)
-       (3 font-lock-type-face prepend))
-      (,(concat "\\([@\\]"
-         (regexp-opt '("param" "param[in]" "param[out]" "param[in+out]" "a"
-                       "namespace" "relates" "relatesalso" "def") t)
-         "\\)\\>\\(?:[ \t]+\\(\\sw+\\)\\)?")
-       (1 font-lock-keyword-face prepend)
-       (3 font-lock-variable-name-face prepend))
-      (,(concat "\\([@\\]retval\\)\\>\\(?:[ \t]+\\(\\sw+\\)\\)?")
-       (1 font-lock-keyword-face prepend)
-       (2 font-lock-function-name-face prepend))
-      (,(concat "[@\\]" (regexp-opt '("attention" "warning" "todo" "bug") t)
-                "\\>")
-       (0 font-lock-warning-face prepend))
-      (,(concat "{@"
-         (regexp-opt '("docRoot" "inheritDoc" "link" "linkplain" "value") t)
-         "}")
-       (0 font-lock-keyword-face prepend))
-      ("\\([@\\]b\\)[ \t\n]+\\([^ \t\n]+\\)"
-       (1 font-lock-keyword-face prepend)
-       (2 'bold prepend))
-      ("\\([@\\]em?\\)[ \t\n]+\\([^ \t\n]+\\)"
-       (1 font-lock-keyword-face prepend)
-       (2 'italic prepend))
-      ("\\([@\\][cp]\\)[ \t\n]+\\([^ \t\n]+\\)"
-       (1 font-lock-keyword-face prepend)
-       (2 'underline prepend)))))
-
-;;; mode ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(defvar doc-mode-lighter " doc")
-
-(defvar doc-mode-prefix-map
-  (let ((map (make-sparse-keymap)))
-    (define-key map "d" 'doc-mode-fix-tag-doc)
-    (define-key map "c" 'doc-mode-check-tag-doc)
-    (define-key map "t" 'doc-mode-toggle-tag-doc-folding)
-    (define-key map "f" 'doc-mode-fold-tag-doc)
-    (define-key map "u" 'doc-mode-unfold-tag-doc)
-    (define-key map "r" 'doc-mode-remove-tag-doc)
-    (define-key map "i" 'doc-mode-add-tag-doc)
-    (define-key map "e" 'doc-mode-next-faulty-doc)
-    (define-key map "n" 'doc-mode-next-template)
-    (define-key map "\C-c" 'doc-mode-check-buffer)
-    (define-key map "\C-f" 'doc-mode-fold-all)
-    (define-key map "\C-u" 'doc-mode-unfold-all)
-    map))
-
-;;;###autoload
-(define-minor-mode doc-mode
-  "Minor mode for editing in-code documentation."
-  nil doc-mode-lighter (list (cons doc-mode-prefix-key doc-mode-prefix-map))
-  (if doc-mode
-      (progn
-        (font-lock-add-keywords nil doc-mode-font-lock-keywords)
-        (when doc-mode-auto-check-p
-          (add-hook 'semantic-after-auto-parse-hooks 'doc-mode-check-buffer
-                    nil t)
-          (add-hook 'semantic-after-idle-scheduler-reparse-hooks
-                    'doc-mode-check-buffer nil t)))
-    (dolist (ov doc-mode-templates)
-      (delete-overlay ov))
-    (kill-local-variable 'doc-mode-templates)
-    (doc-mode-unfold-all)
-    (font-lock-remove-keywords nil doc-mode-font-lock-keywords)
-    (remove-hook 'semantic-after-auto-parse-hooks 'doc-mode-check-buffer t)
-    (remove-hook 'semantic-after-idle-scheduler-reparse-hooks
-                 'doc-mode-check-buffer t))
-
-  (when font-lock-mode
-    (font-lock-fontify-buffer)))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-;;;###autoload
-(defun doc-mode-add-tag-doc (tag)
-  (interactive (list (doc-mode-current-tag-or-bust)))
-  (doc-mode-insert-doc (doc-mode-format-tag tag) (semantic-tag-start tag)))
 
 (provide 'doc-mode)
 

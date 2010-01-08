@@ -36,7 +36,7 @@
 ;; encyclopedia (http://www.wikipedia.org). It is intended to work
 ;; with GNU Emacs 21.x, and Xemacs 21.4.x. See below for details.
 
-;; wikipedia mode can be found also at: 
+;; wikipedia mode can be found also at:
 ;; http://en.wikipedia.org/wiki/Wikipedia:Wikipedia-mode.el
 
 ;;{{{ INSTALLING WIKIPEDIA-MODE
@@ -69,10 +69,10 @@
 
 ;;{{{ REQUIREMENTS
 
-;; This  is not a real requirements but I highly recommend to use 
-;; outline-magic written by Carsten Dominik. If you don't want to use it  
+;; This  is not a real requirements but I highly recommend to use
+;; outline-magic written by Carsten Dominik. If you don't want to use it
 ;; you have to comment out the relevant reference to outline magic.
-;; It can be found at 
+;; It can be found at
 ;; http://www.astro.uva.nl/~dominik/Tools/outline-magic.el
 
 
@@ -111,7 +111,7 @@
 ;; Installing longlines-mode
 ;; =========================
 ;;
-;; You may find pabbrev.el useful, which can be found at 
+;; You may find pabbrev.el useful, which can be found at
 ;; http://www.russet.org.uk/download/emacs/pabbrev.el
 
 
@@ -154,7 +154,7 @@
 
 ;;         PROS: if the editor supports UTF8, then ee-helper will
 ;;               pass the coding flawlessly.
-;; 
+;;
 ;;         CONTRA: the problem with this script is that it directly
 ;;                 communicates with the wikipedia site and does not
 ;;                 warn you about simultaneous editing. Use it with
@@ -166,17 +166,17 @@
 ;;         PROS: After finishing editing you use the wikipedia
 ;;               software to submit your changes and not the script,
 ;;               so you are warned about possible conflicting editing.
-;; 
+;;
 ;;         CONTRA: the official version does not support UTF8,
 ;;                 however there is now a new semi official version which
 ;;                 does support UTF8.
 
 
-;; 
+;;
 ;; Installing ee-helper
 ;; ====================
-;; 
-;; Download   the perl script  from 
+;;
+;; Download   the perl script  from
 ;;
 ;;   http://meta.wikimedia.org/wiki/Help:External_editors
 ;;
@@ -240,7 +240,7 @@
 ;;               moreover on top on that a section header == will be
 ;;               inserted, which consists of the Word Draft, a subject
 ;;               you are asked for and a date stamp.
-;; 
+;;
 ;;               Another possibility consists in using the function
 ;;               wikipedia-draft, bound to \C-c \C-m then a new buffer
 ;;               will opened already in wikipedia mode. You edit and then
@@ -248,34 +248,34 @@
 ;;               wikipedia-draft-data-file in the same manner as
 ;;               described above using the function
 ;;               wikipedia-draft-buffer (bound to \C-c\C-k)
-;; 
+;;
 ;;               BACK: In order to copy/send the content of temporary
 ;;               buffer or of a page in the wikipedia-draft-data-file
 ;;               back in to your wikipedia file, use the function
 ;;               wikipedia-send-draft-to-mozex bound to "\C-c\C-c". You
 ;;               will be asked to which buffer to copy your text!
-;; 
-;; 
+;;
+;;
 ;;            2. You want to reply  in a discussion page to a specific
 ;;               contribution, you can use either the function
-;; 
+;;
 ;;               \\[wikipedia-reply-at-point-simple] bound to [(meta shift r)]
 ;;               which inserts a newline, a hline, and the signature of
-;;               the author. Or can use 
+;;               the author. Or can use
 ;;               \\[wikipedia-draft-reply] bound  [(meta r)]
 ;;               which does the same as wikipedia-reply-at-point-simple
 ;;               but in a temporary draft buffer.
-;; 
+;;
 ;;               BACK: In order to copy/send the content of that buffer
 ;;               back in to your wikipedia file, use the function
 ;;               \\[wikipedia-send-draft-to-mozex] bound to "\C-c\C-c". You
 ;;               will be asked to which buffer to copy your text! If
 ;;               you want a copy to be send to your draft file, use
-;;               the variable  wikipedia-draft-send-archive 
-;; 
+;;               the variable  wikipedia-draft-send-archive
+;;
 
 ;;}}}
-          
+
 ;;{{{ NEW FUNCTIONS AND VARIABLES
 
 
@@ -283,85 +283,85 @@
 ;;==================
 ;; NEW FUNCTIONS
 ;; ------------------
-;; wikipedia-insert-enumerate 
-;; wikipedia-insert-itemize 
-;; wikipedia-insert-strong-emphasis 
-;; wikipedia-insert-bold 
-;; wikipedia-insert-italics 
-;; wikipedia-insert-header 
-;; wikipedia-insert-link 
-;; wikipedia-turn-on-outline-minor-mode 
-;; wikipedia-insert-signature 
-;; wikipedia-insert-hline 
-;; wikipedia-unfill-paragraph-or-region 
-;; wikipedia-start-paragraph 
-;; wikipedia-hardlines 
-;; wikipedia-outline-magic-keys 
-;; wikipedia-enhance-indent 
-;; wikipedia-yank-prefix 
-;; wikipedia-simple-outline-promote 
-;; wikipedia-simple-outline-demote 
-;; wikipedia-next-long-line 
-;; wikipedia-unfill-paragraph 
-;; wikipedia-rename-buffer 
-;; wikipedia-draft 
-;; wikipedia-draft-buffer-desc 
-;; wikipedia-draft-append-to-file 
-;; wikipedia-draft-page 
+;; wikipedia-insert-enumerate
+;; wikipedia-insert-itemize
+;; wikipedia-insert-strong-emphasis
+;; wikipedia-insert-bold
+;; wikipedia-insert-italics
+;; wikipedia-insert-header
+;; wikipedia-insert-link
+;; wikipedia-turn-on-outline-minor-mode
+;; wikipedia-insert-signature
+;; wikipedia-insert-hline
+;; wikipedia-unfill-paragraph-or-region
+;; wikipedia-start-paragraph
+;; wikipedia-hardlines
+;; wikipedia-outline-magic-keys
+;; wikipedia-enhance-indent
+;; wikipedia-yank-prefix
+;; wikipedia-simple-outline-promote
+;; wikipedia-simple-outline-demote
+;; wikipedia-next-long-line
+;; wikipedia-unfill-paragraph
+;; wikipedia-rename-buffer
+;; wikipedia-draft
+;; wikipedia-draft-buffer-desc
+;; wikipedia-draft-append-to-file
+;; wikipedia-draft-page
 ;; wikipedia-draft-region (&optional beg end)
-;; wikipedia-draft-buffer  
-;; wikipedia-draft-clipboard 
-;; wikipedia-draft-mode 
-;; wikipedia-draft-view-draft 
-;; wikipedia-mark-section 
-;; wikipedia-activate-region 
-;; wikipedia-copy-page-to-register 
-;; wikipedia-insert-page-to-register 
+;; wikipedia-draft-buffer
+;; wikipedia-draft-clipboard
+;; wikipedia-draft-mode
+;; wikipedia-draft-view-draft
+;; wikipedia-mark-section
+;; wikipedia-activate-region
+;; wikipedia-copy-page-to-register
+;; wikipedia-insert-page-to-register
 ;; wikipedia-send-draft-to-mozex (target-buffer)
-;; wikipedia-reply-at-point-simple 
+;; wikipedia-reply-at-point-simple
 ;; wikipedia-draft-reply
 ;; wikipedia-insert-quotation-with-signature
 ;; wikipedia-insert-quotation
 
 ;; NEW VARIABLES
 ;;---------------------
-;; wikipedia-enumerate-with-terminate-paragraph 
+;; wikipedia-enumerate-with-terminate-paragraph
 ;; wikipedia-draft-buffer "*Wikipedia-Draft*"
-;; wikipedia-draft-mode-map 
-;; wikipedia-draft-mode-hook 
+;; wikipedia-draft-mode-map
+;; wikipedia-draft-mode-hook
 ;; wikipedia-draft-register ?R
-;; wikipedia-draft-filter-functions 
+;; wikipedia-draft-filter-functions
 ;; wikipedia-draft-handler-functions '(wikipedia-draft-append-to-file)
 ;; wikipedia-draft-data-file "~/Wiki/discussions/draft.wiki"
 ;; wikipedia-draft-leader-text "== "
 ;; wikipedia-draft-page ?S
-;; wikipedia-draft-send-archive 
-;; wikipedia-reply-with-quote 
+;; wikipedia-draft-send-archive
+;; wikipedia-reply-with-quote
 
 
 ;; VERSION 0.5
 ;;====================================
 ;; NEW FUNCTIONS
 ;; ------------------------------------
-;;  wikipedia-insert-audio 
-;;  wikipedia-insert-bible-verse-template 
-;;  wikipedia-insert-bible-verse-template-old 
-;;  wikipedia-insert-image 
-;;  wikipedia-insert-link-www 
-;;  wikipedia-insert-user 
+;;  wikipedia-insert-audio
+;;  wikipedia-insert-bible-verse-template
+;;  wikipedia-insert-bible-verse-template-old
+;;  wikipedia-insert-image
+;;  wikipedia-insert-link-www
+;;  wikipedia-insert-user
 ;;  wikipedia-mark-signature
-;;  wikipedia-outline-cycle 
+;;  wikipedia-outline-cycle
 ;;  wikipedia-reply-at-signature
-;;  wikipedia-terminate-paragraph-and-indent 	
+;;  wikipedia-terminate-paragraph-and-indent
 ;;  wikipedia-yank-prefix
 
 ;; NEW VARIABLES (defvar, defcustom, defconst)
 ;; ----------------------
-;; wikipedia-reply-with-hline 
+;; wikipedia-reply-with-hline
 ;; wikipedia-user-simplify-signature
-;; wikipedia-english-or-german 
+;; wikipedia-english-or-german
 ;; wikipedia-draft-reply-register ?M
-;; wikipedia-mode-version  
+;; wikipedia-mode-version
 
 ;;}}}
 
@@ -372,7 +372,7 @@
 
 
 ;; * Implement TeX highlighting in <math> environment
-;; * Implement (La)TeX input syntax, following the ideas of CDlatex.el  
+;; * Implement (La)TeX input syntax, following the ideas of CDlatex.el
 ;; * Make outline-cycle work correctly
 ;; * wikipedia-reply-at-point-simple should use regexp!
 
@@ -384,9 +384,9 @@
 
 (require 'derived)
 (require 'font-lock)
-	
+
 (defconst wikipedia-mode-version (concat "0." (substring "$Revision: 1.5 $" 13 14))
-	"$Id: wikipedia-mode.el,v 1.5 2006/05/30 15:16:45 oub Exp oub $
+  "$Id: wikipedia-mode.el,v 1.5 2006/05/30 15:16:45 oub Exp oub $
 
 Report bugs to: Uwe Brauer oub at mat.ucm.es")
 
@@ -528,111 +528,111 @@ Report bugs to: Uwe Brauer oub at mat.ucm.es")
 		  '(:inherit fixed-pitch)
 		'(:family "courier"))))
     `((((class grayscale) (background light))
-	 (:foreground "DimGray" ,@font))
-	(((class grayscale) (background dark))
-	 (:foreground "LightGray" ,@font))
-	(((class color) (background light))
-	 (:foreground "SaddleBrown" ,@font))
-	(((class color) (background dark))
-	 (:foreground "burlywood" ,@font))
-	(t (,@font))))
+       (:foreground "DimGray" ,@font))
+      (((class grayscale) (background dark))
+       (:foreground "LightGray" ,@font))
+      (((class color) (background light))
+       (:foreground "SaddleBrown" ,@font))
+      (((class color) (background dark))
+       (:foreground "burlywood" ,@font))
+      (t (,@font))))
   "Face used to highlight TeX verbatim environments."
   :group 'font-wikipedia-highlighting-faces)
 
 
-  (defvar wikipedia-font-lock-keywords
-	(list
+(defvar wikipedia-font-lock-keywords
+  (list
 
-	 ;; Apostrophe-style text markup
-	 (cons "''''\\([^']\\|[^']'\\)*?\\(''''\\|\n\n\\)"
-           'font-lock-builtin-face)
-	 (cons "'''\\([^']\\|[^']'\\)*?\\('''\\|\n\n\\)"
-;           'font-lock-builtin-face)
-	       'font-wikipedia-bold-face)
-	 (cons "''\\([^']\\|[^']'\\)*?\\(''\\|\n\n\\)"
-           'font-wikipedia-italic-face)
+   ;; Apostrophe-style text markup
+   (cons "''''\\([^']\\|[^']'\\)*?\\(''''\\|\n\n\\)"
+         'font-lock-builtin-face)
+   (cons "'''\\([^']\\|[^']'\\)*?\\('''\\|\n\n\\)"
+                                        ;           'font-lock-builtin-face)
+         'font-wikipedia-bold-face)
+   (cons "''\\([^']\\|[^']'\\)*?\\(''\\|\n\n\\)"
+         'font-wikipedia-italic-face)
 
-	 ;; Headers and dividers
-	 (list "^\\(==+\\)\\(.*\\)\\(\\1\\)"
-		   '(1 font-lock-builtin-face)
-;		   '(2 wikipedia-header-face)
-           '(2 font-wikipedia-sedate-face)
-		   '(3 font-lock-builtin-face))
-	 (cons "^-----*" 'font-lock-builtin-face)
+   ;; Headers and dividers
+   (list "^\\(==+\\)\\(.*\\)\\(\\1\\)"
+         '(1 font-lock-builtin-face)
+                                        ;		   '(2 wikipedia-header-face)
+         '(2 font-wikipedia-sedate-face)
+         '(3 font-lock-builtin-face))
+   (cons "^-----*" 'font-lock-builtin-face)
 
-	 ;; Bare URLs and ISBNs
-	 (cons (concat "\\(^\\| \\)" (regexp-opt wikipedia-url-protocols t)
-				   "://[-A-Za-z0-9._\/~%+&#?!=()@]+")
-		   'font-lock-variable-name-face)
-	 (cons "\\(^\\| \\)ISBN [-0-9A-Z]+" 'font-lock-variable-name-face)
+   ;; Bare URLs and ISBNs
+   (cons (concat "\\(^\\| \\)" (regexp-opt wikipedia-url-protocols t)
+                 "://[-A-Za-z0-9._\/~%+&#?!=()@]+")
+         'font-lock-variable-name-face)
+   (cons "\\(^\\| \\)ISBN [-0-9A-Z]+" 'font-lock-variable-name-face)
 
-	 ;; Colon indentation, lists, definitions, and tables
-	 (cons "^\\(:+\\|[*#]+\\||[}-]?\\|{|\\)" 'font-lock-builtin-face)
+   ;; Colon indentation, lists, definitions, and tables
+   (cons "^\\(:+\\|[*#]+\\||[}-]?\\|{|\\)" 'font-lock-builtin-face)
 
-	 (list "^\\(;\\)\\([^:\n]*\\)\\(:?\\)"
-		   '(1 font-lock-builtin-face)
-		   '(2 font-lock-keyword-face)
-		   '(3 font-lock-builtin-face))
-
-
-
-	 ;; Tags and comments
-
-	 (list (concat "\\(</?\\)"
-				   (regexp-opt wikipedia-simple-tags t) "\\(>\\)")
-		   '(1 font-lock-builtin-face t t)
-		   '(2 font-lock-function-name-face t t)
-		   '(3 font-lock-builtin-face t t))
-	 (list (concat "\\(</?\\)"
-				   (regexp-opt wikipedia-complex-tags t)
-				   "\\(\\(?: \\(?:[^\"'/><]\\|\"[^\"]*\"\\|'[^']*'\\)*\\)?\\)\\(>\\)")
-		   '(1 font-lock-builtin-face t t)
-		   '(2 font-lock-function-name-face t t)
-		   '(3 font-lock-keyword-face t t)
-		   '(4 font-lock-builtin-face t t))
-	 (cons (concat "<!-- \\([^->]\\|>\\|-\\([^-]\\|-[^>]\\)\\)*-->")
-		   '(0 font-lock-comment-face t t))
+   (list "^\\(;\\)\\([^:\n]*\\)\\(:?\\)"
+         '(1 font-lock-builtin-face)
+         '(2 font-lock-keyword-face)
+         '(3 font-lock-builtin-face))
 
 
 
-	 ;; External Links
+   ;; Tags and comments
 
-	 (list (concat "\\(\\[\\)\\(\\(?:"
-				   (regexp-opt wikipedia-url-protocols)
-				   "\\)://[-A-Za-z0-9._\/~%-+&#?!=()@]+\\)\\(\\(?: [^]\n]*\\)?\\)\\(\\]\\)")
-		   '(1 font-lock-builtin-face t t)
-		   '(2 font-lock-variable-name-face t t)
-		   '(3 font-lock-keyword-face t t)
-		   '(4 font-lock-builtin-face t t))
+   (list (concat "\\(</?\\)"
+                 (regexp-opt wikipedia-simple-tags t) "\\(>\\)")
+         '(1 font-lock-builtin-face t t)
+         '(2 font-lock-function-name-face t t)
+         '(3 font-lock-builtin-face t t))
+   (list (concat "\\(</?\\)"
+                 (regexp-opt wikipedia-complex-tags t)
+                 "\\(\\(?: \\(?:[^\"'/><]\\|\"[^\"]*\"\\|'[^']*'\\)*\\)?\\)\\(>\\)")
+         '(1 font-lock-builtin-face t t)
+         '(2 font-lock-function-name-face t t)
+         '(3 font-lock-keyword-face t t)
+         '(4 font-lock-builtin-face t t))
+   (cons (concat "<!-- \\([^->]\\|>\\|-\\([^-]\\|-[^>]\\)\\)*-->")
+         '(0 font-lock-comment-face t t))
+
+
+
+   ;; External Links
+
+   (list (concat "\\(\\[\\)\\(\\(?:"
+                 (regexp-opt wikipedia-url-protocols)
+                 "\\)://[-A-Za-z0-9._\/~%-+&#?!=()@]+\\)\\(\\(?: [^]\n]*\\)?\\)\\(\\]\\)")
+         '(1 font-lock-builtin-face t t)
+         '(2 font-lock-variable-name-face t t)
+         '(3 font-lock-keyword-face t t)
+         '(4 font-lock-builtin-face t t))
 
 
 
 
-	 ;; Wiki links
-	 '("\\(\\[\\[\\)\\([^]\n|]*\\)\\(|?\\)\\([^]\n]*\\)\\(\\]\\]\\)"
-	   (1 font-lock-builtin-face t t)
-	   (2 font-lock-variable-name-face t t)
-	   (3 font-lock-builtin-face t t)
-	   (4 font-lock-keyword-face t t)
-	   (5 font-lock-builtin-face t t))
+   ;; Wiki links
+   '("\\(\\[\\[\\)\\([^]\n|]*\\)\\(|?\\)\\([^]\n]*\\)\\(\\]\\]\\)"
+     (1 font-lock-builtin-face t t)
+     (2 font-lock-variable-name-face t t)
+     (3 font-lock-builtin-face t t)
+     (4 font-lock-keyword-face t t)
+     (5 font-lock-builtin-face t t))
 
-	 ;; Wiki variables
-	 '("\\({{\\)\\(.+?\\)\\(}}\\)"
-	   (1 font-lock-builtin-face t t)
-	   (2 font-lock-variable-name-face t t)
-	   (3 font-lock-builtin-face t t))
+   ;; Wiki variables
+   '("\\({{\\)\\(.+?\\)\\(}}\\)"
+     (1 font-lock-builtin-face t t)
+     (2 font-lock-variable-name-face t t)
+     (3 font-lock-builtin-face t t))
 
-	 ;; Character entity references
-	 (cons "&#?[a-zA-Z0-9]+;" '(0 font-lock-type-face t t))
+   ;; Character entity references
+   (cons "&#?[a-zA-Z0-9]+;" '(0 font-lock-type-face t t))
 
-	 ;; Preformatted text
-	 (cons "^ .*$" '(0 font-lock-constant-face t t))
+   ;; Preformatted text
+   (cons "^ .*$" '(0 font-lock-constant-face t t))
 
-	 ;; Math environment (uniform highlight only, no TeX markup)
-	 (list "<math>\\(\\(\n?.\\)*\\)</math>"
-		   '(1 font-lock-keyword-face t t))))
+   ;; Math environment (uniform highlight only, no TeX markup)
+   (list "<math>\\(\\(\n?.\\)*\\)</math>"
+         '(1 font-lock-keyword-face t t))))
 
-; )
+                                        ; )
 
 ;;}}}
 
@@ -676,10 +676,10 @@ paragraph will be indented in the same way."
                    ((eq (point) (point-min)) nil)
                    ((progn (forward-line -1) t)))
         t))
-    (newline) (if (not indent-chars) (newline) 
+    (newline) (if (not indent-chars) (newline)
 		(insert indent-chars))))
 
-(defun wikipedia-terminate-paragraph-and-indent ()	
+(defun wikipedia-terminate-paragraph-and-indent ()
   "In a list, start a new list item. In a paragraph, start a new
 paragraph but *,# will be ignored; if the current paragraph is colon
 ; indented, the new paragraph will be indented in the same way."
@@ -693,7 +693,7 @@ paragraph but *,# will be ignored; if the current paragraph is colon
                    ((eq (point) (point-min)) nil)
                    ((progn (forward-line -1) t)))
         t))
-    (newline) (if (not indent-chars) (newline) 
+    (newline) (if (not indent-chars) (newline)
 		(insert indent-chars))))
 
 
@@ -729,24 +729,24 @@ end paragraphs, list entries, etc.)"
 (defun wikipedia-unfill-paragraph-with-newline (&optional justifyp)
   (interactive "P")
   (let ((before (point)))				;Version:1.3
-	(save-excursion
-	  (forward-paragraph)
-	  (or (bolp) (newline 1))
-	  (let ((end (point))
-			(start (progn (backward-paragraph) (point))))
-	    (goto-char before)
-    (while (re-search-forward ".\\(\n\\)\\([^# *;:|!\n]\\|----\\)" nil t)
-      (replace-match " " nil nil nil 1))))))
-;  (message "Stand-alone newlines IN PARAGRAPH deleted"))
+    (save-excursion
+      (forward-paragraph)
+      (or (bolp) (newline 1))
+      (let ((end (point))
+            (start (progn (backward-paragraph) (point))))
+        (goto-char before)
+        (while (re-search-forward ".\\(\n\\)\\([^# *;:|!\n]\\|----\\)" nil t)
+          (replace-match " " nil nil nil 1))))))
+                                        ;  (message "Stand-alone newlines IN PARAGRAPH deleted"))
 
-(defun wikipedia-unfill-region () 
-"Undo filling, deleting stand-alone newlines (newlines that do not end
+(defun wikipedia-unfill-region ()
+  "Undo filling, deleting stand-alone newlines (newlines that do not end
 paragraphs, list entries, etc.) see also the function
 \\[wikipedia-unfill-paragraph-or-region] and the even simpler function
 \\[wikipedia-unfill-paragraph-simple]."
   (interactive)
   (save-excursion
-	(narrow-to-region (point) (mark))
+    (narrow-to-region (point) (mark))
     (goto-char (point-min))
     (while (re-search-forward ".\\(\n\\)\\([^# *;:|!\n]\\|----\\)" nil t)
       (replace-match " " nil nil nil 1)))
@@ -849,33 +849,33 @@ Some simple editing commands.
   ;; Support for outline-minor-mode. No key conflicts, so we'll use
   ;; the normal outline-mode prefix.
   (set (make-local-variable 'outline-regexp) "==+")
-;  (set (make-local-variable 'outline-regexp) "=+")
-;  (set (make-local-variable 'outline-regexp) ":")
+                                        ;  (set (make-local-variable 'outline-regexp) "=+")
+                                        ;  (set (make-local-variable 'outline-regexp) ":")
   (set (make-local-variable 'outline-minor-mode-prefix) "\C-c\C-o")
 
- 
+
   ;; Turn on the Imenu automatically.
-(when menu-bar-mode
+  (when menu-bar-mode
     (set (make-local-variable 'imenu-generic-expression)
          wikipedia-imenu-generic-expression)
     (imenu-add-to-menubar "Contents"))
 
-(modify-syntax-entry ?< "(>" wikipedia-mode-syntax-table)
-(modify-syntax-entry ?> ")<" wikipedia-mode-syntax-table)
+  (modify-syntax-entry ?< "(>" wikipedia-mode-syntax-table)
+  (modify-syntax-entry ?> ")<" wikipedia-mode-syntax-table)
 
-;;}}}
+  ;;}}}
 
-;; KEY SETTING
+  ;; KEY SETTING
 
-;;{{{ KEY SETTING
+  ;;{{{ KEY SETTING
 
-(define-key wikipedia-mode-map "\M-n" 'wikipedia-next-header)
-(define-key wikipedia-mode-map "\C-c\C-n" 'wikipedia-next-long-line)
-(define-key wikipedia-mode-map "\M-p" 'wikipedia-prev-header)
-;  (define-key wikipedia-mode-map [(meta down)] 'wikipedia-next-header)
-;  (define-key wikipedia-mode-map [(meta up)]   'wikipedia-prev-header)
-(define-key wikipedia-mode-map "\C-j" 'wikipedia-terminate-paragraph)
-;    'wikipedia-terminate-paragraph)
+  (define-key wikipedia-mode-map "\M-n" 'wikipedia-next-header)
+  (define-key wikipedia-mode-map "\C-c\C-n" 'wikipedia-next-long-line)
+  (define-key wikipedia-mode-map "\M-p" 'wikipedia-prev-header)
+                                        ;  (define-key wikipedia-mode-map [(meta down)] 'wikipedia-next-header)
+                                        ;  (define-key wikipedia-mode-map [(meta up)]   'wikipedia-prev-header)
+  (define-key wikipedia-mode-map "\C-j" 'wikipedia-terminate-paragraph)
+                                        ;    'wikipedia-terminate-paragraph)
 
   (let ((map (make-sparse-keymap "Wikipedia")))
     (define-key wikipedia-mode-map [menu-bar wikipedia]
@@ -894,60 +894,63 @@ Some simple editing commands.
       '("Toggle Outline Mode..." . outline-minor-mode)))
 
 
-(define-key wikipedia-mode-map "\C-c\C-q"    'wikipedia-unfill-article)
-(define-key wikipedia-mode-map "\C-c\M-q"    'wikipedia-fill-article) 
-(define-key wikipedia-mode-map "\M-u" 'wikipedia-unfill-paragraph-or-region)
-(define-key wikipedia-mode-map "\C-c\C-u" 'wikipedia-unfill-paragraph-simple)
-(define-key wikipedia-mode-map "\C-c\C-f\C-s" 'wikipedia-insert-strong-emphasis)
-(define-key wikipedia-mode-map "\C-c\C-f\C-b" 'wikipedia-insert-bold) ;Version:1.3
-(define-key wikipedia-mode-map "\C-c\C-f\C-i" 'wikipedia-insert-italics) 
-(define-key wikipedia-mode-map "\C-c\C-f\C-h" 'wikipedia-insert-header)
-(define-key wikipedia-mode-map "\C-c\C-f\C-l" 'wikipedia-insert-link)
-(define-key wikipedia-mode-map "\C-c\C-f\C-u" 'wikipedia-insert-user)
-(define-key wikipedia-mode-map "\C-c\C-f\C-q" 'wikipedia-insert-quotation)
-(define-key wikipedia-mode-map "\C-c\C-f\C-v" 'wikipedia-insert-bible-verse-template)
-(define-key wikipedia-mode-map "\C-c\C-w" 'wikipedia-insert-signature)
-(define-key wikipedia-mode-map "\C-c\C-h" 'wikipedia-insert-hline) ;Version:1.30
-(define-key wikipedia-mode-map [(meta f7)] 'wikipedia-draft)
-(define-key wikipedia-mode-map [(meta f8)] 'wikipedia-reply-at-point-simple)
-(define-key wikipedia-mode-map [(meta f9)]  'wikipedia-draft-view-draft)
-(define-key wikipedia-mode-map "\C-c\C-r"  'wikipedia-reply-at-point-simple)
-(define-key wikipedia-mode-map "\C-cr" 'wikipedia-draft-region)
-(define-key wikipedia-mode-map [(meta r)]  'wikipedia-draft-reply)
-(define-key wikipedia-mode-map "\C-c\C-m" 'wikipedia-draft) ;Version:1.25 
-(define-key wikipedia-mode-map "\C-c\C-b" 'wikipedia-draft-region)
-(define-key wikipedia-mode-map "\C-c\C-d" 'wikipedia-draft-buffer)
-(define-key wikipedia-mode-map "\C-c\C-k" 'wikipedia-draft-buffer)
-(define-key wikipedia-mode-map "\C-c\C-p" 'wikipedia-draft-copy-page-to-register)	;Version:1.39
-(define-key wikipedia-mode-map "\C-c\C-c" 'wikipedia-draft-send-to-mozex)
-(define-key wikipedia-mode-map "\C-c\C-s" 'wikipedia-draft-yank-page-to-register)
+  (define-key wikipedia-mode-map "\C-c\C-q"    'wikipedia-unfill-article)
+  (define-key wikipedia-mode-map "\C-c\M-q"    'wikipedia-fill-article)
+  (define-key wikipedia-mode-map "\M-u" 'wikipedia-unfill-paragraph-or-region)
+  (define-key wikipedia-mode-map "\C-c\C-u" 'wikipedia-unfill-paragraph-simple)
+  (define-key wikipedia-mode-map "\C-c\C-f\C-s" 'wikipedia-insert-strong-emphasis)
+  (define-key wikipedia-mode-map "\C-c\C-f\C-b" 'wikipedia-insert-bold) ;Version:1.3
+  (define-key wikipedia-mode-map "\C-c\C-f\C-i" 'wikipedia-insert-italics)
+  (define-key wikipedia-mode-map "\C-c\C-f\C-h" 'wikipedia-insert-header)
+  (define-key wikipedia-mode-map "\C-c\C-f\C-l" 'wikipedia-insert-link)
+  (define-key wikipedia-mode-map "\C-c\C-f\C-u" 'wikipedia-insert-user)
+  (define-key wikipedia-mode-map "\C-c\C-f\C-q" 'wikipedia-insert-quotation)
+  (define-key wikipedia-mode-map "\C-c\C-f\C-v" 'wikipedia-insert-bible-verse-template)
+  (define-key wikipedia-mode-map "\C-c\C-w" 'wikipedia-insert-signature)
+  (define-key wikipedia-mode-map "\C-c\C-h" 'wikipedia-insert-hline) ;Version:1.30
+  (define-key wikipedia-mode-map [(meta f7)] 'wikipedia-draft)
+  (define-key wikipedia-mode-map [(meta f8)] 'wikipedia-reply-at-point-simple)
+  (define-key wikipedia-mode-map [(meta f9)]  'wikipedia-draft-view-draft)
+  (define-key wikipedia-mode-map "\C-c\C-r"  'wikipedia-reply-at-point-simple)
+  (define-key wikipedia-mode-map "\C-cr" 'wikipedia-draft-region)
+  (define-key wikipedia-mode-map [(meta r)]  'wikipedia-draft-reply)
+  (define-key wikipedia-mode-map "\C-c\C-m" 'wikipedia-draft) ;Version:1.25
+  (define-key wikipedia-mode-map "\C-c\C-b" 'wikipedia-draft-region)
+  (define-key wikipedia-mode-map "\C-c\C-d" 'wikipedia-draft-buffer)
+  (define-key wikipedia-mode-map "\C-c\C-k" 'wikipedia-draft-buffer)
+  (define-key wikipedia-mode-map "\C-c\C-p" 'wikipedia-draft-copy-page-to-register)	;Version:1.39
+  (define-key wikipedia-mode-map "\C-c\C-c" 'wikipedia-draft-send-to-mozex)
+  (define-key wikipedia-mode-map "\C-c\C-s" 'wikipedia-draft-yank-page-to-register)
 
-(define-key wikipedia-mode-map [(control meta prior)] 'wikipedia-enhance-indent)
-(define-key wikipedia-mode-map [(control meta next)] 'wikipedia-yank-prefix)
-(define-key wikipedia-mode-map [(meta return)] 'wikipedia-insert-enumerate)
-(define-key wikipedia-mode-map [(meta control return)] 'wikipedia-insert-enumerate-nonewline)
-;; private setting
-(define-key wikipedia-mode-map [(shift return)] 'newline-and-indent) ;Version:1.24
-(define-key wikipedia-mode-map "\C-\\" 'wikipedia-insert-itemize) ;Version:1.28
-(define-key wikipedia-mode-map [(control return)] 'wikipedia-insert-itemize)
-(define-key wikipedia-mode-map "\C-ca" 'auto-capitalize-mode)
-(define-key wikipedia-mode-map "\C-ci" 'set-input-method)
-(define-key wikipedia-mode-map "\C-ct" 'toggle-input-method) ;Version:1.23
+  (define-key wikipedia-mode-map [(control meta prior)] 'wikipedia-enhance-indent)
+  (define-key wikipedia-mode-map [(control meta next)] 'wikipedia-yank-prefix)
+  (define-key wikipedia-mode-map [(meta return)] 'wikipedia-insert-enumerate)
+  (define-key wikipedia-mode-map [(meta control return)] 'wikipedia-insert-enumerate-nonewline)
+  ;; private setting
+  (define-key wikipedia-mode-map [(shift return)] 'newline-and-indent) ;Version:1.24
+  (define-key wikipedia-mode-map "\C-\\" 'wikipedia-insert-itemize) ;Version:1.28
+  (define-key wikipedia-mode-map [(control return)] 'wikipedia-insert-itemize)
+  (define-key wikipedia-mode-map "\C-ca" 'auto-capitalize-mode)
+  (define-key wikipedia-mode-map "\C-ci" 'set-input-method)
+  (define-key wikipedia-mode-map "\C-ct" 'toggle-input-method) ;Version:1.23
 
-;;}}}
+  ;;}}}
 
 
   (make-local-variable 'change-major-mode-hook))
 
-; wikipedia-mode ends here
+                                        ; wikipedia-mode ends here
 ;;}}}
 
- ;;{{{ longlines-mode
+;;{{{ longlines-mode
 
 (defun wikipedia-turn-on-longlines ()	;Version:1.58
-  "Turn on longlines-mode if it is defined."
-  (if (functionp 'longlines-mode)
-      (longlines-mode 1)))
+  "Turn on visual-line-mode or longlines-mode if it is defined."
+  (cond ((functionp 'visual-line-mode)
+	 (visual-line-mode 1))
+	((functionp 'longlines-mode)
+	 (longlines-mode 1))))
+
 (add-hook 'wikipedia-mode-hook 'wikipedia-turn-on-longlines)
 (set (make-local-variable 'auto-fill-inhibit-regexp) "^[ *#:|;]")
 
@@ -958,20 +961,20 @@ Some simple editing commands.
 ;;{{{ Insert makeup and templates
 
 (defvar wikipedia-enumerate-with-terminate-paragraph nil
-"*Before insert enumerate/itemize do \\[wikipedia-terminate-paragraph].")
+  "*Before insert enumerate/itemize do \\[wikipedia-terminate-paragraph].")
 
 (defun wikipedia-insert-enumerate ()
-"Primitive Function for inserting enumerated items, check the
+  "Primitive Function for inserting enumerated items, check the
 variable wikipedia-enumerate-with-terminate-paragraph. Note however
 that the function \\[wikipedia-terminate-paragraph] does not work very
 well will longlines-mode."
   (interactive)
-  (when wikipedia-enumerate-with-terminate-paragraph 
-	  (wikipedia-terminate-paragraph)
-	  (insert "#"))
+  (when wikipedia-enumerate-with-terminate-paragraph
+    (wikipedia-terminate-paragraph)
+    (insert "#"))
   (when (not wikipedia-enumerate-with-terminate-paragraph)
-	(newline nil)
-	(insert ":#"))) 
+    (newline nil)
+    (insert ":#")))
 
 
 
@@ -984,84 +987,84 @@ that the function \\[wikipedia-terminate-paragraph] does not work very
 well will longlines-mode."
   (interactive)
   (when wikipedia-enumerate-with-terminate-paragraph
-	(wikipedia-terminate-paragraph)
-	(insert "*"))
+    (wikipedia-terminate-paragraph)
+    (insert "*"))
   (when (not wikipedia-enumerate-with-terminate-paragraph )
-	(newline nil)
-	(insert ":*")))
+    (newline nil)
+    (insert ":*")))
 
 
 (defun wikipedia-insert-strong-emphasis ()
-"Insert strong emphasis italics via four apostrophes (e.g. ''''FOO''''.) When mark is active, surrounds region."   
+  "Insert strong emphasis italics via four apostrophes (e.g. ''''FOO''''.) When mark is active, surrounds region."
   (interactive)
   (if (or (and (boundp 'zmacs-region-active-p) zmacs-region-active-p)
-		  (and (boundp 'transient-mark-mode) transient-mark-mode mark-active))
-	  (save-excursion
-		(goto-char (point))
-		(insert "''''")
-		(goto-char (mark))
-		(insert "''''"))
-	(insert "'''' ''''")
-	(backward-char 5)))
+          (and (boundp 'transient-mark-mode) transient-mark-mode mark-active))
+      (save-excursion
+        (goto-char (point))
+        (insert "''''")
+        (goto-char (mark))
+        (insert "''''"))
+    (insert "'''' ''''")
+    (backward-char 5)))
 
 
 (defun wikipedia-insert-bold ()
-"Insert bold via three apostrophes (e.g. '''FOO'''.)
-When mark is active, surrounds region."   
+  "Insert bold via three apostrophes (e.g. '''FOO'''.)
+When mark is active, surrounds region."
   (interactive)
   (if (or (and (boundp 'zmacs-region-active-p) zmacs-region-active-p)
-		  (and (boundp 'transient-mark-mode) transient-mark-mode mark-active))
-	  (save-excursion
-		(goto-char (point))
-		(insert "'''")
-		(goto-char (mark))
-		(insert "'''"))
-	(insert "''' '''")
-	(backward-char 4)))
+          (and (boundp 'transient-mark-mode) transient-mark-mode mark-active))
+      (save-excursion
+        (goto-char (point))
+        (insert "'''")
+        (goto-char (mark))
+        (insert "'''"))
+    (insert "''' '''")
+    (backward-char 4)))
 
 
 (defun wikipedia-insert-italics ()
-"Insert bold via TWO apostrophes (e.g. ''FOO''.) When mark is active,
-surrounds region."   
+  "Insert bold via TWO apostrophes (e.g. ''FOO''.) When mark is active,
+surrounds region."
   (interactive)
   (if (or (and (boundp 'zmacs-region-active-p) zmacs-region-active-p)
-		  (and (boundp 'transient-mark-mode) transient-mark-mode mark-active))
-	  (save-excursion
-		(goto-char (point))
-		(insert "''")
-		(goto-char (mark))
-		(insert "''"))
-	(insert "'' ''")
-	(backward-char 3)))
+          (and (boundp 'transient-mark-mode) transient-mark-mode mark-active))
+      (save-excursion
+        (goto-char (point))
+        (insert "''")
+        (goto-char (mark))
+        (insert "''"))
+    (insert "'' ''")
+    (backward-char 3)))
 
 (defun wikipedia-insert-quotation-with-signature () ;Version:1.60
-"Insert bold via TWO apostrophes (e.g. ''FOO''.) When mark is active,
-surrounds region."   
+  "Insert bold via TWO apostrophes (e.g. ''FOO''.) When mark is active,
+surrounds region."
   (interactive)
   (if (or (and (boundp 'zmacs-region-active-p) zmacs-region-active-p)
-		  (and (boundp 'transient-mark-mode) transient-mark-mode mark-active))
-	  (save-excursion
-		(goto-char (point))
-		(insert "{{Quotation|}}")
-		(goto-char (mark))
-		(insert "{{~~~~}}"))
-		(insert "{{Quotation| }}{{~~~~}}")
-	(backward-sexp 1)
-	(backward-char 3)))
+          (and (boundp 'transient-mark-mode) transient-mark-mode mark-active))
+      (save-excursion
+        (goto-char (point))
+        (insert "{{Quotation|}}")
+        (goto-char (mark))
+        (insert "{{~~~~}}"))
+    (insert "{{Quotation| }}{{~~~~}}")
+    (backward-sexp 1)
+    (backward-char 3)))
 
 (defun wikipedia-insert-quotation ()	;Version:1.60
-"Quotation box of the form {{Quotation}}{{}}. When mark is active,
-surrounds region."   
+  "Quotation box of the form {{Quotation}}{{}}. When mark is active,
+surrounds region."
   (interactive)
   (if (or (and (boundp 'zmacs-region-active-p) zmacs-region-active-p)
-		  (and (boundp 'transient-mark-mode) transient-mark-mode mark-active))
-	  (save-excursion
-		(goto-char (point))
-		(insert "{{Quotation|}}")
-		(goto-char (mark))
-		(insert "{{}}"))
-		(insert "{{Quotation|}}{{ }}")
-	(backward-char 3)))
+          (and (boundp 'transient-mark-mode) transient-mark-mode mark-active))
+      (save-excursion
+        (goto-char (point))
+        (insert "{{Quotation|}}")
+        (goto-char (mark))
+        (insert "{{}}"))
+    (insert "{{Quotation|}}{{ }}")
+    (backward-char 3)))
 
 
 
@@ -1070,120 +1073,120 @@ surrounds region."
   "Insert a template for the quotation of bible verses."
   (interactive)
   (insert "({{niv|")
-(let ((name    (read-string "Name: ")))
-     (insert (concat name "|"))
-(let ((verse (read-string "Verse: ")))
-  (insert (concat verse "|" name " " verse "}})")))))
+  (let ((name    (read-string "Name: ")))
+    (insert (concat name "|"))
+    (let ((verse (read-string "Verse: ")))
+      (insert (concat verse "|" name " " verse "}})")))))
 
 
 (defvar wikipedia-english-or-german t
-"*Variable in order to set the english (t) or german (nil) environment.")
+  "*Variable in order to set the english (t) or german (nil) environment.")
 
 (defun wikipedia-insert-user ()
   "Inserts, interactively a user name [[User:foo]]"
   (interactive)
-  (when wikipedia-english-or-german 
-	(let ((user (read-string "Name of user: " )))
-	  (insert (concat "[[User:" user "|" user "]]"))))
+  (when wikipedia-english-or-german
+    (let ((user (read-string "Name of user: " )))
+      (insert (concat "[[User:" user "|" user "]]"))))
   (when (not wikipedia-english-or-german)
-	(let ((user (read-string "Name des Benutzers: " )))
-	  (insert (concat "[[Benutzer:" user "|" user "]]")))))
+    (let ((user (read-string "Name des Benutzers: " )))
+      (insert (concat "[[Benutzer:" user "|" user "]]")))))
 
 
 
 (defun wikipedia-insert-reply-prefix () ;Version:1.60
-"Quotation box of the form {{Quotation}}{{}}. When mark is active,
-surrounds region."   
+  "Quotation box of the form {{Quotation}}{{}}. When mark is active,
+surrounds region."
   (interactive)
   (beginning-of-line 1)
   (search-forward "[[")
   (backward-char 2)
   (mark-sexp 1)
-  (copy-to-register wikipedia-draft-reply-register (region-beginning) (region-end) nil) 
+  (copy-to-register wikipedia-draft-reply-register (region-beginning) (region-end) nil)
   (end-of-line 1)
   (wikipedia-terminate-paragraph)
   (beginning-of-line 1)
   (kill-line nil)
-	  (insert "----")
-	  (newline 1)
-	  (yank)
-	  (insert ":'''Re: ")
-	  (insert-register wikipedia-draft-reply-register 1)
-	  (insert "''' ")
-	  (end-of-line 1))
+  (insert "----")
+  (newline 1)
+  (yank)
+  (insert ":'''Re: ")
+  (insert-register wikipedia-draft-reply-register 1)
+  (insert "''' ")
+  (end-of-line 1))
 
 (defun wikipedia-insert-header ()
-  "Insert subheader  via  == (e.g. == FOO ==.)"  
+  "Insert subheader  via  == (e.g. == FOO ==.)"
   (interactive)
   (insert "==   ==")
   (backward-char 4))
 
 (defun wikipedia-insert-link ()
-  "Insert link via [[ (e.g. [[FOO]].) When mark is active, surround region."  
+  "Insert link via [[ (e.g. [[FOO]].) When mark is active, surround region."
   (interactive)
   (if (or (and (boundp 'zmacs-region-active-p) zmacs-region-active-p)
-		  (and (boundp 'transient-mark-mode) transient-mark-mode mark-active))
-	  (save-excursion
-		(goto-char (point))
-		(insert "]]")
-		(goto-char (mark))
-		(insert "[["))
-	(insert "[[ ]]")
-	(backward-char 3)))
+          (and (boundp 'transient-mark-mode) transient-mark-mode mark-active))
+      (save-excursion
+        (goto-char (point))
+        (insert "]]")
+        (goto-char (mark))
+        (insert "[["))
+    (insert "[[ ]]")
+    (backward-char 3)))
 
 (defun wikipedia-insert-link-www ()
-  "Insert link via [[ (e.g. [http://FOO].) When mark is active, surround region."  
+  "Insert link via [[ (e.g. [http://FOO].) When mark is active, surround region."
   (interactive)
   (if (or (and (boundp 'zmacs-region-active-p) zmacs-region-active-p)
-		  (and (boundp 'transient-mark-mode) transient-mark-mode mark-active))
-	  (save-excursion
-		(goto-char (point))
-		(insert "]")
-		(goto-char (mark))
-		(insert "[http://"))
-	(insert "[http:// ]")
-	(backward-char 2)))
+          (and (boundp 'transient-mark-mode) transient-mark-mode mark-active))
+      (save-excursion
+        (goto-char (point))
+        (insert "]")
+        (goto-char (mark))
+        (insert "[http://"))
+    (insert "[http:// ]")
+    (backward-char 2)))
 
 
 (defun wikipedia-insert-image ()
-  "Insert link image  [[ (e.g. [[Image:FOO]].) Check the variable 
-wikipedia-english-or-german. When mark is active, surround region."  
+  "Insert link image  [[ (e.g. [[Image:FOO]].) Check the variable
+wikipedia-english-or-german. When mark is active, surround region."
   (interactive)
   (if (or (and (boundp 'zmacs-region-active-p) zmacs-region-active-p)
-		  (and (boundp 'transient-mark-mode) transient-mark-mode mark-active))
-	  (save-excursion
-		(goto-char (point))
-		(insert "]]")
-		(goto-char (mark))
-		(when (not wikipedia-english-or-german)
-		  (insert "[[Bild:"))
-		(when wikipedia-english-or-german
-		  (insert "[[Image:")))
-	(when wikipedia-english-or-german
-	  (insert "[[Image: ]]"))
-	(when (not wikipedia-english-or-german)
-	  (insert "[[Bild: ]]"))
-	(backward-char 3)))
+          (and (boundp 'transient-mark-mode) transient-mark-mode mark-active))
+      (save-excursion
+        (goto-char (point))
+        (insert "]]")
+        (goto-char (mark))
+        (when (not wikipedia-english-or-german)
+          (insert "[[Bild:"))
+        (when wikipedia-english-or-german
+          (insert "[[Image:")))
+    (when wikipedia-english-or-german
+      (insert "[[Image: ]]"))
+    (when (not wikipedia-english-or-german)
+      (insert "[[Bild: ]]"))
+    (backward-char 3)))
 
 (defun wikipedia-insert-audio ()
-  "Insert link image  [[ (e.g. [[Image:FOO]].) Check the variable 
-wikipedia-english-or-german. When mark is active, surround region."  
+  "Insert link image  [[ (e.g. [[Image:FOO]].) Check the variable
+wikipedia-english-or-german. When mark is active, surround region."
   (interactive)
   (if (or (and (boundp 'zmacs-region-active-p) zmacs-region-active-p)
-		  (and (boundp 'transient-mark-mode) transient-mark-mode mark-active))
-	  (save-excursion
-		(goto-char (point))
-		(insert "]]")
-		(goto-char (mark))
-		(when (not wikipedia-english-or-german)
-		  (insert "[[Bild:"))
-		(when wikipedia-english-or-german
-		  (insert "[[Media:")))
-	(when wikipedia-english-or-german
-	  (insert "[[Media: ]]"))
-	(when (not wikipedia-english-or-german)
-	  (insert "[[Bild: ]]"))
-	(backward-char 3)))
+          (and (boundp 'transient-mark-mode) transient-mark-mode mark-active))
+      (save-excursion
+        (goto-char (point))
+        (insert "]]")
+        (goto-char (mark))
+        (when (not wikipedia-english-or-german)
+          (insert "[[Bild:"))
+        (when wikipedia-english-or-german
+          (insert "[[Media:")))
+    (when wikipedia-english-or-german
+      (insert "[[Media: ]]"))
+    (when (not wikipedia-english-or-german)
+      (insert "[[Bild: ]]"))
+    (backward-char 3)))
 
 
 
@@ -1212,63 +1215,63 @@ wikipedia-english-or-german. When mark is active, surround region."
 
 ;;}}}
 
-;;{{{ filling and longline 
+;;{{{ filling and longline
 
 (defun wikipedia-unfill-paragraph-or-region () ;Version:1.7
   "Unfill region, this function does NOT explicitly search for \"soft newlines\"
 as does wikipedia-unfill-region."
   (interactive)
   (when use-hard-newlines
-	;; 	(backward-paragraph 1)
-	;; 	(next-line 1)
-	(beginning-of-line 1)
-	(set-fill-prefix)
-	(set (make-local-variable 'use-hard-newlines) nil)
-	(set (make-local-variable 'sentence-end-double-space) t)
-	(set (make-local-variable 'paragraph-start)
-		 "[ 　	\n]")
-	(when  (featurep 'xemacs)	
-	  (let ((fill-column (point-max)))
-		(fill-paragraph-or-region nil)))
-	(unless  (featurep 'xemacs)	
-	  (let ((fill-column (point-max)))
-		(fill-paragraph nil)))
-	(set (make-local-variable 'use-hard-newlines) t)
-	(set (make-local-variable 'sentence-end-double-space) nil)
-	(set (make-local-variable 'paragraph-start)
-		 "\\*\\| \\|#\\|;\\|:\\||\\|!\\|$"))
+    ;; 	(backward-paragraph 1)
+    ;; 	(next-line 1)
+    (beginning-of-line 1)
+    (set-fill-prefix)
+    (set (make-local-variable 'use-hard-newlines) nil)
+    (set (make-local-variable 'sentence-end-double-space) t)
+    (set (make-local-variable 'paragraph-start)
+         "[ 　	\n]")
+    (when  (featurep 'xemacs)
+      (let ((fill-column (point-max)))
+        (fill-paragraph-or-region nil)))
+    (unless  (featurep 'xemacs)
+      (let ((fill-column (point-max)))
+        (fill-paragraph nil)))
+    (set (make-local-variable 'use-hard-newlines) t)
+    (set (make-local-variable 'sentence-end-double-space) nil)
+    (set (make-local-variable 'paragraph-start)
+         "\\*\\| \\|#\\|;\\|:\\||\\|!\\|$"))
   (unless use-hard-newlines
-	;; 	(backward-paragraph 1)
-	;; 	(next-line 1)
-	(beginning-of-line 1)
-	(set-fill-prefix)
-	(set (make-local-variable 'sentence-end-double-space) t)
-	(set (make-local-variable 'paragraph-start)
-		 "[ 　	\n]")
-	(when  (featurep 'xemacs)	
-	  (let ((fill-column (point-max)))
-		(fill-paragraph-or-region nil)))
-	(unless  (featurep 'xemacs)	
-	  (let ((fill-column (point-max)))
-		(fill-paragraph nil)))
-	(set (make-local-variable 'sentence-end-double-space) nil)
-	(set (make-local-variable 'paragraph-start)
-		 "\\*\\| \\|#\\|;\\|:\\||\\|!\\|$")))
+    ;; 	(backward-paragraph 1)
+    ;; 	(next-line 1)
+    (beginning-of-line 1)
+    (set-fill-prefix)
+    (set (make-local-variable 'sentence-end-double-space) t)
+    (set (make-local-variable 'paragraph-start)
+         "[ 　	\n]")
+    (when  (featurep 'xemacs)
+      (let ((fill-column (point-max)))
+        (fill-paragraph-or-region nil)))
+    (unless  (featurep 'xemacs)
+      (let ((fill-column (point-max)))
+        (fill-paragraph nil)))
+    (set (make-local-variable 'sentence-end-double-space) nil)
+    (set (make-local-variable 'paragraph-start)
+         "\\*\\| \\|#\\|;\\|:\\||\\|!\\|$")))
 
- 
+
 
 
 (defun wikipedia-start-paragraph ()
   (interactive)
-	(set (make-local-variable 'paragraph-start)
+  (set (make-local-variable 'paragraph-start)
        "\\*\\| \\|#\\|;\\|:\\||\\|!\\|$"))
 
 
 (defun wikipedia-hardlines ()
-"Set use-hard-newlines to NIL."
+  "Set use-hard-newlines to NIL."
   (interactive)
   (setq use-hard-newlines nil))
-;; from emacs wiki 
+;; from emacs wiki
 (defun wikipedia-next-long-line ()
   "Move forward to the next long line with column-width greater
   than `fill-column'.
@@ -1279,26 +1282,26 @@ as does wikipedia-unfill-region."
   (interactive)
   ;; global-variable: fill-column
   (if (= (forward-line) 0)
-	  (let ((line-length
-			 (save-excursion
-			   (end-of-line)
-			   (current-column))))
-		(if (<= line-length fill-column)
-			(wikipedia-next-long-line)
-		  (message "Long line found")))
-	;; Stop, end of buffer reached.
- 	(error "Long line not found")))
+      (let ((line-length
+             (save-excursion
+               (end-of-line)
+               (current-column))))
+        (if (<= line-length fill-column)
+            (wikipedia-next-long-line)
+          (message "Long line found")))
+    ;; Stop, end of buffer reached.
+    (error "Long line not found")))
 
 
 (defun wikipedia-unfill-paragraph-simple ()
-"A very simple function for unfilling a paragraph."
+  "A very simple function for unfilling a paragraph."
   (interactive)
   (if (functionp 'filladapt-mode)
-  (filladapt-mode nil))
+      (filladapt-mode nil))
   (let ((fill-column (point-max)))
     (fill-paragraph nil)
-  (if (functionp 'filladapt-mode)
-    (filladapt-mode nil))))
+    (if (functionp 'filladapt-mode)
+        (filladapt-mode nil))))
 
 ;;}}}
 
@@ -1309,7 +1312,7 @@ as does wikipedia-unfill-region."
 (defun wikipedia-outline-cycle ()
   (interactive)
   (if (functionp 'outline-cycle)
-	  (outline-cycle)))
+      (outline-cycle)))
 
 
 (add-hook 'wikipedia-mode-hook  'wikipedia-outline-magic-keys)
@@ -1317,7 +1320,7 @@ as does wikipedia-unfill-region."
 (defun wikipedia-outline-magic-keys ()
   (interactive)
   (unless  (featurep 'xemacs)
-	(local-set-key [(shift iso-lefttab)] 'wikipedia-outline-cycle))
+    (local-set-key [(shift iso-lefttab)] 'wikipedia-outline-cycle))
   (local-set-key [iso-left-tab] 'wikipedia-outline-cycle)
   (local-set-key [(meta left)]  'outline-promote)
   (local-set-key [(meta right)] 'outline-demote)
@@ -1338,30 +1341,30 @@ as does wikipedia-unfill-region."
 ;; modification for outline-magic
 
 (defun wikipedia-simple-outline-promote ()
-"Function simple deletes \"=\" and the end and the beginning of line,
+  "Function simple deletes \"=\" and the end and the beginning of line,
 does not promote the whole tree!"
   (interactive)
   (save-excursion
-	(progn
-	  (beginning-of-line 1)
-	  (search-forward "=")
-	  (delete-char 1 nil)
-	  (end-of-line 1) 
-	  (search-backward "=")
-	  (delete-char 1 nil))))
+    (progn
+      (beginning-of-line 1)
+      (search-forward "=")
+      (delete-char 1 nil)
+      (end-of-line 1)
+      (search-backward "=")
+      (delete-char 1 nil))))
 
 (defun wikipedia-simple-outline-demote ()
-"Function simple adds \"=\" and the end and the beginning of line,
+  "Function simple adds \"=\" and the end and the beginning of line,
 does not promote the whole tree!"
   (interactive)
   (save-excursion
-	(progn
-	  (beginning-of-line 1)
-	  (search-forward "=")
-	  (insert "=")
-	  (end-of-line 1) 
-	  (search-backward "=")
-	  (insert "="))))
+    (progn
+      (beginning-of-line 1)
+      (search-forward "=")
+      (insert "=")
+      (end-of-line 1)
+      (search-backward "=")
+      (insert "="))))
 
 
 (defun wikipedia-rename-buffer ()				;Version:1.5
@@ -1371,7 +1374,7 @@ does not promote the whole tree!"
 
 ;;}}}
 
-;;{{{ wikipedia drafts functionality: `stolen' from remember.el: 
+;;{{{ wikipedia drafts functionality: `stolen' from remember.el:
 
 (defgroup wikipedia-draft nil
   "A mode to wikipedia-draft information."
@@ -1435,7 +1438,7 @@ recorded somewhere by that function. "
 
 ;;;###autoload
 (defun wikipedia-draft ()
- "Open a temporary buffer in wikipedia mode for editing an wikipedia
+  "Open a temporary buffer in wikipedia mode for editing an wikipedia
  draft, which an arbitrary piece of data. After finishing the editing
  either use C-c C-k \\[wikipedia-draft-buffer] to send the data into
  the wikipedia-draft-data-file, or send  the buffer using C-c C-c
@@ -1478,38 +1481,38 @@ recorded somewhere by that function. "
 
 
 (defun wikipedia-draft-append-to-file ()
- "Add a header together with a subject to the text and add it to the
+  "Add a header together with a subject to the text and add it to the
 draft file. It might be better if longlines-mode is off."
   (let ((text (buffer-string))
-		(desc (wikipedia-draft-buffer-desc)))
+        (desc (wikipedia-draft-buffer-desc)))
     (with-temp-buffer
-	  (insert "\n\n")
-	  (insert wikipedia-draft-leader-text)
-	  (insert "Draft: ")				;Version:1.39
-	  (insert (read-string "Enter Subject: "))
-	  (insert " ")
-	  (insert (current-time-string))
-	  (insert " ")
-	  (insert wikipedia-draft-leader-text)
-	  (insert "\n\n")					;Version:1.27
-	  (insert "")
-	  (insert "\n\n")
-	  (insert text)
-	  (insert "\n")
-	  (insert "")
-	  (insert "\n")
+      (insert "\n\n")
+      (insert wikipedia-draft-leader-text)
+      (insert "Draft: ")				;Version:1.39
+      (insert (read-string "Enter Subject: "))
+      (insert " ")
+      (insert (current-time-string))
+      (insert " ")
+      (insert wikipedia-draft-leader-text)
+      (insert "\n\n")					;Version:1.27
+      (insert "")
+      (insert "\n\n")
+      (insert text)
+      (insert "\n")
+      (insert "")
+      (insert "\n")
       (if (not (bolp))
-		  (insert "\n\n"))
+          (insert "\n\n"))
       (if (find-buffer-visiting wikipedia-draft-data-file)
-		  (let ((wikipedia-draft-text (buffer-string)))
-			(set-buffer (get-file-buffer wikipedia-draft-data-file))
-			(save-excursion
-			  (goto-char (point-max))
-			  (insert "\n")
-			  (insert wikipedia-draft-text)
-			  (insert "\n")
-			  (save-buffer)))
-		(append-to-file (point-min) (point-max) wikipedia-draft-data-file)))))
+          (let ((wikipedia-draft-text (buffer-string)))
+            (set-buffer (get-file-buffer wikipedia-draft-data-file))
+            (save-excursion
+              (goto-char (point-max))
+              (insert "\n")
+              (insert wikipedia-draft-text)
+              (insert "\n")
+              (save-buffer)))
+        (append-to-file (point-min) (point-max) wikipedia-draft-data-file)))))
 
 
 (setq wikipedia-draft-handler-functions 'wikipedia-draft-append-to-file)
@@ -1538,16 +1541,16 @@ region, will be wikipedia-drafted."
     (save-restriction
       (narrow-to-region b e)
       (run-hook-with-args-until-success 'wikipedia-draft-handler-functions)
-    (when (equal wikipedia-draft-buffer (buffer-name))
-      (kill-buffer (current-buffer))
-      (jump-to-register wikipedia-draft-register)))))
+      (when (equal wikipedia-draft-buffer (buffer-name))
+        (kill-buffer (current-buffer))
+        (jump-to-register wikipedia-draft-register)))))
 
 ;;
 ;;;###autoload
-(defun wikipedia-draft-buffer () 
+(defun wikipedia-draft-buffer ()
   "Wikipedia-draft-buffer sends the contents of the current (temporary)
 buffer to the wikipedia-draft-buffer, see the variable
-wikipedia-draft-data-file." 
+wikipedia-draft-data-file."
   (interactive)
   (wikipedia-draft-region  (point-min) (point-max)))
 
@@ -1565,7 +1568,7 @@ application."
 
 ;;; Internal Functions:
 (defvar wikipedia-draft-send-archive t	;Version:1.56
-"*Archive the reply.")
+  "*Archive the reply.")
 
 (defvar wikipedia-draft-mode-map ())
 (if wikipedia-draft-mode-map
@@ -1603,11 +1606,11 @@ latter retrieval, and possible indexing.
   "Set mark at end of current logical section, and point at top."
   (interactive)
   (re-search-forward (concat  "== "  "[a-z,A-z \t]*"
-							  " =="))
+                              " =="))
   (re-search-backward "^")
   (set-mark (point))
   (re-search-backward (concat "== "  "[a-z,A-z \t]*"
-							  " "))
+                              " "))
   (wikipedia-activate-region))
 
 (defun wikipedia-mark-signature ()		;Version:1.36
@@ -1628,18 +1631,18 @@ latter retrieval, and possible indexing.
 
 ;;}}}
 
-;;{{{ `reply' and `send' functions  
+;;{{{ `reply' and `send' functions
 
 (defun wikipedia-draft-copy-page-to-register () ;Version:1.47
   "Copy a page via the wikipedia-draft-register."
   (interactive)
   (save-excursion
-	  (narrow-to-page nil)
-	  (copy-to-register wikipedia-draft-page (point-min) (point-max) nil) 
-	  (message "draft page copied to wikipedia register wikipedia-draft-page.")
-	  (widen)))
+    (narrow-to-page nil)
+    (copy-to-register wikipedia-draft-page (point-min) (point-max) nil)
+    (message "draft page copied to wikipedia register wikipedia-draft-page.")
+    (widen)))
 
-;aux function
+                                        ;aux function
 (defun wikipedia-draft-yank-page-to-register ()	;Version:1.50
   "Insert a page   via the  wikipedia-draft-register."
   (interactive)
@@ -1655,61 +1658,61 @@ additionally the text will be archived in the draft.wiki file. Check
 longlines-mode, it might be better if it is set off."
   (interactive "bTarget buffer: ")
   (let ((src-buf (current-buffer)))
-	(wikipedia-draft-copy-page-to-register)
-	(switch-to-buffer target-buffer)
-	(end-of-line 1)
-	(newline 1)
+    (wikipedia-draft-copy-page-to-register)
+    (switch-to-buffer target-buffer)
+    (end-of-line 1)
+    (newline 1)
     (wikipedia-draft-yank-page-to-register)
-	(message "The page has been sent (copied) to the mozex file!")
-	(switch-to-buffer "*Wikipedia-Draft*")
+    (message "The page has been sent (copied) to the mozex file!")
+    (switch-to-buffer "*Wikipedia-Draft*")
     (when wikipedia-draft-send-archive	;Version:1.56
-	  (let ((text (buffer-string))		;Version:1.59
-			(desc (wikipedia-draft-buffer-desc)))
-		(with-temp-buffer
-		  (insert "\n\n")
-		  (insert wikipedia-draft-leader-text)
-		  (insert-register wikipedia-draft-reply-register 1)
-		  (insert " ")
-		  (insert (current-time-string))
-		  (insert " ")
-		  (insert wikipedia-draft-leader-text)
-		  (insert "\n\n")
-		  (insert "")
-		  (insert "\n\n")
-		  (insert text)
-		  (insert "\n")
-		  (insert "")
-		  (insert "\n")
-		  (if (not (bolp))
-			  (insert "\n\n"))
-		  (if (find-buffer-visiting wikipedia-draft-data-file)
-			  (let ((wikipedia-draft-text (buffer-string)))
-				(set-buffer (get-file-buffer wikipedia-draft-data-file))
-				(save-excursion
-				  (goto-char (point-max))
-				  (insert "\n")
-				  (insert wikipedia-draft-text)
-				  (insert "\n")
-				  (save-buffer)))
-			(append-to-file (point-min) (point-max) wikipedia-draft-data-file)))))
+      (let ((text (buffer-string))		;Version:1.59
+            (desc (wikipedia-draft-buffer-desc)))
+        (with-temp-buffer
+          (insert "\n\n")
+          (insert wikipedia-draft-leader-text)
+          (insert-register wikipedia-draft-reply-register 1)
+          (insert " ")
+          (insert (current-time-string))
+          (insert " ")
+          (insert wikipedia-draft-leader-text)
+          (insert "\n\n")
+          (insert "")
+          (insert "\n\n")
+          (insert text)
+          (insert "\n")
+          (insert "")
+          (insert "\n")
+          (if (not (bolp))
+              (insert "\n\n"))
+          (if (find-buffer-visiting wikipedia-draft-data-file)
+              (let ((wikipedia-draft-text (buffer-string)))
+                (set-buffer (get-file-buffer wikipedia-draft-data-file))
+                (save-excursion
+                  (goto-char (point-max))
+                  (insert "\n")
+                  (insert wikipedia-draft-text)
+                  (insert "\n")
+                  (save-buffer)))
+            (append-to-file (point-min) (point-max) wikipedia-draft-data-file)))))
     (when (equal wikipedia-draft-buffer (buffer-name))
-	  (kill-buffer (current-buffer)))
-	(switch-to-buffer target-buffer)))
+      (kill-buffer (current-buffer)))
+    (switch-to-buffer target-buffer)))
 
 
 ;;Apr_22_2006
 (defvar wikipedia-reply-with-hline nil
-"*Whether to use a hline as a header seperator in the reply.")
+  "*Whether to use a hline as a header seperator in the reply.")
 
 (defvar wikipedia-reply-with-quote nil	;Version:1.60
-"*Whether to use a quotation tempalate or not.")
+  "*Whether to use a quotation tempalate or not.")
 
 (defvar wikipedia-user-simplify-signature t
   "*Simple varible in order to threat complicated signatures of users, which uses
 fonts and other makeup.")
- 
+
 (defun wikipedia-reply-at-signature () ;Version:1.40
-"Very simple function to add the reply prefix to the signature,
+  "Very simple function to add the reply prefix to the signature,
 sorrounded by the boldface makeup. You have to set the point BEFORE
 the signature, then the functions inserts the following
 :'''Re: [[User:foo]]'''."
@@ -1719,12 +1722,12 @@ the signature, then the functions inserts the following
   (mark-word 3)
   (yank)
   (end-of-line 1)
-(wikipedia-terminate-paragraph)
+  (wikipedia-terminate-paragraph)
   (insert ":'''Re: ")
   (insert "[[")
   (yank)
   (insert "]]")
-  (insert "'''"))    
+  (insert "'''"))
 
 
 
@@ -1738,29 +1741,29 @@ the wikipedia-draft-data-file, or send the buffer \"C-c\C-c\",
 mozex. Check the varibale wikipedia-draft-send-archive."
   (interactive)
   (wikipedia-reply-at-point-simple)
-(beginning-of-line 1)
-(kill-line nil)
+  (beginning-of-line 1)
+  (kill-line nil)
   (save-excursion
-	(window-configuration-to-register wikipedia-draft-register)
-	(let ((buf (get-buffer-create wikipedia-draft-buffer)))
-	  (switch-to-buffer-other-window buf)
-	  (wikipedia-mode)
-	  (if (functionp 'pabbrev-mode)
-		  (pabbrev-mode))
-	  (when (not wikipedia-reply-with-quote)
-		(when  wikipedia-reply-with-hline 
-		  (insert "----")
-		  (newline 1))
-		(yank)
-		(end-of-line 1))
-	  (when wikipedia-reply-with-quote
-		(insert "{{Quotation|")
-		(yank)
-		(insert "'''Re: ")
-		(insert-register wikipedia-draft-reply-register 1)
-		(insert "''' |~~~~}}")
-		(backward-char 7))
-	  (message " C-c C-k sends to draft, C-c C-c sends to org buffer."))))
+    (window-configuration-to-register wikipedia-draft-register)
+    (let ((buf (get-buffer-create wikipedia-draft-buffer)))
+      (switch-to-buffer-other-window buf)
+      (wikipedia-mode)
+      (if (functionp 'pabbrev-mode)
+          (pabbrev-mode))
+      (when (not wikipedia-reply-with-quote)
+        (when  wikipedia-reply-with-hline
+          (insert "----")
+          (newline 1))
+        (yank)
+        (end-of-line 1))
+      (when wikipedia-reply-with-quote
+        (insert "{{Quotation|")
+        (yank)
+        (insert "'''Re: ")
+        (insert-register wikipedia-draft-reply-register 1)
+        (insert "''' |~~~~}}")
+        (backward-char 7))
+      (message " C-c C-k sends to draft, C-c C-c sends to org buffer."))))
 
 (defun wikipedia-reply-at-point-simple () ;Version:1.65
   "Very simple function to reply to posts in the discussion forum. You have to set
@@ -1768,25 +1771,25 @@ the point around the signature, then the functions inserts the following
 :'''Re: [[User:foo]]'''."
   (interactive)
   (beginning-of-line 1)
-  (when wikipedia-english-or-german 
-	(search-forward "(UTC)")
-	(search-backward "[[User:")	  )
+  (when wikipedia-english-or-german
+    (search-forward "(UTC)")
+    (search-backward "[[User:")	  )
   (when (not wikipedia-english-or-german)
-	(search-forward "(CET)")
-	(search-backward "[[Benutzer:"))
+    (search-forward "(CET)")
+    (search-backward "[[Benutzer:"))
   (when (not wikipedia-user-simplify-signature)
-	(mark-word 3))
+    (mark-word 3))
   (when  wikipedia-user-simplify-signature
-	(mark-word 2))
-  (copy-to-register wikipedia-draft-reply-register (region-beginning) (region-end) nil) 
+    (mark-word 2))
+  (copy-to-register wikipedia-draft-reply-register (region-beginning) (region-end) nil)
   (end-of-line 1)
   (wikipedia-terminate-paragraph-and-indent)
   (insert ":'''Re: ")
   (insert-register wikipedia-draft-reply-register 1)
   (when  wikipedia-user-simplify-signature
-	(insert "|]]''' "))
+    (insert "|]]''' "))
   (when  (not wikipedia-user-simplify-signature)
-	(insert "]]''' ")))
+    (insert "]]''' ")))
 
 ;;}}}
 
