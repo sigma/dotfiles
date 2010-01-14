@@ -7,6 +7,7 @@ emacs-cvs*Foreground: Wheat
 emacs-cvs*pointerColor: Orchid
 emacs-cvs*cursorColor: Yellow
 emacs-cvs*font: Liberation Mono-10
+!emacs-cvs*font: DejaVu Sans Mono-12
 emacs-cvs*bitmapIcon: on
 emacs-cvs.geometry: 120x50
 
@@ -14,7 +15,7 @@ emacs*Background: DarkSlateGray
 emacs*Foreground: Wheat
 emacs*pointerColor: Orchid
 emacs*cursorColor: Yellow
-emacs*font: fixed
+emacs*font: Liberation Mono-10
 emacs*bitmapIcon: on
 emacs.geometry: 120x50
 
