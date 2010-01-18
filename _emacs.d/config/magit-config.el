@@ -1,9 +1,9 @@
-;;; magit-config.el --- 
+;;; magit-config.el ---
 
 ;; Copyright (C) 2009  Free Software Foundation, Inc.
 
 ;; Author: Yann Hodique <yhodique@vmware.com>
-;; Keywords: 
+;; Keywords:
 
 ;; This file is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -22,19 +22,13 @@
 
 ;;; Commentary:
 
-;; 
+;;
 
 ;;; Code:
 
 (when (request 'magit)
-  (yh/install-magit-extensions))
-
-(defvar yh/magit-extensions
-  '(("Changeset create" "c c" 'yh/magit-changeset-create)))
-
-(defun yh/install-magit-extensions ()
-  
-)
+  (request 'magit-svn)
+  (request 'magit-topics))
 
 (provide 'magit-config)
 ;;; magit-config.el ends here
