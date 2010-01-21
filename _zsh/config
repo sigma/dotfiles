@@ -72,7 +72,7 @@ setopt \
     NO_csh_junkie_loops \
     NO_csh_junkie_quotes \
     NO_csh_null_glob \
-    NO_extended_history \
+    extended_history \
     NO_glob_assign \
     NO_glob_dots \
     NO_hist_no_functions \
@@ -105,8 +105,8 @@ zshrc_load_status 'setting environment'
 WORDCHARS=''
 
 HISTFILE=~/.zshhistory
-HISTSIZE=3000
-SAVEHIST=3000
+HISTSIZE=6000
+SAVEHIST=5000
 HIST_IGNORE_SPACE=1
 
 LISTMAX=1000  # "Never" ask

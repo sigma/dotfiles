@@ -3,7 +3,8 @@
 
 ;;;_+ Loading
 
-(require 'patches)
+(eval-when (load)
+  (require 'patches))
 
 (when (request 'planner)
 

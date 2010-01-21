@@ -6,17 +6,9 @@ emacs-cvs*Background: DarkSlateGray
 emacs-cvs*Foreground: Wheat
 emacs-cvs*pointerColor: Orchid
 emacs-cvs*cursorColor: Yellow
-emacs-cvs*font: Liberation Mono-10
+emacs-cvs*font: Liberation Mono-11
 emacs-cvs*bitmapIcon: on
 emacs-cvs.geometry: 120x50
-
-emacs*Background: DarkSlateGray
-emacs*Foreground: Wheat
-emacs*pointerColor: Orchid
-emacs*cursorColor: Yellow
-emacs*font: fixed
-emacs*bitmapIcon: on
-emacs.geometry: 120x50
 
 xterm*background: DarkSlateGray
 xterm*foreground: Wheat
@@ -179,13 +171,3 @@ xterm.VT100.Translations: #override \
  ~Ctrl ~Meta  Shift <Key> Sys_Req:     string(0x1b) string("[z2e")    \n\
   Ctrl ~Meta ~Shift <Key> Sys_Req:     string(0x1b) string("[z5e")    \n\
   Ctrl ~Meta  Shift <Key> Sys_Req:     string(0x1b) string("[z6e")    \n
-
-Gkrellm*font: fixed
-
-emacs-snapshot-gtk*Background: DarkSlateGray
-emacs-snapshot-gtk*Foreground: Wheat
-emacs-snapshot-gtk*pointerColor: Orchid
-emacs-snapshot-gtk*cursorColor: Yellow
-emacs-snapshot-gtk*bitmapIcon: on
-emacs-snapshot-gtk.geometry: 120x50
-emacs-snapshot-gtk*font: Liberation Mono-10

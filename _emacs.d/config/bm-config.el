@@ -26,8 +26,6 @@
 
 ;;; Code:
 
-(require 'patches)
-
 (setq bm-restore-repository-on-load t)
 
 (when (request 'bm)

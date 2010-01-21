@@ -30,7 +30,8 @@
 
 ;; (request 'color-eldoc)
 
-(require 'patches)
+(eval-when (load)
+  (require 'patches))
 
 (autoload 'paredit-mode "paredit" "Minor mode for pseudo-structurally editing Lisp code." t)
 

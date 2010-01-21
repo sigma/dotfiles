@@ -2,7 +2,7 @@ import glob
 
 Import('env')
 
-loc = env.Copy()
+loc = env.Clone()
 
 loc.Loaddefs('lib-loaddefs.el')
 

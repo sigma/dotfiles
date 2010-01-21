@@ -27,7 +27,8 @@
 ;;; Code:
 
 (require 'hideshow)
-(require 'patches)
+(eval-when (load)
+  (require 'patches))
 
 (define-fringe-bitmap 'hs-marker [0 24 24 126 126 24 24 0])
 
