@@ -9,6 +9,16 @@ emacs-cvs*cursorColor: Yellow
 emacs-cvs*font: Liberation Mono-11
 emacs-cvs*bitmapIcon: on
 emacs-cvs.geometry: 120x50
+emacs-cvs*bitmapIcon: on
+emacs-cvs.geometry: 120x50
+
+emacs*Background: DarkSlateGray
+emacs*Foreground: Wheat
+emacs*pointerColor: Orchid
+emacs*cursorColor: Yellow
+emacs*font: Liberation Mono-10
+emacs*bitmapIcon: on
+emacs.geometry: 120x50
 
 xterm*background: DarkSlateGray
 xterm*foreground: Wheat

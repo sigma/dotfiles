@@ -450,18 +450,22 @@ frame, close it. Else, die"
     (svn . svn-status)
     (cvs . cvs-status)))
 
+;; fallback to git by default
 (defun yh/vcs-backend (file)
-  (cond ((vc-git-root file)
+  (cond ((null file)
+         'git)
+        ((vc-git-root file)
          'git)
         ((vc-svn-registered file)
          'svn)
         ((vc-cvs-registered file)
          'cvs)
-        (t nil)))
+        (t
+         'git)))
 
 (defun yh/vcs-status ()
   (interactive)
-  (let ((backend (yh/vcs-backend (buffer-file-name))))
+  (let ((backend (yh/vcs-backend (or buffer-file-name default-directory))))
     (call-interactively (cdr (assoc backend yh/vcs-backends)))))
 
 (global-set-key (kbd "<f12>") 'yh/vcs-status)
