@@ -28,7 +28,7 @@
 
 (when (request 'magit)
   (request 'magit-svn)
-  (request 'magit-topics))
+  (request 'magit-topgit))
 
 (provide 'magit-config)
 ;;; magit-config.el ends here
