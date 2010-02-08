@@ -26,7 +26,8 @@
 
 ;;; Code:
 
-(require 'patches)
+(eval-when (load)
+  (require 'patches))
 
 (autoload 'circe "circe" "Connect to an IRC server" t)
 

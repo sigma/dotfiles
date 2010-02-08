@@ -2,7 +2,7 @@ import glob
 
 Import('env')
 
-loc = env.Copy()
+loc = env.Clone()
 
 src_files = glob.glob("*.el")
 

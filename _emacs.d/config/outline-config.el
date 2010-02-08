@@ -26,9 +26,6 @@
 
 ;;; Code:
 
-(eval-when-compile
-  (require 'patches))
-
 (add-hook 'outline-mode-hook
           (lambda ()
             (request 'outline-magic)))

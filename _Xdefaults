@@ -6,8 +6,8 @@ emacs-cvs*Background: DarkSlateGray
 emacs-cvs*Foreground: Wheat
 emacs-cvs*pointerColor: Orchid
 emacs-cvs*cursorColor: Yellow
-emacs-cvs*font: Liberation Mono-10
-!emacs-cvs*font: DejaVu Sans Mono-12
+!emacs-cvs*font: Liberation Mono-10
+emacs-cvs*font: Monaco:pixelsize=13
 emacs-cvs*bitmapIcon: on
 emacs-cvs.geometry: 120x50
 
@@ -65,7 +65,8 @@ rxvt-unicode*modifier: mod1
 rxvt-unicode*background: DarkSlateGray
 rxvt-unicode*foreground: Wheat
 rxvt-unicode*cursorColor: Yellow
-rxvt-unicode*font: xft:Liberation Mono-11
+!rxvt-unicode*font: xft:Liberation Mono-11
+rxvt-unicode*font: xft:Monaco:pixelsize=13
 rxvt-unicode*reverseVideo: false
 rxvt-unicode*scrollBar: false
 rxvt-unicode*saveLines: 5000
@@ -81,7 +82,8 @@ urxvt*modifier: mod1
 urxvt*background: DarkSlateGray
 urxvt*foreground: Wheat
 urxvt*cursorColor: Yellow
-urxvt*font: xft:Liberation Mono-11
+!urxvt*font: xft:Liberation Mono-11
+urxvt*font: xft:Monaco:pixelsize=13
 urxvt*reverseVideo: false
 urxvt*scrollBar: false
 urxvt*saveLines: 5000
@@ -180,13 +182,3 @@ xterm.VT100.Translations: #override \
  ~Ctrl ~Meta  Shift <Key> Sys_Req:     string(0x1b) string("[z2e")    \n\
   Ctrl ~Meta ~Shift <Key> Sys_Req:     string(0x1b) string("[z5e")    \n\
   Ctrl ~Meta  Shift <Key> Sys_Req:     string(0x1b) string("[z6e")    \n
-
-Gkrellm*font: fixed
-
-emacs-snapshot-gtk*Background: DarkSlateGray
-emacs-snapshot-gtk*Foreground: Wheat
-emacs-snapshot-gtk*pointerColor: Orchid
-emacs-snapshot-gtk*cursorColor: Yellow
-emacs-snapshot-gtk*bitmapIcon: on
-emacs-snapshot-gtk.geometry: 120x50
-emacs-snapshot-gtk*font: Liberation Mono-10

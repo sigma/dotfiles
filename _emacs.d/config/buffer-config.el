@@ -28,7 +28,7 @@
 
 ;;; Buffers
 
-(eval-when-compile
+(eval-when (load)
   (require 'patches))
 
 (require 'dired)

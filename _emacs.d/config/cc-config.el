@@ -26,7 +26,8 @@
 
 ;;; Code:
 
-(require 'patches)
+(eval-when (load)
+  (require 'patches))
 
 ;---------------------------------------------------------------------
 ; C++ mode modifications
