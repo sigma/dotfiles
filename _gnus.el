@@ -1,5 +1,4 @@
 ;; -*- mode: emacs-lisp; mode: hi-lock; mode: page-break; auto-compile-lisp: nil; -*-
-;; $Id: dotgnus.el 229 2007-03-07 21:10:37Z yann $
 
 ;;; Basis
 ;; Load site-specific stuff
@@ -16,7 +15,7 @@
 
 ;; Define url catchers
 (setq browse-url-browser-function '(("^mailto:" . gnus-url-mailto)
-				    ("." . browse-url-netscape)))
+                                    ("." . browse-url-netscape)))
 
 ;; global parameters
 (setq
@@ -191,13 +190,13 @@
 (progn
       (gnus-add-configuration
        `(group
-	 (vertical 1.0
-		   (horizontal 9
-			       ("*BBDB*" 0.3)
-			       ("*Calendar*" 1.0))
-		   (horizontal 1.0
-			       (group 0.3 point)
-			       (,(file-name-nondirectory local-home-page) 1.0)))))
+         (vertical 1.0
+                   (horizontal 9
+                               ("*BBDB*" 0.3)
+                               ("*Calendar*" 1.0))
+                   (horizontal 1.0
+                               (group 0.3 point)
+                               (,(file-name-nondirectory local-home-page) 1.0)))))
 
       (gnus-add-configuration
        '(info
@@ -211,53 +210,53 @@
 
       (gnus-add-configuration
        '(article
-	 (vertical 1.0
-		   (horizontal 9
-			       ("*BBDB*" 0.3)
-			       (summary 1.0 point))
-		   (horizontal 1.0
-			       (group 0.3)
-			       (article 1.0)))))
+         (vertical 1.0
+                   (horizontal 9
+                               ("*BBDB*" 0.3)
+                               (summary 1.0 point))
+                   (horizontal 1.0
+                               (group 0.3)
+                               (article 1.0)))))
 
       (gnus-add-configuration
        '(reply-yank
-	 (vertical 1.0
-		   (horizontal 9
-			       ("*BBDB*" 0.3)
-			       (summary 1.0))
-		   (horizontal 1.0
-			       (group 0.3)
-			       (message 1.0 point)))))
+         (vertical 1.0
+                   (horizontal 9
+                               ("*BBDB*" 0.3)
+                               (summary 1.0))
+                   (horizontal 1.0
+                               (group 0.3)
+                               (message 1.0 point)))))
 
       (gnus-add-configuration
        '(forward
-	 (vertical 1.0
-		   (horizontal 9
-			       ("*BBDB*" 0.3)
-			       (summary 1.0))
-		   (horizontal 1.0
-			       (group 0.3)
-			       (message 1.0 point)))))
+         (vertical 1.0
+                   (horizontal 9
+                               ("*BBDB*" 0.3)
+                               (summary 1.0))
+                   (horizontal 1.0
+                               (group 0.3)
+                               (message 1.0 point)))))
 
       (gnus-add-configuration
        '(summary
-	 (vertical 1.0
-		   (horizontal 9
-			       ("*BBDB*" 0.3)
-			       (summary 1.0 point))
-		   (horizontal 1.0
-			       (group 0.3)
-			       ("*scratch*" 1.0)))))
+         (vertical 1.0
+                   (horizontal 9
+                               ("*BBDB*" 0.3)
+                               (summary 1.0 point))
+                   (horizontal 1.0
+                               (group 0.3)
+                               ("*scratch*" 1.0)))))
 
       (gnus-add-configuration
        '(reply
-	 (vertical 1.0
+         (vertical 1.0
                    (horizontal 9
-			       ("*BBDB*" 0.3)
-			       (summary 1.0))
-		   (horizontal 1.0
-			       (group 0.3)
-			       (vertical 1.0
+                               ("*BBDB*" 0.3)
+                               (summary 1.0))
+                   (horizontal 1.0
+                               (group 0.3)
+                               (vertical 1.0
                                          (article 0.3)
                                          (message 1.0 point))))))
       )
@@ -322,14 +321,14 @@
  message-cite-function 'trivial-cite
 
  gnus-signature-separator  '("^-- $"         ; The standard
-			     "^--$"          ; Die OE Die !
-			     "^-- *$"        ; A common mangling
-			     "^-------*$"    ; Many people just use a looong
+                             "^--$"          ; Die OE Die !
+                             "^-- *$"        ; A common mangling
+                             "^-------*$"    ; Many people just use a looong
                                         ; line of dashes.  Shame!
-			     "^ *--------*$" ; Double-shame!
-			     "^________*$"   ; Underscores are also popular
-			     "^========*$"   ; Pervert!
-			     ))
+                             "^ *--------*$" ; Double-shame!
+                             "^________*$"   ; Underscores are also popular
+                             "^========*$"   ; Pervert!
+                             ))
 
 
 ;;; Posting Styles
@@ -338,7 +337,7 @@
   "Function that inserts a simple citation line."
   (when message-reply-headers
     (insert (mail-header-from message-reply-headers)
-	    " wrote:\n\n")))
+            " wrote:\n\n")))
 
 (setq message-citation-line-function 'nbc-message-insert-citation-line)
 
@@ -463,27 +462,27 @@ The epigram is inserted at point if called interactively."
 
 (setq gnus-group-highlight
       '(((and (= unread 0) (not mailp) (eq level 1)) . gnus-group-news-1-empty-face)
-	((and (not mailp) (eq level 1)) . gnus-group-news-1-face)
-	((and (= unread 0) (not mailp) (eq level 2)) . gnus-group-news-2-empty-face)
-	((and (not mailp) (eq level 2)) . gnus-group-news-2-face)
-	((and (= unread 0) (not mailp) (eq level 3)) . gnus-group-news-3-empty-face)
-	((and (not mailp) (eq level 3)) . gnus-group-news-3-face)
-	((and (= unread 0) (not mailp) (eq level 4)) . gnus-group-news-4-empty-face)
-	((and (not mailp) (eq level 4)) . gnus-group-news-4-face)
-	((and (= unread 0) (not mailp) (eq level 5)) . gnus-group-news-5-empty-face)
-	((and (not mailp) (eq level 5)) . gnus-group-news-5-face)
-	((and (= unread 0) (not mailp) (eq level 6)) . gnus-group-news-6-empty-face)
-	((and (not mailp) (eq level 6)) . gnus-group-news-6-face)
-	((and (= unread 0) (not mailp)) . gnus-group-news-low-empty-face)
-	((and (not mailp)) . gnus-group-news-low-face)
-	((and (= unread 0) (eq level 1)) . gnus-group-mail-1-empty-face)
-	((eq level 1) . gnus-group-mail-1-face)
-	((and (= unread 0) (eq level 2)) . gnus-group-mail-2-empty-face)
-	((eq level 2) . gnus-group-mail-2-face)
-	((and (= unread 0) (eq level 3)) . gnus-group-mail-3-empty-face)
-	((eq level 3) . gnus-group-mail-3-face)
-	((= unread 0) . gnus-group-mail-low-empty-face)
-	(t . gnus-group-mail-low-face)))
+        ((and (not mailp) (eq level 1)) . gnus-group-news-1-face)
+        ((and (= unread 0) (not mailp) (eq level 2)) . gnus-group-news-2-empty-face)
+        ((and (not mailp) (eq level 2)) . gnus-group-news-2-face)
+        ((and (= unread 0) (not mailp) (eq level 3)) . gnus-group-news-3-empty-face)
+        ((and (not mailp) (eq level 3)) . gnus-group-news-3-face)
+        ((and (= unread 0) (not mailp) (eq level 4)) . gnus-group-news-4-empty-face)
+        ((and (not mailp) (eq level 4)) . gnus-group-news-4-face)
+        ((and (= unread 0) (not mailp) (eq level 5)) . gnus-group-news-5-empty-face)
+        ((and (not mailp) (eq level 5)) . gnus-group-news-5-face)
+        ((and (= unread 0) (not mailp) (eq level 6)) . gnus-group-news-6-empty-face)
+        ((and (not mailp) (eq level 6)) . gnus-group-news-6-face)
+        ((and (= unread 0) (not mailp)) . gnus-group-news-low-empty-face)
+        ((and (not mailp)) . gnus-group-news-low-face)
+        ((and (= unread 0) (eq level 1)) . gnus-group-mail-1-empty-face)
+        ((eq level 1) . gnus-group-mail-1-face)
+        ((and (= unread 0) (eq level 2)) . gnus-group-mail-2-empty-face)
+        ((eq level 2) . gnus-group-mail-2-face)
+        ((and (= unread 0) (eq level 3)) . gnus-group-mail-3-empty-face)
+        ((eq level 3) . gnus-group-mail-3-face)
+        ((= unread 0) . gnus-group-mail-low-empty-face)
+        (t . gnus-group-mail-low-face)))
 
 (defun my-setup-hl-line ()
   (hl-line-mode 1)
@@ -526,8 +525,8 @@ The epigram is inserted at point if called interactively."
 (setq mm-decrypt-option 'known)
 (setq gnus-article-emulate-mime t) ; already set in my gnus but you may need it.
 (setq gnus-buttonized-mime-types (append (list "multipart/signed"
-	    				       "multipart/encrypted")
-		    			 gnus-buttonized-mime-types))
+                                               "multipart/encrypted")
+                                         gnus-buttonized-mime-types))
 
 ;;(add-hook 'gnus-message-setup-hook 'mml-secure-message-sign-pgpmime)
 

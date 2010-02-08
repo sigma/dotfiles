@@ -1,5 +1,4 @@
 ;; -*- mode: emacs-lisp; mode: hi-lock; mode: orgstruct; auto-compile-lisp: nil; -*-
-;; $Id: dotemacs.el 230 2007-04-09 09:10:18Z yann $
 
 ;; (toggle-debug-on-error)
 
