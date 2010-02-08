@@ -304,7 +304,6 @@
  '(vc-stay-local t)
  '(view-diary-entries-initially t)
  '(visible-bell nil)
- '(w3m-icon-directory "~/.emacs.d/emacs-w3m/icons")
  '(wdired-allow-to-change-permissions (quote advanced))
  '(which-function-mode nil)
  '(whitespace-style (quote (tabs trailing lines-tail space-before-tab newline indentation empty space-after-tab)))

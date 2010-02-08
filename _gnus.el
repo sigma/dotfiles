@@ -459,7 +459,7 @@ The epigram is inserted at point if called interactively."
         (insert fortune-string))
     fortune-string))
 
-(setq mm-text-html-renderer 'w3m)
+(setq mm-text-html-renderer 'html2text)
 
 (setq gnus-group-highlight
       '(((and (= unread 0) (not mailp) (eq level 1)) . gnus-group-news-1-empty-face)
