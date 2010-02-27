@@ -25,14 +25,13 @@
 ;;
 
 ;;; Code:
-(if (request 'python-mode)
-    (add-to-list 'hs-special-modes-alist
-                 `(python-mode "^\\s-*\\(?:def\\|class\\)\\>" nil "#"
-                               ,(lambda (arg)
-                                  (py-end-of-def-or-class 'either)
-                                  (skip-chars-backward " \t\n"))
-                               nil))
-  (require 'python))
+(request 'python)
+(add-to-list 'hs-special-modes-alist
+             `(python-mode "^\\s-*\\(?:def\\|class\\)\\>" nil "#"
+                           ,(lambda (arg)
+                              (python-end-of-defun)
+                              (skip-chars-backward " \t\n"))
+                           nil))
 
 (add-to-list 'auto-mode-alist '("\\.py\\'" . python-mode))
 
@@ -60,7 +59,7 @@
 (add-hook 'python-mode-hook
           (lambda ()
             (make-variable-buffer-local 'beginning-of-defun-function)
-            (setq beginning-of-defun-function 'py-beginning-of-def-or-class)
+            (setq beginning-of-defun-function 'python-beginning-of-defun)
             (font-lock-add-keywords nil '(("\\<\\(FIXME\\|TODO\\|BUG\\):" 1 font-lock-warning-face t)))
             (setq outline-regexp "def\\|class ")
             (hs-minor-mode 1)
