@@ -1,4 +1,4 @@
-#compdef github
+#compdef github gh=github
 
 _github() {
   if (( CURRENT > 2 )); then
