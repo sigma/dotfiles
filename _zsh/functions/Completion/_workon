@@ -1,0 +1,12 @@
+#compdef workon
+
+_workon_envs () {
+    local expl devs
+
+    envs=( $(workon) )
+    _wanted envs expl 'available envs' \
+        compadd "$@" - "${(@)envs%%:*}"
+}
+
+_arguments \
+    ':environment:_workon_envs'

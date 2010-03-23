@@ -79,5 +79,8 @@ zstyle ':completion:force-menu:*' menu yes select
 
 compdef _functions reload
 compdef _users lh
-compdef _finger f
 compdef _typeset ts
+
+compdef f=finger
+compdef v=workon
+compdef v.switch=workon
