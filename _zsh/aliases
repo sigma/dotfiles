@@ -88,7 +88,7 @@ alias nano='/usr/bin/nano -z'
 # change some applications
 alias vi='zile'
 alias top='htop'
-alias cat='dog'
+#alias cat='dog'
 alias less='most'
 
 if which lftp >&/dev/null; then
