@@ -1,0 +1,57 @@
+[submodule "_emacs.d/anything-config"]
+	path = _emacs.d/anything-config
+	url = git://github.com/emacsmirror/anything-config.git
+[submodule "_emacs.d/auctex"]
+	path = _emacs.d/auctex
+	url = git://github.com/emacsmirror/auctex.git
+[submodule "_emacs.d/bbdb"]
+	path = _emacs.d/bbdb
+	url = git://github.com/emacsmirror/bbdb.git
+[submodule "_emacs.d/bm"]
+	path = _emacs.d/bm
+	url = git://github.com/emacsmirror/bm.git
+[submodule "_emacs.d/dvc"]
+	path = _emacs.d/dvc
+	url = git://github.com/emacsmirror/dvc.git
+[submodule "_emacs.d/ecb"]
+	path = _emacs.d/ecb
+	url = git://github.com/emacsmirror/ecb.git
+[submodule "_emacs.d/emms"]
+	path = _emacs.d/emms
+	url = git://github.com/emacsmirror/emms.git
+[submodule "_emacs.d/gnus"]
+	path = _emacs.d/gnus
+	url = git://github.com/emacsmirror/gnus.git
+[submodule "_emacs.d/magit"]
+	path = _emacs.d/magit
+	url = git@github.com:sigma/magit.git
+[submodule "_emacs.d/mailcrypt"]
+	path = _emacs.d/mailcrypt
+	url = git://github.com/emacsmirror/mailcrypt.git
+[submodule "_emacs.d/mtorus"]
+	path = _emacs.d/mtorus
+	url = git://github.com/emacsmirror/mtorus.git
+[submodule "_emacs.d/muse"]
+	path = _emacs.d/muse
+	url = git://github.com/emacsmirror/muse.git
+[submodule "_emacs.d/org-mode"]
+	path = _emacs.d/org-mode
+	url = git://repo.or.cz/org-mode.git
+[submodule "_emacs.d/php-mode"]
+	path = _emacs.d/php-mode
+	url = git://github.com/emacsmirror/php-mode.git
+[submodule "_emacs.d/planner"]
+	path = _emacs.d/planner
+	url = git://github.com/emacsmirror/planner.git
+[submodule "_emacs.d/predictive"]
+	path = _emacs.d/predictive
+	url = git://github.com/emacsmirror/predictive.git
+[submodule "_emacs.d/python-mode"]
+	path = _emacs.d/python-mode
+	url = git://github.com/emacsmirror/python-mode.git
+[submodule "_emacs.d/remember"]
+	path = _emacs.d/remember
+	url = git://github.com/emacsmirror/remember.git
+[submodule "_emacs.d/w3"]
+	path = _emacs.d/w3
+	url = git://github.com/emacsmirror/w3.git
