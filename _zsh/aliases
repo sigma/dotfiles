@@ -88,7 +88,7 @@ alias nano='/usr/bin/nano -z'
 # change some applications
 alias vi='zile'
 alias top='htop'
-alias cat='dog'
+#alias cat='dog'
 alias less='most'
 
 if which lftp >&/dev/null; then
@@ -114,7 +114,19 @@ alias pvs='pvs -emacs emacs-cvs'
 alias @=openurl
 
 alias covertest='nocorrect coverage -x'
-alias coverreport='nocorrect coverage -b -d html && @ html/index.html'
+alias coverreport='nocorrect coverage html -d html --omit=/usr,/home/yann/apps,/home/yann/.virtualenvs'
 
 alias assh="ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"
 alias ascp="scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"
+
+# virtualenv
+alias v=workon
+alias v.deactivate=deactivate
+alias v.mk='mkvirtualenv --no-site-packages'
+alias v.mk_withsitepackages='mkvirtualenv'
+alias v.rm=rmvirtualenv
+alias v.switch=workon
+alias v.add2virtualenv=add2virtualenv
+alias v.cdsitepackages=cdsitepackages
+alias v.cd=cdvirtualenv
+alias v.lssitepackages=lssitepackages
