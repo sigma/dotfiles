@@ -728,4 +728,36 @@ by using nxml's indentation rules."
 ;; This must be last
 (request 'smex)
 
+(defun yh/mode-scratch-list-modes ()
+  (let ((modes nil))
+    (mapatoms (lambda (x)
+                (let ((name (format "%s" x)))
+                  (and (string-match "\\(.*\\)-mode" name)
+                       (fboundp x)
+                       (commandp (symbol-function x))
+                       (add-to-list 'modes (match-string 1 name))))))
+    modes))
+
+(defvar yh/mode-scratch-modes
+  (yh/mode-scratch-list-modes))
+
+(defun yh/mode-scratch-get-mode (arg)
+  (or (and (null arg)
+           major-mode)
+      (completing-read "Mode: " yh/mode-scratch-modes)))
+
+(defun yh/mode-scratch-create (mode)
+  (interactive (list (yh/mode-scratch-get-mode current-prefix-arg)))
+  (let* ((raw-name (format "%s" mode))
+         (name (if (string-match "\\(.*\\)-mode" raw-name)
+                   (match-string 1 raw-name)
+                 raw-name))
+         (buf (get-buffer-create (format "*scratch-%s*" name))))
+    (with-current-buffer buf
+      (let ((m (intern (format "%s-mode" name))))
+        (funcall m)))
+    (pop-to-buffer buf)))
+
+(global-set-key (kbd "M-`") 'yh/mode-scratch-create)
+
 (message ".emacs loaded")
