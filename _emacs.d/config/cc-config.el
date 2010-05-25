@@ -48,6 +48,12 @@
 
 (dolist (mode '(c-mode c++-mode java-mode php-mode)) (font-lock-add-keywords mode c++-new-font-lock-keywords))
 
+(add-hook
+ 'java-mode-hook
+ '(lambda () "Treat Java 1.5 @-style annotations as comments."
+    (setq c-comment-start-regexp "(@|/(/|[*][*]?))")
+    (modify-syntax-entry ?@ "< b" java-mode-syntax-table)))
+
 (defun my-c-mode-common-hook()
   (interactive)
   (hs-minor-mode 1)

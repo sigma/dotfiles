@@ -197,7 +197,7 @@
     (request 'help-config)
     (request 'moccur-config)
     ;; (request 'lispy-config)
-    (request 'tabbar-config)
+    ;; (request 'tabbar-config)
     ;; (request 'sawfish-config)
     ;; (request 'pmwiki-config)
     (request 'psvn-config)))
@@ -759,5 +759,60 @@ by using nxml's indentation rules."
     (pop-to-buffer buf)))
 
 (global-set-key (kbd "M-`") 'yh/mode-scratch-create)
+
+(when (and (request 'folding)
+           (request 'fold-dwim))
+  (global-set-key (kbd "<A-tab>") 'fold-dwim-toggle))
+
+
+;; Detect endianness of UTF-16 containing a Byte Order Mark U+FEFF
+(add-to-list 'auto-coding-regexp-alist '("^\xFF\xFE" . utf-16-le) t)
+(add-to-list 'auto-coding-regexp-alist '("^\xFE\xFF" . utf-16-be) t)
+;; Add missing support functions
+(defun utf-16-le-pre-write-conversion (start end) nil)
+(defun utf-16-be-pre-write-conversion (start end) nil)
+
+;; Detect endianness of UTF-16 containing a Byte Order Mark U+FEFF
+;; Detect EOL mode by looking for CR/LF on the first line
+(add-to-list 'auto-coding-regexp-alist '("^\xFF\xFE.*\x0D\x00$" . utf-16-le-dos) t)
+(add-to-list 'auto-coding-regexp-alist '("^\xFE\xFF.*\x0D\x00$" . utf-16-be-dos) t)
+(add-to-list 'auto-coding-regexp-alist '("^\xFF\xFE" . utf-16-le) t)
+(add-to-list 'auto-coding-regexp-alist '("^\xFE\xFF" . utf-16-be) t)
+
+(let ((arch-regexp "\\.\\(war\\|ear\\|sar\\|egg\\|dar\\|package\\)\\'"))
+  (add-to-list 'auto-mode-alist `(,arch-regexp . archive-mode))
+  (modify-coding-system-alist 'file arch-regexp 'no-conversion))
+
+(setq auto-coding-functions (delete 'sgml-xml-auto-coding-function auto-coding-functions))
+
+(defvar indirect-mode-name nil
+  "Mode to set for indirect buffers.")
+(make-variable-buffer-local 'indirect-mode-name)
+
+(defun indirect-region (start end)
+  "Edit the current region in another buffer.
+    If the buffer-local variable `indirect-mode-name' is not set, prompt
+    for mode name to choose for the indirect buffer interactively.
+    Otherwise, use the value of said variable as argument to a funcall."
+  (interactive "r")
+  (let ((buffer-name (generate-new-buffer-name "*indirect*"))
+        (mode
+         (if (not indirect-mode-name)
+             (setq indirect-mode-name
+                   (intern
+                    (completing-read
+                     "Mode: "
+                     (mapcar (lambda (e)
+                               (list (symbol-name e)))
+                             (apropos-internal "-mode$" 'commandp))
+                     nil t)))
+           indirect-mode-name)))
+    (pop-to-buffer (make-indirect-buffer (current-buffer) buffer-name))
+    (funcall mode)
+    (narrow-to-region start end)
+    (goto-char (point-min))
+    (shrink-window-if-larger-than-buffer)))
+
+(global-set-key (kbd "C-x n N") 'indirect-region)
 
 (message ".emacs loaded")

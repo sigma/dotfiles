@@ -119,7 +119,7 @@ WATCHFMT="[%B%t%b] %B%n%b has %a %B%l%b from %B%M%b"
 
 export JDK_HOME=/usr/lib/jvm/java-6-sun
 export JAVA_HOME=$JDK_HOME
-export PYTHONPATH=.:~/apps/python:~/Projects/git/vsimu
+export PYTHONPATH=.:~/apps/python
 export INFOPATH=/usr/share/info:/usr/local/share/info:~/share/info
 export XDG_CONFIG_HOME=~/.config
 export XDG_DATA_HOME=~/.data
@@ -158,9 +158,6 @@ export P4CLIENT=yhodique-git-p4
 export P4PORT=build-p4proxy.eng.vmware.com:1667
 export P4USER=yhodique
 
-export VMO_SERVER=10.23.167.21
-export VMO_USER=lcmadmin
-export VMO_PASSWORD=admin
 export VMO_API=/home/yann/workspace-qa/vmo/bin/
 export ESX40VMTREE=~/Projects/git/vmware/esx40/
 export PYTHONSTARTUP=~/.pythonrc.py
