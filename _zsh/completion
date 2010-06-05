@@ -82,8 +82,8 @@ compdef _users lh
 compdef _typeset ts
 
 compdef f=finger
-compdef v=workon
-compdef v.switch=workon
+compdef _workon v
+compdef _workon v.switch
 
 # pip zsh completion start
 function _pip_completion {
