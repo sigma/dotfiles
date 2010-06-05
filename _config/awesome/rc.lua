@@ -52,7 +52,7 @@ beautiful.init(theme_path)
 -- Modifier keys
 modkey = "Mod4" -- Super_L
 
-terminal = "urxvtcd"
+terminal = "rxvt-unicode"
 editor = os.getenv("EDITOR")
 --
 -- Window titlebars

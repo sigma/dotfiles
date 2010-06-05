@@ -114,7 +114,7 @@ alias pvs='pvs -emacs emacs-cvs'
 alias @=openurl
 
 alias covertest='nocorrect coverage -x'
-alias coverreport='nocorrect coverage html -d html --omit=/usr,/home/yann/apps,/home/yann/.virtualenvs'
+alias coverreport='nocorrect coverage html -d html --omit=/usr,/home/yann/apps,/home/yann/.virtualenvs && @ html/index.html'
 
 alias assh="ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"
 alias ascp="scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"

@@ -15,7 +15,8 @@ emacs*Background: DarkSlateGray
 emacs*Foreground: Wheat
 emacs*pointerColor: Orchid
 emacs*cursorColor: Yellow
-emacs*font: Liberation Mono-10
+emacs*FontBackend: xft
+emacs*font: Monaco
 emacs*bitmapIcon: on
 emacs.geometry: 120x50
 
