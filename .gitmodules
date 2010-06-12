@@ -1,0 +1,63 @@
+[submodule "_emacs.d/packages-src/magit"]
+	path = _emacs.d/packages-src/magit
+	url = git://github.com/sigma/magit.git
+[submodule "_emacs.d/packages-src/bbdb"]
+	path = _emacs.d/packages-src/bbdb
+	url = git://github.com/emacsmirror/bbdb.git
+[submodule "_emacs.d/packages-src/org-mode"]
+	path = _emacs.d/packages-src/org-mode
+	url = git://github.com/emacsmirror/org-mode.git
+[submodule "_emacs.d/packages-src/auctex"]
+	path = _emacs.d/packages-src/auctex
+	url = git://github.com/emacsmirror/auctex.git
+[submodule "_emacs.d/packages-src/bm"]
+	path = _emacs.d/packages-src/bm
+	url = git://github.com/emacsmirror/bm.git
+[submodule "_emacs.d/packages-src/dvc"]
+	path = _emacs.d/packages-src/dvc
+	url = git://github.com/emacsmirror/dvc.git
+[submodule "_emacs.d/packages-src/ecb"]
+	path = _emacs.d/packages-src/ecb
+	url = git://github.com/emacsmirror/ecb.git
+[submodule "_emacs.d/packages-src/emms"]
+	path = _emacs.d/packages-src/emms
+	url = git://github.com/emacsmirror/emms.git
+[submodule "_emacs.d/packages-src/mailcrypt"]
+	path = _emacs.d/packages-src/mailcrypt
+	url = git://github.com/emacsmirror/mailcrypt.git
+[submodule "_emacs.d/packages-src/mmm-mode"]
+	path = _emacs.d/packages-src/mmm-mode
+	url = git://github.com/emacsmirror/mmm-mode.git
+[submodule "_emacs.d/packages-src/mtorus"]
+	path = _emacs.d/packages-src/mtorus
+	url = git://github.com/emacsmirror/mtorus.git
+[submodule "_emacs.d/packages-src/muse"]
+	path = _emacs.d/packages-src/muse
+	url = git://github.com/emacsmirror/muse.git
+[submodule "_emacs.d/packages-src/psgml"]
+	path = _emacs.d/packages-src/psgml
+	url = git://github.com/emacsmirror/psgml.git
+[submodule "_emacs.d/packages-src/python-mode"]
+	path = _emacs.d/packages-src/python-mode
+	url = git://github.com/emacsmirror/python-mode.git
+[submodule "_emacs.d/packages-src/remember"]
+	path = _emacs.d/packages-src/remember
+	url = git://github.com/emacsmirror/remember.git
+[submodule "_emacs.d/packages-src/w3"]
+	path = _emacs.d/packages-src/w3
+	url = git://github.com/emacsmirror/w3.git
+[submodule "_emacs.d/packages-src/x-symbol"]
+	path = _emacs.d/packages-src/x-symbol
+	url = git://github.com/emacsmirror/x-symbol.git
+[submodule "_emacs.d/packages-src/anything-config"]
+	path = _emacs.d/packages-src/anything-config
+	url = git://github.com/emacsmirror/anything-config.git
+[submodule "_emacs.d/packages-src/php-mode"]
+	path = _emacs.d/packages-src/php-mode
+	url = git://github.com/emacsmirror/php-mode.git
+[submodule "_emacs.d/packages-src/lispy"]
+	path = _emacs.d/packages-src/lispy
+	url = git://github.com/sigma/lispy.git
+[submodule "_emacs.d/packages-src/planner"]
+	path = _emacs.d/packages-src/planner
+	url = git://github.com/emacsmirror/planner.git
