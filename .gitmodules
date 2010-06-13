@@ -259,3 +259,9 @@
 [submodule "_emacs.d/packages-src/idledo"]
 	path = _emacs.d/packages-src/idledo
 	url = git://github.com/emacsmirror/idledo.git
+[submodule "deps/awesome"]
+	path = deps/awesome
+	url = git://git.naquadah.org/awesome.git
+[submodule "deps/topgit"]
+	path = deps/topgit
+	url = git://github.com/sigma/topgit.git
