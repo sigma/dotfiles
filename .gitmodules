@@ -61,3 +61,201 @@
 [submodule "_emacs.d/packages-src/planner"]
 	path = _emacs.d/packages-src/planner
 	url = git://github.com/emacsmirror/planner.git
+[submodule "_emacs.d/packages-src/anchored-transpose"]
+	path = _emacs.d/packages-src/anchored-transpose
+	url = git://github.com/emacsmirror/anchored-transpose.git
+[submodule "_emacs.d/packages-src/anything"]
+	path = _emacs.d/packages-src/anything
+	url = git://github.com/emacsmirror/anything.git
+[submodule "_emacs.d/packages-src/bibsnarf"]
+	path = _emacs.d/packages-src/bibsnarf
+	url = git://github.com/emacsmirror/bibsnarf.git
+[submodule "_emacs.d/packages-src/blank-mode"]
+	path = _emacs.d/packages-src/blank-mode
+	url = git://github.com/emacsmirror/blank-mode.git
+[submodule "_emacs.d/packages-src/boxquote"]
+	path = _emacs.d/packages-src/boxquote
+	url = git://github.com/emacsmirror/boxquote.git
+[submodule "_emacs.d/packages-src/bookmark-plus"]
+	path = _emacs.d/packages-src/bookmark-plus
+	url = git://github.com/emacsmirror/bookmark-plus.git
+[submodule "_emacs.d/packages-src/bf"]
+	path = _emacs.d/packages-src/bf
+	url = git://github.com/emacsmirror/bf.git
+[submodule "_emacs.d/packages-src/browse-kill-ring"]
+	path = _emacs.d/packages-src/browse-kill-ring
+	url = git://github.com/emacsmirror/browse-kill-ring.git
+[submodule "_emacs.d/packages-src/color-moccur"]
+	path = _emacs.d/packages-src/color-moccur
+	url = git://github.com/emacsmirror/color-moccur.git
+[submodule "_emacs.d/packages-src/cparen"]
+	path = _emacs.d/packages-src/cparen
+	url = git://github.com/emacsmirror/cparen.git
+[submodule "_emacs.d/packages-src/crontab-mode"]
+	path = _emacs.d/packages-src/crontab-mode
+	url = git://github.com/emacsmirror/crontab-mode.git
+[submodule "_emacs.d/packages-src/doc-mode"]
+	path = _emacs.d/packages-src/doc-mode
+	url = git://github.com/emacsmirror/doc-mode.git
+[submodule "_emacs.d/packages-src/fold-dwim"]
+	path = _emacs.d/packages-src/fold-dwim
+	url = git://github.com/emacsmirror/fold-dwim.git
+[submodule "_emacs.d/packages-src/folding"]
+	path = _emacs.d/packages-src/folding
+	url = git://github.com/emacsmirror/folding.git
+[submodule "_emacs.d/packages-src/h4x0r"]
+	path = _emacs.d/packages-src/h4x0r
+	url = git://github.com/emacsmirror/h4x0r.git
+[submodule "_emacs.d/packages-src/htmlize"]
+	path = _emacs.d/packages-src/htmlize
+	url = git://github.com/emacsmirror/htmlize.git
+[submodule "_emacs.d/packages-src/incr"]
+	path = _emacs.d/packages-src/incr
+	url = git://github.com/emacsmirror/incr.git
+[submodule "_emacs.d/packages-src/ipa"]
+	path = _emacs.d/packages-src/ipa
+	url = git://github.com/emacsmirror/ipa.git
+[submodule "_emacs.d/packages-src/moccur-edit"]
+	path = _emacs.d/packages-src/moccur-edit
+	url = git://github.com/emacsmirror/moccur-edit.git
+[submodule "_emacs.d/packages-src/multi-region"]
+	path = _emacs.d/packages-src/multi-region
+	url = git://github.com/emacsmirror/multi-region.git
+[submodule "_emacs.d/packages-src/outline-magic"]
+	path = _emacs.d/packages-src/outline-magic
+	url = git://github.com/emacsmirror/outline-magic.git
+[submodule "_emacs.d/packages-src/psvn"]
+	path = _emacs.d/packages-src/psvn
+	url = git://github.com/emacsmirror/psvn.git
+[submodule "_emacs.d/packages-src/rcirc-color"]
+	path = _emacs.d/packages-src/rcirc-color
+	url = git://github.com/emacsmirror/rcirc-color.git
+[submodule "_emacs.d/packages-src/rcirc-controls"]
+	path = _emacs.d/packages-src/rcirc-controls
+	url = git://github.com/emacsmirror/rcirc-controls.git
+[submodule "_emacs.d/packages-src/rcirc-late-fix"]
+	path = _emacs.d/packages-src/rcirc-late-fix
+	url = git://github.com/emacsmirror/rcirc-late-fix.git
+[submodule "_emacs.d/packages-src/rect-mark"]
+	path = _emacs.d/packages-src/rect-mark
+	url = git://github.com/emacsmirror/rect-mark.git
+[submodule "_emacs.d/packages-src/rfc"]
+	path = _emacs.d/packages-src/rfc
+	url = git://github.com/emacsmirror/rfc.git
+[submodule "_emacs.d/packages-src/scroll-in-place"]
+	path = _emacs.d/packages-src/scroll-in-place
+	url = git://github.com/emacsmirror/scroll-in-place.git
+[submodule "_emacs.d/packages-src/undo-browse"]
+	path = _emacs.d/packages-src/undo-browse
+	url = git://github.com/emacsmirror/undo-browse.git
+[submodule "_emacs.d/packages-src/undo-tree"]
+	path = _emacs.d/packages-src/undo-tree
+	url = git://github.com/emacsmirror/undo-tree.git
+[submodule "_emacs.d/packages-src/vcard"]
+	path = _emacs.d/packages-src/vcard
+	url = git://github.com/emacsmirror/vcard.git
+[submodule "_emacs.d/packages-src/wikipedia-mode"]
+	path = _emacs.d/packages-src/wikipedia-mode
+	url = git://github.com/emacsmirror/wikipedia-mode.git
+[submodule "_emacs.d/packages-src/winring"]
+	path = _emacs.d/packages-src/winring
+	url = git://github.com/emacsmirror/winring.git
+[submodule "_emacs.d/packages-src/xcscope"]
+	path = _emacs.d/packages-src/xcscope
+	url = git://github.com/emacsmirror/xcscope.git
+[submodule "_emacs.d/packages-src/xml-rpc"]
+	path = _emacs.d/packages-src/xml-rpc
+	url = git://github.com/emacsmirror/xml-rpc.git
+[submodule "_emacs.d/packages-src/xterm-extras"]
+	path = _emacs.d/packages-src/xterm-extras
+	url = git://github.com/emacsmirror/xterm-extras.git
+[submodule "_emacs.d/packages-src/dired-plus"]
+	path = _emacs.d/packages-src/dired-plus
+	url = git://github.com/emacsmirror/dired-plus.git
+[submodule "_emacs.d/packages-src/icomplete-plus"]
+	path = _emacs.d/packages-src/icomplete-plus
+	url = git://github.com/emacsmirror/icomplete-plus.git
+[submodule "_emacs.d/packages-src/hl-line-plus"]
+	path = _emacs.d/packages-src/hl-line-plus
+	url = git://github.com/emacsmirror/hl-line-plus.git
+[submodule "_emacs.d/packages-src/info-plus"]
+	path = _emacs.d/packages-src/info-plus
+	url = git://github.com/emacsmirror/info-plus.git
+[submodule "_emacs.d/packages-src/gtags"]
+	path = _emacs.d/packages-src/gtags
+	url = git://github.com/emacsmirror/gtags.git
+[submodule "_emacs.d/packages-src/color-mode"]
+	path = _emacs.d/packages-src/color-mode
+	url = git://github.com/emacsmirror/color-mode.git
+[submodule "_emacs.d/packages-src/buff-menu-plus"]
+	path = _emacs.d/packages-src/buff-menu-plus
+	url = git://github.com/emacsmirror/buff-menu-plus.git
+[submodule "_emacs.d/packages-src/dired-details"]
+	path = _emacs.d/packages-src/dired-details
+	url = git://github.com/emacsmirror/dired-details.git
+[submodule "_emacs.d/packages-src/gnuslog"]
+	path = _emacs.d/packages-src/gnuslog
+	url = git://github.com/emacsmirror/gnuslog.git
+[submodule "_emacs.d/packages-src/gnus-alias"]
+	path = _emacs.d/packages-src/gnus-alias
+	url = git://github.com/emacsmirror/gnus-alias.git
+[submodule "_emacs.d/packages-src/mic-paren"]
+	path = _emacs.d/packages-src/mic-paren
+	url = git://github.com/emacsmirror/mic-paren.git
+[submodule "_emacs.d/packages-src/pp-c-l"]
+	path = _emacs.d/packages-src/pp-c-l
+	url = git://github.com/emacsmirror/pp-c-l.git
+[submodule "_emacs.d/packages-src/project"]
+	path = _emacs.d/packages-src/project
+	url = git://github.com/emacsmirror/project.git
+[submodule "_emacs.d/packages-src/tc"]
+	path = _emacs.d/packages-src/tc
+	url = git://github.com/emacsmirror/tc.git
+[submodule "_emacs.d/packages-src/tempo-snippets"]
+	path = _emacs.d/packages-src/tempo-snippets
+	url = git://github.com/emacsmirror/tempo-snippets.git
+[submodule "_emacs.d/packages-src/tempo-x"]
+	path = _emacs.d/packages-src/tempo-x
+	url = git://github.com/emacsmirror/tempo-x.git
+[submodule "_emacs.d/packages-src/typopunct"]
+	path = _emacs.d/packages-src/typopunct
+	url = git://github.com/emacsmirror/typopunct.git
+[submodule "_emacs.d/packages-src/hl-sexp"]
+	path = _emacs.d/packages-src/hl-sexp
+	url = git://github.com/emacsmirror/hl-sexp.git
+[submodule "_emacs.d/packages-src/graphviz-dot-mode"]
+	path = _emacs.d/packages-src/graphviz-dot-mode
+	url = git://github.com/emacsmirror/graphviz-dot-mode.git
+[submodule "_emacs.d/packages-src/erc-highlight-nicknames"]
+	path = _emacs.d/packages-src/erc-highlight-nicknames
+	url = git://github.com/emacsmirror/erc-highlight-nicknames.git
+[submodule "_emacs.d/packages-src/jde-findbugs"]
+	path = _emacs.d/packages-src/jde-findbugs
+	url = git://github.com/emacsmirror/jde-findbugs.git
+[submodule "_emacs.d/packages-src/jde-jalopy"]
+	path = _emacs.d/packages-src/jde-jalopy
+	url = git://github.com/emacsmirror/jde-jalopy.git
+[submodule "_emacs.d/packages-src/jde-lint"]
+	path = _emacs.d/packages-src/jde-lint
+	url = git://github.com/emacsmirror/jde-lint.git
+[submodule "_emacs.d/packages-src/message-x"]
+	path = _emacs.d/packages-src/message-x
+	url = git://github.com/emacsmirror/message-x.git
+[submodule "_emacs.d/packages-src/oddmuse"]
+	path = _emacs.d/packages-src/oddmuse
+	url = git://github.com/emacsmirror/oddmuse.git
+[submodule "_emacs.d/packages-src/radio"]
+	path = _emacs.d/packages-src/radio
+	url = git://github.com/emacsmirror/radio.git
+[submodule "_emacs.d/packages-src/register-list"]
+	path = _emacs.d/packages-src/register-list
+	url = git://github.com/emacsmirror/register-list.git
+[submodule "_emacs.d/packages-src/ssh"]
+	path = _emacs.d/packages-src/ssh
+	url = git://github.com/emacsmirror/ssh.git
+[submodule "_emacs.d/packages-src/pymacs"]
+	path = _emacs.d/packages-src/pymacs
+	url = git://github.com/emacsmirror/pymacs.git
+[submodule "_emacs.d/packages-src/idledo"]
+	path = _emacs.d/packages-src/idledo
+	url = git://github.com/emacsmirror/idledo.git

@@ -488,11 +488,6 @@ frame, close it. Else, die"
 
 ;; (require 'epa-setup)
 
-(require 'tlfdd)
-(add-to-list 'auto-mode-alist '("\\.fdd\\'" . tlfdd-mode))
-(add-to-list 'auto-mode-alist '("\\.tlfdd\\'" . tlfdd-mode))
-(add-to-list 'auto-mode-alist '("\\.tldoc\\'" . tlfdd-mode))
-
 (require 'cmake-mode)
 (setq auto-mode-alist
       (append '(("CMakeLists\\.txt\\'" . cmake-mode)
