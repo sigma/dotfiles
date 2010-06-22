@@ -54,7 +54,9 @@
                '("\\<0x[0-9a-fA-F]+\\>" (0 font-lock-hexnumber-face))
                ;; PyQt specific
                '("\\<\\(S\\(IGNAL\\|LOT\\)\\|connect\\|disconnect\\|emit\\)\\>"
-                 (0 font-lock-qt-face)))))
+                 (0 font-lock-qt-face))))
+      py-pdbtrack-stack-entry-regexp
+      "^> \\(.*\\)(\\([0-9]+\\))\\([?a-zA-Z0-9_<>]+\\)()")
 
 (add-hook 'python-mode-hook
           (lambda ()
@@ -64,7 +66,7 @@
             (setq outline-regexp "def\\|class ")
             (hs-minor-mode 1)
             (glasses-mode 1)
-            (c-subword-mode 1)))
+            (subword-mode 1)))
 
 ;; just in case, semantic is a bit too intrusive and buggy here
 (remove-hook 'python-mode-hook 'wisent-python-default-setup)
