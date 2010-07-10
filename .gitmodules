@@ -6,7 +6,7 @@
 	url = git://github.com/emacsmirror/bbdb.git
 [submodule "_emacs.d/packages-src/org-mode"]
 	path = _emacs.d/packages-src/org-mode
-	url = git://github.com/emacsmirror/org-mode.git
+	url = git://repo.or.cz/org-mode.git
 [submodule "_emacs.d/packages-src/auctex"]
 	path = _emacs.d/packages-src/auctex
 	url = git://github.com/emacsmirror/auctex.git
