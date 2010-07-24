@@ -25,7 +25,10 @@
 ;;
 
 ;;; Code:
-(request 'python)
+(when
+    (request 'python)
+  (require 'virtualenv))
+
 (add-to-list 'hs-special-modes-alist
              `(python-mode "^\\s-*\\(?:def\\|class\\)\\>" nil "#"
                            ,(lambda (arg)
