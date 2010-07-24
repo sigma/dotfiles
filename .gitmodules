@@ -265,3 +265,12 @@
 [submodule "deps/topgit"]
 	path = deps/topgit
 	url = git://github.com/sigma/topgit.git
+[submodule "_config/awesome/libs/wicked"]
+	path = _config/awesome/libs/wicked
+	url = git://git.glacicle.com/awesome/wicked
+[submodule "_config/awesome/libs/vicious"]
+	path = _config/awesome/libs/vicious
+	url = http://git.sysphere.org/vicious
+[submodule "_config/awesome/libs/awesome-configs"]
+	path = _config/awesome/libs/awesome-configs
+	url = http://git.sysphere.org/awesome-configs

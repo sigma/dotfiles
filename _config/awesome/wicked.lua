@@ -1,1 +1,1 @@
-/home/yann/Projects/git/wicked/wicked.lua
+libs/wicked/wicked.lua
