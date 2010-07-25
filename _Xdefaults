@@ -66,13 +66,11 @@ rxvt-unicode*modifier: mod1
 rxvt-unicode*background: DarkSlateGray
 rxvt-unicode*foreground: Wheat
 rxvt-unicode*cursorColor: Yellow
-!rxvt-unicode*font: xft:Liberation Mono-11
 rxvt-unicode*font: xft:Monaco:pixelsize=13
 rxvt-unicode*reverseVideo: false
 rxvt-unicode*scrollBar: false
 rxvt-unicode*saveLines: 5000
 rxvt-unicode*reverseWrap: true
-rxvt-unicode.geometry: 80x25+20+20
 rxvt-unicode*fullCursor: true
 rxvt-unicode*scrollTtyOutput: off
 rxvt-unicode*scrollKey: on
@@ -83,7 +81,6 @@ urxvt*modifier: mod1
 urxvt*background: DarkSlateGray
 urxvt*foreground: Wheat
 urxvt*cursorColor: Yellow
-!urxvt*font: xft:Liberation Mono-11
 urxvt*font: xft:Monaco:pixelsize=13
 urxvt*reverseVideo: false
 urxvt*scrollBar: false
@@ -96,7 +93,8 @@ urxvt*titleBar: true
 urxvt*color12: #84bdd2
 urxvt*transparent: true
 urxvt*shading: 20
-urxvt.geometry: 80x25+20+20
+
+URxvt.urgentOnBell: True
 urxvt.perl-ext-common: default,matcher
 urxvt.urlLauncher: firefox-3.0
 urxvt.matcher.button: 1

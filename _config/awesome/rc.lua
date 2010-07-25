@@ -14,10 +14,15 @@
 require("awful")
 require("awful.rules")
 require("awful.autofocus")
+require("naughty")
 -- User libraries
 require("vicious")
 require("scratch")
 -- }}}
+
+naughty.config.default_preset.timeout          = 5
+naughty.config.default_preset.screen           = screen.count()
+naughty.config.default_preset.width            = 300
 
 
 -- {{{ Variable definitions
@@ -317,10 +322,12 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey }, "e", function () exec("emacsclient -n -c") end),
     awful.key({ modkey }, "r", function () exec("rox", false) end),
     awful.key({ modkey }, "w", function () exec("firefox") end),
-    awful.key({ modkey }, "Escape", function () scratch.drop("urxvt", "bottom") end),
+    -- see http://gist.github.com/489434
+    awful.key({ modkey }, "Escape", function () scratch.drop("rxvt-unicode -e zsh -c 'get_scratch.sh " .. mouse.screen .. "'", "center", "center", 0.7, 0.7) end),
     awful.key({ modkey }, "a", function () exec("urxvt -T Alpine -e alpine_exp") end),
     awful.key({ modkey }, "g", function () sexec("GTK2_RC_FILES=~/.gtkrc-gajim gajim") end),
     awful.key({ modkey }, "q", function () exec("emacsclient --eval '(make-remember-frame)'") end),
+    awful.key({ modkey }, "BackSpace", function () awful.util.spawn(terminal .. " -name mocp -e mocp") end),
     -- }}}
 
     -- {{{ Multimedia keys
@@ -509,6 +516,8 @@ awful.rules.rules = {
     { rule = { class = "Geeqie" },      properties = { floating = true } },
     { rule = { class = "ROX-Filer" },   properties = { floating = true } },
     { rule = { class = "Pinentry.*" },  properties = { floating = true } },
+    { rule = { name  = "mocp" },        properties = { floating = true } },
+    { rule = { name  = "htop" },        properties = { floating = true } },
 }
 -- }}}
 
