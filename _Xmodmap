@@ -1,0 +1,18 @@
+keycode 0x12 =	9		bracketleft
+keycode 0x13 =  0               bracketright
+
+keycode 0x22 =  parenleft       braceleft
+keycode 0x23 =  parenright      braceright
+
+remove Lock = Caps_Lock
+remove Control = Control_L
+remove Control = Control_R
+remove Mod2 = Num_Lock
+keysym Control_L = Hyper_L
+keysym Caps_Lock = Control_L
+keysym Alt_L = Meta_L
+keysym Control_R = Alt_L
+keysym Menu = ISO_Next_Group
+add Control = Control_L
+add Mod2 = Alt_L
+add Mod5 = Hyper_L
