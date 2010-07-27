@@ -2,4 +2,4 @@
 url="$*"
 [ -e     "$url" ] && url="file://$url"
 echo $ur l
-uzbl --uri $url
+uzbl-browser --uri $url

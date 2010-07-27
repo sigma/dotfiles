@@ -192,7 +192,7 @@
     ;; (request 'circe-config)
     ;; (request 'rcirc-config)
     (request 'erc-config)
-    (request 'tramp-config)
+    ;; (request 'tramp-config)
     (request 'eshell-config)
     (request 'help-config)
     (request 'moccur-config)
@@ -488,10 +488,11 @@ frame, close it. Else, die"
 
 ;; (require 'epa-setup)
 
-(require 'tlfdd)
-(add-to-list 'auto-mode-alist '("\\.fdd\\'" . tlfdd-mode))
-(add-to-list 'auto-mode-alist '("\\.tlfdd\\'" . tlfdd-mode))
-(add-to-list 'auto-mode-alist '("\\.tldoc\\'" . tlfdd-mode))
+(require 'cmake-mode)
+(setq auto-mode-alist
+      (append '(("CMakeLists\\.txt\\'" . cmake-mode)
+                ("\\.cmake\\'" . cmake-mode))
+              auto-mode-alist))
 
 ;; Doc-mode
 ;; (require 'doc-mode)

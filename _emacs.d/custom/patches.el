@@ -299,13 +299,13 @@ is not nil, then in case of no success, this value is returned"
 ;; Provide modes for common config files
 (require 'generic-x)
 
-(mouse-sel-mode 1)
+;; (mouse-sel-mode 1)
 
 ;;; default function doesn't honour yank-excluded-properties
-(eval-after-load 'mouse-sel
-  '(defadvice mouse-insert-selection-internal (around mouse-insert-selection-internal-yank act)
-     (flet ((insert (str) (insert-for-yank str)))
-       ad-do-it)))
+;; (eval-after-load 'mouse-sel
+;;   '(defadvice mouse-insert-selection-internal (around mouse-insert-selection-internal-yank act)
+;;      (flet ((insert (str) (insert-for-yank str)))
+;;        ad-do-it)))
 
 ;; If the *scratch* buffer is killed, recreate it automatically
 ;; FROM: Morten Welind

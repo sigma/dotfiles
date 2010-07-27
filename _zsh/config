@@ -16,10 +16,8 @@ setopt \
     auto_remove_slash \
     bad_pattern \
     bang_hist \
-    cdable_vars \
     complete_aliases \
     complete_in_word \
-    correct_all \
     correct_all \
     equals \
     extended_glob \
@@ -117,7 +115,7 @@ LOGCHECK=60
 
 WATCHFMT="[%B%t%b] %B%n%b has %a %B%l%b from %B%M%b"
 
-export JDK_HOME=/usr/lib/jvm/java-6-sun
+export JDK_HOME=/usr/lib/jvm/java-1.5.0-sun
 export JAVA_HOME=$JDK_HOME
 export PYTHONPATH=.:~/apps/python
 export INFOPATH=/usr/share/info:/usr/local/share/info:~/share/info
@@ -162,10 +160,6 @@ export P4USER=yhodique
 export VMO_API=/home/yann/workspace-qa/vmo/bin/
 export ESX40VMTREE=~/Projects/git/vmware/esx40/
 export PYTHONSTARTUP=~/.pythonrc.py
-
-if [ -d "$ESX40VMTREE" ]; then
-    export PYTHONPATH=${PYTHONPATH}:~/lib/python2.5/site-packages:${ESX40VMTREE}/vim/py:${ESX40VMTREE}/build/vmodl
-fi
 
 export TCROOT=/build/toolchain
 export BUILDAPPSROOT=/build/apps
