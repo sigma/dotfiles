@@ -306,7 +306,7 @@ for s = 1, screen.count() do
     })
     -- Add widgets to the wibox
     wibox[s].widgets = {
-        {   layoutbox[s], separator, taglist[s], separator, promptbox[s], tasklist[s],
+        {   layoutbox[s], separator, taglist[s], separator, promptbox[s],
             ["layout"] = awful.widget.layout.horizontal.leftright
         },
         s == screen.count() and systray or nil,
@@ -319,7 +319,7 @@ for s = 1, screen.count() do
         separator, membar.widget, memicon,
         separator, batwidget, baticon,
         separator, tzswidget, cpugraph.widget, cpuicon,
-        separator, ["layout"] = awful.widget.layout.horizontal.rightleft
+        separator, tasklist[s], ["layout"] = awful.widget.layout.horizontal.rightleft
     }
 end
 -- }}}
@@ -468,7 +468,7 @@ clientkeys = awful.util.table.join(
     awful.key({ modkey }, "Left",  function () awful.client.moveresize(-20,   0,   0,   0) end),
     awful.key({ modkey }, "Right", function () awful.client.moveresize( 20,   0,   0,   0) end),
     awful.key({ modkey, "Control"},"r", function (c) c:redraw() end),
-    awful.key({ modkey, "Shift" }, "0", function (c) c.sticky = not c.sticky end),
+    awful.key({ modkey, "Control" }, "0", function (c) c.sticky = not c.sticky end),
     awful.key({ modkey, "Shift" }, "m", function (c) c:swap(awful.client.getmaster()) end),
     awful.key({ modkey, "Shift" }, "c", function (c) exec("kill -CONT " .. c.pid) end),
     awful.key({ modkey, "Shift" }, "s", function (c) exec("kill -STOP " .. c.pid) end),
@@ -529,23 +529,18 @@ awful.rules.rules = {
     },
     { rule = { class = "Firefox",  instance = "Navigator" },
       properties = { tag = tags[screen.count()][2] } },
-    { rule = { class = "Emacs",    instance = "emacs" },
-      properties = { tag = tags[screen.count()][3] } },
+    -- { rule = { class = "Emacs",    instance = "emacs" },
+    --   properties = { tag = tags[screen.count()][3] } },
     { rule = { class = "Emacs",    instance = "_Remember_" },
       properties = { floating = true }, callback = awful.titlebar.add  },
-    { rule = { class = "Xmessage", instance = "xmessage" },
-      properties = { floating = true }, callback = awful.titlebar.add  },
-    { rule = { instance = "firefox-bin" },
-      properties = { floating = true }, callback = awful.titlebar.add  },
-    { rule = { name  = "Alpine" },      properties = { tag = tags[1][4]} },
-    { rule = { class = "Gajim.py" },    properties = { tag = tags[1][5]} },
-    { rule = { class = "Akregator" },   properties = { tag = tags[1][8]} },
-    { rule = { class = "Ark" },         properties = { floating = true } },
-    { rule = { class = "Geeqie" },      properties = { floating = true } },
-    { rule = { class = "ROX-Filer" },   properties = { floating = true } },
-    { rule = { class = "Pinentry.*" },  properties = { floating = true } },
-    { rule = { name  = "mocp" },        properties = { floating = true } },
-    { rule = { name  = "htop" },        properties = { floating = true } },
+    { rule = { class = "Pinentry.*" },
+      properties = { floating = true },
+      callback = awful.placement.centered},
+    { rule = { name  = "mocp" },
+      properties = { floating = true },
+      callback = awful.placement.centered},
+    { rule = { name  = "htop" },
+      properties = { floating = true }, callback = awful.placement.centered},
 }
 -- }}}
 
