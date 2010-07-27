@@ -40,10 +40,27 @@
      (define-key paredit-mode-map (kbd "<C-right>") 'forward-word)
      (define-key paredit-mode-map (kbd "<C-left>") 'backward-word)
      (define-key paredit-mode-map (kbd "<C-M-right>") 'forward-sexp)
-     (define-key paredit-mode-map (kbd "<C-M-left>") 'backward-sexp)))
+     (define-key paredit-mode-map (kbd "<C-M-left>") 'backward-sexp)
+     (define-key paredit-mode-map (kbd "RET") 'autopairs-ret)))
+
+(setq skeleton-pair t
+      skeleton-pair-alist '((?\( _ ?\))
+                            (?[  _ ?])
+                            (?{  _ ?})
+                            (?\" _ ?\")))
+
+(defun autopairs-ret (arg)
+  (interactive "P")
+  (let (pair)
+    (dolist (pair skeleton-pair-alist)
+      (when (eq (char-after) (car (last pair)))
+        (save-excursion (newline-and-indent))))
+    (newline arg)
+    (indent-according-to-mode)))
 
 (defun yh/lisp-hook()
   (turn-on-eldoc-mode)
+  (eldoc-add-command 'autopairs-ret) ; if using ElDoc
   (hs-minor-mode 1)
   (paredit-mode 1))
 
