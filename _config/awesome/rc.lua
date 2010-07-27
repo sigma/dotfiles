@@ -21,7 +21,7 @@ require("scratch")
 -- }}}
 
 naughty.config.default_preset.timeout          = 5
-naughty.config.default_preset.screen           = screen.count()
+naughty.config.default_preset.screen           = 1
 naughty.config.default_preset.width            = 300
 
 
@@ -36,7 +36,7 @@ local sexec  = awful.util.spawn_with_shell
 -- Beautiful theme
 beautiful.init(home .. "/.config/awesome/zenburn.lua")
 
-terminal = "rxvt-unicode"
+terminal = "urxvtcd"
 editor = os.getenv("EDITOR")
 
 -- Window management layouts
@@ -245,6 +245,31 @@ systray = widget({ type = "systray" })
 wibox     = {}
 promptbox = {}
 layoutbox = {}
+tasklist  = {}
+tasklist.buttons = awful.util.table.join(
+   awful.button({ }, 1, function (c)
+                           if not c:isvisible() then
+                              awful.tag.viewonly(c:tags()[1])
+                           end
+                           client.focus = c
+                           c:raise()
+                        end),
+   awful.button({ }, 3, function ()
+                           if instance then
+                              instance:hide()
+                              instance = nil
+                           else
+                              instance = awful.menu.clients({ width=250 })
+                           end
+                        end),
+   awful.button({ }, 4, function ()
+                           awful.client.focus.byidx(1)
+                           if client.focus then client.focus:raise() end
+                        end),
+   awful.button({ }, 5, function ()
+                           awful.client.focus.byidx(-1)
+                           if client.focus then client.focus:raise() end
+                        end))
 taglist   = {}
 taglist.buttons = awful.util.table.join(
     awful.button({ },        1, awful.tag.viewonly),
@@ -266,7 +291,10 @@ for s = 1, screen.count() do
         awful.button({ }, 4, function () awful.layout.inc(layouts,  1) end),
         awful.button({ }, 5, function () awful.layout.inc(layouts, -1) end)
     ))
-
+    -- Create the tasklist
+    tasklist[s] = awful.widget.tasklist(function(c)
+                                           return awful.widget.tasklist.label.currenttags(c, s)
+                                        end, tasklist.buttons)
     -- Create the taglist
     taglist[s] = awful.widget.taglist(s, awful.widget.taglist.label.all, taglist.buttons)
     -- Create the wibox
@@ -278,7 +306,7 @@ for s = 1, screen.count() do
     })
     -- Add widgets to the wibox
     wibox[s].widgets = {
-        {   layoutbox[s], separator, taglist[s], separator, promptbox[s],
+        {   layoutbox[s], separator, taglist[s], separator, promptbox[s], tasklist[s],
             ["layout"] = awful.widget.layout.horizontal.leftright
         },
         s == screen.count() and systray or nil,
@@ -323,7 +351,7 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey }, "r", function () exec("rox", false) end),
     awful.key({ modkey }, "w", function () exec("firefox") end),
     -- see http://gist.github.com/489434
-    awful.key({ modkey }, "Escape", function () scratch.drop("rxvt-unicode -e zsh -c 'get_scratch.sh " .. mouse.screen .. "'", "center", "center", 0.7, 0.7) end),
+    awful.key({ modkey }, "Escape", function () scratch.drop(terminal .. " -e zsh -c 'get_scratch.sh " .. mouse.screen .. "'", "center", "center", 0.7, 0.7) end),
     awful.key({ modkey }, "a", function () exec("urxvt -T Alpine -e alpine_exp") end),
     awful.key({ modkey }, "g", function () sexec("GTK2_RC_FILES=~/.gtkrc-gajim gajim") end),
     awful.key({ modkey }, "q", function () exec("emacsclient --eval '(make-remember-frame)'") end),
@@ -364,10 +392,10 @@ globalkeys = awful.util.table.join(
     --             awful.tag.viewonly(tags[screen.count()][3])
     --         end)
     -- end),
-    -- awful.key({ altkey }, "F5", function ()
-    --     awful.prompt.run({ prompt = "Lua: " }, promptbox[mouse.screen].widget,
-    --     awful.util.eval, nil, awful.util.getdir("cache") .. "/history_eval")
-    -- end),
+    awful.key({ modkey }, "F2", function ()
+        awful.prompt.run({ prompt = "Lua: " }, promptbox[mouse.screen].widget,
+        awful.util.eval, nil, awful.util.getdir("cache") .. "/history_eval")
+    end),
     -- }}}
 
     -- {{{ Awesome controls
