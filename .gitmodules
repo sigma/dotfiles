@@ -274,3 +274,6 @@
 [submodule "_config/awesome/libs/awesome-configs"]
 	path = _config/awesome/libs/awesome-configs
 	url = http://git.sysphere.org/awesome-configs
+[submodule "_emacs.d/packages-src/org-s5"]
+	path = _emacs.d/packages-src/org-s5
+	url = git://github.com/sigma/org-s5.git
