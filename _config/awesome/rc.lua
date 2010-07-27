@@ -398,6 +398,9 @@ globalkeys = awful.util.table.join(
     end),
     -- }}}
 
+    awful.key({ modkey }, "F12", function () awful.util.spawn('xlock') end),
+    awful.key({ }, "Pause", function () awful.util.spawn('xlock') end),
+
     -- {{{ Awesome controls
     awful.key({ modkey }, "b", function ()
         wibox[mouse.screen].visible = not wibox[mouse.screen].visible
