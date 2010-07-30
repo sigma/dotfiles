@@ -6,7 +6,6 @@ emacs-cvs*Background: DarkSlateGray
 emacs-cvs*Foreground: Wheat
 emacs-cvs*pointerColor: Orchid
 emacs-cvs*cursorColor: Yellow
-!emacs-cvs*font: Liberation Mono-10
 emacs-cvs*font: Monaco:pixelsize=13
 emacs-cvs*bitmapIcon: on
 emacs-cvs.geometry: 120x50
@@ -16,7 +15,7 @@ emacs-pretest*Foreground: Wheat
 emacs-pretest*pointerColor: Orchid
 emacs-pretest*cursorColor: Yellow
 emacs-pretest*FontBackend: xft
-emacs-pretest*font: DejaVu Sans Mono-10
+emacs-pretest*font: Monaco-10
 emacs-pretest*bitmapIcon: on
 emacs-pretest.geometry: 120x50
 
@@ -181,3 +180,10 @@ xterm.VT100.Translations: #override \
  ~Ctrl ~Meta  Shift <Key> Sys_Req:     string(0x1b) string("[z2e")    \n\
   Ctrl ~Meta ~Shift <Key> Sys_Req:     string(0x1b) string("[z5e")    \n\
   Ctrl ~Meta  Shift <Key> Sys_Req:     string(0x1b) string("[z6e")    \n
+
+Xft.dpi:                96
+Xft.hinting:            true
+Xft.hintstyle:          hintslight
+Xft.antialias:          true
+Xft.rgba:               rgb
+Xft.lcdfilter:          lcddefault
