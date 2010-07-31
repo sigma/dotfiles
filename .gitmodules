@@ -277,3 +277,6 @@
 [submodule "_emacs.d/packages-src/org-s5"]
 	path = _emacs.d/packages-src/org-s5
 	url = git://github.com/sigma/org-s5.git
+[submodule "_emacs.d/packages-src/nxhtml"]
+	path = _emacs.d/packages-src/nxhtml
+	url = git://github.com/emacsmirror/nxhtml.git

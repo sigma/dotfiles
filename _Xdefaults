@@ -90,7 +90,7 @@ urxvt*scrollTtyOutput: off
 urxvt*scrollKey: on
 urxvt*titleBar: true
 urxvt*color12: #84bdd2
-urxvt*transparent: true
+urxvt*transparent: false
 urxvt*shading: 20
 
 URxvt.urgentOnBell: True
