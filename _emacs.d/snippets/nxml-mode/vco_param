@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: vCO workflow parameter
+# --
+vco_param -->
+<parameter name="${1:input}" type="${2:String}" />
+<!-- vco_param$0

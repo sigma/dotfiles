@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: vCO workflow parameter
+# --
+vco_elem -->
+<element type="${1:$$(yas/choose-value '("start" "end" "jsr223"))}" id="${2}">
+</element>
+<!-- vco_elem$0

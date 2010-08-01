@@ -1,0 +1,21 @@
+# -*- mode: snippet -*-
+# name: vCO workflow
+# --
+<?xml version="1.0" encoding="UTF-8"?>
+
+<workflow fqn="${1:fqn}" typeLevel="${2:1$$(yas/choose-value '("3" "2" "1"))}">
+  <displayName>${3:display name}</displayName>
+  <inputs>
+    <!-- vco_param$0 -->
+  </inputs>
+  <outputs>
+    <!-- vco_param -->
+  </outputs>
+  <elements>
+    <element type="start" id="start">
+      <transition type="normal" target="end" />
+    </element>
+    <!-- vco_elem -->
+    <element type="end" id="end" />
+  </elements>
+</workflow>
