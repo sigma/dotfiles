@@ -280,3 +280,6 @@
 [submodule "_emacs.d/packages-src/nxhtml"]
 	path = _emacs.d/packages-src/nxhtml
 	url = git://github.com/emacsmirror/nxhtml.git
+[submodule "_emacs.d/packages-src/yasnippet"]
+	path = _emacs.d/packages-src/yasnippet
+	url = git://github.com/emacsmirror/yasnippet.git

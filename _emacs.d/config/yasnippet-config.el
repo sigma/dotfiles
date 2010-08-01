@@ -26,12 +26,13 @@
 
 ;;; Code:
 
-(add-hook 'org-mode-hook
-          (lambda ()
-            (make-variable-buffer-local 'yas/trigger-key)
-            (setq yas/trigger-key [tab])))
+(when (request 'yasnippet)
+  (yas/initialize)
+  (add-hook 'org-mode-hook
+            (lambda ()
+              (org-set-local 'yas/trigger-key [tab]))))
 
-(define-key yas/keymap [tab] 'yas/expand)
+
 
 (provide 'yasnippet-config)
 ;;; yasnippet-config.el ends here
