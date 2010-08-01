@@ -33,6 +33,8 @@
 (when (request 'yasnippet)
   (yas/initialize)
 
+  (yas/define-snippets 'nxhtml-mode nil 'html-mode)
+
   (add-hook 'org-mode-hook
             (lambda ()
               ;; yasnippet (using the new org-cycle hooks)

@@ -166,7 +166,6 @@
  '(log-edit-common-indent -7)
  '(lui-fill-column 100)
  '(mail-source-delete-incoming t)
- '(mark-diary-entries-in-calendar t)
  '(max-lisp-eval-depth 500)
  '(max-specpdl-size 1000)
  '(message-forward-as-mime nil)
@@ -307,7 +306,6 @@
  '(vc-follow-symlinks t)
  '(vc-make-backup-files t)
  '(vc-stay-local t)
- '(view-diary-entries-initially t)
  '(visible-bell nil)
  '(wdired-allow-to-change-permissions (quote advanced))
  '(which-function-mode nil)
@@ -316,7 +314,7 @@
  '(winring-show-names t)
  '(x-select-enable-clipboard nil)
  '(yas/prompt-functions (quote (yas/dropdown-prompt yas/ido-prompt yas/no-prompt)))
- '(yas/triggers-in-field nil))
+ '(yas/triggers-in-field t))
 
 (custom-set-faces
   ;; custom-set-faces was added by Custom.
