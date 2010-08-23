@@ -25,13 +25,23 @@
 ;;
 
 ;;; Code:
+(eval-when-compile (require 'yasnippet))
 
-(add-hook 'org-mode-hook
-          (lambda ()
-            (make-variable-buffer-local 'yas/trigger-key)
-            (setq yas/trigger-key [tab])))
+(defun yas/org-very-safe-expand ()
+  (let ((yas/fallback-behavior 'return-nil)) (yas/expand)))
 
-(define-key yas/keymap [tab] 'yas/expand)
+(when (request 'yasnippet)
+  (yas/initialize)
+
+  (yas/define-snippets 'nxhtml-mode nil 'html-mode)
+
+  (add-hook 'org-mode-hook
+            (lambda ()
+              ;; yasnippet (using the new org-cycle hooks)
+              (make-variable-buffer-local 'yas/trigger-key)
+              (setq yas/trigger-key [tab])
+              (add-to-list 'org-tab-first-hook 'yas/org-very-safe-expand)
+              (define-key yas/keymap [tab] 'yas/next-field))))
 
 (provide 'yasnippet-config)
 ;;; yasnippet-config.el ends here

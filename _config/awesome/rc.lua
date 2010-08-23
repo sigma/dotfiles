@@ -534,8 +534,6 @@ awful.rules.rules = {
       border_width = beautiful.border_width,
       border_color = beautiful.border_normal }
     },
-    -- { rule = { class = "Emacs",    instance = "emacs" },
-    --   properties = { tag = tags[screen.count()][3] } },
     { rule = { class = "Emacs",    instance = "_Remember_" },
       properties = { floating = true }, callback = awful.titlebar.add  },
     { rule = { class = "Pinentry.*" },
