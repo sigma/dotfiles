@@ -309,7 +309,7 @@ for s = 1, screen.count() do
         {   layoutbox[s], separator, taglist[s], separator, promptbox[s],
             ["layout"] = awful.widget.layout.horizontal.leftright
         },
-        s == screen.count() and systray or nil,
+        s == 1 and systray or nil,
         separator, datewidget, dateicon,
         separator, volwidget,  volbar.widget, volicon,
         separator, orgwidget,  orgicon,
@@ -427,7 +427,11 @@ globalkeys = awful.util.table.join(
     -- }}}
 
     -- {{{ Focus controls
-    awful.key({ modkey, "Control" }, "j", function () awful.screen.focus_relative(1) end),
+    awful.key({ modkey, "Control" }, "j", function ()
+                                             awful.screen.focus_relative(1)
+                                             coords = mouse.coords()
+                                             mouse.coords({x=coords.x+5, y=coords.y+5})
+                                          end),
     awful.key({ modkey }, "s", function () scratch.pad.toggle() end),
     awful.key({ modkey }, "u", awful.client.urgent.jumpto),
     awful.key({ modkey }, "j", function ()
@@ -530,8 +534,6 @@ awful.rules.rules = {
       border_width = beautiful.border_width,
       border_color = beautiful.border_normal }
     },
-    { rule = { class = "Firefox",  instance = "Navigator" },
-      properties = { tag = tags[screen.count()][2] } },
     -- { rule = { class = "Emacs",    instance = "emacs" },
     --   properties = { tag = tags[screen.count()][3] } },
     { rule = { class = "Emacs",    instance = "_Remember_" },
