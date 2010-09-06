@@ -11,8 +11,11 @@ alias run-help >&/dev/null && unalias run-help
 
 alias p='popd'
 
-alias ls='command ls -F --color=auto'
-
+if [ `/bin/uname -s` = "Darwin" ]; then
+    alias ls='command ls -F -G'
+else
+    alias ls='command ls -F --color=auto'
+fi
 alias ll='ls -l'
 
 #alias grep='command grep --color'
