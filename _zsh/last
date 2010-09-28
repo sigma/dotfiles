@@ -2,7 +2,7 @@
 
 echo -n "\r" # erase last "load_status" line
 if [ -z "$GPG_ID" ]; then
-    eval `keychain -q --nogui --eval --agents ssh id_rsa id_dsa`
+    eval `keychain -q --nogui --eval --agents ssh id_rsa id_dsa yann`
 else
-    eval `keychain -q --nogui --eval id_rsa id_dsa $GPG_ID`
+    eval `keychain -q --nogui --eval id_rsa id_dsa yann $GPG_ID`
 fi

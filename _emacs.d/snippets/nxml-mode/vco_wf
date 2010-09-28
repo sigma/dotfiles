@@ -3,7 +3,7 @@
 # --
 <?xml version="1.0" encoding="UTF-8"?>
 
-<workflow fqn="${1:fqn}" typeLevel="${2:1$$(yas/choose-value '("3" "2" "1"))}">
+<workflow fqn="${1:fqn}" typeLevel="${2:1$$(yas/choose-value '("1" "2" "3"))}">
   <displayName>${3:display name}</displayName>
   <inputs>
     <!-- vco_param$0 -->

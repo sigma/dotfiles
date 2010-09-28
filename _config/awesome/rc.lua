@@ -164,7 +164,7 @@ mailicon.image = image(beautiful.widget_mail)
 -- Initialize widget
 mailwidget = widget({ type = "textbox" })
 -- Register widget
-vicious.register(mailwidget, vicious.widgets.mdir, "$1", 181, {home .. "/.maildir"})
+vicious.register(mailwidget, vicious.widgets.mdir, "$1", 30, {home .. "/.maildir"})
 -- Register buttons
 mailwidget:buttons(awful.util.table.join(
   awful.button({ }, 1, function () exec("urxvt -T Alpine -e alpine_exp") end)
@@ -427,7 +427,11 @@ globalkeys = awful.util.table.join(
     -- }}}
 
     -- {{{ Focus controls
-    awful.key({ modkey, "Control" }, "j", function () awful.screen.focus_relative(1) end),
+    awful.key({ modkey, "Control" }, "j", function ()
+                                             awful.screen.focus_relative(1)
+                                             coords = mouse.coords()
+                                             mouse.coords({x=coords.x+5, y=coords.y+5})
+                                          end),
     awful.key({ modkey }, "s", function () scratch.pad.toggle() end),
     awful.key({ modkey }, "u", awful.client.urgent.jumpto),
     awful.key({ modkey }, "j", function ()
@@ -470,6 +474,10 @@ clientkeys = awful.util.table.join(
     awful.key({ modkey }, "Up",    function () awful.client.moveresize(  0, -20,   0,   0) end),
     awful.key({ modkey }, "Left",  function () awful.client.moveresize(-20,   0,   0,   0) end),
     awful.key({ modkey }, "Right", function () awful.client.moveresize( 20,   0,   0,   0) end),
+    awful.key({ modkey, "Shift" }, "Down",  function () awful.client.moveresize(  0,  1,   0,   0) end),
+    awful.key({ modkey, "Shift" }, "Up",    function () awful.client.moveresize(  0, -1,   0,   0) end),
+    awful.key({ modkey, "Shift" }, "Left",  function () awful.client.moveresize(-1,   0,   0,   0) end),
+    awful.key({ modkey, "Shift" }, "Right", function () awful.client.moveresize( 1,   0,   0,   0) end),
     awful.key({ modkey, "Control"},"r", function (c) c:redraw() end),
     awful.key({ modkey, "Control" }, "0", function (c) c.sticky = not c.sticky end),
     awful.key({ modkey, "Shift" }, "m", function (c) c:swap(awful.client.getmaster()) end),

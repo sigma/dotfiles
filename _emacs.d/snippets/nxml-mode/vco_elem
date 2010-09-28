@@ -2,6 +2,6 @@
 # name: vCO workflow parameter
 # --
 vco_elem -->
-<element type="${1:$$(yas/choose-value '("start" "end" "jsr223"))}" id="${2}">
+<element type="${1:$$(yas/choose-value '("start" "end" "jsr223"))}" id="$1_$2">
 </element>
-<!-- vco_elem$0
+<!-- vco_elem
