@@ -107,7 +107,6 @@
  '(glasses-separator "")
  '(global-company-mode t)
  '(global-font-lock-mode t nil (font-lock))
- '(global-semantic-stickyfunc-mode t nil (semantic/util-modes))
  '(global-undo-tree-mode t)
  '(global-visible-mark-mode-exclude-alist (quote ("^\\*")))
  '(global-whitespace-mode t)

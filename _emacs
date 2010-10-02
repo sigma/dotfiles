@@ -19,8 +19,6 @@
 (if (file-exists-p (expand-file-name "~/.emacs-local"))
     (load-file (expand-file-name "~/.emacs-local")))
 
-(require 'undo-tree)
-
 ;; Customizations are in a separate file
 (if (file-exists-p (expand-file-name "~/.emacs-cust"))
     (load-file (expand-file-name "~/.emacs-cust")))
@@ -28,6 +26,8 @@
 ;; Fix various "bad" default behaviors
 ;; add some personal features
 (require 'patches)
+
+(request 'undo-tree)
 
 ;; How emacs should look like
 (request 'visual)
