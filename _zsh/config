@@ -152,7 +152,7 @@ export LLVM_HOME=$HOME/Projects/svn/llvm
 PATH=$QTDIR/bin:$KDEDIR/bin:$PATH
 export PATH=~/bin/:~/apps/bin/:/usr/local/bin:/usr/games/:$JAVA_HOME/bin:$PATH
 
-export P4CONFIG=.p4config
+# export P4CONFIG=.p4config
 export P4CLIENT=yhodique-git-p4
 export P4PORT=build-p4proxy.eng.vmware.com:1667
 export P4USER=yhodique

@@ -45,8 +45,8 @@
 
 (request 'ipython)
 
-(when (request 'pymacs)
-  (pymacs-load "ropemacs" "rope-"))
+;; (when (request 'pymacs)
+;;   (pymacs-load "ropemacs" "rope-"))
 
 (setq python-font-lock-keywords
       ;; same additional font-locking as in cc-mode

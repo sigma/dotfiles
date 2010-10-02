@@ -103,17 +103,6 @@ urxvt*transparent: false
 urxvt*shading: 20
 
 URxvt.urgentOnBell: True
-urxvt.perl-ext-common: default,matcher
-urxvt.urlLauncher: firefox-3.0
-urxvt.matcher.button: 1
-urxvt.keysym.C-S-b:    perl:matcher
-urxvt.matcher.pattern.1:  \\bwww\\.[\\w-]+\\.[\\w./?&@#-]*[\\w/-]
-urxvt.matcher.pattern.2:  \\B(/\\S+?):(\\d+)(?=:|$)
-urxvt.matcher.launcher.2: emacsclient-cvs -t +$2 $1
-urxvt.tabbed.tabbar-fg: 0
-urxvt.tabbed.tabbar-bg: 4
-urxvt.tabbed.tab-fg: 3
-urxvt.tabbed.tab-bg: 12
 
 mocp*background: DarkSlateGray
 mocp*foreground: Wheat
