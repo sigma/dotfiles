@@ -328,5 +328,8 @@ is not nil, then in case of no success, this value is returned"
 
 (prepare-scratch-for-kill)
 
+(unless (fboundp 'subword-mode)
+  (defalias 'subword-mode 'c-subword-mode))
+
 (provide 'patches)
 ;;; patches.el ends here

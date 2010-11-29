@@ -19,6 +19,15 @@ emacs-pretest*font: Monaco-10
 emacs-pretest*bitmapIcon: on
 emacs-pretest.geometry: 120x50
 
+emacs*Background: DarkSlateGray
+emacs*Foreground: Wheat
+emacs*pointerColor: Orchid
+emacs*cursorColor: Yellow
+emacs*FontBackend: xft
+emacs*font: Monaco-10
+emacs*bitmapIcon: on
+emacs.geometry: 120x50
+
 xterm*background: DarkSlateGray
 xterm*foreground: Wheat
 xterm*cursorColor: Yellow

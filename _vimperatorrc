@@ -61,7 +61,7 @@ set ds=google
 
 " {{{ Key bindings
 "     - Emacs GTK key-theme and FF already provide bindings for input fields
-" 
+"
 " M-x enters command mode
 noremap <A-x> :
 
@@ -111,7 +111,7 @@ noremap <C-r> ?
 " Copy the current URL to the clipboard with M-w
 noremap <A-w> y
 "
-" Copy selected text to the clipboard with C-w 
+" Copy selected text to the clipboard with C-w
 noremap <C-w> Y
 
 " Paste the current clipboard selection to a new buffer with C-y
@@ -280,5 +280,7 @@ javascript <<EOF
 EOF
 " }}}
 
+
+autocmd LocationChange .* js modes.passAllKeys = /mail\.google\.com/.test(buffer.URL)
 
 echo "[vimperator initialized]"
