@@ -80,7 +80,7 @@
   (font-lock-add-keywords
    nil
    `((,(concat "\\<\\(NULL"
-               "\\|c\\(def\\|har\\|typedef\\)"
+               "\\|c\\(\\(p\\)?def\\|har\\|typedef\\)"
                "\\|e\\(num\\|xtern\\)"
                "\\|float"
                "\\|in\\(clude\\|t\\)"
