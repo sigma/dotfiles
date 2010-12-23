@@ -92,7 +92,7 @@ alias nano='/usr/bin/nano -z'
 alias vi='zile'
 alias top='htop'
 #alias cat='dog'
-alias less='most'
+#alias less='most'
 
 if which lftp >&/dev/null; then
     alias ftp=lftp

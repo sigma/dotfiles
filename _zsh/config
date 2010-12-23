@@ -108,7 +108,18 @@ SAVEHIST=5000
 HIST_IGNORE_SPACE=1
 
 LISTMAX=1000  # "Never" ask
-export PAGER='most'
+export PAGER='less'
+export LESSOPEN="| /usr/share/source-highlight/src-hilite-lesspipe.sh %s"
+#eval $(lesspipe)
+export LESS_TERMCAP_mb=$'\E[01;31m'
+export LESS_TERMCAP_md=$'\E[01;31m'
+export LESS_TERMCAP_me=$'\E[0m'
+export LESS_TERMCAP_so=$'\E[01;44;33m'
+export LESS_TERMCAP_se=$'\E[0m'
+export LESS_TERMCAP_us=$'\E[01;32m'
+export LESS_TERMCAP_ue=$'\E[0m'
+export LESS=' -R '
+
 export MOST_EDITOR='most_editor %s %d'
 
 LOGCHECK=60
