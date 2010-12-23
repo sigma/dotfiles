@@ -184,7 +184,7 @@ export BORA=~/Projects/git/workspace/bora
 export MAINSRCROOT=$BORA
 export KROOT=~/Projects/git/workspace/kroot
 
-export PATH=$BUILDAPPSROOT/bin:$SCMTREESROOT:$PATH
+export PATH=$PATH:$BUILDAPPSROOT/bin:$SCMTREESROOT
 
 typeset -U path # No duplicates
 
