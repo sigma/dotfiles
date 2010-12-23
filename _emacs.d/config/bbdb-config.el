@@ -26,10 +26,18 @@
 
 ;;; Code:
 
-;;; BBDB
-
+(require 'rx)
 (require 'bbdb)
+
 (bbdb-initialize 'gnus 'message 'sc 'w3)
+
+(defun yh/bbdb-add-real-addresses ()
+  "Don't polute my bbdb with generated addresses"
+  (let ((addr net)
+        (exclude-re (rx "@public.gmane.org")))
+    (not (string-match exclude-re addr))))
+
+(setq bbdb-always-add-addresses 'yh/bbdb-add-real-addresses)
 
 (eval-after-load 'gnus
   '(progn

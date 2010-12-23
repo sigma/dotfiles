@@ -35,6 +35,8 @@
 (request 'cedet)
 
 (when (request 'package)
+  (setq package-archives '(("ELPA" . "http://tromey.com/elpa/")
+                           ("gnu" . "http://elpa.gnu.org/packages/")))
   (package-initialize))
 
 ;; Hacked scroll margin
