@@ -188,6 +188,8 @@ export PATH=$PATH:$BUILDAPPSROOT/bin:$SCMTREESROOT
 
 typeset -U path # No duplicates
 
+eval "`/usr/bin/dircolors -b $HOME/.colors`"
+
 which check_hist_size >&/dev/null && check_hist_size
 
 #autoloads

@@ -64,10 +64,6 @@ hosts=(
 
 zstyle ':completion:*' hosts $hosts
 
-if which dircolors >&/dev/null && [[ -e "${zdotdir}/.colors" ]]; then
-    eval "`dircolors -b $zdotdir/.colors`"
-fi
-
 zstyle ':completion:*' list-colors "$LS_COLORS"
 
 zle -C all-matches complete-word _generic
