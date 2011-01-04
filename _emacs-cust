@@ -189,6 +189,7 @@
  '(nnir-swish-e-remove-prefix "/home/yann/Maildir/")
  '(nnmail-split-fancy-match-partial-words t)
  '(nntp-authinfo-file "~/.authinfo.gpg")
+ '(notmuch-saved-searches (quote (("inbox" . "tag:inbox") ("unread" . "tag:unread") ("sent" . "tag:sent"))))
  '(nxhtml-global-minor-mode t)
  '(nxhtml-global-validation-header-mode t)
  '(org-agenda-skip-archived-trees nil)
