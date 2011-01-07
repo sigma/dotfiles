@@ -210,6 +210,7 @@
   (request 'cc-config)
   (request 'compile-config)
   (request 'ediff-config)
+  (request 'info-config)
   ;; (request 'speedbar-config)
   ;; (request 'doxymacs-config)
   (request 'latex-config)
@@ -706,8 +707,6 @@ With prefix argument, turn on if ARG > 0; else turn off."
 
 (request 'magit)
 (request 'ipa)
-
-;; (eval-after-load "info" '(require 'info+))
 
 (eval-after-load 'nxml-mode
   '(defun bf-pretty-print-xml-region (begin end)
