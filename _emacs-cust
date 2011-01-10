@@ -193,6 +193,7 @@
  '(nxhtml-global-minor-mode t)
  '(nxhtml-global-validation-header-mode t)
  '(org-agenda-log-mode-items (quote (closed clock state)))
+ '(org-agenda-remove-tags t)
  '(org-agenda-skip-archived-trees nil)
  '(org-agenda-start-with-clockreport-mode nil)
  '(org-agenda-start-with-log-mode t)
