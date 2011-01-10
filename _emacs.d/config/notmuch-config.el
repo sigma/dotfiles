@@ -1,6 +1,7 @@
 ;;; notmuch-config.el --- configuration for notmuch
 
 ;; Copyright (C) 2011  Yann Hodique.
+;; Copyright (C) 2009  Tassilo Horn.
 
 ;; Author: Yann Hodique <yann.hodique@gmail.com>
 ;; Keywords: mail
@@ -21,6 +22,15 @@
 ;; Boston, MA 02111-1307, USA.
 
 ;;; Commentary:
+
+;; Inpired by code found on the net:
+;; - http://article.gmane.org/gmane.emacs.gnus.user/13308
+;; - http://www.emacswiki.org/emacs/NotMuch
+
+;; This is an attempt to generalize the approach and become as
+;; setup-independant as possible.
+;; To achieve this we rely on the gnus configuration (select methods) to find
+;; out what is indexed where.
 
 ;;; Code:
 
