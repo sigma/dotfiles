@@ -113,17 +113,6 @@
      ;; Agenda log mode items to display (clock time only by default)
      (setq org-agenda-log-mode-items (quote (clock)))
 
-     (when (request 'remember)
-       (setq remember-annotation-functions '(org-remember-annotation))
-       (setq remember-handler-functions '(org-remember-handler))
-       (add-hook 'remember-mode-hook 'org-remember-apply-template)
-
-       (setq org-remember-templates
-             `((?t "* TODO %?\n  %i\n  %a" ,org-default-notes-file "Tasks")
-               (?w "* WAITING %?\n  %i\n  %a" ,org-default-notes-file "Tasks")
-               (?m "* MAYBE %?\n  %i\n  %a" ,org-default-notes-file "Tasks")
-               ("note" ?n "* %? :NOTE:\n  %u\n  %a" nil "Notes"))))
-
      (global-set-key (kbd "C-c t") 'fc-toggle-notes)
      (defun fc-toggle-notes ()
        "Switch to the notes file, or switch to the previous buffer."

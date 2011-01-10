@@ -197,6 +197,14 @@
  '(org-agenda-skip-archived-trees nil)
  '(org-agenda-start-with-clockreport-mode nil)
  '(org-agenda-start-with-log-mode t)
+ '(org-capture-templates (quote (("t" "Todo" entry (file+headline "~/org/inbox.org" "Tasks") "* TODO %?
+  %i
+  %a" :prepend t) ("j" "Journal" entry (file+datetree "~/org/journal.org") "* %?
+  Entered on %U
+  %i
+  %a") ("n" "Note" entry (file+headline "~/org/inbox.org" "Notes") "* %? :NOTE:
+  %u
+  %a" :prepend t))))
  '(org-clock-into-drawer 2)
  '(org-crypt-key "yann.hodique@gmail.com")
  '(org-crypt-tag-matcher "CRYPT")
