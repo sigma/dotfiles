@@ -440,6 +440,7 @@
  '(org-column ((t (:inherit default :background "skyblue4"))))
  '(org-done ((t (:background "green4" :foreground "yellow" :weight bold))))
  '(org-hide ((((background dark)) (:foreground "gray23"))))
+ '(org-mode-line-clock ((t (:inherit modeline :background "lightblue"))) t)
  '(org-todo ((t (:background "red" :foreground "yellow" :weight bold))))
  '(planner-note-headline-face ((t (:foreground "turquoise" :weight bold))))
  '(pp^L-highlight ((((type x w32 mac graphic) (class color)) (:foreground "red" :box (:line-width 3 :style pressed-button) :weight bold))))
