@@ -46,9 +46,10 @@
 (eval-after-load 'org
   '(progn
      (define-key org-mode-map (kbd "<C-tab>") nil)
-     (define-key global-map "\C-cl" 'org-store-link)
-     (define-key global-map "\C-ca" 'org-agenda)
-     (global-set-key "\C-cb" 'org-ido-switchb)
+     (global-set-key (kbd "C-c l") 'org-store-link)
+     (global-set-key (kbd "C-c a") 'org-agenda)
+     (global-set-key (kbd "C-c b") 'org-ido-switchb)
+     (global-set-key (kbd "C-c n") 'org-capture)
 
      (setq org-agenda-include-diary t
            org-log-done '(time note)
@@ -69,28 +70,33 @@
            ;; Targets start with the file name - allows creating level 1 tasks
            org-refile-use-outline-path (quote file))
 
-     (setq org-todo-keywords (quote ((sequence "TODO(t)" "STARTED(s!)" "|" "DONE(d!/!)")
-                                     (sequence "WAITING(w@/!)" "MAYBE(m!)" "|" "CANCELLED(c@/!)"))))
+     (setq org-todo-keywords '((sequence "TODO(t)" "STARTED(s!)" "|" "DONE(d!/!)")
+                               (sequence "WAITING(w@/!)" "MAYBE(m!)" "|" "CANCELLED(c@/!)")))
 
-     (setq org-todo-keyword-faces (quote (("TODO" :foreground "red" :weight bold)
-                                          ("STARTED" :foreground "blue" :weight bold)
-                                          ("DONE" :foreground "forest green" :weight bold)
-                                          ("WAITING" :foreground "orange" :weight bold)
-                                          ("MAYBE" :foreground "magenta" :weight bold)
-                                          ("CANCELLED" :foreground "forest green" :weight bold))))
+     (setq org-todo-keyword-faces '(("TODO" :foreground "red" :weight bold)
+                                    ("STARTED" :foreground "blue" :weight bold)
+                                    ("DONE" :foreground "forest green" :weight bold)
+                                    ("WAITING" :foreground "orange" :weight bold)
+                                    ("MAYBE" :foreground "magenta" :weight bold)
+                                    ("CANCELLED" :foreground "forest green" :weight bold)))
 
-     (setq org-todo-state-tags-triggers (quote (("CANCELLED" ("CANCELLED" . t))
-                                                ("WAITING" ("WAITING" . t) ("NEXT"))
-                                                ("MAYBE" ("WAITING" . t))
-                                                (done ("NEXT") ("WAITING"))
-                                                ("TODO" ("WAITING") ("CANCELLED"))
-                                                ("STARTED" ("WAITING")))))
+     (setq org-todo-state-tags-triggers '(("CANCELLED" ("CANCELLED" . t))
+                                          ("WAITING" ("WAITING" . t) ("NEXT"))
+                                          ("MAYBE" ("WAITING" . t))
+                                          (done ("NEXT") ("WAITING"))
+                                          ("TODO" ("WAITING") ("CANCELLED"))
+                                          ("STARTED" ("WAITING"))))
 
      (setq org-agenda-custom-commands
-           (quote (("s" "Started Tasks" todo "STARTED" ((org-agenda-todo-ignore-with-date nil)))
-                   ("w" "Tasks waiting on something" tags "WAITING" ((org-use-tag-inheritance nil)))
-                   ("r" "Refile New Notes and Tasks" tags "REFILE" ((org-agenda-todo-ignore-with-date nil)))
-                   ("n" "Notes" tags "NOTE" nil))))
+           '(("s" "Started Tasks" todo "STARTED" ((org-agenda-todo-ignore-with-date nil)))
+             ("w" "Tasks waiting on something" tags "WAITING" ((org-use-tag-inheritance nil)))
+             ("r" "Refile New Notes and Tasks" tags "REFILE" ((org-agenda-todo-ignore-with-date nil)))
+             ("n" "Notes" tags "NOTE" nil)))
+
+     (setq org-capture-templates
+           '(("t" "Todo" entry (file+headline "~/org/inbox.org" "Tasks") "* TODO %?\n  %i\n  %a" :prepend t)
+             ("j" "Journal" entry (file+datetree "~/org/journal.org") "* %?\n  Entered on %U\n  %i\n  %a")
+             ("n" "Note" entry (file+headline "~/org/inbox.org" "Notes") "* %? :NOTE:\n  %u\n  %a" :prepend t)))
 
      ;; Resume clocking tasks when emacs is restarted
      (setq org-clock-persistence-insinuate)
