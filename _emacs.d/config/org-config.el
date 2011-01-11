@@ -113,18 +113,6 @@
      ;; Agenda log mode items to display (clock time only by default)
      (setq org-agenda-log-mode-items (quote (clock)))
 
-     (global-set-key (kbd "C-c t") 'fc-toggle-notes)
-     (defun fc-toggle-notes ()
-       "Switch to the notes file, or switch to the previous buffer."
-       (interactive)
-       (let ((notes-file org-default-notes-file))
-         (when (file-exists-p notes-file)
-           (if (and (buffer-file-name)
-                    (string= (expand-file-name notes-file)
-                             (expand-file-name (buffer-file-name))))
-               (bury-buffer)
-             (find-file notes-file)))))
-
      (defmadvice (org-agenda)
        (around ecb-org act)
        "Inhibit minimization of compile window when ecb is active"
