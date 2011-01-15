@@ -117,7 +117,14 @@ article."
         (org-gnus-follow-link group message-id)
       (message "Couldn't get relevant infos for switching to Gnus."))))
 
+(defun yh/gnus-goto-message-in-notmuch ()
+  (interactive)
+  (let ((message-id (mail-header-id
+                     (gnus-summary-article-header))))
+    (notmuch-search (format "id:%s" (substring message-id 1 (1- (length message-id)))))))
+
 (define-key notmuch-show-mode-map (kbd "C-c C-c") 'yh/notmuch-goto-message-in-gnus)
+(define-key gnus-summary-mode-map (kbd "C-c C-c") 'yh/gnus-goto-message-in-notmuch)
 
 (provide 'notmuch-config)
 ;;; notmuch-config.el ends here
