@@ -95,6 +95,9 @@
 
      (setq org-capture-templates
            '(("t" "Todo" entry (file+headline "~/org/inbox.org" "Tasks") "* TODO %?\n  %i\n  %a" :prepend t)
+             ("m" "Mail task" entry (file+headline "~/org/inbox.org" "Tasks")
+              "* TODO Treat mail from %:from\n  group: %:group\n  subject: %:subject\n  %a"
+              :prepend t :immediate-finish t)
              ("j" "Journal" entry (file+datetree "~/org/journal.org") "* %?\n  Entered on %U\n  %i\n  %a")
              ("n" "Note" entry (file+headline "~/org/inbox.org" "Notes") "* %? :NOTE:\n  %u\n  %a" :prepend t)))
 
@@ -116,8 +119,6 @@
      (setq org-clock-persist t)
      ;; Agenda clock reports parameters (no links, 2 levels deep)
      (setq org-agenda-clockreport-parameter-plist (quote (:link nil :maxlevel 2)))
-     ;; Agenda log mode items to display (clock time only by default)
-     (setq org-agenda-log-mode-items (quote (clock)))
 
      (global-set-key (kbd "C-c t") 'fc-toggle-notes)
      (defun fc-toggle-notes ()

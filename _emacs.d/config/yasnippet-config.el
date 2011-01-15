@@ -31,6 +31,7 @@
   (let ((yas/fallback-behavior 'return-nil)) (yas/expand)))
 
 (when (request 'yasnippet)
+  (make-variable-buffer-local 'yas/trigger-key)
   (yas/initialize)
 
   (yas/define-snippets 'nxhtml-mode nil 'html-mode)
@@ -38,7 +39,6 @@
   (add-hook 'org-mode-hook
             (lambda ()
               ;; yasnippet (using the new org-cycle hooks)
-              (make-variable-buffer-local 'yas/trigger-key)
               (setq yas/trigger-key [tab])
               (add-to-list 'org-tab-first-hook 'yas/org-very-safe-expand)
               (define-key yas/keymap [tab] 'yas/next-field))))
