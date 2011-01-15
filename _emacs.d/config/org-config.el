@@ -43,6 +43,38 @@
                   ("\\item{%s}"  "\\item*{%s}")
                   ("" ""))))
 
+;;
+;; Phone capture template handling with BBDB lookup
+;; modified from the original code by Gregory J. Grubbs
+;;
+(defvar gjg/capture-phone-record nil
+  "Either BBDB record vector, or person's name as a string, or nil")
+
+(defun bh/phone-call ()
+  (interactive)
+  (let* ((myname (completing-read "Who is calling? " (bbdb-hashtable) 'bbdb-completion-predicate 'confirm))
+         (my-bbdb-name (if (> (length myname) 0) myname nil)))
+    (setq gjg/capture-phone-record
+          (if my-bbdb-name
+              (first (or (bbdb-search (bbdb-records) my-bbdb-name nil nil)
+                         (bbdb-search (bbdb-records) nil my-bbdb-name nil)))
+            myname)))
+  (gjg/bbdb-name))
+
+(defun gjg/bbdb-name ()
+  "Return full name of saved bbdb record, or empty string - for use in Capture templates"
+  (if (and gjg/capture-phone-record (vectorp gjg/capture-phone-record))
+      (concat "[[bbdb:"
+              (bbdb-record-name gjg/capture-phone-record) "]["
+              (bbdb-record-name gjg/capture-phone-record) "]]")
+    "NAME"))
+
+(defun gjg/bbdb-company ()
+  "Return company of saved bbdb record, or empty string - for use in Capture templates"
+  (if (and gjg/capture-phone-record (vectorp gjg/capture-phone-record))
+      (or (bbdb-record-company gjg/capture-phone-record) "")
+    "COMPANY"))
+
 (eval-after-load 'org
   '(progn
      (define-key org-mode-map (kbd "<C-tab>") nil)
@@ -94,10 +126,13 @@
              ("n" "Notes" tags "NOTE" nil)))
 
      (setq org-capture-templates
-           '(("t" "Todo" entry (file+headline "~/org/inbox.org" "Tasks") "* TODO %?\n  %i\n  %a" :prepend t)
-             ("m" "Mail task" entry (file+headline "~/org/inbox.org" "Tasks")
+           '(("t" "Todo" entry (file "~/org/refile.org") "* TODO %?\n  %i\n  %a" :prepend t)
+             ("m" "Mail task" entry (file "~/org/refile.org")
               "* TODO Treat mail from %:from\n  group: %:group\n  subject: %:subject\n  %a"
               :prepend t :immediate-finish t)
+             ("p" "Phone call" entry (file "~/org/refile.org")
+              "* Phone %(bh/phone-call) - %(gjg/bbdb-company) :PHONE:\n%U\n\n%?"
+              :clock-in t :clock-resume t)
              ("j" "Journal" entry (file+datetree "~/org/journal.org") "* %?\n  Entered on %U\n  %i\n  %a")
              ("n" "Note" entry (file+headline "~/org/inbox.org" "Notes") "* %? :NOTE:\n  %u\n  %a" :prepend t)))
 
