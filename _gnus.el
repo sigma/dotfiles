@@ -528,6 +528,7 @@ The epigram is inserted at point if called interactively."
                                                "multipart/encrypted")
                                          gnus-buttonized-mime-types))
 
+(require 'bbdb-pgp)
 ;;(add-hook 'gnus-message-setup-hook 'mml-secure-message-sign-pgpmime)
 
 ;;; Misc
