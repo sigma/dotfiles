@@ -172,6 +172,7 @@
  '(message-forward-as-mime t)
  '(message-forward-ignored-headers (quote ("^Content-Transfer-Encoding:" "^X-Gnus" "^Received:" "^Bcc:" "^X-MS" "^Delivered-To" "^X-Virus")))
  '(minibuffer-prompt-properties (quote (read-only t point-entered minibuffer-avoid-prompt face minibuffer-prompt)))
+ '(mm-text-html-renderer (quote shr))
  '(mouse-1-click-follows-link nil)
  '(mouse-1-click-in-non-selected-windows nil)
  '(mouse-avoidance-threshold 15)

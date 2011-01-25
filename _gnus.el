@@ -504,20 +504,6 @@ The epigram is inserted at point if called interactively."
 
 ;;; Crypto
 
-(require 'pgg)
-
-(autoload 'pgg-encrypt-region "pgg" "Encrypt the current region." t)
-(autoload 'pgg-decrypt-region "pgg" "Decrypt the current region." t)
-(autoload 'pgg-sign-region "pgg" "Sign the current region." t)
-(autoload 'pgg-verify-region "pgg" "Verify the current region." t)
-(autoload 'pgg-insert-key "pgg" "Insert the ASCII armored public key." t)
-(autoload 'pgg-snarf-keys-region "pgg" "Import public keys in the
-      current region." t)
-
-;; verify/decrypt only if mml knows about the protocl used
-(setq mm-verify-option 'known)
-(setq mm-decrypt-option 'known)
-
 ;; Here we make button for the multipart
 (setq gnus-buttonized-mime-types '("multipart/encrypted" "multipart/signed"))
 
