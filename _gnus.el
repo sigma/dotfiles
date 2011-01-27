@@ -458,8 +458,6 @@ The epigram is inserted at point if called interactively."
         (insert fortune-string))
     fortune-string))
 
-(setq mm-text-html-renderer 'html2text)
-
 (setq gnus-group-highlight
       '(((and (= unread 0) (not mailp) (eq level 1)) . gnus-group-news-1-empty-face)
         ((and (not mailp) (eq level 1)) . gnus-group-news-1-face)
@@ -505,7 +503,7 @@ The epigram is inserted at point if called interactively."
 ;;; Crypto
 
 ;; Here we make button for the multipart
-(setq gnus-buttonized-mime-types '("multipart/encrypted" "multipart/signed"))
+(setq gnus-buttonized-mime-types '("multipart/encrypted" "multipart/signed" "multipart/alternative"))
 
 (setq mm-verify-option 'known)
 (setq mm-decrypt-option 'known)

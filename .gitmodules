@@ -286,3 +286,6 @@
 [submodule "_emacs.d/packages-src/org-magit"]
 	path = _emacs.d/packages-src/org-magit
 	url = git://github.com/sigma/org-magit.git
+[submodule "_emacs.d/packages-src/w3m"]
+	path = _emacs.d/packages-src/w3m
+	url = git://github.com/emacsmirror/w3m.git
