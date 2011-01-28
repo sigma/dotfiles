@@ -20,6 +20,7 @@
  '(auto-revert-check-vc-info t)
  '(bbdb-complete-name-allow-cycling t)
  '(bbdb-dwim-net-address-allow-redundancy t)
+ '(bbdb/pgp-method (quote mml-pgpmime))
  '(blink-cursor-mode nil nil (frame))
  '(browse-url-browser-function (quote (("^mailto:" . gnus-url-mailto) ("." . browse-url-firefox))))
  '(browse-url-netscape-program "mozilla-firefox")
@@ -172,6 +173,7 @@
  '(message-forward-as-mime t)
  '(message-forward-ignored-headers (quote ("^Content-Transfer-Encoding:" "^X-Gnus" "^Received:" "^Bcc:" "^X-MS" "^Delivered-To" "^X-Virus")))
  '(minibuffer-prompt-properties (quote (read-only t point-entered minibuffer-avoid-prompt face minibuffer-prompt)))
+ '(mm-text-html-renderer (quote w3m))
  '(mouse-1-click-follows-link nil)
  '(mouse-1-click-in-non-selected-windows nil)
  '(mouse-avoidance-threshold 15)
@@ -190,6 +192,7 @@
  '(nnir-swish-e-remove-prefix "/home/yann/Maildir/")
  '(nnmail-split-fancy-match-partial-words t)
  '(nntp-authinfo-file "~/.authinfo.gpg")
+ '(notmuch-fcc-dirs nil)
  '(notmuch-saved-searches (quote (("inbox" . "tag:inbox") ("unread" . "tag:unread") ("sent" . "tag:sent"))))
  '(nxhtml-global-minor-mode t)
  '(nxhtml-global-validation-header-mode t)
@@ -198,15 +201,7 @@
  '(org-agenda-skip-archived-trees nil)
  '(org-agenda-start-with-clockreport-mode nil)
  '(org-agenda-start-with-log-mode t)
- '(org-capture-templates (quote (("t" "Todo" entry (file+headline "~/org/inbox.org" "Tasks") "* TODO %?
-  %i
-  %a" :prepend t) ("j" "Journal" entry (file+datetree "~/org/journal.org") "* %?
-  Entered on %U
-  %i
-  %a") ("n" "Note" entry (file+headline "~/org/inbox.org" "Notes") "* %? :NOTE:
-  %u
-  %a" :prepend t))))
- '(org-clock-into-drawer 2)
+ '(org-clock-into-drawer 2 t)
  '(org-crypt-key "yann.hodique@gmail.com")
  '(org-crypt-tag-matcher "CRYPT")
  '(org-cycle-open-archived-trees t)
@@ -221,6 +216,7 @@
  '(org-file-apps (quote ((auto-mode . emacs) ("\\.mm\\'" . default) ("\\.x?html?\\'" . "firefox %s") ("\\.pdf\\'" . default))))
  '(org-modules (quote (org-bbdb org-bibtex org-docview org-gnus org-info org-jsinfo org-irc org-mew org-mhe org-rmail org-vm org-wl org-w3m org-s5)))
  '(org-outline-path-complete-in-steps nil)
+ '(org-refile-allow-creating-parent-nodes (quote confirm))
  '(org-refile-targets (quote ((org-agenda-files :maxlevel . 3))))
  '(org-remember-interactive-interface (quote outline))
  '(org-remove-highlights-with-change nil)
@@ -230,6 +226,7 @@
  '(org-todo-keywords (quote ((type "TODO(t)" "WAITING(w@/!)" "MAYBE(m)" "|" "DONE(d!)" "CANCELED(c@)"))))
  '(org-track-ordered-property-with-tag t)
  '(org-use-fast-todo-selection t)
+ '(org-use-speed-commands t)
  '(osd-args (quote ("--delay=3" "--age=3" "--pos=bottom" "--offset=70" "--outline=5" "--outlinecolour=grey" "--font=-microsoft-verdana-medium-r-normal--10-*-*-*-*-*-*")))
  '(paren-dont-load-timer nil)
  '(parens-require-spaces t)

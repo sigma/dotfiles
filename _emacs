@@ -349,7 +349,6 @@ frame, close it. Else, die"
 (global-set-key (kbd "C-c s") 'eshell)
 (global-set-key (kbd "C-c c") 'compile)
 (global-set-key (kbd "C-c o") 'my-occur)
-(global-set-key (kbd "C-c u") 'remember)
 (global-set-key (kbd "C-c e") 'fc-eval-and-replace)
 (global-set-key (kbd "C-c f") 'find-function)
 (global-set-key (kbd "C-c F") 'find-function-on-key)
