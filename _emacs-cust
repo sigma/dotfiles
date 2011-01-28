@@ -38,6 +38,7 @@
  '(compilation-scroll-output t)
  '(compilation-window-height 10)
  '(compile-command "make")
+ '(cscope-do-not-update-database t)
  '(custom-file "~/.emacs-cust")
  '(default-justification (quote left))
  '(desktop-save (quote if-exists))

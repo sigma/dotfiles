@@ -29,6 +29,8 @@
 (eval-when (load)
   (require 'patches))
 
+(request 'xcscope)
+
 ;---------------------------------------------------------------------
 ; C++ mode modifications
 ;
@@ -441,5 +443,5 @@
 (c-add-style "eZPHP" ezsystems-php-style)
 (c-add-style "jtop" jtop-c-style)
 
-(provide 'mycode)
+(provide 'cc-config)
 ;;; mycode.el ends here

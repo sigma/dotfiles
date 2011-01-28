@@ -262,7 +262,7 @@
 (add-hook 'after-save-hook 'executable-make-buffer-file-executable-if-script-p)
 
 ;; I hate trailing whitespaces (use with caution)
-(add-hook 'write-file-hooks 'delete-trailing-whitespace)
+;; (add-hook 'write-file-hooks 'delete-trailing-whitespace)
 
 ;; I also hate additional blank-lines (use with extreme caution)
 ;;(add-hook 'write-file-hooks 'simplify-blank-lines)
@@ -542,6 +542,7 @@ frame, close it. Else, die"
 
 (add-to-list 'auto-mode-alist '("\\.djava\\'" . java-mode))
 (add-to-list 'auto-mode-alist '("\\.pro\\'" . makefile-mode))
+(add-to-list 'auto-mode-alist '("\\.make\\'" . makefile-mode))
 
 (global-set-key (kbd "C-x t") 'anchored-transpose)
 (autoload 'anchored-transpose "anchored-transpose" nil t)
