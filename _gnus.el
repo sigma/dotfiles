@@ -333,13 +333,7 @@
 
 ;;; Posting Styles
 
-(defun nbc-message-insert-citation-line ()
-  "Function that inserts a simple citation line."
-  (when message-reply-headers
-    (insert (mail-header-from message-reply-headers)
-            " wrote:\n\n")))
-
-(setq message-citation-line-function 'nbc-message-insert-citation-line)
+(setq message-citation-line-function 'message-insert-formatted-citation-line)
 
 ;; Tell gnus into which group to store messages
 (setq gnus-message-archive-group

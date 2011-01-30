@@ -153,38 +153,6 @@ is not nil, then in case of no success, this value is returned"
              (lambda ()
                (define-key custom-mode-map "\^m" 'widget-button-press))))
 
-;; scroll-margin does not work with hl-line :-(
-(defvar top-margin)
-(defvar bottom-margin)
-(defvar buffer-no-margin-alist)
-
-(defun check-margin ()
-  (let ((window (selected-window)))
-    (if (not (or (window-minibuffer-p window) (member (buffer-name (window-buffer)) buffer-no-margin-alist)))
-        (let* ((position (progn (set-buffer (window-buffer)) (point)))
-               (wstart (window-start))
-               (wbottl (- (window-height) 4))
-               (topshift (- (max 0 (min top-margin (- wbottl 1)))))
-               (diff (- (min topshift (- bottom-margin wbottl)) topshift)))
-          (vertical-motion topshift)
-          (if (cond
-               ((> wstart (point)))
-               ((= wstart (point)) nil)
-               ((or (= diff 0)
-                    (save-restriction
-                      (narrow-to-region wstart (point-max))
-                      (vertical-motion diff)
-                      (< wstart (point))))))
-              (set-window-start window (point)))
-          (goto-char position)))))
-
-(defun set-scroll-margin (up down except)
-  "Enable hacked scroll margin"
-  (setq top-margin up
-        bottom-margin down
-        buffer-no-margin-alist except)
-  (add-hook 'post-command-hook 'check-margin))
-
 ;; Scroll up then down should go back to the start point
 (setq scroll-preserve-screen-position t)
 
@@ -298,35 +266,6 @@ is not nil, then in case of no success, this value is returned"
 
 ;; Provide modes for common config files
 (require 'generic-x)
-
-;; (mouse-sel-mode 1)
-
-;;; default function doesn't honour yank-excluded-properties
-;; (eval-after-load 'mouse-sel
-;;   '(defadvice mouse-insert-selection-internal (around mouse-insert-selection-internal-yank act)
-;;      (flet ((insert (str) (insert-for-yank str)))
-;;        ad-do-it)))
-
-;; If the *scratch* buffer is killed, recreate it automatically
-;; FROM: Morten Welind
-;;http://www.geocrawler.com/archives/3/338/1994/6/0/1877802/
-(defun prepare-scratch-for-kill ()
-  (save-excursion
-    (set-buffer (get-buffer-create "*scratch*"))
-    (lisp-interaction-mode)
-    (make-local-variable 'kill-buffer-query-functions)
-    (add-hook 'kill-buffer-query-functions 'kill-scratch-buffer)))
-
-(defun kill-scratch-buffer ()
-  ;; Kill the current (*scratch*) buffer
-  (remove-hook 'kill-buffer-query-functions 'kill-scratch-buffer)
-  (kill-buffer (current-buffer))
-  ;; Make a brand new *scratch* buffer
-  (prepare-scratch-for-kill)
-  ;; Since we killed it, don't let caller do that.
-  nil)
-
-(prepare-scratch-for-kill)
 
 (unless (fboundp 'subword-mode)
   (defalias 'subword-mode 'c-subword-mode))

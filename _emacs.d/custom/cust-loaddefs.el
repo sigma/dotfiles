@@ -8,8 +8,8 @@
 ;;;;;;  de-context-kill diff-buffer-with-associated-file my-occur
 ;;;;;;  kill-syntax-backward kill-syntax-forward totd yank-and-forward-line
 ;;;;;;  ascii-table unix2dos dos2unix find-file-guessing simplify-blank-lines
-;;;;;;  yh/c-rearrange-electrics) "perso-misc" "perso-misc.el" (18543
-;;;;;;  20463))
+;;;;;;  yh/c-rearrange-electrics) "perso-misc" "perso-misc.el" (19204
+;;;;;;  18646))
 ;;; Generated autoloads from perso-misc.el
 
 (autoload 'yh/c-rearrange-electrics "perso-misc" "\
@@ -91,9 +91,9 @@ Replace the preceding sexp with its value.
 
 ;;;***
 
-;;;### (autoloads nil nil ("autoloads.el" "mycompletion.el" "patches.el"
-;;;;;;  "tempo-c++.el" "tempo-java.el" "tempo-latex.el" "tempo-lisp.el"
-;;;;;;  "visual.el") (18958 63664 999863))
+;;;### (autoloads nil nil ("autoloads.el" "etags-kill.el" "mycompletion.el"
+;;;;;;  "patches.el" "tempo-c++.el" "tempo-java.el" "tempo-latex.el"
+;;;;;;  "tempo-lisp.el" "visual.el") (19781 21641 424199))
 
 ;;;***
 

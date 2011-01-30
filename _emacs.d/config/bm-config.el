@@ -55,5 +55,20 @@
 ;; make sure bookmarks is saved before check-in (and revert-buffer)
   (add-hook 'vc-before-checkin-hook 'bm-buffer-save))
 
+(require 'bookmark)
+(defun switch-to-bookmark (bname)
+  "Interactively switch to bookmark as `iswitchb' does."
+  (interactive (list (flet ((ido-make-buffer-list
+                             (default)
+                             (bookmark-all-names)))
+                       (ido-read-buffer "Jump to bookmark: " nil t))))
+  (bookmark-jump bname))
+
+(global-set-key (kbd "C-x B") 'switch-to-bookmark)
+(request 'bookmark+)
+
+(when (request 'compile-bookmarks)
+  (compile-bookmarks-mode 1))
+
 (provide 'bm-config)
 ;;; bm-config.el ends here
