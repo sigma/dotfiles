@@ -138,7 +138,6 @@
 (request 'moccur-config)
 ;; (request 'lispy-config)
 ;; (request 'tabbar-config)
-;; (request 'pmwiki-config)
 (request 'psvn-config)
 (request 'bm-config)
 (request 'changelog-config)
