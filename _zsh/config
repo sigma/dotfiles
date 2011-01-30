@@ -165,24 +165,14 @@ export PATH=~/bin/:~/apps/bin/:/usr/local/bin:/usr/games/:$JAVA_HOME/bin:$PATH
 
 # export P4CONFIG=.p4config
 export P4CLIENT=yhodique-git-p4
-export P4PORT=build-p4proxy.eng.vmware.com:1667
+export P4PORT=build-p4proxy.eng.vmware.com:1666
 export P4USER=yhodique
 
-export VMO_API=/home/yann/workspace-qa/vmo/bin/
-export ESX40VMTREE=~/Projects/git/vmware/esx40/
 export PYTHONSTARTUP=~/.pythonrc.py
 
 export TCROOT=/build/toolchain
 export BUILDAPPSROOT=/build/apps
 export SCMTREESROOT=/build/trees/bin
-
-export TWSRCROOT=~/Projects/git/workspace/testware/
-export VMTREE=$TWSRCROOT/bora-make
-export VMQAHOME=$TWSRCROOT/build/vmqa
-
-export BORA=~/Projects/git/workspace/bora
-export MAINSRCROOT=$BORA
-export KROOT=~/Projects/git/workspace/kroot
 
 export PATH=$PATH:$BUILDAPPSROOT/bin:$SCMTREESROOT
 

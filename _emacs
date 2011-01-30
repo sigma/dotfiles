@@ -366,6 +366,7 @@ frame, close it. Else, die"
 
 (add-to-list 'auto-mode-alist '("\\.djava\\'" . java-mode))
 (add-to-list 'auto-mode-alist '("\\.pro\\'" . makefile-mode))
+(add-to-list 'auto-mode-alist '("\\.make\\'" . makefile-mode))
 
 (global-set-key (kbd "C-x t") 'anchored-transpose)
 (autoload 'anchored-transpose "anchored-transpose" nil t)
