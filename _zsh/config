@@ -172,6 +172,7 @@ export PYTHONSTARTUP=~/.pythonrc.py
 
 export TCROOT=/build/toolchain
 export BUILDAPPSROOT=/build/apps
+export BUILDAPPS=$BUILDAPPSROOT/bin
 export SCMTREESROOT=/build/trees/bin
 
 export PATH=$PATH:$BUILDAPPSROOT/bin:$SCMTREESROOT
