@@ -157,7 +157,6 @@
 (request 'shell-config)
 (request 'python-config)
 (request 'mycode)
-(request 'project-config)
 (request 'tags-config)
 (request 'completion-config)
 (request 'crontab-config)
