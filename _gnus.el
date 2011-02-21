@@ -165,103 +165,104 @@
 (set-face-foreground 'mybiggernumbers "red")
 (setq gnus-face-6 'mybiggernumbers)
 
+(setq gnus-summary-user-date-format-alist
+      '(((gnus-seconds-today)
+         . "-->  %H:%M")
+        (604800 . "%a, %H:%M")
+        (t . "%d/%m/%Y")))
+
 (setq gnus-summary-line-format (concat
                                 "%*%5{%U%R%z%}"
                                 "%4{|%}"
-                                "%2{%-10&user-date;%}"
-                                "%4{|%}"
+                                "%2{%-10,10&user-date;%}"
                                 "%4{|%}"
                                 "%2{ %}%(%-24,24uB"
                                 "%4{|%}"
                                 "%2{%5i%}"
                                 "%4{|%}"
-                                "%2{%6k %}%)"
+                                "%2{%5k %}%)"
                                 "%4{|%}"
                                 "%2{ %}%3{%B%}%1{%s%}\n"))
 
 (setq
  gnus-group-line-format "%M%S%p%P%5y: %(%G%) (%t)\n"
  gnus-group-mode-line-format "Gnus: %%b"
-                                        ; gnus-summary-line-format "%U%R%z %[%-15,15n%] : %-55,55uZ (%d)\n"
  gnus-summary-mode-line-format "Gnus: %g [%r/%U]"
  gnus-article-mode-line-format "Gnus: %g [%r/%U] %m"
  gnus-topic-line-format "%i[ %u&topic-line; ] %v\n")
 
-(progn
-      (gnus-add-configuration
-       `(group
-         (vertical 1.0
-                   (horizontal 9
-                               ("*BBDB*" 0.3)
-                               ("*Calendar*" 1.0))
-                   (horizontal 1.0
-                               (group 0.3 point)
-                               (,(file-name-nondirectory local-home-page) 1.0)))))
+(gnus-add-configuration
+ `(group
+   (vertical 1.0
+             (horizontal 9
+                         ("*BBDB*" 0.3)
+                         ("*Calendar*" 1.0))
+             (horizontal 1.0
+                         (group 0.3 point)
+                         (,(file-name-nondirectory local-home-page) 1.0)))))
 
-      (gnus-add-configuration
-       '(info
-         (vertical 1.0
-                   (horizontal 9
-                               ("*BBDB*" 0.3)
-                               ("*Calendar*" 1.0))
-                   (horizontal 1.0
-                               (group 0.3 point)
-                               (info 1.0)))))
+(gnus-add-configuration
+ '(info
+   (vertical 1.0
+             (horizontal 9
+                         ("*BBDB*" 0.3)
+                         ("*Calendar*" 1.0))
+             (horizontal 1.0
+                         (group 0.3 point)
+                         (info 1.0)))))
 
-      (gnus-add-configuration
-       '(article
-         (vertical 1.0
-                   (horizontal 9
-                               ("*BBDB*" 0.3)
-                               (summary 1.0 point))
-                   (horizontal 1.0
-                               (group 0.3)
-                               (article 1.0)))))
+(gnus-add-configuration
+ '(article
+   (vertical 1.0
+             (horizontal 9
+                         ("*BBDB*" 0.3)
+                         (summary 1.0 point))
+             (horizontal 1.0
+                         (group 0.3)
+                         (article 1.0)))))
 
-      (gnus-add-configuration
-       '(reply-yank
-         (vertical 1.0
-                   (horizontal 9
-                               ("*BBDB*" 0.3)
-                               (summary 1.0))
-                   (horizontal 1.0
-                               (group 0.3)
-                               (message 1.0 point)))))
+(gnus-add-configuration
+ '(reply-yank
+   (vertical 1.0
+             (horizontal 9
+                         ("*BBDB*" 0.3)
+                         (summary 1.0))
+             (horizontal 1.0
+                         (group 0.3)
+                         (message 1.0 point)))))
 
-      (gnus-add-configuration
-       '(forward
-         (vertical 1.0
-                   (horizontal 9
-                               ("*BBDB*" 0.3)
-                               (summary 1.0))
-                   (horizontal 1.0
-                               (group 0.3)
-                               (message 1.0 point)))))
+(gnus-add-configuration
+ '(forward
+   (vertical 1.0
+             (horizontal 9
+                         ("*BBDB*" 0.3)
+                         (summary 1.0))
+             (horizontal 1.0
+                         (group 0.3)
+                         (message 1.0 point)))))
 
-      (gnus-add-configuration
-       '(summary
-         (vertical 1.0
-                   (horizontal 9
-                               ("*BBDB*" 0.3)
-                               (summary 1.0 point))
-                   (horizontal 1.0
-                               (group 0.3)
-                               ("*scratch*" 1.0)))))
+(gnus-add-configuration
+ '(summary
+   (vertical 1.0
+             (horizontal 9
+                         ("*BBDB*" 0.3)
+                         (summary 1.0 point))
+             (horizontal 1.0
+                         (group 0.3)
+                         ("*scratch*" 1.0)))))
 
-      (gnus-add-configuration
-       '(reply
-         (vertical 1.0
-                   (horizontal 9
-                               ("*BBDB*" 0.3)
-                               (summary 1.0))
-                   (horizontal 1.0
-                               (group 0.3)
-                               (vertical 1.0
-                                         (article 0.3)
-                                         (message 1.0 point))))))
-      )
-
-
+(gnus-add-configuration
+ '(reply
+   (vertical 1.0
+             (horizontal 9
+                         ("*BBDB*" 0.3)
+                         (summary 1.0))
+             (horizontal 1.0
+                         (group 0.3)
+                         (vertical 1.0
+                                   (article 0.3)
+                                   (message 1.0 point))))))
+      
 (setq
  nbc-gnus-visible-headers
  '("^From:\\|^Organization:\\|^To:\\|^Cc:\\|^Reply-To:\\|^Subject:\\|^Sender:"
