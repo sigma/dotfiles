@@ -84,6 +84,8 @@ rxvt-unicode*scrollTtyOutput: off
 rxvt-unicode*scrollKey: on
 rxvt-unicode*titleBar: true
 rxvt-unicode*color12: #84bdd2
+rxvt-unicode*transparent: true
+rxvt-unicode*shading: 20
 
 urxvt*modifier: mod1
 urxvt*background: DarkSlateGray
@@ -99,7 +101,7 @@ urxvt*scrollTtyOutput: off
 urxvt*scrollKey: on
 urxvt*titleBar: true
 urxvt*color12: #84bdd2
-urxvt*transparent: false
+urxvt*transparent: true
 urxvt*shading: 20
 
 URxvt.urgentOnBell: True
