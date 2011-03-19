@@ -322,6 +322,7 @@
  '(uniquify-buffer-name-style (quote post-forward-angle-brackets) nil (uniquify))
  '(uniquify-strip-common-suffix t)
  '(vc-follow-symlinks t)
+ '(vc-handled-backends nil)
  '(vc-make-backup-files t)
  '(vc-stay-local t)
  '(visible-bell nil)
