@@ -27,6 +27,7 @@
 ;;; Code:
 (require 'org-install)
 (require 'org-archive)
+(require 'org-man)
 
 (add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
 
