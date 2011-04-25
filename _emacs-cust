@@ -396,7 +396,7 @@
  '(gnus-header-content-face ((t (:foreground "green" :slant italic))) t)
  '(gnus-header-name ((((class color) (background dark)) (:inherit message-header-name))))
  '(gnus-header-name-face ((((class color) (background dark)) (:foreground "LightGreen"))) t)
- '(highlight ((((class color) (background dark) (type x)) (:background "#223939"))))
+ '(highlight ((t (:background "#222222"))))
  '(hl-sexp-face ((((class color) (background dark)) (:inherit highlight))))
  '(hs-face ((t (:background "#656565" :box 1))))
  '(icicle-Completions-instruction-1 ((t (:foreground "lightblue"))))
