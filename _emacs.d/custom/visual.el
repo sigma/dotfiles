@@ -113,7 +113,7 @@
       '((x (width . 100)
            (height . 50)
            (foreground-color . "wheat")
-           (background-color . "darkslategray")
+           (background-color . "black")
            (cursor-color . "yellow"))
         (ns (width . 100)
             (height . 50)
