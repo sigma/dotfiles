@@ -418,7 +418,7 @@
  '(magit-diff-file-header ((t (:inherit magit-header :foreground "grey70"))))
  '(magit-diff-hunk-header ((t (:inherit magit-header :foreground "lightblue"))))
  '(magit-item-mark ((((class color) (background dark)) (:foreground "lightgreen"))))
- '(magit-log-graph ((((class color) (background dark)) (:foreground "grey10"))))
+ '(magit-log-graph ((t (:foreground "grey50"))))
  '(magit-section-title ((t (:inherit magit-header :foreground "orange" :weight bold))))
  '(menu ((((type x-toolkit)) (:background "lightgrey" :foreground "black" :box (:line-width 1 :style released-button)))))
  '(message-header-name ((((class color) (background dark)) (:inherit highlight :foreground "LightGreen"))))
