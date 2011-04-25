@@ -34,7 +34,8 @@
 (defun yh/bbdb-add-real-addresses ()
   "Don't polute my bbdb with generated addresses"
   (let ((addr net)
-        (exclude-re (rx "@public.gmane.org")))
+        (exclude-re (rx (or "@public.gmane.org"
+                            (and "buzz+" (+ any) "@gmail.com")))))
     (not (string-match exclude-re addr))))
 
 (setq bbdb-always-add-addresses 'yh/bbdb-add-real-addresses)

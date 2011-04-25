@@ -172,6 +172,7 @@
  '(line-move-visual nil)
  '(log-edit-common-indent -7)
  '(lui-fill-column 100)
+ '(magit-remote-ref-format (quote remote-slash-branch))
  '(mail-source-delete-incoming t)
  '(max-lisp-eval-depth 500)
  '(max-specpdl-size 1000)
