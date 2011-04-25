@@ -38,7 +38,7 @@
                            ("marmalade" . "http://marmalade-repo.org/packages/")))
   (package-initialize))
 
-(setq scroll-margin 5
+(setq scroll-margin 0
  scroll-conservatively 50
  scroll-step 1)
 
@@ -307,6 +307,9 @@ frame, close it. Else, die"
     (cvs . cvs-status)))
 
 ;; fallback to git by default
+(require 'vc-git)
+(require 'vc-svn)
+(require 'vc-cvs)
 (defun yh/vcs-backend (file)
   (cond ((null file) 'git)
         ((vc-git-root file) 'git)
