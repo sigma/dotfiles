@@ -160,7 +160,7 @@ export BROWSER=mozilla-firefox
 export TEXINPUTS=$TEXINPUTS:~/texmf:~/LaTeX/macros:~/LaTeX/fig
 export LLVM_HOME=$HOME/Projects/svn/llvm
 
-PATH=$QTDIR/bin:$KDEDIR/bin:$PATH
+PATH=$QTDIR/bin:$KDEDIR/bin:/var/lib/gems/1.8/bin:$PATH
 export PATH=~/bin/:~/apps/bin/:/usr/local/bin:/usr/games/:$JAVA_HOME/bin:$PATH
 
 # export P4CONFIG=.p4config
