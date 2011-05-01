@@ -23,6 +23,8 @@
  '(bbdb-send-mail-style (quote gnus))
  '(bbdb/pgp-method (quote mml-pgpmime))
  '(blink-cursor-mode nil nil (frame))
+ '(bookmark-bmenu-file-column 50)
+ '(bookmark-save-flag 0)
  '(browse-url-browser-function (quote (("^mailto:" . gnus-url-mailto) ("." . browse-url-firefox))))
  '(browse-url-netscape-program "mozilla-firefox")
  '(c++-font-lock-extra-types (quote ("Q[a-zA-Z]*" "uint" "ulong" "string")))
