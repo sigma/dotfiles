@@ -169,7 +169,7 @@ export P4PORT=build-p4proxy.eng.vmware.com:1666
 export P4USER=yhodique
 
 export PYTHONSTARTUP=~/.pythonrc.py
-
+export RUBYOPT="rubygems"
 export TCROOT=/build/toolchain
 export BUILDAPPSROOT=/build/apps
 export BUILDAPPS=$BUILDAPPSROOT/bin

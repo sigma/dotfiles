@@ -28,7 +28,11 @@
 
 (when (request 'magit)
   (request 'magit-svn)
-  (request 'magit-topgit))
+  (request 'magit-topgit)
+  (request 'magit-pulls)
+
+  (when (fboundp 'magit-load-config-extensions)
+    (add-hook 'magit-mode-hook 'magit-load-config-extensions)))
 
 (provide 'magit-config)
 ;;; magit-config.el ends here
