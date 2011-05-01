@@ -160,7 +160,7 @@ export BROWSER=mozilla-firefox
 export TEXINPUTS=$TEXINPUTS:~/texmf:~/LaTeX/macros:~/LaTeX/fig
 export LLVM_HOME=$HOME/Projects/svn/llvm
 
-PATH=$QTDIR/bin:$KDEDIR/bin:$PATH
+PATH=$QTDIR/bin:$KDEDIR/bin:/var/lib/gems/1.8/bin:$PATH
 export PATH=~/bin/:~/apps/bin/:/usr/local/bin:/usr/games/:$JAVA_HOME/bin:$PATH
 
 # export P4CONFIG=.p4config
@@ -169,7 +169,7 @@ export P4PORT=build-p4proxy.eng.vmware.com:1666
 export P4USER=yhodique
 
 export PYTHONSTARTUP=~/.pythonrc.py
-
+export RUBYOPT="rubygems"
 export TCROOT=/build/toolchain
 export BUILDAPPSROOT=/build/apps
 export BUILDAPPS=$BUILDAPPSROOT/bin
