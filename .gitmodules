@@ -289,3 +289,6 @@
 [submodule "_emacs.d/packages-src/w3m"]
 	path = _emacs.d/packages-src/w3m
 	url = git://github.com/emacsmirror/w3m.git
+[submodule "_emacs.d/packages-src/gist"]
+	path = _emacs.d/packages-src/gist
+	url = git://github.com/defunkt/gist.el.git
