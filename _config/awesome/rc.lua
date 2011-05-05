@@ -33,6 +33,8 @@ local home   = os.getenv("HOME")
 local exec   = awful.util.spawn
 local sexec  = awful.util.spawn_with_shell
 
+-- awful.util.spawn_with_shell("xcompmgr -cF &")
+
 -- Beautiful theme
 beautiful.init(home .. "/.config/awesome/zenburn.lua")
 
@@ -347,14 +349,14 @@ clientbuttons = awful.util.table.join(
 globalkeys = awful.util.table.join(
     -- {{{ Applications
     awful.key({ modkey }, "Return",function () awful.util.spawn(terminal) end),
-    awful.key({ modkey }, "e", function () exec("emacsclient -n -c") end),
+    awful.key({ modkey }, "e", function () exec("emacsclient-dev -n -c") end),
     awful.key({ modkey }, "r", function () exec("rox", false) end),
     awful.key({ modkey }, "w", function () exec("firefox") end),
     -- see http://gist.github.com/489434
     awful.key({ modkey }, "Escape", function () scratch.drop(terminal .. " -e zsh -c 'get_scratch.sh " .. mouse.screen .. "'", "center", "center", 0.7, 0.7) end),
     awful.key({ modkey }, "a", function () exec("urxvt -T Alpine -e alpine_exp") end),
     awful.key({ modkey }, "g", function () sexec("GTK2_RC_FILES=~/.gtkrc-gajim gajim") end),
-    awful.key({ modkey }, "q", function () exec("emacsclient --eval '(make-remember-frame)'") end),
+    awful.key({ modkey }, "q", function () exec("emacsclient-dev --eval '(yh/make-capture-frame)'") end),
     awful.key({ modkey }, "BackSpace", function () awful.util.spawn(terminal .. " -name mocp -e mocp") end),
     -- }}}
 
@@ -540,6 +542,8 @@ awful.rules.rules = {
     },
     { rule = { class = "Emacs",    instance = "_Remember_" },
       properties = { floating = true }, callback = awful.titlebar.add  },
+    { rule = { class = "Emacs" },
+      properties = {opacity = 0.8} },
     { rule = { class = "Pinentry.*" },
       properties = { floating = true },
       callback = awful.placement.centered},

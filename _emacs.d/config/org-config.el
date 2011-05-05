@@ -192,5 +192,21 @@
      ;; notify-send -i /usr/share/icons/crystalsvg/32x32/apps/bell.png "Appt in $minutes mins" "$text"
      ))
 
+(defun yh/make-capture-frame ()
+  "Create a new frame and run org-capture."  
+   (interactive)  
+   (select-frame
+    (make-frame '((name . "_Remember_"))))
+   (flet ((org-switch-to-buffer-other-window (&rest args) (apply 'switch-to-buffer args)))
+     (condition-case nil
+         (org-capture)
+       (error (delete-frame)))))
+
+(defun yh/delete-frame ()
+  (when (equal "_Remember_" (frame-parameter nil 'name))
+    (delete-frame)))
+
+(add-hook 'org-capture-after-finalize-hook 'yh/delete-frame)
+   
 (provide 'org-config)
 ;;; org-config.el ends here
