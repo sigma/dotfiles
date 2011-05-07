@@ -54,6 +54,8 @@
 (defvar c++-auto-include-add nil)
 (defvar c++-auto-include-remove nil)
 
+(add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
+
 ;; new access protection clauses for qt
 (defconst c-qt-access-key "\\<\\(public\\|protected\\|private\\)\\>[ \t]+\\<slots\\>")
 
@@ -134,8 +136,8 @@
   (setq buffer-include-regexp (cons c++-buffer-include-regexp buffer-include-regexp))
 
   (setq tab-width 4)
-  ;; we like hungry-delete
-  (c-toggle-hungry-state 1)
+  ;; uncomment for those who like hungry-delete
+  ;; (c-toggle-hungry-state 1)
   ;; uncomment for those who like auto-newline
   ;; (c-toggle-auto-state 1)
 
@@ -495,6 +497,41 @@
     )
   "Blind-Assist C/C++ Programming Style")
 
+(defconst vmware-c-style
+  ;; Always indent c/c++ sources, never insert tabs
+  '((c-tab-always-indent        . t)
+    ;; Offset for line only comments
+    (c-basic-offset . 3)
+    (c-comment-only-line-offset . 0)
+    ;; Controls the insertion of newlines before and after braces.
+    (c-hanging-braces-alist     . ((substatement-open after)
+                                   (defun-open after)
+                                   (class-open after)
+                                   (inline-open after)
+                                   (block-open after)
+				   (brace-list-open after)
+                                   (extern-lang-open after)
+                                   (namespace-open after)))
+    ;; Controls the insertion of newlines before and after certain colons.
+    (c-hanging-colons-alist     . ((member-init-intro before)
+				   (inher-intro)
+				   (case-label after)
+				   (label after)
+				   (access-label after)))
+    ;; List of various C/C++/ObjC constructs to "clean up".
+    (c-cleanup-list             . (scope-operator
+				   empty-defun-braces
+				   defun-close-semi))
+    ;; Association list of syntactic element symbols and indentation offsets.
+    (c-offsets-alist            . ((arglist-close . c-lineup-arglist)
+				   (substatement-open . 0)
+				   (case-label        . +)
+				   (block-open        . 0)
+				   (access-label      . -)
+				   (label	      . 0)
+				   (knr-argdecl-intro . -))))
+  "VMware C/C++ Programming Style")
+
 ;; add my personal style.
 (c-add-style "personal" my-c-style)
 (c-add-style "bassist" ba-c-style)
@@ -502,6 +539,7 @@
 (c-add-style "eZSystems" ezsystems-c-style)
 (c-add-style "eZPHP" ezsystems-php-style)
 (c-add-style "jtop" jtop-c-style)
+(c-add-style "vmware" vmware-c-style)
 
 (provide 'cc-config)
 ;;; mycode.el ends here

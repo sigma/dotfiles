@@ -480,4 +480,6 @@ by using nxml's indentation rules."
 
 (global-set-key (kbd "C-x n N") 'indirect-region)
 
+(define-key minibuffer-local-completion-map " " nil)
+
 (message ".emacs loaded")
