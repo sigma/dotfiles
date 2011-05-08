@@ -129,7 +129,7 @@
      (setq org-capture-templates
            '(("t" "Todo" entry (file "~/org/refile.org") "* TODO %?\n  %i\n  %a" :prepend t)
              ("m" "Mail task" entry (file "~/org/refile.org")
-              "* TODO Treat mail from %:from\n  group: %:group\n  subject: %:subject\n  %a"
+              "* TODO Treat mail from %:from\n  SCHEDULED: %t\n  group: %:group\n  subject: %:subject\n  %a"
               :prepend t :immediate-finish t)
              ("p" "Phone call" entry (file "~/org/refile.org")
               "* Phone %(bh/phone-call) - %(gjg/bbdb-company) :PHONE:\n%U\n\n%?"
