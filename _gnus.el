@@ -105,7 +105,7 @@
         gnus-thread-sort-by-total-score))
 
 (setq
- gnus-extra-headers '(Newsgroups X-Spam-Status)
+ gnus-extra-headers '(To Cc Newsgroups Keywords)
  nnmail-extra-headers gnus-extra-headers)
 
 ;; Personal threading view
@@ -146,7 +146,7 @@
 (setq gnus-face-1 'mysubject)
 
 (copy-face 'default 'mytime)
-(set-face-foreground 'mytime "red")
+(set-face-foreground 'mytime "green")
 (setq gnus-face-2 'mytime)
 
 (copy-face 'default 'mythreads)
@@ -165,27 +165,25 @@
 (set-face-foreground 'mybiggernumbers "red")
 (setq gnus-face-6 'mybiggernumbers)
 
-(setq gnus-summary-user-date-format-alist
+(setq gnus-user-date-format-alist
       '(((gnus-seconds-today)
          . "-->  %H:%M")
         (604800 . "%a, %H:%M")
         (t . "%d/%m/%Y")))
 
 (setq gnus-summary-line-format (concat
-                                "%*%5{%U%R%z%}"
+                                "%3{%1uM%}%*%5{%U%R%z%}"
                                 "%4{|%}"
                                 "%2{%-10,10&user-date;%}"
+                                "%4{|%} %(%-24,24uB"
                                 "%4{|%}"
-                                "%2{ %}%(%-24,24uB"
+                                "%6{%5i%}"
                                 "%4{|%}"
-                                "%2{%5i%}"
-                                "%4{|%}"
-                                "%2{%5k %}%)"
-                                "%4{|%}"
-                                "%2{ %}%3{%B%}%1{%s%}\n"))
+                                "%6{%5k %}%)"
+                                "%4{|%} %3{%B%}%1{%s%}\n"))
 
 (setq
- gnus-group-line-format "%M%S%p%P%5y: %(%G%) (%t)\n"
+ gnus-group-line-format "%M%S%p%P%5y: %(%G%) %2{(%t)%}\n"
  gnus-group-mode-line-format "Gnus: %%b"
  gnus-summary-mode-line-format "Gnus: %g [%r/%U]"
  gnus-article-mode-line-format "Gnus: %g [%r/%U] %m"
@@ -370,49 +368,6 @@
 
 (add-hook 'message-mode-hook 'flyspell-mode)
 
-;;
-;; automatic mail scan without manual effort.
-;;
-;; level-specified group scanner.
-(defun gnus-demon-scan-mail-or-news-and-update (level)
-"Scan for new mail, updating the *Group* buffer."
-;  (let ((win (current-window-configuration)))
-    (unwind-protect
-        (save-window-excursion
-            (when (gnus-alive-p)
-              (save-excursion
-                (set-buffer gnus-group-buffer)
-                (gnus-group-get-new-news level)))))
-;      (set-window-configuration win))
-)
-
-;;
-;; level 2: only mail groups are scanned.
-(defun gnus-demon-scan-mail-and-update ()
-  "Scan for new mail, updating the *Group* buffer."
-  ;(osd-display "Scan for new mail")
-  (gnus-demon-scan-mail-or-news-and-update 2))
-
-;;
-;; level 3: mail and local news groups are scanned.
-(defun gnus-demon-scan-news-and-update ()
-  "Scan for new mail, updating the *Group* buffer."
-  ;(osd-display "Scan for new news")
-  (gnus-demon-scan-mail-or-news-and-update 3))
-
-(setq gnus-use-demon t)
-
-(defun yh/gnus-demon-install ()
-  (interactive)
-  ;; scan for news every 20 minutes
-  (gnus-demon-add-handler 'gnus-demon-scan-news-and-update 20 2)
-  ;; scan for mails every 2 minutes
-  (gnus-demon-add-handler 'gnus-demon-scan-mail-and-update 2 2))
-
-(defun yh/gnus-demon-uninstall ()
-  (interactive)
-  (gnus-demon-cancel))
-
 (setq message-signature 'fortune)
 
 (defvar fortune-program nil
@@ -503,9 +458,6 @@ The epigram is inserted at point if called interactively."
 (setq mm-verify-option 'known)
 (setq mm-decrypt-option 'known)
 (setq gnus-article-emulate-mime t) ; already set in my gnus but you may need it.
-(setq gnus-buttonized-mime-types (append (list "multipart/signed"
-                                               "multipart/encrypted")
-                                         gnus-buttonized-mime-types))
 
 (require 'bbdb-pgp)
 ;;(add-hook 'gnus-message-setup-hook 'mml-secure-message-sign-pgpmime)
