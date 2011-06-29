@@ -7,3 +7,8 @@
 /_emacs.d/history
 /_emacs.d/smex.save
 /_emacs.d/tramp
+/_emacs.d/server/server
+/_emacs.d/url/cookies
+/_emacs.d/var/gists.eieio
+/_emacs.d/session.*
+/_vimperator/info/default/
