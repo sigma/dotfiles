@@ -49,9 +49,6 @@
 [submodule "_emacs.d/packages-src/x-symbol"]
 	path = _emacs.d/packages-src/x-symbol
 	url = git://github.com/emacsmirror/x-symbol.git
-[submodule "_emacs.d/packages-src/anything-config"]
-	path = _emacs.d/packages-src/anything-config
-	url = git://github.com/emacsmirror/anything-config.git
 [submodule "_emacs.d/packages-src/php-mode"]
 	path = _emacs.d/packages-src/php-mode
 	url = git://github.com/emacsmirror/php-mode.git
@@ -64,9 +61,6 @@
 [submodule "_emacs.d/packages-src/anchored-transpose"]
 	path = _emacs.d/packages-src/anchored-transpose
 	url = git://github.com/emacsmirror/anchored-transpose.git
-[submodule "_emacs.d/packages-src/anything"]
-	path = _emacs.d/packages-src/anything
-	url = git://github.com/emacsmirror/anything.git
 [submodule "_emacs.d/packages-src/bibsnarf"]
 	path = _emacs.d/packages-src/bibsnarf
 	url = git://github.com/emacsmirror/bibsnarf.git
