@@ -26,11 +26,12 @@
 
 ;;; Code:
 
+(defvar stack-trace-on-error nil)
+
 (eval-when-compile
   '(progn
      (require 'winring)
-     (require 'ecb)
-     (require 'linemark)))
+     (require 'ecb)))
 
 (defun yh/compilation-predicate (buffer)
   (and (comint-check-proc buffer)
@@ -43,14 +44,8 @@
   (require 'ecb-winman-support)
   (ecb-winman-winring-enable-support)
   (winring-initialize)
-  (winring-rename-configuration ecb-winman-winring-name)
-  (setq ecb-compilation-predicates '(yh/compilation-predicate))
-
-  (require 'linemark)
-  (define-key global-map (kbd "C-c b b") 'viss-bookmark-toggle)
-  (define-key global-map (kbd "C-c b p") 'viss-bookmark-prev-buffer)
-  (define-key global-map (kbd "C-c b n") 'viss-bookmark-next-buffer)
-  (define-key global-map (kbd "C-c b c") 'viss-bookmark-clear-all-buffer))
+  (winring-set-name ecb-winman-winring-name)
+  (setq ecb-compilation-predicates '(yh/compilation-predicate)))
 
 (eval-after-load 'ecb
   '(yh/init-ecb))
