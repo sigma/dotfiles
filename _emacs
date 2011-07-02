@@ -482,4 +482,7 @@ by using nxml's indentation rules."
 
 (define-key minibuffer-local-completion-map " " nil)
 
+(require 'data-debug)
+(global-set-key "\M-:" 'data-debug-eval-expression)
+
 (message ".emacs loaded")
