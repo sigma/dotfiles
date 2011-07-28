@@ -422,9 +422,6 @@ by using nxml's indentation rules."
 (when (request 'test-case-mode)
   (add-hook 'find-file-hook 'enable-test-case-mode-if-test))
 
-;; This must be last
-(request 'smex)
-
 (when (and (request 'folding)
            (request 'fold-dwim))
   (global-set-key (kbd "<A-tab>") 'fold-dwim-toggle))
@@ -484,5 +481,13 @@ by using nxml's indentation rules."
 
 (require 'data-debug)
 (global-set-key "\M-:" 'data-debug-eval-expression)
+
+;; This must be last
+(when (request 'smex)
+  (smex-initialize)
+  (global-set-key (kbd "M-x") 'smex)
+  (global-set-key (kbd "M-X") 'smex-major-mode-commands) 
+  ;; This is your old M-x. 
+  (global-set-key (kbd "C-c M-x") 'execute-extended-command))
 
 (message ".emacs loaded")
