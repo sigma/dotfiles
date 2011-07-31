@@ -35,6 +35,7 @@
   "Don't polute my bbdb with generated addresses"
   (let ((addr net)
         (exclude-re (rx (or "@public.gmane.org"
+                            "@socialcast.com"
                             (and "buzz+" (+ any) "@gmail.com")))))
     (not (string-match exclude-re addr))))
 
