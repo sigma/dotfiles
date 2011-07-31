@@ -33,9 +33,10 @@
 (request 'cedet)
 
 (when (request 'package)
-  (setq package-archives '(("ELPA" . "http://tromey.com/elpa/") 
-                           ("gnu" . "http://elpa.gnu.org/packages/")
-                           ("marmalade" . "http://marmalade-repo.org/packages/")))
+  (setq package-archives
+        '(("ELPA" . "http://tromey.com/elpa/")
+          ("gnu" . "http://elpa.gnu.org/packages/")
+          ("marmalade" . "http://marmalade-repo.org/packages/")))
   (package-initialize))
 
 (setq scroll-margin 0
@@ -436,8 +437,10 @@ by using nxml's indentation rules."
 
 ;; Detect endianness of UTF-16 containing a Byte Order Mark U+FEFF
 ;; Detect EOL mode by looking for CR/LF on the first line
-(add-to-list 'auto-coding-regexp-alist '("^\xFF\xFE.*\x0D\x00$" . utf-16-le-dos) t)
-(add-to-list 'auto-coding-regexp-alist '("^\xFE\xFF.*\x0D\x00$" . utf-16-be-dos) t)
+(add-to-list 'auto-coding-regexp-alist
+             '("^\xFF\xFE.*\x0D\x00$" . utf-16-le-dos) t)
+(add-to-list 'auto-coding-regexp-alist
+             '("^\xFE\xFF.*\x0D\x00$" . utf-16-be-dos) t)
 (add-to-list 'auto-coding-regexp-alist '("^\xFF\xFE" . utf-16-le) t)
 (add-to-list 'auto-coding-regexp-alist '("^\xFE\xFF" . utf-16-be) t)
 
@@ -445,7 +448,8 @@ by using nxml's indentation rules."
   (add-to-list 'auto-mode-alist `(,arch-regexp . archive-mode))
   (modify-coding-system-alist 'file arch-regexp 'no-conversion))
 
-(setq auto-coding-functions (delete 'sgml-xml-auto-coding-function auto-coding-functions))
+(setq auto-coding-functions (delete 'sgml-xml-auto-coding-function
+                                    auto-coding-functions))
 
 (defvar indirect-mode-name nil
   "Mode to set for indirect buffers.")
@@ -486,8 +490,8 @@ by using nxml's indentation rules."
 (when (request 'smex)
   (smex-initialize)
   (global-set-key (kbd "M-x") 'smex)
-  (global-set-key (kbd "M-X") 'smex-major-mode-commands) 
-  ;; This is your old M-x. 
+  (global-set-key (kbd "M-X") 'smex-major-mode-commands)
+  ;; This is your old M-x.
   (global-set-key (kbd "C-c M-x") 'execute-extended-command))
 
 (message ".emacs loaded")
