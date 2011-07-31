@@ -1,0 +1,29 @@
+local curcontext=$curcontext state line
+declare -A opt_args
+
+local new_branch_reflog_arg
+
+if (( words[(I)-b] > 0 )); then
+    new_branch_reflog_arg='-l[create the new branch'\''s reflog]'
+else
+    new_branch_reflog_arg='-l[create the branch'\''s reflog]'
+fi
+
+if compset -N '--'; then
+    __git_cached_files
+else
+    _arguments -C -S                                                              \
+        '-q[suppress feedback messages]'                                          \
+                                                                                  \
+        - switch-branch                                                           \
+        '-f[force a complete re-read]'                                            \
+        '-b[create a new branch based at given branch]: :__git_guard_branch-name' \
+        {-t,--track}'[set up configuration so pull merges from the start point]'  \
+        '--no-track[override the branch.autosetupmerge configuration variable]'   \
+        $new_branch_reflog_arg                                                    \
+        '-m[3way merge current branch, working tree and new branch]'              \
+        '::branch:__git_revisions'                                                \
+                                                                                  \
+        - update-files                                                            \
+        '::tree-ish:__git_tree_ishs' && ret=0
+fi
