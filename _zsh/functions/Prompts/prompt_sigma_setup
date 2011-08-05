@@ -1,6 +1,8 @@
 #!/bin/zsh
 # sigma prompt theme
 
+autoload is-at-least
+
 prompt_sigma_help () {
   cat <<'EOF'
 This prompt is Sigma's one.
@@ -130,7 +132,13 @@ $PR_BLUE$PR_SHIFT_IN$PR_HBAR$PR_SHIFT_OUT(\
 $PR_LIGHT_GREEN%_$PR_BLUE)$PR_SHIFT_IN$PR_HBAR$PR_SHIFT_OUT\
 $PR_CYAN$PR_SHIFT_IN$PR_HBAR$PR_SHIFT_OUT$PR_NO_COLOUR '
 
-    add-zsh-hook precmd prompt_sigma_precmd
+    if is-at-least "4.3.4"; then
+        add-zsh-hook precmd prompt_sigma_precmd
+    else
+        function precmd() {
+            prompt_sigma_precmd
+        }
+    fi
 }
 prompt_sigma_setup "$@"
 

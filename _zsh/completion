@@ -17,8 +17,8 @@ zstyle ':completion:*:complete-extended:*' matcher 'r:|[.,_-]=* r:|=*'
 
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 
-zstyle ':completion::complete:*' use-cache 1
-zstyle ':completion::complete:*' cache-path ~/.zsh/cache/$HOST
+zstyle ':completion::complete:*' use-cache on
+zstyle ':completion::complete:*' cache-path ~/.zsh/cache
 
 zstyle ':completion:*' expand 'yes'
 zstyle ':completion:*' squeeze-slashes 'yes'
@@ -92,3 +92,5 @@ function _pip_completion {
 }
 compctl -K _pip_completion pip
 # pip zsh completion end
+
+zstyle ':completion:*:*:git:*' user-commands p4 changeset svs
