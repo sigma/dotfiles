@@ -115,8 +115,8 @@ urxvt*shading: 20
 URxvt.urgentOnBell: True
 URxvt.perl-lib: /home/yann/.urxvt.d
 URxvt.perl-ext-common: selection,option-popup,selection-popup,searchable-scrollback,readline,keyboard-select,url-select,clipboard
-URxvt.keysym.M-q: perl:keyboard-select:activate
-URxvt.keysym:M-s: perl:keyboard-select:search
+URxvt.keysym.M-grave: perl:keyboard-select:activate
+URxvt.keysym.M-s: perl:keyboard-select:search
 URxvt.keysym.M-u: perl:url-select:select_next
 URxvt.urlLauncher: firefox
 URxvt.keysym.M-c:   perl:clipboard:copy
