@@ -163,6 +163,7 @@
  '(ido-default-file-method (quote selected-window))
  '(ido-everywhere t)
  '(ido-mode (quote both) nil (ido))
+ '(ido-use-virtual-buffers t)
  '(imenu-auto-rescan t)
  '(indent-region-mode t)
  '(indent-tabs-mode nil)
