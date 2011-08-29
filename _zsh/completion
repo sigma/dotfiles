@@ -15,7 +15,7 @@ zstyle ':completion:*:approximate-four:*' max-errors 4
 
 zstyle ':completion:*:complete-extended:*' matcher 'r:|[.,_-]=* r:|=*'
 
-zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
+zstyle ':completion:*:complete:*' matcher-list 'm:{a-z}={A-Z}'
 
 zstyle ':completion::complete:*' use-cache on
 zstyle ':completion::complete:*' cache-path ~/.zsh/cache
