@@ -28,12 +28,27 @@
 
 ;;; Lisp
 
-;; (request 'color-eldoc)
-
 (eval-when (load)
   (require 'patches))
 
-(autoload 'paredit-mode "paredit" "Minor mode for pseudo-structurally editing Lisp code." t)
+(request 'edebug)
+
+(defun elint-current-buffer ()
+  (interactive)
+  (when (request 'elint)
+    (elint-initialize)
+    (elint-current-buffer)))
+
+(eval-after-load 'elint
+  '(progn
+     (add-to-list 'elint-standard-variables 'current-prefix-arg)
+     (add-to-list 'elint-standard-variables 'command-line-args-left)
+     (add-to-list 'elint-standard-variables 'buffer-file-coding-system)
+     (add-to-list 'elint-standard-variables 'emacs-major-version)
+     (add-to-list 'elint-standard-variables 'window-system)))
+
+(autoload 'paredit-mode "paredit"
+  "Minor mode for pseudo-structurally editing Lisp code." t)
 
 (eval-after-load 'paredit
   '(progn
