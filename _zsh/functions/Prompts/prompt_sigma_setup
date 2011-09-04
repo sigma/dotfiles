@@ -40,7 +40,7 @@ prompt_sigma_setup () {
 
     error_color="red"
     login_color="green"
-    if test $SSH_CLIENT; then
+    if [ -n "$SSH_CLIENT" ]; then
         host_color="red"
     else
         host_color="cyan"
@@ -51,13 +51,10 @@ prompt_sigma_setup () {
     login="%{$fg[$login_color]%}%n%{$reset_color%}"
     root_invite="%{$fg[$error_color]%}%B#%b%{$reset_color%}"
     user_invite="%{$fg[$user_color]%}%B$%b%{$reset_color%}"
-    host="%{$fg[$host_color]%}%m%{$reset_color%}"
-
-    PROMPT="[%B$login%b%B@$host%b %B%~%b]%(#.$root_invite.$user_invite) "
+    host="%{$fg[yellow]%}%B@%b%{$reset_color%}%{$fg[$host_color]%}%B%m%b%{$reset_color%}"
 
     date_normal="%T"
     date_error="%{$fg[$error_color]%}%T%{$reset_color%}"
-    RPROMPT="`prompt_sigma_color_suspend [`%B%(?.$date_normal.$date_error)%b`prompt_sigma_color_suspend ]`"
 
     ###
     # Need this so the prompt will work.
@@ -109,7 +106,7 @@ prompt_sigma_setup () {
     PR_RBRACE="]"
     
     PROMPT='$PR_SET_CHARSET$PR_STITLE${(e)PR_TITLEBAR}$PR_CYAN$PR_SHIFT_IN$PR_ULCORNER$PR_BLUE$PR_HBAR$PR_SHIFT_OUT\
-($PR_GREEN%(!.%SROOT%s.%n)$PR_RED@$PR_CYAN%m$PR_BLUE)\
+($PR_GREEN$login$host$PR_BLUE)\
 $PR_SHIFT_IN$PR_HBAR$PR_SHIFT_OUT$PR_RED$PR_LBRACE$PR_YELLOW$ENV_PREFIX\
 $PR_CYAN$(virtualenv_info_for_prompt)$PR_RED$PR_RBRACE$PR_BLUE\
 $PR_SHIFT_IN$PR_HBAR$PR_CYAN$PR_HBAR${(e)PR_FILLBAR}$PR_BLUE$PR_HBAR$PR_SHIFT_OUT\

@@ -320,6 +320,8 @@
  '(test-case-python-arguments "-W ignore::DeprecationWarning")
  '(test-case-python-executable "python")
  '(tla-arch-branch (quote baz))
+ '(tls-process-connection-type nil)
+ '(tls-program (quote ("openssl s_client -connect %h:%p -no_ssl2 -ign_eof" "gnutls-cli --insecure -p %p %h" "gnutls-cli --insecure -p %p %h --protocols ssl3")))
  '(tool-bar-mode nil nil (tool-bar))
  '(tooltip-frame-parameters (quote ((name . "tooltip") (internal-border-width . 1) (border-width . 0))))
  '(tooltip-gud-tips-p t)
