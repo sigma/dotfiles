@@ -165,11 +165,12 @@ Returns nil if no differences found, 't otherwise."
               (with-current-buffer buffer
                 (write-region (point-min) (point-max) tempfile nil 'nomessage))
               (if (zerop
-                   (apply #'call-process "diff" nil diff-buf nil
+                   (apply #'call-process ediff-custom-diff-program
+                          nil diff-buf nil
                           (append
                            (when (and (boundp 'ediff-custom-diff-options)
                                       (stringp ediff-custom-diff-options))
-                             (list ediff-custom-diff-options))
+                             (split-string ediff-custom-diff-options))
                            (list buf-filename tempfile))))
                   (progn
                     (message "No differences found")
