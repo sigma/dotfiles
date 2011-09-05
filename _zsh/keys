@@ -45,3 +45,7 @@ insert-root-prefix () {
 
 zle -N insert-root-prefix
 bindkey "^[f" insert-root-prefix
+
+autoload -U edit-command-line
+zle -N edit-command-line
+bindkey '\C-x\C-e' edit-command-line
