@@ -75,11 +75,13 @@
 (define-key emacs-lisp-mode-map (kbd "C-c k") 'yh/insert-elisp-key)
 
 (font-lock-add-keywords 'emacs-lisp-mode
-                        `((,(concat "\\<" (regexp-opt '("add-hook" "add-mhook"
-                                                        "autoload" "defmadvice"
-                                                        "aset" "set" "fset"
-                                                        "remove-hook" "clear-hook"
-                                                        "request" "make-double-command") t)
+                        `((,(concat "\\<" (regexp-opt
+                                           '("add-hook" "add-mhook"
+                                             "autoload" "defmadvice"
+                                             "aset" "set" "fset"
+                                             "remove-hook" "clear-hook"
+                                             "request" "make-double-command"
+                                             "ert-deftest") t)
                                     "\\>[ 	']*\\(\\sw+\\)?")
                            (1 font-lock-keyword-face)
                            (2 font-lock-constant-face nil t))
