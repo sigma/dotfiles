@@ -176,6 +176,7 @@ export BUILDAPPS=$BUILDAPPSROOT/bin
 export SCMTREESROOT=/build/trees/bin
 
 export PATH=$PATH:$BUILDAPPSROOT/bin:$SCMTREESROOT
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:~/lib
 
 typeset -U path # No duplicates
 
@@ -193,12 +194,12 @@ prompt sigma
 autoload -U zsh-mime-setup
 zsh-mime-setup
 
-autoload zrecompile
 autoload run-help
 
 autoload zcalc
-
 autoload zmv
+autoload zargs
+autoload zrecompile
 
 autoload -U compinit
 compinit -C # don't perform security check
