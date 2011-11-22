@@ -113,7 +113,7 @@
 
 ;; Copyright (C) "
 	       (substring (current-time-string) -4) "  "
-	       (getenv "ORGANIZATION") | "Free Software Foundation, Inc." "
+	       (getenv "ORGANIZATION") | (user-full-name) "
 
 ;; Author: " (user-full-name)
 	     (quote (if (search-backward "&" (line-beginning-position) t)
