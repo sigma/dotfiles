@@ -7,18 +7,12 @@
 [submodule "_emacs.d/packages-src/org-mode"]
 	path = _emacs.d/packages-src/org-mode
 	url = git://repo.or.cz/org-mode.git
-[submodule "_emacs.d/packages-src/auctex"]
-	path = _emacs.d/packages-src/auctex
-	url = git://github.com/emacsmirror/auctex.git
 [submodule "_emacs.d/packages-src/bm"]
 	path = _emacs.d/packages-src/bm
 	url = git://github.com/emacsmirror/bm.git
 [submodule "_emacs.d/packages-src/dvc"]
 	path = _emacs.d/packages-src/dvc
 	url = git://github.com/emacsmirror/dvc.git
-[submodule "_emacs.d/packages-src/ecb"]
-	path = _emacs.d/packages-src/ecb
-	url = git://github.com/emacsmirror/ecb.git
 [submodule "_emacs.d/packages-src/emms"]
 	path = _emacs.d/packages-src/emms
 	url = git://github.com/emacsmirror/emms.git
