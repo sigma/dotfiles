@@ -175,7 +175,7 @@ export BUILDAPPSROOT=/build/apps
 export BUILDAPPS=$BUILDAPPSROOT/bin
 export SCMTREESROOT=/build/trees/bin
 
-export PATH=$PATH:$BUILDAPPSROOT/bin:$SCMTREESROOT
+# export PATH=$PATH:$BUILDAPPSROOT/bin:$SCMTREESROOT
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:~/lib
 
 typeset -U path # No duplicates
