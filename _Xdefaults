@@ -117,10 +117,10 @@ URxvt.perl-lib: /home/yann/.urxvt.d
 URxvt.perl-ext-common: selection,option-popup,selection-popup,searchable-scrollback,readline,keyboard-select,url-select,clipboard
 URxvt.keysym.M-grave: perl:keyboard-select:activate
 URxvt.keysym.M-s: perl:keyboard-select:search
-URxvt.keysym.M-u: perl:url-select:select_next
+URxvt.keysym.M-S-u: perl:url-select:select_next
 URxvt.urlLauncher: firefox
-URxvt.keysym.M-c:   perl:clipboard:copy
-URxvt.keysym.M-v:   perl:clipboard:paste
+URxvt.keysym.M-S-c:   perl:clipboard:copy
+URxvt.keysym.M-S-v:   perl:clipboard:paste
 URxvt.keysym.M-C-v: perl:clipboard:paste_escaped
 
 mocp*background: DarkSlateGray
