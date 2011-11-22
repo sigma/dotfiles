@@ -27,7 +27,7 @@
 ;;; Code:
 (require 'org-install)
 (require 'org-archive)
-(require 'org-man)
+;;(require 'org-man)
 
 (add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
 
@@ -193,8 +193,8 @@
      ))
 
 (defun yh/make-capture-frame ()
-  "Create a new frame and run org-capture."  
-   (interactive)  
+  "Create a new frame and run org-capture."
+   (interactive)
    (select-frame
     (make-frame '((name . "_Remember_"))))
    (flet ((org-switch-to-buffer-other-window (&rest args) (apply 'switch-to-buffer args)))
@@ -207,6 +207,11 @@
     (delete-frame)))
 
 (add-hook 'org-capture-after-finalize-hook 'yh/delete-frame)
-   
+
+(org-babel-do-load-languages
+      'org-babel-load-languages
+      '((emacs-lisp . t)
+        (C . t)))
+
 (provide 'org-config)
 ;;; org-config.el ends here
