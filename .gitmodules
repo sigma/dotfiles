@@ -283,3 +283,6 @@
 [submodule "_emacs.d/packages-src/gh"]
 	path = _emacs.d/packages-src/gh
 	url = git://github.com/sigma/gh.el.git
+[submodule "_emacs.d/packages-src/slime"]
+	path = _emacs.d/packages-src/slime
+	url = git://github.com/emacsmirror/slime.git
