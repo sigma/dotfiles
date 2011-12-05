@@ -1,18 +1,30 @@
-keycode 0x12 =	9		bracketleft
+keycode 0x12 =  9               bracketleft
 keycode 0x13 =  0               bracketright
 
 keycode 0x22 =  parenleft       braceleft
 keycode 0x23 =  parenright      braceright
 
-remove Lock = Caps_Lock
-remove Control = Control_L
-remove Control = Control_R
-remove Mod2 = Num_Lock
-keysym Control_L = Hyper_L
+! left control becomes modifier 'alt'
+keysym Control_L = Alt_L
+! caps lock is the new 'control'
 keysym Caps_Lock = Control_L
-keysym Alt_L = Meta_L
-keysym Control_R = Alt_L
-keysym Menu = ISO_Next_Group
+! super (command) is used as 'meta'
+keysym Super_L = Meta_L
+! alt (option) is 'super' (for window manager)
+keysym Alt_L = Super_L
+! no need for a second super, make it 'hyper'
+keysym Super_R = Hyper_R
+
+clear Control
+clear Lock
+clear mod1
+clear mod2
+! clear mod3
+clear mod4
+clear mod5
+
+add mod1 = Meta_L
+add mod2 = Alt_L
+add mod4 = Super_L
+add mod5 = Hyper_R
 add Control = Control_L
-add Mod2 = Alt_L
-add Mod5 = Hyper_L
