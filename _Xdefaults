@@ -2,104 +2,26 @@
 *customization: -color
 #endif
 
-emacs-cvs*Background: DarkSlateGray
-emacs-cvs*Foreground: Wheat
-emacs-cvs*pointerColor: Orchid
-emacs-cvs*cursorColor: Yellow
-emacs-cvs*font: Monaco:pixelsize=13
-emacs-cvs*bitmapIcon: on
-emacs-cvs.geometry: 120x50
-
 emacs-dev*Background: Black
 emacs-dev*Foreground: Wheat
 emacs-dev*pointerColor: Orchid
 emacs-dev*cursorColor: Yellow
 emacs-dev*font: Monaco:pixelsize=13
 emacs-dev*bitmapIcon: on
-emacs-dev.geometry: 120x50
 
-emacs-pretest*Background: DarkSlateGray
-emacs-pretest*Foreground: Wheat
-emacs-pretest*pointerColor: Orchid
-emacs-pretest*cursorColor: Yellow
-emacs-pretest*FontBackend: xft
-emacs-pretest*font: Monaco-10
-emacs-pretest*bitmapIcon: on
-emacs-pretest.geometry: 120x50
-
-emacs*Background: DarkSlateGray
+emacs*Background: Black
 emacs*Foreground: Wheat
 emacs*pointerColor: Orchid
 emacs*cursorColor: Yellow
 emacs*FontBackend: xft
-emacs*font: Monaco-10
+emacs*font: Monaco:pixelsize=13
 emacs*bitmapIcon: on
-emacs.geometry: 120x50
-
-xterm*background: DarkSlateGray
-xterm*foreground: Wheat
-xterm*cursorColor: Yellow
-xterm*font: fixed
-xterm*reverseVideo: false
-xterm*scrollBar: false
-xterm*saveLines: 5000
-xterm*reverseWrap: true
-xterm.geometry: 80x25+20+20
-xterm*fullCursor: true
-xterm*scrollTtyOutput: off
-xterm*scrollKey: on
-xterm*titleBar: false
-
-mrxvt*background: DarkSlateGray
-mrxvt*foreground: Wheat
-mrxvt*cursorColor: Yellow
-mrxvt*font: fixed
-mrxvt*reverseVideo: false
-mrxvt*scrollBar: false
-mrxvt*saveLines: 5000
-mrxvt*reverseWrap: true
-mrxvt.geometry: 80x25+20+20
-mrxvt*fullCursor: true
-mrxvt*scrollTtyOutput: off
-mrxvt*scrollKey: on
-mrxvt*titleBar: false
-
-rxvt*background: DarkSlateGray
-rxvt*foreground: Wheat
-rxvt*cursorColor: Yellow
-rxvt*font: fixed
-rxvt*reverseVideo: false
-rxvt*scrollBar: false
-rxvt*saveLines: 5000
-rxvt*reverseWrap: true
-rxvt.geometry: 80x25+20+20
-rxvt*fullCursor: true
-rxvt*scrollTtyOutput: off
-rxvt*scrollKey: on
-rxvt*titleBar: false
-
-rxvt-unicode*modifier: mod1
-rxvt-unicode*background: DarkSlateGray
-rxvt-unicode*foreground: Wheat
-rxvt-unicode*cursorColor: Yellow
-rxvt-unicode*font: xft:Monaco:pixelsize=13
-rxvt-unicode*reverseVideo: false
-rxvt-unicode*scrollBar: false
-rxvt-unicode*saveLines: 5000
-rxvt-unicode*reverseWrap: true
-rxvt-unicode*fullCursor: true
-rxvt-unicode*scrollTtyOutput: off
-rxvt-unicode*scrollKey: on
-rxvt-unicode*titleBar: true
-rxvt-unicode*color12: #84bdd2
-rxvt-unicode*transparent: true
-rxvt-unicode*shading: 20
 
 urxvt*modifier: mod1
 urxvt*background: DarkSlateGray
 urxvt*foreground: Wheat
 urxvt*cursorColor: Yellow
-urxvt*font: xft:Monaco:pixelsize=13
+urxvt*font: xft:Monaco:pixelsize=13,xft:Monospace
 urxvt*reverseVideo: false
 urxvt*scrollBar: false
 urxvt*saveLines: 5000
@@ -126,7 +48,7 @@ URxvt.keysym.M-C-v: perl:clipboard:paste_escaped
 mocp*background: DarkSlateGray
 mocp*foreground: Wheat
 mocp*cursorColor: Yellow
-mocp*font: xft:Liberation Mono-11
+mocp*font: xft:Monaco:pixelsize=13,xft:Monospace
 mocp*reverseVideo: false
 mocp*scrollBar: false
 mocp*reverseWrap: true
@@ -142,7 +64,7 @@ mocp.geometry: 100x30+120+120
 htop*background: DarkSlateGray
 htop*foreground: Wheat
 htop*cursorColor: Yellow
-htop*font: xft:Liberation Mono-11
+htop*font: xft:Monaco:pixelsize=13,xft:Monospace
 htop*reverseVideo: false
 htop*scrollBar: false
 htop*reverseWrap: true
@@ -154,49 +76,6 @@ htop*color12: #84bdd2
 htop*transparent: true
 htop*shading: 20
 htop.geometry: 100x30+120+120
-
-xterm*eightBitInput: 		false
-xterm*metaSendsEscape: 		true
-xterm*backarrowKey:    		false
-xterm*modifier:                     meta
-
-xterm.VT100.Translations: #override \
- ~Ctrl ~Meta  Shift <Key> Tab:        string(0x1b) string("[z2a")     \n\
- ~Ctrl  Meta ~Shift <Key> Tab:        string(0x1b) string("[z3a")     \n\
- ~Ctrl  Meta  Shift <Key> Tab:        string(0x1b) string("[z4a")     \n\
-  Ctrl ~Meta ~Shift <Key> Tab:        string(0x1b) string("[z5a")     \n\
-  Ctrl ~Meta  Shift <Key> Tab:        string(0x1b) string("[z6a")     \n\
-  Ctrl  Meta ~Shift <Key> Tab:        string(0x1b) string("[z7a")     \n\
-  Ctrl  Meta  Shift <Key> Tab:        string(0x1b) string("[z8a")     \n\
-\
- ~Ctrl ~Meta  Shift <Key> Return:     string(0x1b) string("[z2b")     \n\
- ~Ctrl  Meta ~Shift <Key> Return:     string(0x1b) string("[z3b")     \n\
- ~Ctrl  Meta  Shift <Key> Return:     string(0x1b) string("[z4b")     \n\
-  Ctrl ~Meta ~Shift <Key> Return:     string(0x1b) string("[z5b")     \n\
-  Ctrl ~Meta  Shift <Key> Return:     string(0x1b) string("[z6b")     \n\
-  Ctrl  Meta ~Shift <Key> Return:     string(0x1b) string("[z7b")     \n\
-  Ctrl  Meta  Shift <Key> Return:     string(0x1b) string("[z8b")     \n\
-\
- ~Ctrl ~Meta  Shift <Key> BackSpace:     string(0x1b) string("[z2c")  \n\
- ~Ctrl  Meta  Shift <Key> BackSpace:     string(0x1b) string("[z4c")  \n\
-  Ctrl ~Meta ~Shift <Key> BackSpace:     string(0x1b) string("[z5c")  \n\
-  Ctrl ~Meta  Shift <Key> BackSpace:     string(0x1b) string("[z6c")  \n\
-  Ctrl  Meta ~Shift <Key> BackSpace:     string(0x1b) string("[z7c")  \n\
-  Ctrl  Meta  Shift <Key> BackSpace:     string(0x1b) string("[z8c")  \n\
-\
- ~Ctrl ~Meta ~Shift <Key> Pause:       string(0x1b) string("[zd")     \n\
- ~Ctrl ~Meta  Shift <Key> Pause:       string(0x1b) string("[z2d")    \n\
- ~Ctrl  Meta ~Shift <Key> Pause:       string(0x1b) string("[z3d")    \n\
- ~Ctrl  Meta  Shift <Key> Pause:       string(0x1b) string("[z4d")    \n\
-  Ctrl ~Meta ~Shift <Key> Pause:       string(0x1b) string("[z5d")    \n\
-  Ctrl ~Meta  Shift <Key> Pause:       string(0x1b) string("[z6d")    \n\
-  Ctrl  Meta ~Shift <Key> Pause:       string(0x1b) string("[z7d")    \n\
-  Ctrl  Meta  Shift <Key> Pause:       string(0x1b) string("[z8d")    \n\
-\
- ~Ctrl ~Meta ~Shift <Key> Sys_Req:     string(0x1b) string("[ze")     \n\
- ~Ctrl ~Meta  Shift <Key> Sys_Req:     string(0x1b) string("[z2e")    \n\
-  Ctrl ~Meta ~Shift <Key> Sys_Req:     string(0x1b) string("[z5e")    \n\
-  Ctrl ~Meta  Shift <Key> Sys_Req:     string(0x1b) string("[z6e")    \n
 
 Xft.dpi:                96
 Xft.hinting:            true
