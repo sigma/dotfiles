@@ -112,5 +112,7 @@
 (put 'define-lisp-indent-function 'safe-local-eval-function t)
 (put 'font-lock-add-keywords 'safe-local-eval-function t)
 
+(defalias 'λ 'lambda)
+
 (provide 'lisp-config)
 ;;; lisp-config.el ends here
