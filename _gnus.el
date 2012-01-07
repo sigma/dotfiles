@@ -449,6 +449,27 @@ The epigram is inserted at point if called interactively."
 (setq message-cite-function 'sc-cite-original)
 
 
+;;; Git apply (adapted from Dimitri Fontaine's code)
+(defvar yh/gnus-group-git-repos nil
+  "A plist of repositories and dir where to apply git patches")
+
+(defun yh/gnus-group-git-read-repo ()
+  "Ask use where to apply the current patch"
+  (completing-read
+   "Choose a repository where to apply: "
+   (loop for (r p) on yh/gnus-group-git-repos by 'cddr collect (symbol-name r)) nil t))
+
+(defun yh/gnus-group-git-am (repo)
+  (interactive (list (yh/gnus-group-git-read-repo)))
+  (let ((git-dir
+         (expand-file-name
+          (plist-get yh/gnus-group-git-repos (intern repo)))))
+    (when git-dir
+      (gnus-summary-save-in-pipe
+       (format "cd %s ; git am -3 -s" git-dir) 'raw))))
+
+(define-key gnus-summary-save-map (kbd "g") 'yh/gnus-group-git-am)
+
 
 ;;; Crypto
 
