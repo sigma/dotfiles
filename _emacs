@@ -121,6 +121,7 @@
 
 ;;;_* Packages configuration
 
+(request 'diminish-config)
 (request 'command-config)
 (request 'buffer-config)
 (request 'outline-config)
