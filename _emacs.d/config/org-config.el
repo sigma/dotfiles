@@ -127,7 +127,15 @@
              ("n" "Notes" tags "NOTE" nil)))
 
      (setq org-capture-templates
-           '(("t" "Todo" entry (file "~/org/refile.org") "* TODO %?\n  %i\n  %a" :prepend t)
+           '(("t" "Todo" entry (file "~/org/refile.org")
+              "* TODO %?\n  %i\n  %a" :prepend t)
+             ("g" "Magit group")
+             ("gp" "Magit patch" entry
+              (file+olp "~/org/inbox.org" "Projects" "Emacs" "Magit" "Patches")
+              "* TODO %?%:subject\n  %a")
+             ("gt" "Magit task" entry
+              (file+olp "~/org/inbox.org" "Projects" "Emacs" "Magit" "Tasks")
+              "* TODO %?\n  %a")
              ("m" "Mail task" entry (file "~/org/refile.org")
               "* TODO Treat mail from %:from\n  SCHEDULED: %t\n  group: %:group\n  subject: %:subject\n  %a"
               :prepend t :immediate-finish t)
