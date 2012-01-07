@@ -36,7 +36,8 @@
   (let ((addr net)
         (exclude-re (rx (or "@public.gmane.org"
                             "@socialcast.com"
-                            (and "buzz+" (+ any) "@gmail.com")))))
+                            (and "buzz+" (+ any) "@gmail.com")
+                            "@reply.github.com"))))
     (not (string-match exclude-re addr))))
 
 (setq bbdb-always-add-addresses 'yh/bbdb-add-real-addresses)
