@@ -29,7 +29,7 @@
 (when (request 'magit)
   (request 'magit-svn)
   (request 'magit-topgit)
-  (request 'magit-pulls)
+  (request 'magit-gh-pulls)
 
   (when (fboundp 'magit-load-config-extensions)
     (add-hook 'magit-mode-hook 'magit-load-config-extensions)))
