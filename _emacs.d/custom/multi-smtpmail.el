@@ -79,7 +79,9 @@
           (throw 'found (nth 0 profile)))))
     (multi-smtpmail-get-default-profile)))
 
-(defadvice smtpmail-via-smtp (around smtpmail-via-smtp-around (recipient smtpmail-text-buffer) act)
+(defadvice smtpmail-via-smtp
+  (around smtpmail-via-smtp-around
+          (recipient smtpmail-text-buffer &optional ask-for-password) act)
   (multi-smtpmail-activate-profile 
    (multi-smtpmail-find-profile 
     (nth 1 (mail-extract-address-components 
