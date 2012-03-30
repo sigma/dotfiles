@@ -497,4 +497,7 @@ by using nxml's indentation rules."
 
 (request 'gist)
 
+(when (request 'yaml-mode)
+  (add-to-list 'auto-mode-alist '("\\.yaml\\'" . yaml-mode)))
+
 (message ".emacs loaded")
