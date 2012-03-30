@@ -1,5 +1,7 @@
 #!/bin/zsh
 
+[ "$TERM" = "dumb" ] && return
+
 zshrc_load_status () {
     echo -n "\r.zshrc load: $* ... \e[0K"
 }
