@@ -260,7 +260,7 @@
                          (vertical 1.0
                                    (article 0.3)
                                    (message 1.0 point))))))
-      
+
 (setq
  nbc-gnus-visible-headers
  '("^From:\\|^Organization:\\|^To:\\|^Cc:\\|^Reply-To:\\|^Subject:\\|^Sender:"
@@ -482,6 +482,12 @@ The epigram is inserted at point if called interactively."
 
 (require 'bbdb-pgp)
 ;;(add-hook 'gnus-message-setup-hook 'mml-secure-message-sign-pgpmime)
+
+(defadvice mml2015-sign (after mml2015-sign-rename (cont) act)
+  (save-excursion
+    (search-backward "Content-Type: application/pgp-signature")
+    (goto-char (point-at-eol))
+    (insert "; name=\"signature.asc\"")))
 
 ;;; Misc
 (require 'gnus-sum)
