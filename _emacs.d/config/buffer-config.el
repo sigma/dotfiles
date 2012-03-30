@@ -35,6 +35,20 @@
 (require 'dired-x)
 (request 'dired+)
 
+;; Set dired-x global variables here.  For example:
+(setq dired-x-hands-off-my-keys t
+      dired-find-subdir nil)
+
+(define-key dired-mode-map (kbd "C-c C-c") 'wdired-change-to-wdired-mode)
+
+;; use ediff for diffing
+(defadvice dired-diff (around ad-dired-diff-ediff act)
+  (flet ((diff (old new switches) (ediff old new)))
+    ad-do-it))
+(defadvice dired-backup-diff (around ad-dired-backup-diff-ediff act)
+  (flet ((diff-backup (old switches) (ediff-backup old)))
+    ad-do-it))
+
 (require 'ibuf-ext)
 (global-set-key (kbd "C-x C-b") 'ibuffer)
 
@@ -45,37 +59,14 @@
             (ibuffer-switch-to-saved-filter-groups
              "default")))
 
-(add-hook 'dired-load-hook
-          (lambda ()
-            (require 'dired-aux)
-            (require 'dired-x)
-
-            ;; use ediff for diffing
-            (defadvice dired-diff (around ad-dired-diff-ediff act)
-              (flet ((diff (old new switches) (ediff old new)))
-                ad-do-it))
-            (defadvice dired-backup-diff (around ad-dired-backup-diff-ediff act)
-              (flet ((diff-backup (old switches) (ediff-backup old)))
-                ad-do-it))
-
-            ;; Set dired-x global variables here.  For example:
-            (setq dired-x-hands-off-my-keys t
-                  dired-find-subdir nil)
-
-            (define-key dired-mode-map (kbd "C-c C-c") 'wdired-change-to-wdired-mode)
-            ))
-
 (add-hook 'dired-mode-hook
           (lambda ()
             ;; Set dired-x buffer-local variables here.  For example:
-            (dired-omit-mode 1)
-            ))
+            (dired-omit-mode 1)))
 
 (when (request 'icomplete)
   (icomplete-mode 1)
   (request 'icomplete+))
-
-;; (when (request 'iswitchb) (iswitchb-mode 1))
 
 (provide 'buffer-config)
 ;;; buffer-config.el ends here
