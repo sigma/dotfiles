@@ -37,7 +37,9 @@
         (exclude-re (rx (or "@public.gmane.org"
                             "@socialcast.com"
                             (and "buzz+" (+ any) "@gmail.com")
-                            "@reply.github.com"))))
+                            "@reply.github.com"
+                            "messenger@webex.com"
+                            "@weboob.example.org"))))
     (not (string-match exclude-re addr))))
 
 (setq bbdb-always-add-addresses 'yh/bbdb-add-real-addresses)
