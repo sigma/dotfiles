@@ -108,9 +108,11 @@
    '("[{}()<>=;,:+\\*\\/\\[]\\|\\]\\|\\-" (0 font-lock-keys-face))
    '("\\<[0-9]+\\>" (0 font-lock-number-face))
    '("\\<0x[0-9a-fA-F]+\\>" (0 font-lock-hexnumber-face))
-   '("\\\\\\(?:[abfnrtv'\"?\\0]\\|x[a-fA-F]\\{2\\}\\|[0-7]\\{3\\}\\)" (0 font-lock-escape-char-face prepend))))
+   '("\\\\\\(?:[abfnrtv'\"?\\0]\\|x[a-fA-F]\\{2\\}\\|[0-7]\\{3\\}\\)"
+     (0 font-lock-escape-char-face prepend))))
 
-(dolist (mode '(c-mode c++-mode java-mode php-mode)) (font-lock-add-keywords mode c++-new-font-lock-keywords))
+(dolist (mode '(c-mode c++-mode java-mode php-mode))
+  (font-lock-add-keywords mode c++-new-font-lock-keywords))
 
 (add-hook
  'java-mode-hook
@@ -532,6 +534,42 @@
 				   (knr-argdecl-intro . -))))
   "VMware C/C++ Programming Style")
 
+(defconst ulteo-c-style
+  ;; Always indent c/c++ sources, never insert tabs
+  '((c-tab-always-indent        . t)
+    (indent-tabs-mode . t)
+    ;; Offset for line only comments
+    (c-basic-offset . 4)
+    (c-comment-only-line-offset . 0)
+    ;; Controls the insertion of newlines before and after braces.
+    (c-hanging-braces-alist     . ((substatement-open after)
+                                   (defun-open after)
+                                   (class-open after)
+                                   (inline-open after)
+                                   (block-open after)
+                                   (brace-list-open after)
+                                   (extern-lang-open after)
+                                   (namespace-open after)))
+    ;; Controls the insertion of newlines before and after certain colons.
+    (c-hanging-colons-alist     . ((member-init-intro before)
+                                   (inher-intro)
+                                   (case-label after)
+                                   (label after)
+                                   (access-label after)))
+    ;; List of various C/C++/ObjC constructs to "clean up".
+    (c-cleanup-list             . (scope-operator
+                                   empty-defun-braces
+                                   defun-close-semi))
+    ;; Association list of syntactic element symbols and indentation offsets.
+    (c-offsets-alist            . ((arglist-close . c-lineup-arglist)
+                                   (substatement-open . 0)
+                                   (case-label        . +)
+                                   (block-open        . 0)
+                                   (access-label      . -)
+                                   (label             . 0)
+                                   (knr-argdecl-intro . -))))
+  "VMware C/C++ Programming Style")
+
 ;; add my personal style.
 (c-add-style "personal" my-c-style)
 (c-add-style "bassist" ba-c-style)
@@ -540,6 +578,7 @@
 (c-add-style "eZPHP" ezsystems-php-style)
 (c-add-style "jtop" jtop-c-style)
 (c-add-style "vmware" vmware-c-style)
+(c-add-style "ulteo" ulteo-c-style)
 
 (provide 'cc-config)
 ;;; mycode.el ends here
