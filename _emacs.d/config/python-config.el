@@ -43,7 +43,7 @@
 
 (add-to-list 'interpreter-mode-alist '("ipython" . python-mode))
 
-(request 'ipython)
+;; (request 'ipython)
 
 ;; (when (request 'pymacs)
 ;;   (pymacs-load "ropemacs" "rope-"))
