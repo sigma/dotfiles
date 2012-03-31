@@ -286,3 +286,6 @@
 [submodule "_emacs.d/packages-src/slime"]
 	path = _emacs.d/packages-src/slime
 	url = git://github.com/emacsmirror/slime.git
+[submodule "_emacs.d/packages-src/yaoddmuse"]
+	path = _emacs.d/packages-src/yaoddmuse
+	url = git://github.com/emacsmirror/yaoddmuse.git
