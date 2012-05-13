@@ -12,7 +12,11 @@ alias run-help >&/dev/null && unalias run-help
 alias p='popd'
 
 if [ "$VENDOR" = "apple" ]; then
-    alias ls='command ls -F -G'
+    if [ -x /usr/local/bin/gls ]; then
+        alias ls='command gls -F --color=auto'
+    else
+        alias ls='command ls -F -G'
+    fi
 else
     alias ls='command ls -F --color=auto'
 fi

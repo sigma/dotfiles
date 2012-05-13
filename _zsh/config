@@ -180,7 +180,11 @@ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:~/lib
 
 typeset -U path # No duplicates
 
-eval "`/usr/bin/dircolors -b $HOME/.colors`"
+if [ -x /usr/local/bin/gdircolors ]; then
+    eval "`/usr/local/bin/gdircolors -b $HOME/.colors`"
+else
+    eval "`dircolors -b $HOME/.colors`"
+fi
 
 which check_hist_size >&/dev/null && check_hist_size
 
