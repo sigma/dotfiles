@@ -96,7 +96,8 @@
 (unless (facep 'minibuffer-prompt)
   (defvar minibuffer-face 'minibuffer-face)
   (defface minibuffer-face '((t (:bold t :foreground "LightBlue")))
-    "Face used to color the minibuffer."))
+    "Face used to color the minibuffer."
+    :group 'font-lock-highlighting-faces))
 
 (require 'jit-lock)
 (setq font-lock-support-mode 'jit-lock-mode)
@@ -118,7 +119,7 @@
         (ns (width . 100)
             (height . 50)
             (foreground-color . "wheat")
-            (background-color . "darkslategray")
+            (background-color . "black")
             (cursor-color . "yellow"))))
 
 (if (> emacs-major-version 20) (custom-set-variables '(tool-bar-mode nil nil (tool-bar))))
@@ -130,8 +131,8 @@
 
 ;; Window Fringes
 (require 'fringe)
-(setq default-indicate-buffer-boundaries 'left) ; Indicate the
-(setq default-indicate-empty-lines t)           ; Display an in
+(setq-default indicate-buffer-boundaries 'left) ; Indicate the
+(setq-default indicate-empty-lines t)           ; Display an in
 (fringe-mode 'default)
 
    ;;; ----------------------------------------------------------------
