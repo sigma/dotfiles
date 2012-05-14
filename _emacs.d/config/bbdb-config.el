@@ -27,9 +27,9 @@
 ;;; Code:
 
 (require 'rx)
-(require 'bbdb)
+(require 'bbdb-loaddefs)
 
-(bbdb-initialize 'gnus 'message 'sc 'w3)
+(bbdb-initialize 'gnus 'message)
 
 (defun yh/bbdb-add-real-addresses ()
   "Don't polute my bbdb with generated addresses"
@@ -59,10 +59,6 @@
      (add-hook 'message-setup-hook 'bbdb-define-all-aliases)
      (add-hook 'message-mode-hook
                (lambda () (local-set-key [(meta tab)] 'bbdb-complete-name)))))
-
-(eval-after-load 'sc
-  '(progn
-     (bbdb-insinuate-sc)))
 
 (setq
  bbdb-offer-save 'yes
