@@ -26,6 +26,7 @@
  '(bbdb-send-mail-style (quote gnus))
  '(bbdb/pgp-method (quote mml-pgpmime))
  '(blink-cursor-mode nil nil (frame))
+ '(bmkp-last-as-first-bookmark-file nil)
  '(bookmark-bmenu-file-column 50)
  '(bookmark-save-flag 0)
  '(browse-url-browser-function (quote (("^mailto:" . gnus-url-mailto) ("." . browse-url-firefox))))
