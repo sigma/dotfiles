@@ -23,7 +23,11 @@ fi
 alias ll='ls -l'
 
 #alias grep='command grep --color'
-alias grep='command ack-grep'
+if [ -x /usr/local/bin/ack ]; then
+    alias grep='command ack'
+else
+    alias grep='command ack-grep'
+fi
 
 alias git='PAGER=less git'
 
