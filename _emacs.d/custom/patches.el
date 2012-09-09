@@ -139,8 +139,9 @@ is not nil, then in case of no success, this value is returned"
  delete-old-versions t)
 
 ;; Put autosaves files in a single directory too
-(when (request 'auto-save)
-  (setq auto-save-directory (expand-file-name "~/.autosaves/")))
+(setq auto-save-file-name-transforms
+      `((".*"
+         ,(expand-file-name "~/.autosaves/") t)))
 
 (setq temporary-file-directory (expand-file-name "~/tmp/"))
 
