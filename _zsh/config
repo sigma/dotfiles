@@ -109,7 +109,11 @@ HIST_IGNORE_SPACE=1
 
 LISTMAX=1000  # "Never" ask
 export PAGER='less'
-export LESSOPEN="| /usr/share/source-highlight/src-hilite-lesspipe.sh %s"
+if [ -x /usr/local/bin/src-hilite-lesspipe.sh ]; then
+    export LESSOPEN="| src-hilite-lesspipe.sh %s"
+else
+    export LESSOPEN="| /usr/share/source-highlight/src-hilite-lesspipe.sh %s"
+fi
 #eval $(lesspipe)
 export LESS_TERMCAP_mb=$'\E[01;31m'
 export LESS_TERMCAP_md=$'\E[01;31m'
@@ -139,8 +143,8 @@ export XDG_CACHE_HOME=~/.cache
 export GIBAK_DIR=/backup/yann/.git
 
 export CVS_RSH=ssh
-export DISTCC_HOSTS='localhost hal,lzo'
-export CCACHE_PREFIX='distcc'
+export DISTCC_HOSTS='localhost'
+#export CCACHE_PREFIX='distcc'
 
 export MOZILLA_FIVE_HOME=~/apps/MozillaFirebird/
 
