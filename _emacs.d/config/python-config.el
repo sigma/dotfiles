@@ -25,9 +25,7 @@
 ;;
 
 ;;; Code:
-(when
-    (request 'python)
-  (require 'virtualenv))
+(request 'python)
 
 (add-to-list 'hs-special-modes-alist
              `(python-mode "^\\s-*\\(?:def\\|class\\)\\>" nil "#"
@@ -74,21 +72,7 @@
 ;; just in case, semantic is a bit too intrusive and buggy here
 (remove-hook 'python-mode-hook 'wisent-python-default-setup)
 
-;;;; `Pyrex' mode.
-
-(define-derived-mode pyrex-mode python-mode "Pyrex"
-  (font-lock-add-keywords
-   nil
-   `((,(concat "\\<\\(NULL"
-               "\\|c\\(\\(p\\)?def\\|har\\|typedef\\)"
-               "\\|e\\(num\\|xtern\\)"
-               "\\|float"
-               "\\|in\\(clude\\|t\\)"
-               "\\|object\\|public\\|struct\\|type\\|union\\|void"
-               "\\)\\>")
-      1 font-lock-keyword-face t))))
-
-(add-to-list 'auto-mode-alist '("\\.pyx\\'" . pyrex-mode))
+(request 'cython-mode)
 
 (provide 'python-config)
 ;;; python-config.el ends here
