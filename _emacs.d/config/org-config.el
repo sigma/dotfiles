@@ -216,10 +216,11 @@
 
 (add-hook 'org-capture-after-finalize-hook 'yh/delete-frame)
 
-(org-babel-do-load-languages
-      'org-babel-load-languages
-      '((emacs-lisp . t)
-        (C . t)))
+(when (fboundp 'org-babel-do-load-languages)
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((emacs-lisp . t)
+     (C . t))))
 
 (provide 'org-config)
 ;;; org-config.el ends here
