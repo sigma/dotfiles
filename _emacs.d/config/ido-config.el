@@ -68,7 +68,7 @@
 (eval-after-load 'ido
   '(progn
      (setq ido-ignore-directories '("\\`\\.\\./" "\\`\\./")
-           ido-ignore-files '("\\`#" "\\`.#" "\\`\\.\\./" "\\`\\./")
+           ido-ignore-files '("\\`#" "\\`.#" "\\`\\.\\./" "\\`\\./" "Icon\n")
            ido-read-file-name-as-directory-commands
            '(ediff-directories ediff-directories3 change-context gnus-summary-save-parts)
            ido-use-filename-at-point 'guess
@@ -80,9 +80,7 @@
      (add-hook 'ido-make-buffer-list-hook 'ido-summary-buffers-to-end)
      (add-hook 'ido-make-buffer-list-hook 'yh/ido-make-buffer-list)
 
-     (add-hook 'ido-setup-hook 'yh/ido-setup)
-
-     ))
+     (add-hook 'ido-setup-hook 'yh/ido-setup)))
 
 (when (request 'ido)
   (setq ido-confirm-unique-completion t

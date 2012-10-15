@@ -21,12 +21,14 @@
  '(auto-insert-mode nil)
  '(auto-insert-query (quote function))
  '(auto-revert-check-vc-info nil)
+ '(auto-save-interval 50)
+ '(auto-save-timeout 5)
  '(bbdb-complete-name-allow-cycling t)
  '(bbdb-dwim-net-address-allow-redundancy t)
  '(bbdb-send-mail-style (quote gnus))
  '(bbdb/pgp-method (quote mml-pgpmime))
  '(blink-cursor-mode nil nil (frame))
- '(bmkp-last-as-first-bookmark-file "~/.emacs.d/bookmarks")
+ '(bmkp-last-as-first-bookmark-file nil)
  '(bookmark-bmenu-file-column 50)
  '(bookmark-save-flag 0)
  '(browse-url-browser-function (quote (("^mailto:" . gnus-url-mailto) ("." . browse-url-firefox))))
@@ -193,6 +195,7 @@
  '(magit-pulls-executable "/var/lib/gems/1.8/bin/git-pulls")
  '(magit-remote-ref-format (quote remote-slash-branch))
  '(magit-status-buffer-switch-function (quote switch-to-buffer))
+ '(magit-time-format-string "%Y-%m-%d %T")
  '(mail-source-delete-incoming t)
  '(max-lisp-eval-depth 500)
  '(max-specpdl-size 1000)
@@ -293,7 +296,7 @@
  '(reftex-auto-recenter-toc t)
  '(reftex-revisit-to-follow t)
  '(reftex-toc-split-windows-horizontally nil)
- '(safe-local-variable-values (quote ((eval ignore-errors (whitespace-mode nil) (whitespace-mode t)) (whitespace-style face trailing lines-tail) (test-case-name . twisted\.test\.test_internet) (org-export-html-table-tag . "<table border=\"1\" cellspacing=\"0\" cellpadding=\"6\" rules=\"groups\" frame=\"box\">") (org-export-html-style-include-default) (org-export-html-style . "   <style type=\"text/css\">
+ '(safe-local-variable-values (quote ((eval set (make-local-variable (quote backup-directory-alist)) (list (cons "." (file-relative-name (file-name-directory (buffer-file-name)) (file-name-directory (file-truename (buffer-file-name))))))) (eval ignore-errors (whitespace-mode nil) (whitespace-mode t)) (whitespace-style face trailing lines-tail) (test-case-name . twisted\.test\.test_internet) (org-export-html-table-tag . "<table border=\"1\" cellspacing=\"0\" cellpadding=\"6\" rules=\"groups\" frame=\"box\">") (org-export-html-style-include-default) (org-export-html-style . "   <style type=\"text/css\">
       p {font-weight: normal; color: gray; }
       h1 {color: black; }
   </style>") (folded-file . t) (TeX-master . main\.tex) (Package . Memoization) (Base . 10) (Syntax . Common-Lisp) (unibyte . t) (auto-recompile . t) (TeX-master . "main") (TeX-master . t) (auto-compile-lisp) (before-save-hook org-encrypt-entries))))
@@ -309,7 +312,7 @@
 ]+")
  '(select-active-regions (quote only))
  '(semantic-idle-scheduler-max-buffer-size 102400)
- '(server-use-tcp t)
+ '(server-use-tcp nil)
  '(set-mark-command-repeat-pop t)
  '(sh-shell-file "/bin/bash")
  '(show-paren-mode t)
