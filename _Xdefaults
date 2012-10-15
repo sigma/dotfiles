@@ -6,6 +6,7 @@ emacs-dev*Background: Black
 emacs-dev*Foreground: Wheat
 emacs-dev*pointerColor: Orchid
 emacs-dev*cursorColor: Yellow
+emacs-dev*FontBackend: xft
 emacs-dev*font: Monaco:pixelsize=13
 emacs-dev*bitmapIcon: on
 
