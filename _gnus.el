@@ -66,7 +66,7 @@
  nnmail-expiry-target 'my-gnus-expiry-target)
 
 (setq
- gnus-total-expirable-newsgroups ".*"
+ gnus-total-expirable-newsgroups "^nnml.*"
  nnmail-use-long-file-names t
  gnus-uncacheable-groups "^nnml")
 
@@ -376,7 +376,7 @@
 (defvar fortune-switches nil
   "*List of extra arguments when `fortune-program' is invoked.")
 
-(setq fortune-program "/usr/games/fortune")
+(setq fortune-program (executable-find "fortune"))
 
 (add-to-list 'fortune-switches "chapterhouse-dune")
 (add-to-list 'fortune-switches "children-of-dune")
@@ -399,7 +399,7 @@ The epigram is inserted at point if called interactively."
           (set-buffer fortune-buffer)
           (apply 'call-process
                  (append (list (or fortune-program "fortune") nil t nil)
-                         fortune-switches (list (if long-p "-l" "-s"))))
+                         (list (if long-p "-l" "-s")) fortune-switches))
           (dos2unix)
           (skip-chars-backward "\n\t ")
           (setq fortune-string (buffer-substring (point-min) (point))))
@@ -480,7 +480,7 @@ The epigram is inserted at point if called interactively."
 (setq mm-decrypt-option 'known)
 (setq gnus-article-emulate-mime t) ; already set in my gnus but you may need it.
 
-(require 'bbdb-pgp)
+(request 'bbdb-pgp)
 ;;(add-hook 'gnus-message-setup-hook 'mml-secure-message-sign-pgpmime)
 
 (defadvice mml2015-sign (after mml2015-sign-rename (cont) act)
