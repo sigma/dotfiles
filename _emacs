@@ -34,7 +34,8 @@
 
 (when (request 'package)
   (setq package-archives
-        '(("gnu" . "http://elpa.gnu.org/packages/")
+        '(("org" . "http://orgmode.org/elpa/")
+          ("gnu" . "http://elpa.gnu.org/packages/")
           ("marmalade" . "http://marmalade-repo.org/packages/")))
   (package-initialize))
 
@@ -129,7 +130,7 @@
 (request 'calendar-config)
 (request 'hideshow-config)
 (request 'ido-config)
-(require 'bbdb-config)
+;(require 'bbdb-config)
 (request 'ecb-config)
 (request 'winring-config)
 ;; (request 'rcirc-config)
