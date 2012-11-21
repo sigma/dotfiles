@@ -165,7 +165,11 @@ export TEXINPUTS=$TEXINPUTS:~/texmf:~/LaTeX/macros:~/LaTeX/fig
 export LLVM_HOME=$HOME/Projects/svn/llvm
 
 PATH=$QTDIR/bin:$KDEDIR/bin:/var/lib/gems/1.8/bin:$PATH
-export PATH=~/bin/:~/apps/bin/:/usr/local/bin:/usr/games/:$JAVA_HOME/bin:$PATH
+CCACHE_MASK=/usr/local/Cellar/ccache/3.1.7/libexec
+export PATH=$CCACHE_MASK:~/bin/:~/apps/bin/:/usr/local/bin:/usr/games/:$JAVA_HOME/bin:$PATH
+
+export CLASSPATH=$CLASSPATH:/usr/local/Cellar/clojure-contrib/1.2.0/clojure-contrib.jar
+export NODE_PATH=/usr/local/lib/node_modules
 
 # export P4CONFIG=.p4config
 export P4CLIENT=yhodique-git-p4
@@ -180,7 +184,7 @@ export BUILDAPPS=$BUILDAPPSROOT/bin
 export SCMTREESROOT=/build/trees/bin
 
 # export PATH=$PATH:$BUILDAPPSROOT/bin:$SCMTREESROOT
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:~/lib
+# export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:~/lib
 
 typeset -U path # No duplicates
 
