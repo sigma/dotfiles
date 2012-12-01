@@ -130,7 +130,7 @@
 (request 'calendar-config)
 (request 'hideshow-config)
 (request 'ido-config)
-;(require 'bbdb-config)
+(require 'bbdb-config)
 (request 'ecb-config)
 (request 'winring-config)
 ;; (request 'rcirc-config)

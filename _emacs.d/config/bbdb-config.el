@@ -56,7 +56,10 @@
 (eval-after-load 'message
   '(progn
      (bbdb-insinuate-message)
-     (add-hook 'message-setup-hook 'bbdb-define-all-aliases)
+     (let ((func (or (and (fboundp 'bbdb-define-all-aliases)
+                          'bbdb-define-all-aliases)
+                     'bbdb-mail-aliases)))
+       (add-hook 'message-setup-hook func))
      (add-hook 'message-mode-hook
                (lambda () (local-set-key [(meta tab)] 'bbdb-complete-name)))))
 
