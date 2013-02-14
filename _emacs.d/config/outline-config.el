@@ -26,14 +26,24 @@
 
 ;;; Code:
 
-(add-hook 'outline-mode-hook
-          (lambda ()
-            (request 'outline-magic)))
+;; (add-hook 'outline-mode-hook
+;;           (lambda ()
+;;             (request 'outline-magic)))
+
+;; (add-hook 'outline-minor-mode-hook
+;;           (lambda ()
+;;             (when (request 'outline-magic)
+;;               (define-key outline-minor-mode-map (kbd "<tab>") 'outline-cycle))))
 
 (add-hook 'outline-minor-mode-hook
-          (lambda ()
-            (when (request 'outline-magic)
-              (define-key outline-minor-mode-map (kbd "<tab>") 'outline-cycle))))
+  (lambda ()
+    (define-key outline-minor-mode-map [(control tab)] 'org-cycle)
+    (define-key outline-minor-mode-map [(shift tab)] 'org-global-cycle)))
+
+(add-hook 'outline-mode-hook
+  (lambda ()
+    (define-key outline-mode-map [(tab)] 'org-cycle)
+    (define-key outline-mode-map [(shift tab)] 'org-global-cycle)))
 
 (provide 'outline-config)
 ;;; outline-config.el ends here
