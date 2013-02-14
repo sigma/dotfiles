@@ -114,5 +114,10 @@
 
 (defalias 'λ 'lambda)
 
+;; Elisp go-to-definition with M-. and back again with M-,
+(when (request 'elisp-slime-nav)
+  (add-hook 'emacs-lisp-mode-hook (lambda () (elisp-slime-nav-mode t)))
+  (diminish 'elisp-slime-nav-mode))
+
 (provide 'lisp-config)
 ;;; lisp-config.el ends here
