@@ -3,7 +3,7 @@
 ;; Copyright (C) 2011  Free Software Foundation, Inc.
 
 ;; Author: Yann Hodique <yhodique@vmware.com>
-;; Keywords: 
+;; Keywords:
 
 ;; This file is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -26,12 +26,12 @@
 
 ;; (setq smtpmail-starttls-credentials '(("smtp.gmail.com" 587 "" "")
 ;;                                       ("" 25 "" "")))
-;; (add-to-list 'multi-smtpmail-profiles 
+;; (add-to-list 'multi-smtpmail-profiles
 ;;              `(example ,(rx "me@example.com")
 ;;                        (smtpmail-smtp-server "smtp.example.com")
 ;;                        (smtpmail-smtp-service 25)
 ;;                        (smtpmail-local-domain "example.com")))
-;; (add-to-list 'multi-smtpmail-profiles 
+;; (add-to-list 'multi-smtpmail-profiles
 ;;              `(gmail ,(rx "me@gmail.com")
 ;;                      (smtpmail-smtp-server "smtp.gmail.com")
 ;;                      (smtpmail-smtp-service 587)
@@ -55,7 +55,7 @@
   (let* ((p (assoc profile multi-smtpmail-profiles))
          (vars (cddr p)))
     (dolist (v vars)
-      (let ((sym (car v))) 
+      (let ((sym (car v)))
         (add-to-list sym (symbol-value sym))
         (set sym (cadr v))))))
 
@@ -82,13 +82,14 @@
 (defadvice smtpmail-via-smtp
   (around smtpmail-via-smtp-around
           (recipient smtpmail-text-buffer &optional ask-for-password) act)
-  (multi-smtpmail-activate-profile 
-   (multi-smtpmail-find-profile 
-    (nth 1 (mail-extract-address-components 
-            (mail-fetch-field "From")))))
-  (prog1
-      ad-do-it
-    (multi-smtpmail-deactivate-profile)))
+  (let ((from (mail-fetch-field "From")))
+    (when from
+      (multi-smtpmail-activate-profile
+       (multi-smtpmail-find-profile
+        (nth 1 (mail-extract-address-components from)))))
+    (prog1
+        ad-do-it
+      (multi-smtpmail-deactivate-profile))))
 
 (provide 'multi-smtpmail)
 ;;; multi-smtpmail.el ends here
