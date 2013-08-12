@@ -41,11 +41,6 @@
 
 (add-to-list 'interpreter-mode-alist '("ipython" . python-mode))
 
-;; (request 'ipython)
-
-;; (when (request 'pymacs)
-;;   (pymacs-load "ropemacs" "rope-"))
-
 (setq python-font-lock-keywords
       ;; same additional font-locking as in cc-mode
       (append python-font-lock-keywords
@@ -73,6 +68,11 @@
 (remove-hook 'python-mode-hook 'wisent-python-default-setup)
 
 (request 'cython-mode)
+
+(when (request 'elpy)
+  (elpy-enable)
+  (elpy-use-ipython)
+  (elpy-clean-modeline))
 
 (provide 'python-config)
 ;;; python-config.el ends here
