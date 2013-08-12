@@ -1,6 +1,6 @@
 ;;; circe-config.el ---
 
-;; Copyright (C) 2005  Free Software Foundation, Inc.
+;; Copyright (C) 2005-2013  Yann Hodique
 
 ;; Author: Yann Hodique <Yann.Hodique@lifl.fr>
 ;; Keywords:
@@ -35,6 +35,8 @@
       circe-ignore-list nil
       circe-server-coding-system '(utf-8 . undecided)
       circe-new-buffer-behavior 'ignore)
+
+(setq circe-reduce-lurker-spam t)
 
 (setq lui-max-buffer-size 30000
       lui-flyspell-p t)

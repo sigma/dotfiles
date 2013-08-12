@@ -34,7 +34,7 @@
 
 (request 'erc-nicklist)
 
-(request 'erc-highlight-nicknames)
+;; (request 'erc-highlight-nicknames)
 
 (when (request 'erc-autojoin)
   (erc-autojoin-mode 1))
