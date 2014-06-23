@@ -129,6 +129,11 @@
      (setq org-capture-templates
            '(("t" "Todo" entry (file "~/org/refile.org")
               "* TODO %?\n  %i\n  %a" :prepend t)
+             ("v" "VMware group")
+             ("vb" "VMware bug group")
+             ("vbv" "VMware bug validate" entry
+              (file+olp "~/org/inbox.org" "Work" "Bugs" "Validate")
+              "* TODO validate %^{Bug ID: }\n  SCHEDULED: %t\n  https://bugzilla/show_bug.cgi?id=%\\1")
              ("g" "Magit group")
              ("gp" "Magit patch" entry
               (file+olp "~/org/inbox.org" "Projects" "Emacs" "Magit" "Patches")
