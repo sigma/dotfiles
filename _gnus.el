@@ -13,10 +13,6 @@
 
 (require 'message-x)
 
-;; Define url catchers
-(setq browse-url-browser-function '(("^mailto:" . gnus-url-mailto)
-                                    ("." . browse-url-netscape)))
-
 ;; global parameters
 (setq
  ;; don't annoy me with confirmation requests
@@ -306,15 +302,15 @@
 
 (add-hook 'message-mode-hook 'turn-on-auto-fill)
 
-(autoload 'bbdb/send-hook "moy-bbdb"
-  "Function to be added to `message-send-hook' to notice records when sending messages" t)
+;; (autoload 'bbdb/send-hook "moy-bbdb"
+;;   "Function to be added to `message-send-hook' to notice records when sending messages" t)
 
-(add-hook 'message-send-hook 'bbdb/send-hook)
+;;(add-hook 'message-send-hook 'bbdb/send-hook)
 
 (add-hook 'mail-mode-hook 'turn-on-orgstruct++)
 (add-hook 'message-mode-hook 'turn-on-orgstruct++)
 
-(add-hook 'message-mode-hook 'bbdb-define-all-aliases)
+;(add-hook 'message-mode-hook 'bbdb-define-all-aliases)
 
 (setq
  message-cite-function 'trivial-cite
@@ -366,7 +362,7 @@
 
 ;;; Gnus extensions
 
-(add-hook 'message-mode-hook 'flyspell-mode)
+;(add-hook 'message-mode-hook 'flyspell-mode)
 
 (setq message-signature 'fortune)
 
