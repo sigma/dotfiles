@@ -227,5 +227,47 @@
    '((emacs-lisp . t)
      (C . t))))
 
+(defun yh/orgtbl-to-rst-paddings (table)
+  (let* ((pruned-table (remove 'hline table))
+         (size-table (mapcar (lambda (row)
+                               (mapcar #'length row))
+                             pruned-table)))
+    (apply #'mapcar* #'max size-table)))
+
+(defun yh/orgtbl-padded-hline (paddings &optional chr)
+  (let ((chr (or chr ?-)))
+    (concat (format "+%c" chr)
+            (mapconcat (lambda (size)
+                         (make-string size chr)) paddings
+                         (format "%c+%c" chr chr))
+            (format "%c+" chr))))
+
+(defun yh/orgtbl-to-rst (table params)
+  "Convert the Orgtbl mode TABLE to ReST."
+  (let* ((indent (make-string (or (plist-get params :indent) 0) ?\ ))
+         (paddings (yh/orgtbl-to-rst-paddings table))
+         (hline (concat indent (yh/orgtbl-padded-hline paddings)))
+         (hlend (concat indent (yh/orgtbl-padded-hline paddings ?=)))
+         (lfmt (concat indent "| "
+                       (mapconcat (lambda (size)
+                                    (format "%%-%ds" size)) paddings
+                                    " | ") " |"))
+         (hlfmt (concat lfmt "\n" hlend))
+         (params2
+          (list
+           :tstart (concat "\n" hline) :tend (concat hline "\n") :hline hline
+           :lfmt lfmt :hlfmt hlfmt :skipheadrule t)))
+    (orgtbl-to-generic table (org-combine-plists params2 params))))
+
+(push `(rst-mode ,(concat
+                   ".. BEGIN RECEIVE ORGTBL %n\n"
+                   "\n"
+                   ".. END RECEIVE ORGTBL %n\n"
+                   "\n"
+                   "..\n"
+                   "    #+ORGTBL: SEND %n yh/orgtbl-to-rst :splice nil :skip 0\n"
+                   "    | | |\n"))
+      orgtbl-radio-table-templates)
+
 (provide 'org-config)
 ;;; org-config.el ends here
