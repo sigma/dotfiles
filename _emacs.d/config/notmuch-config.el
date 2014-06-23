@@ -34,12 +34,13 @@
 
 ;;; Code:
 
-(require 'notmuch)
+(eval-after-load 'notmuch
+  '(progn
 
-(defvar yh/notmuch-gnus-dirs '())
+    (defvar yh/notmuch-gnus-dirs '())
 
-(defun yh/notmuch-compute-gnus-dirs ()
-  "Use defined select methods to discover mapping between
+    (defun yh/notmuch-compute-gnus-dirs ()
+      "Use defined select methods to discover mapping between
 filesystem and gnus groups.
 
 Explicit information can be added in select methods definitions, in case the filesystem mapping is not direct, like:
@@ -51,80 +52,81 @@ Explicit information can be added in select methods definitions, in case the fil
 
 Otherwise, for filesystem-based backends (nnml and nnmaildir for
 now), we try to guess the relevant information from method definition."
-  (let ((mapping nil))
-    (dolist (smethod (append (list gnus-select-method gnus-message-archive-method)
-                             gnus-secondary-select-methods))
-      (let ((backend (car smethod))
-            (server (cadr smethod))
-            (props (cddr smethod)))
-        (let* ((explicit-target (cadr (assoc 'notmuch-root props)))
-               (explicit-dir-levels (cadr (assoc 'notmuch-dir-levels props)))
-               (target
-                (or explicit-target
-                    (cond ((eq backend 'nnml)
-                           (cadr (assoc 'nnml-directory props)))
-                          ((eq backend 'nnmaildir)
-                           (cadr (assoc 'directory props))))))
-               (levels
-                (or explicit-dir-levels
-                    (cond ((eq backend 'nnml) 1)
-                          ((eq backend 'nnmaildir) 2))
-                    1)))
-          (when target
-            (push (list (expand-file-name target)
-                        (concat (format "%s" backend)
-                                (when (and server (not (string-equal server "")))
-                                  (format "+%s" server)))
-                        levels)
-                  mapping)))))
-    (setq yh/notmuch-gnus-dirs mapping)))
+      (let ((mapping nil))
+        (dolist (smethod (append (list gnus-select-method gnus-message-archive-method)
+                                 gnus-secondary-select-methods))
+          (let ((backend (car smethod))
+                (server (cadr smethod))
+                (props (cddr smethod)))
+            (let* ((explicit-target (cadr (assoc 'notmuch-root props)))
+                   (explicit-dir-levels (cadr (assoc 'notmuch-dir-levels props)))
+                   (target
+                    (or explicit-target
+                        (cond ((eq backend 'nnml)
+                               (cadr (assoc 'nnml-directory props)))
+                              ((eq backend 'nnmaildir)
+                               (cadr (assoc 'directory props))))))
+                   (levels
+                    (or explicit-dir-levels
+                        (cond ((eq backend 'nnml) 1)
+                              ((eq backend 'nnmaildir) 2))
+                        1)))
+              (when target
+                (push (list (expand-file-name target)
+                            (concat (format "%s" backend)
+                                    (when (and server (not (string-equal server "")))
+                                      (format "+%s" server)))
+                            levels)
+                      mapping)))))
+        (setq yh/notmuch-gnus-dirs mapping)))
 
-(defun yh/notmuch-gnus-group-path (file n)
-  (let ((path file))
-    (dotimes (x n)
-      (setq path (directory-file-name (file-name-directory path))))
-    path))
+    (defun yh/notmuch-gnus-group-path (file n)
+      (let ((path file))
+        (dotimes (x n)
+          (setq path (directory-file-name (file-name-directory path))))
+        path))
 
-(defun yh/notmuch-file-to-group (file)
-  "Calculate the Gnus group name from the given file name."
-  (unless yh/notmuch-gnus-dirs
-    (yh/notmuch-compute-gnus-dirs))
+    (defun yh/notmuch-file-to-group (file)
+      "Calculate the Gnus group name from the given file name."
+      (unless yh/notmuch-gnus-dirs
+        (yh/notmuch-compute-gnus-dirs))
 
-  (let ((group nil))
-    (dolist (group-dir yh/notmuch-gnus-dirs)
-      (let* ((path (nth 0 group-dir))
-             (gr (nth 1 group-dir))
-             (lev (nth 2 group-dir))
-             (group-path (yh/notmuch-gnus-group-path file lev)))
-        (when (string-match (concat "^\\("
-                                    (regexp-quote path)
-                                    "\\)\\(.*\\)")
-                            group-path)
-          (setq group (concat gr ":" (match-string 2 group-path))))))
-    group))
+      (let ((group nil))
+        (dolist (group-dir yh/notmuch-gnus-dirs)
+          (let* ((path (nth 0 group-dir))
+                 (gr (nth 1 group-dir))
+                 (lev (nth 2 group-dir))
+                 (group-path (yh/notmuch-gnus-group-path file lev)))
+            (when (string-match (concat "^\\("
+                                        (regexp-quote path)
+                                        "\\)\\(.*\\)")
+                                group-path)
+              (setq group (concat gr ":" (match-string 2 group-path))))))
+        group))
 
-(defun yh/notmuch-goto-message-in-gnus ()
-  "Open a summary buffer containing the current notmuch
+    (defun yh/notmuch-goto-message-in-gnus ()
+      "Open a summary buffer containing the current notmuch
 article."
-  (interactive)
-  (unless (gnus-alive-p) (with-temp-buffer (gnus)))
-  (let ((group (yh/notmuch-file-to-group (notmuch-show-get-filename)))
-	(message-id
-	 (replace-regexp-in-string "\"" ""
-	  (replace-regexp-in-string "^id:" ""
-				    (notmuch-show-get-message-id)))))
-    (if (and group message-id)
-        (org-gnus-follow-link group message-id)
-      (message "Couldn't get relevant infos for switching to Gnus."))))
+      (interactive)
+      (unless (gnus-alive-p) (with-temp-buffer (gnus)))
+      (let ((group (yh/notmuch-file-to-group (notmuch-show-get-filename)))
+            (message-id
+             (replace-regexp-in-string "\"" ""
+                                       (replace-regexp-in-string "^id:" ""
+                                                                 (notmuch-show-get-message-id)))))
+        (if (and group message-id)
+            (org-gnus-follow-link group message-id)
+            (message "Couldn't get relevant infos for switching to Gnus."))))
 
-(defun yh/gnus-goto-message-in-notmuch ()
-  (interactive)
-  (let ((message-id (mail-header-id
-                     (gnus-summary-article-header))))
-    (notmuch-search (format "id:%s" (substring message-id 1 (1- (length message-id)))))))
+    (defun yh/gnus-goto-message-in-notmuch ()
+      (interactive)
+      (let ((message-id (mail-header-id
+                         (gnus-summary-article-header))))
+        (notmuch-search (format "id:%s" (substring message-id 1 (1- (length message-id)))))))
 
-(define-key notmuch-show-mode-map (kbd "C-c C-c") 'yh/notmuch-goto-message-in-gnus)
-(define-key gnus-summary-mode-map (kbd "C-c C-c") 'yh/gnus-goto-message-in-notmuch)
+    (define-key notmuch-show-mode-map (kbd "C-c C-c") 'yh/notmuch-goto-message-in-gnus)
+    (define-key gnus-summary-mode-map (kbd "C-c C-c") 'yh/gnus-goto-message-in-notmuch)
+))
 
 (provide 'notmuch-config)
 ;;; notmuch-config.el ends here
