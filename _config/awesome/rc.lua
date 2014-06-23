@@ -1,6 +1,6 @@
 -- {{{ License
 --
--- Awesome configuration, using awesome 3.4.6 on Arch GNU/Linux
+-- Awesome configuration, using awesome 3.4.14 on Arch GNU/Linux
 --   * Adrian C. <anrxc@sysphere.org>
 
 -- Screenshot: http://sysphere.org/gallery/snapshots
@@ -16,8 +16,8 @@ require("awful.rules")
 require("awful.autofocus")
 require("naughty")
 -- User libraries
-require("vicious")
-require("scratch")
+vicious = require("vicious")
+scratch = require("scratch")
 -- }}}
 
 naughty.config.default_preset.timeout          = 5
@@ -32,8 +32,7 @@ local modkey = "Mod4"
 local home   = os.getenv("HOME")
 local exec   = awful.util.spawn
 local sexec  = awful.util.spawn_with_shell
-
--- awful.util.spawn_with_shell("xcompmgr -cF &")
+local scount = screen.count()
 
 -- Beautiful theme
 beautiful.init(home .. "/.config/awesome/zenburn.lua")
@@ -51,6 +50,7 @@ layouts = {
   awful.layout.suit.floating     -- 6
 }
 -- }}}
+
 
 -- {{{ Tags
 tags = {
@@ -123,8 +123,8 @@ fsicon = widget({ type = "imagebox" })
 fsicon.image = image(beautiful.widget_fs)
 -- Initialize widgets
 fs = {
-  r = awful.widget.progressbar(), h = awful.widget.progressbar(),
-  s = awful.widget.progressbar(), b = awful.widget.progressbar()
+  b = awful.widget.progressbar(), r = awful.widget.progressbar(),
+  h = awful.widget.progressbar(), s = awful.widget.progressbar()
 }
 -- Progressbar properties
 for _, w in pairs(fs) do
@@ -141,10 +141,10 @@ for _, w in pairs(fs) do
 end -- Enable caching
 vicious.cache(vicious.widgets.fs)
 -- Register widgets
-vicious.register(fs.r, vicious.widgets.fs, "${/ used_p}",            599)
-vicious.register(fs.h, vicious.widgets.fs, "${/home used_p}",        599)
-vicious.register(fs.s, vicious.widgets.fs, "${/boot used_p}", 599)
-vicious.register(fs.b, vicious.widgets.fs, "${/media/music used_p}",  599)
+vicious.register(fs.b, vicious.widgets.fs, "${/boot used_p}", 599)
+vicious.register(fs.r, vicious.widgets.fs, "${/ used_p}",     599)
+vicious.register(fs.h, vicious.widgets.fs, "${/home used_p}", 599)
+vicious.register(fs.s, vicious.widgets.fs, "${/mnt/storage used_p}", 599)
 -- }}}
 
 -- {{{ Network usage
@@ -169,7 +169,7 @@ mailwidget = widget({ type = "textbox" })
 vicious.register(mailwidget, vicious.widgets.mdir, "$1", 30, {home .. "/.maildir"})
 -- Register buttons
 mailwidget:buttons(awful.util.table.join(
-  awful.button({ }, 1, function () exec("urxvt -T Alpine -e alpine_exp") end)
+  awful.button({ }, 1, function () exec("urxvt -T Alpine -e alpine.exp") end)
 ))
 -- }}}
 
@@ -282,7 +282,7 @@ taglist.buttons = awful.util.table.join(
     awful.button({ },        5, awful.tag.viewprev
 ))
 
-for s = 1, screen.count() do
+for s = 1, scount do
     -- Create a promptbox
     promptbox[s] = awful.widget.prompt({ layout = awful.widget.layout.horizontal.leftright })
     -- Create a layoutbox
@@ -317,7 +317,7 @@ for s = 1, screen.count() do
         separator, orgwidget,  orgicon,
         separator, mailwidget, mailicon,
         separator, upicon,     netwidget, dnicon,
-        separator, fs.b.widget, fs.s.widget, fs.h.widget, fs.r.widget, fsicon,
+        separator, fs.s.widget, fs.h.widget, fs.r.widget, fs.b.widget, fsicon,
         separator, membar.widget, memicon,
         separator, batwidget, baticon,
         separator, tzswidget, cpugraph.widget, cpuicon,
@@ -498,7 +498,7 @@ clientkeys = awful.util.table.join(
 
 -- {{{ Keyboard digits
 local keynumber = 0
-for s = 1, screen.count() do
+for s = 1, scount do
    keynumber = math.min(9, math.max(#tags[s], keynumber));
 end
 -- }}}
@@ -561,7 +561,8 @@ awful.rules.rules = {
 -- {{{ Manage signal handler
 client.add_signal("manage", function (c, startup)
     -- Add titlebar to floaters, but remove those from rule callback
-    if awful.layout.get(c.screen) == awful.layout.suit.floating then
+    if awful.client.floating.get(c)
+    or awful.layout.get(c.screen) == awful.layout.suit.floating then
         if   c.titlebar then awful.titlebar.remove(c)
         else awful.titlebar.add(c, {modkey = modkey}) end
     end
@@ -593,7 +594,7 @@ client.add_signal("unfocus", function (c) c.border_color = beautiful.border_norm
 -- }}}
 
 -- {{{ Arrange signal handler
-for s = 1, screen.count() do screen[s]:add_signal("arrange", function ()
+for s = 1, scount do screen[s]:add_signal("arrange", function ()
     local clients = awful.client.visible(s)
     local layout = awful.layout.getname(awful.layout.get(s))
 
