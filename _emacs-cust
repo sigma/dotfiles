@@ -7,19 +7,49 @@
  ;; If there is more than one, they won't work right.
  '(1on1-*Completions*-frame-flag nil)
  '(1on1-*Help*-frame-flag nil)
- '(1on1-minibuffer-frame-alist (quote ((foreground-color . "Red") (background-color . "LightBlue") (font . "fixed") (mouse-color . "Black") (cursor-color . "Black") (menu-bar-lines) (height . 2) (icon-type) (minibuffer . only) (user-position . t) (vertical-scroll-bars) (name . "Emacs Minibuffer"))))
+ '(1on1-minibuffer-frame-alist
+   (quote
+     ((foreground-color . "Red")
+      (background-color . "LightBlue")
+      (font . "fixed")
+      (mouse-color . "Black")
+      (cursor-color . "Black")
+      (menu-bar-lines)
+      (height . 2)
+      (icon-type)
+      (minibuffer . only)
+      (user-position . t)
+      (vertical-scroll-bars)
+      (name . "Emacs Minibuffer"))))
  '(Info-additional-directory-list nil)
  '(LaTeX-item-regexp "\\(entry\\|\\(bib\\)?item\\)\\b")
  '(Man-notify-method (quote bully))
- '(TeX-output-view-style (quote (("^dvi$" ("^landscape$" "^pstricks$\\|^pst-\\|^psfrag$") "%(o?)dvips -t landscape %d -o && gv %f") ("^dvi$" "^pstricks$\\|^pst-\\|^psfrag$" "%(o?)dvips %d -o && gv %f") ("^dvi$" ("^\\(?:a4\\(?:dutch\\|paper\\|wide\\)\\|sem-a4\\)$" "^landscape$") "%(o?)xdvi %dS -paper a4r -s 0 %d") ("^dvi$" "^\\(?:a4\\(?:dutch\\|paper\\|wide\\)\\|sem-a4\\)$" "%(o?)xdvi %dS -paper a4 %d") ("^dvi$" ("^\\(?:a5\\(?:comb\\|paper\\)\\)$" "^landscape$") "%(o?)xdvi %dS -paper a5r -s 0 %d") ("^dvi$" "^\\(?:a5\\(?:comb\\|paper\\)\\)$" "%(o?)xdvi %dS -paper a5 %d") ("^dvi$" "^b5paper$" "%(o?)xdvi %dS -paper b5 %d") ("^dvi$" "^letterpaper$" "%(o?)xdvi %dS -paper us %d") ("^dvi$" "^legalpaper$" "%(o?)xdvi %dS -paper legal %d") ("^dvi$" "^executivepaper$" "%(o?)xdvi %dS -paper 7.25x10.5in %d") ("^dvi$" "." "%(o?)xdvi %dS %d") ("^pdf$" "." "xpdf -fullscreen -remote %s -raise %o %(outpage)") ("^html?$" "." "netscape %o"))))
+ '(TeX-output-view-style
+   (quote
+     (("^dvi$"
+       ("^landscape$" "^pstricks$\\|^pst-\\|^psfrag$")
+       "%(o?)dvips -t landscape %d -o && gv %f")
+      ("^dvi$" "^pstricks$\\|^pst-\\|^psfrag$" "%(o?)dvips %d -o && gv %f")
+      ("^dvi$"
+       ("^\\(?:a4\\(?:dutch\\|paper\\|wide\\)\\|sem-a4\\)$" "^landscape$")
+       "%(o?)xdvi %dS -paper a4r -s 0 %d")
+      ("^dvi$" "^\\(?:a4\\(?:dutch\\|paper\\|wide\\)\\|sem-a4\\)$" "%(o?)xdvi %dS -paper a4 %d")
+      ("^dvi$"
+       ("^\\(?:a5\\(?:comb\\|paper\\)\\)$" "^landscape$")
+       "%(o?)xdvi %dS -paper a5r -s 0 %d")
+      ("^dvi$" "^\\(?:a5\\(?:comb\\|paper\\)\\)$" "%(o?)xdvi %dS -paper a5 %d")
+      ("^dvi$" "^b5paper$" "%(o?)xdvi %dS -paper b5 %d")
+      ("^dvi$" "^letterpaper$" "%(o?)xdvi %dS -paper us %d")
+      ("^dvi$" "^legalpaper$" "%(o?)xdvi %dS -paper legal %d")
+      ("^dvi$" "^executivepaper$" "%(o?)xdvi %dS -paper 7.25x10.5in %d")
+      ("^dvi$" "." "%(o?)xdvi %dS %d")
+      ("^pdf$" "." "xpdf -fullscreen -remote %s -raise %o %(outpage)")
+      ("^html?$" "." "netscape %o"))))
  '(ack-executable (executable-find "ack-grep"))
  '(add-log-keep-changes-together t)
  '(ange-ftp-ftp-program-args (quote ("-i" "-n" "-g" "-v" "-u")))
  '(apropos-do-all t)
  '(apropos-sort-by-scores t)
- '(auto-insert nil)
- '(auto-insert-mode nil)
- '(auto-insert-query (quote function))
  '(auto-revert-check-vc-info nil)
  '(auto-save-interval 50)
  '(auto-save-timeout 5)
@@ -31,7 +61,6 @@
  '(bmkp-last-as-first-bookmark-file nil)
  '(bookmark-bmenu-file-column 50)
  '(bookmark-save-flag 0)
- '(browse-url-browser-function (quote (("^mailto:" . gnus-url-mailto) ("." . browse-url-firefox))))
  '(browse-url-netscape-program "mozilla-firefox")
  '(c++-font-lock-extra-types (quote ("Q[a-zA-Z]*" "uint" "ulong" "string")))
  '(c-default-style (quote ((java-mode . "java") (other . "personal"))))
@@ -51,11 +80,11 @@
  '(cscope-do-not-update-database t)
  '(custom-file "~/.emacs-cust")
  '(default-justification (quote left))
- '(desktop-save (quote if-exists))
- '(desktop-save-mode nil nil (desktop))
+ '(delete-active-region nil)
  '(diff-switches "-u")
  '(dired-omit-files "^\\.?#\\|^\\.$")
  '(dired-recursive-deletes (quote top))
+ '(diredp-hide-details-initially-flag nil)
  '(display-time-24hr-format t)
  '(display-time-day-and-date t)
  '(display-time-mode t)
@@ -64,7 +93,18 @@
  '(doxymacs-doxygen-tags "DOXYTAGS")
  '(ecb-auto-activate nil)
  '(ecb-auto-update-methods-after-save nil)
- '(ecb-compilation-buffer-names (quote (("*Calculator*") ("*vc*") ("*vc-diff*") ("*Backtrace*") ("*shell*") ("*compilation*") ("*bsh*") ("*grep*") ("*Compile-Log*") ("*slime-repl sbcl*"))))
+ '(ecb-compilation-buffer-names
+   (quote
+     (("*Calculator*")
+      ("*vc*")
+      ("*vc-diff*")
+      ("*Backtrace*")
+      ("*shell*")
+      ("*compilation*")
+      ("*bsh*")
+      ("*grep*")
+      ("*Compile-Log*")
+      ("*slime-repl sbcl*"))))
  '(ecb-compile-window-height 10)
  '(ecb-compile-window-temporally-enlarge nil)
  '(ecb-directories-menu-user-extension-function (quote ignore))
@@ -75,17 +115,75 @@
  '(ecb-eshell-fit-window-to-command-output nil)
  '(ecb-eshell-synchronize nil)
  '(ecb-history-menu-user-extension-function (quote ignore))
- '(ecb-key-map (quote ("<f10>" (t "fh" ecb-history-filter) (t "fs" ecb-sources-filter) (t "fm" ecb-methods-filter) (t "fr" ecb-methods-filter-regexp) (t "ft" ecb-methods-filter-tagclass) (t "fc" ecb-methods-filter-current-type) (t "fp" ecb-methods-filter-protection) (t "fn" ecb-methods-filter-nofilter) (t "fl" ecb-methods-filter-delete-last) (t "ff" ecb-methods-filter-function) (t "p" ecb-nav-goto-previous) (t "n" ecb-nav-goto-next) (t "lc" ecb-change-layout) (t "lr" ecb-redraw-layout) (t "lw" ecb-toggle-ecb-windows) (t "lt" ecb-toggle-layout) (t "s" ecb-window-sync) (t "r" ecb-rebuild-methods-buffer) (t "a" ecb-toggle-auto-expand-tag-tree) (t "x" ecb-expand-methods-nodes) (t "h" ecb-show-help) (t "gl" ecb-goto-window-edit-last) (t "g1" ecb-goto-window-edit1) (t "g2" ecb-goto-window-edit2) (t "gc" ecb-goto-window-compilation) (t "gd" ecb-goto-window-directories) (t "gs" ecb-goto-window-sources) (t "gm" ecb-goto-window-methods) (t "gh" ecb-goto-window-history) (t "ga" ecb-goto-window-analyse) (t "gb" ecb-goto-window-speedbar) (t "md" ecb-maximize-window-directories) (t "ms" ecb-maximize-window-sources) (t "mm" ecb-maximize-window-methods) (t "mh" ecb-maximize-window-history) (t "ma" ecb-maximize-window-analyse) (t "mb" ecb-maximize-window-speedbar) (t "e" eshell) (t "o" ecb-toggle-scroll-other-window-scrolls-compile) (t "\\" ecb-toggle-compile-window) (t "/" ecb-toggle-compile-window-height) (t "," ecb-cycle-maximized-ecb-buffers) (t "." ecb-cycle-through-compilation-buffers))))
+ '(ecb-key-map
+   (quote
+     ("<f10>"
+      (t "fh" ecb-history-filter)
+      (t "fs" ecb-sources-filter)
+      (t "fm" ecb-methods-filter)
+      (t "fr" ecb-methods-filter-regexp)
+      (t "ft" ecb-methods-filter-tagclass)
+      (t "fc" ecb-methods-filter-current-type)
+      (t "fp" ecb-methods-filter-protection)
+      (t "fn" ecb-methods-filter-nofilter)
+      (t "fl" ecb-methods-filter-delete-last)
+      (t "ff" ecb-methods-filter-function)
+      (t "p" ecb-nav-goto-previous)
+      (t "n" ecb-nav-goto-next)
+      (t "lc" ecb-change-layout)
+      (t "lr" ecb-redraw-layout)
+      (t "lw" ecb-toggle-ecb-windows)
+      (t "lt" ecb-toggle-layout)
+      (t "s" ecb-window-sync)
+      (t "r" ecb-rebuild-methods-buffer)
+      (t "a" ecb-toggle-auto-expand-tag-tree)
+      (t "x" ecb-expand-methods-nodes)
+      (t "h" ecb-show-help)
+      (t "gl" ecb-goto-window-edit-last)
+      (t "g1" ecb-goto-window-edit1)
+      (t "g2" ecb-goto-window-edit2)
+      (t "gc" ecb-goto-window-compilation)
+      (t "gd" ecb-goto-window-directories)
+      (t "gs" ecb-goto-window-sources)
+      (t "gm" ecb-goto-window-methods)
+      (t "gh" ecb-goto-window-history)
+      (t "ga" ecb-goto-window-analyse)
+      (t "gb" ecb-goto-window-speedbar)
+      (t "md" ecb-maximize-window-directories)
+      (t "ms" ecb-maximize-window-sources)
+      (t "mm" ecb-maximize-window-methods)
+      (t "mh" ecb-maximize-window-history)
+      (t "ma" ecb-maximize-window-analyse)
+      (t "mb" ecb-maximize-window-speedbar)
+      (t "e" eshell)
+      (t "o" ecb-toggle-scroll-other-window-scrolls-compile)
+      (t "\\" ecb-toggle-compile-window)
+      (t "/" ecb-toggle-compile-window-height)
+      (t "," ecb-cycle-maximized-ecb-buffers)
+      (t "." ecb-cycle-through-compilation-buffers))))
  '(ecb-layout-name "sigma")
- '(ecb-layout-window-sizes (quote (("sigma" (ecb-methods-buffer-name 0.15384615384615385 . 0.9833333333333333) (ecb-sources-buffer-name 0.16346153846153846 . 0.48333333333333334) (ecb-directories-buffer-name 0.16346153846153846 . 0.5)))))
- '(ecb-major-modes-deactivate (quote (hide-all-except-activated . "\\(Info\\|custom\\)-mode")))
+ '(ecb-layout-window-sizes
+   (quote
+     (("sigma"
+       (ecb-methods-buffer-name 0.15384615384615385 . 0.9833333333333333)
+       (ecb-sources-buffer-name 0.16346153846153846 . 0.48333333333333334)
+       (ecb-directories-buffer-name 0.16346153846153846 . 0.5)))))
+ '(ecb-major-modes-deactivate
+   (quote
+     (hide-all-except-activated . "\\(Info\\|custom\\)-mode")))
  '(ecb-methods-menu-user-extension-function (quote ignore))
  '(ecb-options-version "2.40")
  '(ecb-other-window-behavior (quote only-edit))
  '(ecb-run-ediff-in-ecb-frame t)
  '(ecb-sources-menu-user-extension-function (quote ignore))
  '(ecb-tip-of-the-day nil)
- '(ecb-vc-supported-backends (quote ((ecb-vc-dir-managed-by-CVS . vc-state) (ecb-vc-dir-managed-by-RCS . vc-state) (ecb-vc-dir-managed-by-SCCS . vc-state) (ecb-vc-dir-managed-by-SVN . vc-state))))
+ '(ecb-vc-supported-backends
+   (quote
+     ((ecb-vc-dir-managed-by-CVS . vc-state)
+      (ecb-vc-dir-managed-by-RCS . vc-state)
+      (ecb-vc-dir-managed-by-SCCS . vc-state)
+      (ecb-vc-dir-managed-by-SVN . vc-state))))
+ '(edebug-trace t)
  '(ediff-custom-diff-options "-u")
  '(ediff-keep-variants t)
  '(enable-multibyte-characters t t)
@@ -94,17 +192,23 @@
  '(erc-bbdb-auto-create-on-whois-p t)
  '(erc-echo-timestamps t)
  '(erc-input-line-position -2)
- '(erc-modules (quote (autojoin button completion dcc fill irccontrols keep-place match move-to-prompt netsplit networks noncommands readonly ring scrolltobottom services stamp track highlight-nicknames)))
+ '(erc-modules
+   (quote
+     (autojoin button completion dcc fill irccontrols keep-place match move-to-prompt netsplit networks noncommands readonly ring scrolltobottom services stamp track)))
  '(erc-track-exclude-types (quote ("JOIN" "KICK" "NICK" "PART" "QUIT" "MODE")))
  '(erc-track-shorten-start 2)
  '(erc-track-showcount t)
  '(eshell-ask-to-save-history (quote always))
  '(eshell-cmpl-cycle-completions nil)
- '(eshell-modules-list (quote (eshell-alias eshell-banner eshell-basic eshell-cmpl eshell-dirs eshell-glob eshell-hist eshell-ls eshell-pred eshell-prompt eshell-script eshell-term eshell-unix eshell-xtra)))
+ '(eshell-modules-list
+   (quote
+     (eshell-alias eshell-banner eshell-basic eshell-cmpl eshell-dirs eshell-glob eshell-hist eshell-ls eshell-pred eshell-prompt eshell-rebind eshell-script eshell-smart eshell-term eshell-unix eshell-xtra)))
  '(eshell-prefer-to-shell t nil (eshell))
  '(eshell-save-history-on-exit t)
  '(eshell-term-name "eterm-color")
- '(eshell-visual-commands (quote ("vi" "screen" "top" "less" "more" "lynx" "ncftp" "pine" "tin" "trn" "elm" "htop" "mocp" "tmux" "lftp")))
+ '(eshell-visual-commands
+   (quote
+     ("vi" "screen" "top" "less" "more" "lynx" "ncftp" "pine" "tin" "trn" "elm" "htop" "mocp" "tmux" "lftp")))
  '(fill-column 79)
  '(fill-nobreak-predicate (quote (fill-french-nobreak-p fill-single-word-nobreak-p)))
  '(find-file-visit-truename t)
@@ -117,24 +221,53 @@
  '(gdb-same-frame nil)
  '(gdb-show-main t)
  '(gdb-use-separate-io-buffer t)
- '(generic-extras-enable-list (quote (alias-generic-mode apache-conf-generic-mode apache-log-generic-mode bat-generic-mode etc-fstab-generic-mode etc-modules-conf-generic-mode etc-passwd-generic-mode etc-services-generic-mode etc-sudoers-generic-mode fvwm-generic-mode hosts-generic-mode inetd-conf-generic-mode inf-generic-mode ini-generic-mode java-manifest-generic-mode java-properties-generic-mode mailagent-rules-generic-mode mailrc-generic-mode named-boot-generic-mode named-database-generic-mode prototype-generic-mode rc-generic-mode reg-generic-mode resolve-conf-generic-mode samba-generic-mode show-tabs-generic-mode vrml-generic-mode x-resource-generic-mode)))
+ '(generic-extras-enable-list
+   (quote
+     (alias-generic-mode apache-conf-generic-mode apache-log-generic-mode bat-generic-mode etc-fstab-generic-mode etc-modules-conf-generic-mode etc-passwd-generic-mode etc-services-generic-mode etc-sudoers-generic-mode fvwm-generic-mode hosts-generic-mode inetd-conf-generic-mode inf-generic-mode ini-generic-mode java-manifest-generic-mode java-properties-generic-mode mailagent-rules-generic-mode mailrc-generic-mode named-boot-generic-mode named-database-generic-mode prototype-generic-mode rc-generic-mode reg-generic-mode resolve-conf-generic-mode samba-generic-mode show-tabs-generic-mode vrml-generic-mode x-resource-generic-mode)))
+ '(gist-list-format
+   (quote
+     ((id "Id" 12 nil identity)
+      (created "Created" 10 nil "%D")
+      (description "Description" 0 nil identity))))
  '(glasses-face (quote bold))
  '(glasses-original-separator "")
  '(glasses-separate-parentheses-p nil)
  '(glasses-separator "")
  '(global-company-mode t)
  '(global-font-lock-mode t nil (font-lock))
- '(global-semantic-stickyfunc-mode t nil (semantic/util-modes))
+ '(global-semantic-stickyfunc-mode t)
  '(global-undo-tree-mode t)
  '(global-visible-mark-mode-exclude-alist (quote ("^\\*")))
  '(global-whitespace-mode t)
  '(global-whitespace-newline-mode nil)
+ '(gnorb-gnus-mail-search-backend (quote notmuch))
  '(gnus-activate-level 5)
  '(gnus-adaptive-pretty-print t)
  '(gnus-article-update-date-headers nil)
+ '(gnus-asynchronous t)
  '(gnus-cacheable-groups ".*")
  '(gnus-completing-read-function (quote gnus-ido-completing-read))
- '(gnus-completion-styles (if (and (boundp (quote completion-styles-alist)) (boundp (quote completion-styles))) (append (when (and (assq (quote substring) completion-styles-alist) (not (memq (quote substring) completion-styles))) (list (quote substring))) completion-styles) nil))
+ '(gnus-completion-styles
+   (if
+    (and
+     (boundp
+      (quote completion-styles-alist))
+     (boundp
+      (quote completion-styles)))
+    (append
+     (when
+         (and
+          (assq
+           (quote substring)
+           completion-styles-alist)
+          (not
+           (memq
+            (quote substring)
+            completion-styles)))
+       (list
+        (quote substring)))
+     completion-styles)
+    nil))
  '(gnus-decay-scores "\\.ADAPT\\'")
  '(gnus-fetch-old-headers nil)
  '(gnus-group-default-list-level 4)
@@ -146,7 +279,8 @@
  '(gnus-summary-default-high-score 2000)
  '(gnus-summary-default-low-score -1)
  '(gnus-summary-default-score 1)
- '(gnus-summary-dummy-line-format "   %(:                                                   :%) %S
+ '(gnus-summary-dummy-line-format
+   "   %(:                                                   :%) %S
 ")
  '(gnus-summary-gather-subject-limit (quote fuzzy))
  '(gnus-summary-ignore-duplicates t)
@@ -156,20 +290,91 @@
  '(gnus-uncacheable-groups nil)
  '(gnus-use-adaptive-scoring (quote (line)))
  '(gnus-use-correct-string-widths t)
+ '(gnus-use-header-prefetch t)
  '(graphviz-dot-preview-extension "ps")
- '(gud-chdir-before-run nil)
- '(gud-tooltip-echo-area t)
- '(gud-tooltip-mode t)
  '(hl-line-face (quote highlight))
  '(hl-line-hack-exceptions (quote ("*eshell*" "*Calendar*")))
  '(hl-line-hack-face (quote highlight))
- '(htmlize-head-tags "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=ISO-8859-1\">")
+ '(htmlize-head-tags
+   "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=ISO-8859-1\">")
  '(htmlize-html-major-mode (quote html-mode))
  '(ibuffer-display-summary nil)
  '(ibuffer-expert t)
  '(ibuffer-movement-cycle nil)
- '(ibuffer-saved-filter-groups (quote (("default" ("sh" (mode . sh-mode)) ("emacs" (or (name . "^\\*scratch\\*$") (name . "^\\*Messages\\*$"))) ("org" (mode . org-mode)) ("latex" (or (mode . LaTeX-mode) (mode . latex-mode))) ("C(++)" (or (mode . c-mode) (mode . c++-mode))) ("FDD" (mode . tl-fdd-mode)) ("Java" (mode . java-mode)) ("lisp" (or (mode . emacs-lisp-mode) (mode . lisp-interaction-mode) (mode . ielm-mode) (mode . lisp-mode) (mode . slime-repl-mode))) ("python" (mode . python-mode)) ("dired" (mode . dired-mode)) ("irc" (or (mode . circe-mode) (mode . circe-server-mode) (mode . circe-query-mode) (mode . circe-channel-mode) (mode . rcirc-mode))) ("gnus" (or (mode . message-mode) (mode . bbdb-mode) (mode . mail-mode) (mode . gnus-group-mode) (mode . gnus-summary-mode) (mode . gnus-article-mode) (name . "^\\.bbdb$") (name . "^\\.newsrc-dribble"))) ("magit" (or (mode . magit-mode) (mode . magit-status-mode) (mode . magit-log-mode) (mode . magit-wazzup-mode)))))))
- '(ibuffer-saved-filters (quote (("gnus" ((or (mode . message-mode) (mode . mail-mode) (mode . gnus-group-mode) (mode . gnus-summary-mode) (mode . gnus-article-mode)))) ("programming" ((or (mode . emacs-lisp-mode) (mode . cperl-mode) (mode . c-mode) (mode . java-mode) (mode . idl-mode) (mode . lisp-mode)))))))
+ '(ibuffer-saved-filter-groups
+   (quote
+     (("default"
+       ("sh"
+        (mode . sh-mode))
+       ("emacs"
+        (or
+         (name . "^\\*scratch\\*$")
+         (name . "^\\*Messages\\*$")))
+       ("org"
+        (mode . org-mode))
+       ("latex"
+        (or
+         (mode . LaTeX-mode)
+         (mode . latex-mode)))
+       ("C(++)"
+        (or
+         (mode . c-mode)
+         (mode . c++-mode)))
+       ("FDD"
+        (mode . tl-fdd-mode))
+       ("Java"
+        (mode . java-mode))
+       ("lisp"
+        (or
+         (mode . emacs-lisp-mode)
+         (mode . lisp-interaction-mode)
+         (mode . ielm-mode)
+         (mode . lisp-mode)
+         (mode . slime-repl-mode)))
+       ("python"
+        (mode . python-mode))
+       ("dired"
+        (mode . dired-mode))
+       ("irc"
+        (or
+         (mode . circe-mode)
+         (mode . circe-server-mode)
+         (mode . circe-query-mode)
+         (mode . circe-channel-mode)
+         (mode . rcirc-mode)))
+       ("gnus"
+        (or
+         (mode . message-mode)
+         (mode . bbdb-mode)
+         (mode . mail-mode)
+         (mode . gnus-group-mode)
+         (mode . gnus-summary-mode)
+         (mode . gnus-article-mode)
+         (name . "^\\.bbdb$")
+         (name . "^\\.newsrc-dribble")))
+       ("magit"
+        (or
+         (mode . magit-mode)
+         (mode . magit-status-mode)
+         (mode . magit-log-mode)
+         (mode . magit-wazzup-mode)))))))
+ '(ibuffer-saved-filters
+   (quote
+     (("gnus"
+       ((or
+         (mode . message-mode)
+         (mode . mail-mode)
+         (mode . gnus-group-mode)
+         (mode . gnus-summary-mode)
+         (mode . gnus-article-mode))))
+      ("programming"
+       ((or
+         (mode . emacs-lisp-mode)
+         (mode . cperl-mode)
+         (mode . c-mode)
+         (mode . java-mode)
+         (mode . idl-mode)
+         (mode . lisp-mode)))))))
  '(icicle-inhibit-reminder-prompt-flag t)
  '(ido-auto-merge-delay-time 1.5)
  '(ido-default-buffer-method (quote selected-window))
@@ -201,9 +406,14 @@
  '(max-specpdl-size 1000)
  '(menu-bar-mode nil)
  '(message-forward-as-mime t)
- '(message-forward-ignored-headers (quote ("^Content-Transfer-Encoding:" "^X-Gnus" "^Received:" "^Bcc:" "^X-MS" "^Delivered-To" "^X-Virus")))
- '(minibuffer-prompt-properties (quote (read-only t point-entered minibuffer-avoid-prompt face minibuffer-prompt)))
- '(mm-text-html-renderer (quote links))
+ '(message-forward-ignored-headers
+   (quote
+     ("^Content-Transfer-Encoding:" "^X-Gnus" "^Received:" "^Bcc:" "^X-MS" "^Delivered-To" "^X-Virus")))
+ '(minibuffer-prompt-properties
+   (quote
+     (read-only t point-entered minibuffer-avoid-prompt face minibuffer-prompt)))
+ '(mm-inline-text-html-with-images t)
+ '(mm-text-html-renderer (quote shr))
  '(mml2015-sign-with-sender t)
  '(mouse-1-click-follows-link nil)
  '(mouse-1-click-in-non-selected-windows nil)
@@ -224,7 +434,17 @@
  '(nnmail-split-fancy-match-partial-words t)
  '(nntp-authinfo-file "~/.authinfo.gpg")
  '(notmuch-fcc-dirs nil)
- '(notmuch-saved-searches (quote (("inbox" . "tag:inbox") ("unread" . "tag:unread") ("sent" . "tag:sent"))))
+ '(notmuch-saved-searches
+   (quote
+     (("inbox" . "tag:new")
+      ("unread" . "tag:unread")
+      ("sent" . "tag:sent")
+      ("work mail today" . "date:today..today and tag:vmware and not tag:svs-status")
+      ("work mail this week" . "date:1w..today and tag:vmware and not tag:svs-status"))))
+ '(ns-function-modifier (quote hyper))
+ '(ns-right-alternate-modifier (quote alt))
+ '(ns-right-control-modifier (quote left))
+ '(ns-use-native-fullscreen nil)
  '(nxhtml-global-minor-mode t)
  '(nxhtml-global-validation-header-mode t)
  '(org-agenda-log-mode-items (quote (closed clock state)))
@@ -237,17 +457,51 @@
  '(org-crypt-key "yann.hodique@gmail.com")
  '(org-crypt-tag-matcher "CRYPT")
  '(org-cycle-open-archived-trees t)
- '(org-disputed-keys (quote (([(shift up)] . [(meta p)]) ([(shift down)] . [(meta n)]) ([(shift left)] . [(meta -)]) ([(shift right)] . [(meta +)]) ([(control shift right)] . [(control meta +)]) ([(control shift left)] . [(control meta -)]))))
+ '(org-disputed-keys
+   (quote
+     (([(shift up)]
+       .
+       [(meta p)])
+      ([(shift down)]
+       .
+       [(meta n)])
+      ([(shift left)]
+       .
+       [(meta -)])
+      ([(shift right)]
+       .
+       [(meta +)])
+      ([(control shift right)]
+       .
+       [(control meta +)])
+      ([(control shift left)]
+       .
+       [(control meta -)]))))
  '(org-ellipsis (quote highlight))
  '(org-empty-line-terminates-plain-lists t)
  '(org-enforce-todo-checkbox-dependencies t)
  '(org-enforce-todo-dependencies t)
  '(org-export-allow-BIND t)
- '(org-export-publishing-directory (quote ((:html . "./html") (:LaTeX . "./latex") (:ascii . "./txt") (:ical . "./ical") (:xoxo . "./xoxo"))) t)
+ '(org-export-backends (quote (ascii beamer html icalendar latex odt s5)))
+ '(org-export-publishing-directory
+   (quote
+     ((:html . "./html")
+      (:LaTeX . "./latex")
+      (:ascii . "./txt")
+      (:ical . "./ical")
+      (:xoxo . "./xoxo"))) t)
  '(org-export-taskjuggler-keep-project-as-task nil)
  '(org-export-taskjuggler-target-version 3.3)
- '(org-file-apps (quote ((auto-mode . emacs) ("\\.mm\\'" . default) ("\\.x?html?\\'" . "firefox %s") ("\\.pdf\\'" . default))))
- '(org-modules (quote (org-bbdb org-bibtex org-docview org-gnus org-info org-jsinfo org-irc org-mew org-mhe org-rmail org-vm org-wl org-w3m org-s5)))
+ '(org-file-apps
+   (quote
+     ((auto-mode . emacs)
+      ("\\.mm\\'" . default)
+      ("\\.x?html?\\'" . default)
+      ("\\.pdf\\'" . default))))
+ '(org-list-empty-line-terminates-plain-lists t)
+ '(org-modules
+   (quote
+     (org-bbdb org-bibtex org-docview org-gnus org-info org-jsinfo org-irc org-mew org-mhe org-rmail org-vm org-wl org-w3m org-s5)))
  '(org-outline-path-complete-in-steps nil)
  '(org-refile-allow-creating-parent-nodes (quote confirm))
  '(org-refile-targets (quote ((org-agenda-files :maxlevel . 3))))
@@ -255,13 +509,20 @@
  '(org-remove-highlights-with-change nil)
  '(org-replace-disputed-keys t)
  '(org-special-ctrl-a/e t)
- '(org-stuck-projects (quote ("+LEVEL=2/-DONE" ("TODO" "NEXT" "NEXTACTION") ("quotes"))))
- '(org-todo-keywords (quote ((type "TODO(t)" "WAITING(w@/!)" "MAYBE(m)" "|" "DONE(d!)" "CANCELED(c@)"))))
+ '(org-stuck-projects
+   (quote
+     ("+LEVEL=2/-DONE"
+      ("TODO" "NEXT" "NEXTACTION")
+      ("quotes"))))
+ '(org-todo-keywords
+   (quote
+     ((type "TODO(t)" "WAITING(w@/!)" "MAYBE(m)" "|" "DONE(d!)" "CANCELED(c@)"))))
  '(org-track-ordered-property-with-tag t)
  '(org-use-fast-todo-selection t)
  '(org-use-speed-commands t)
- '(osd-args (quote ("--delay=3" "--age=3" "--pos=bottom" "--offset=70" "--outline=5" "--outlinecolour=grey" "--font=-microsoft-verdana-medium-r-normal--10-*-*-*-*-*-*")))
- '(paren-dont-load-timer nil)
+ '(osd-args
+   (quote
+     ("--delay=3" "--age=3" "--pos=bottom" "--offset=70" "--outline=5" "--outlinecolour=grey" "--font=-microsoft-verdana-medium-r-normal--10-*-*-*-*-*-*")))
  '(parens-require-spaces t)
  '(partial-completion-mode t)
  '(pcomplete-autolist t)
@@ -275,13 +536,16 @@
  '(planner-xtla-log-edit-include-files-flag nil)
  '(planner-xtla-log-edit-notice-commit-function t)
  '(pop-up-windows t)
- '(pp^L-^L-string "          ------------------------------------------------------------          ")
+ '(pp^L-^L-string
+   "          ------------------------------------------------------------          ")
  '(pp^L-^L-string-post "
 ")
  '(pp^L-^L-string-pre "
 ")
  '(pretty-control-l-mode t)
- '(preview-default-option-list (quote ("displaymath" "floats" "graphics" "textmath" "footnotes")))
+ '(preview-default-option-list
+   (quote
+     ("displaymath" "floats" "graphics" "textmath" "footnotes")))
  '(prolog-system (quote swi))
  '(proof-assistants (quote (isar coq acl2)))
  '(ps-lpr-command "kprinter")
@@ -296,14 +560,50 @@
  '(reftex-auto-recenter-toc t)
  '(reftex-revisit-to-follow t)
  '(reftex-toc-split-windows-horizontally nil)
- '(safe-local-variable-values (quote ((eval set (make-local-variable (quote backup-directory-alist)) (list (cons "." (file-relative-name (file-name-directory (buffer-file-name)) (file-name-directory (file-truename (buffer-file-name))))))) (eval ignore-errors (whitespace-mode nil) (whitespace-mode t)) (whitespace-style face trailing lines-tail) (test-case-name . twisted\.test\.test_internet) (org-export-html-table-tag . "<table border=\"1\" cellspacing=\"0\" cellpadding=\"6\" rules=\"groups\" frame=\"box\">") (org-export-html-style-include-default) (org-export-html-style . "   <style type=\"text/css\">
+ '(safe-local-variable-values
+   (quote
+     ((indent-tabs-mode t)
+      (eval set
+            (make-local-variable
+             (quote backup-directory-alist))
+            (list
+             (cons "."
+                   (file-relative-name
+                    (file-name-directory
+                     (buffer-file-name))
+                    (file-name-directory
+                     (file-truename
+                      (buffer-file-name)))))))
+      (eval ignore-errors
+            (whitespace-mode nil)
+            (whitespace-mode t))
+      (whitespace-style face trailing lines-tail)
+      (test-case-name . twisted\.test\.test_internet)
+      (org-export-html-table-tag . "<table border=\"1\" cellspacing=\"0\" cellpadding=\"6\" rules=\"groups\" frame=\"box\">")
+      (org-export-html-style-include-default)
+      (org-export-html-style . "   <style type=\"text/css\">
       p {font-weight: normal; color: gray; }
       h1 {color: black; }
-  </style>") (folded-file . t) (TeX-master . main\.tex) (Package . Memoization) (Base . 10) (Syntax . Common-Lisp) (unibyte . t) (auto-recompile . t) (TeX-master . "main") (TeX-master . t) (auto-compile-lisp) (before-save-hook org-encrypt-entries))))
+  </style>")
+      (folded-file . t)
+      (TeX-master . main\.tex)
+      (Package . Memoization)
+      (Base . 10)
+      (Syntax . Common-Lisp)
+      (unibyte . t)
+      (auto-recompile . t)
+      (TeX-master . "main")
+      (TeX-master . t)
+      (auto-compile-lisp)
+      (before-save-hook org-encrypt-entries))))
  '(save-abbrevs (quote silently))
  '(save-place-limit 100)
- '(sawfish-extra-keyword-list (quote ("add-frame-style" "call-after-load" "call-after-property-changed" "call-after-state-changed" "custom-set-property" "define" "define-structure" "export" "open")))
- '(sawfish-warning-keyword-list (quote ("fixme" "FIXME" "Fixme" "fix me" "Fix me" "!!!" "Grrr" "Bummer" "todo" "TODO" "Todo")))
+ '(sawfish-extra-keyword-list
+   (quote
+     ("add-frame-style" "call-after-load" "call-after-property-changed" "call-after-state-changed" "custom-set-property" "define" "define-structure" "export" "open")))
+ '(sawfish-warning-keyword-list
+   (quote
+     ("fixme" "FIXME" "Fixme" "fix me" "Fix me" "!!!" "Grrr" "Bummer" "todo" "TODO" "Todo")))
  '(sc-auto-fill-region-p nil)
  '(sc-citation-leader "")
  '(sc-nested-citation-p t)
@@ -326,9 +626,17 @@
  '(smex-save-file "~/.emacs.d/smex.save")
  '(smtpmail-debug-info t)
  '(smtpmail-debug-verb t)
- '(speedbar-frame-parameters (quote ((width . 20) (border-width . 0) (menu-bar-lines . 0) (tool-bar-lines . 0) (unsplittable . t))))
+ '(speedbar-frame-parameters
+   (quote
+     ((width . 20)
+      (border-width . 0)
+      (menu-bar-lines . 0)
+      (tool-bar-lines . 0)
+      (unsplittable . t))))
  '(speedbar-use-images nil)
- '(tabbar-inhibit-functions (quote (tabbar-default-inhibit-function yh/tabbar-inhibit-function)))
+ '(tabbar-inhibit-functions
+   (quote
+     (tabbar-default-inhibit-function yh/tabbar-inhibit-function)))
  '(tags-revert-without-query t)
  '(tc-make-attribution (quote kai-tc-simple-attribution))
  '(tc-mouse-overlays t)
@@ -338,11 +646,23 @@
  '(test-case-python-arguments "-W ignore::DeprecationWarning")
  '(test-case-python-executable "python")
  '(tla-arch-branch (quote baz))
- '(tls-program (quote ("openssl s_client -connect %h:%p -no_ssl2 -ign_eof" "gnutls-cli --insecure -p %p %h" "gnutls-cli --insecure -p %p %h --protocols ssl3" "openssl s_client -connect %h:%p -no_ssl2 -ign_eof")))
+ '(tls-program
+   (quote
+     ("openssl s_client -connect %h:%p -no_ssl2 -ign_eof" "gnutls-cli --insecure -p %p %h" "gnutls-cli --insecure -p %p %h --protocols ssl3" "openssl s_client -connect %h:%p -no_ssl2 -ign_eof")))
  '(tool-bar-mode nil nil (tool-bar))
- '(tooltip-frame-parameters (quote ((name . "tooltip") (internal-border-width . 1) (border-width . 0))))
+ '(tooltip-frame-parameters
+   (quote
+     ((name . "tooltip")
+      (internal-border-width . 1)
+      (border-width . 0))))
  '(tooltip-gud-tips-p t)
- '(tramp-default-method-alist (quote (("%" "" "smb") ("" "\\`\\(anonymous\\|ftp\\)\\'" "ftp") ("\\`ftp" "" "ftp") ("\\`localhost\\'" "\\`root\\'" "su"))))
+ '(tracking-shorten-buffer-names-p nil)
+ '(tramp-default-method-alist
+   (quote
+     (("%" "" "smb")
+      ("" "\\`\\(anonymous\\|ftp\\)\\'" "ftp")
+      ("\\`ftp" "" "ftp")
+      ("\\`localhost\\'" "\\`root\\'" "su"))))
  '(tramp-gvfs-methods nil)
  '(tramp-syntax (quote ftp))
  '(transient-mark-mode nil)
@@ -356,10 +676,11 @@
  '(vc-handled-backends nil)
  '(vc-make-backup-files t)
  '(vc-stay-local t)
- '(visible-bell nil)
+ '(visible-bell t)
  '(wdired-allow-to-change-permissions (quote advanced))
- '(which-function-mode nil)
- '(whitespace-style (quote (face tabs trailing lines space-before-tab newline indentation empty space-after-tab space-mark tab-mark newline-mark)))
+ '(whitespace-style
+   (quote
+     (face tabs trailing lines space-before-tab newline indentation empty space-after-tab space-mark tab-mark newline-mark)))
  '(winring-prompt-on-create (quote usually))
  '(winring-show-names t)
  '(x-select-enable-clipboard nil)
@@ -371,6 +692,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(default ((t (:inherit nil :stipple nil :background "black" :foreground "wheat" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 130 :width normal :foundry "apple" :family "Source Code Pro"))))
  '(bold ((t (:foreground "lightcoral" :weight bold))))
  '(bold-italic ((t (:foreground "orange" :slant italic :weight bold))))
  '(circe-my-message-face ((t (:background "slateblue"))))

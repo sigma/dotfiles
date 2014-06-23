@@ -1,4 +1,4 @@
-;; -*- mode: emacs-lisp; mode: hi-lock; mode: orgstruct; auto-compile-lisp: nil; -*-
+;; -*- mode: emacs-lisp; mode: hi-lock; mode: orgstruct -*-
 
 ;; (toggle-debug-on-error)
 
@@ -25,19 +25,23 @@
 ;; add some personal features
 (require 'patches)
 
-(request 'undo-tree)
-
 ;; How emacs should look like
 (request 'visual)
 
-(request 'cedet)
+;; (request 'cedet)
 
 (when (request 'package)
   (setq package-archives
         '(("org" . "http://orgmode.org/elpa/")
           ("gnu" . "http://elpa.gnu.org/packages/")
-          ("marmalade" . "http://marmalade-repo.org/packages/")))
+          ("marmalade" . "http://marmalade-repo.org/packages/")
+          ("elpy" . "http://jorgenschaefer.github.io/packages/")))
+  ;;(add-to-list 'package-pinned-packages '(magit . "marmalade"))
   (package-initialize))
+
+(require 'powerline)
+
+(request 'undo-tree)
 
 (setq scroll-margin 0
  scroll-conservatively 50
@@ -134,7 +138,8 @@
 (request 'ecb-config)
 (request 'winring-config)
 ;; (request 'rcirc-config)
-(request 'erc-config)
+;; (request 'erc-config)
+(request 'circe-config)
 (request 'tramp-config)
 (request 'eshell-config)
 (request 'help-config)
@@ -324,7 +329,7 @@ frame, close it. Else, die"
   (let ((backend (yh/vcs-backend (or buffer-file-name default-directory))))
     (call-interactively (cdr (assoc backend yh/vcs-backends)))))
 
-(global-set-key (kbd "<f12>") 'yh/vcs-status)
+(global-set-key (kbd "C-c g") 'yh/vcs-status)
 
 ;;; windmove :)
 (mapc #'eval
@@ -497,7 +502,14 @@ by using nxml's indentation rules."
 
 (request 'gist)
 
+(request 'iedit)
+
 (when (request 'yaml-mode)
-  (add-to-list 'auto-mode-alist '("\\.yaml\\'" . yaml-mode)))
+  (add-to-list 'auto-mode-alist '("\\.yaml\\'" . yaml-mode))
+  (add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode)))
+
+(when (request 'puppet-mode)
+  (add-to-list 'auto-mode-alist '("\\.pp\\'" . puppet-mode)))
 
 (message ".emacs loaded")
+(switch-to-buffer "*Messages*")
