@@ -136,9 +136,6 @@
 [submodule "_emacs.d/packages-src/undo-browse"]
 	path = _emacs.d/packages-src/undo-browse
 	url = git://github.com/emacsmirror/undo-browse.git
-[submodule "_emacs.d/packages-src/undo-tree"]
-	path = _emacs.d/packages-src/undo-tree
-	url = git://github.com/emacsmirror/undo-tree.git
 [submodule "_emacs.d/packages-src/vcard"]
 	path = _emacs.d/packages-src/vcard
 	url = git://github.com/emacsmirror/vcard.git
@@ -289,3 +286,6 @@
 [submodule "_emacs.d/packages-src/yaoddmuse"]
 	path = _emacs.d/packages-src/yaoddmuse
 	url = git://github.com/emacsmirror/yaoddmuse.git
+[submodule "_emacs.d/packages-src/use-package"]
+	path = _emacs.d/packages-src/use-package
+	url = git@github.com:jwiegley/use-package.git
