@@ -5,25 +5,10 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(1on1-*Completions*-frame-flag nil)
- '(1on1-*Help*-frame-flag nil)
- '(1on1-minibuffer-frame-alist
-   (quote
-     ((foreground-color . "Red")
-      (background-color . "LightBlue")
-      (font . "fixed")
-      (mouse-color . "Black")
-      (cursor-color . "Black")
-      (menu-bar-lines)
-      (height . 2)
-      (icon-type)
-      (minibuffer . only)
-      (user-position . t)
-      (vertical-scroll-bars)
-      (name . "Emacs Minibuffer"))))
  '(Info-additional-directory-list nil)
  '(LaTeX-item-regexp "\\(entry\\|\\(bib\\)?item\\)\\b")
  '(Man-notify-method (quote bully))
+ '(TeX-PDF-mode t)
  '(TeX-output-view-style
    (quote
      (("^dvi$"
@@ -45,14 +30,19 @@
       ("^dvi$" "." "%(o?)xdvi %dS %d")
       ("^pdf$" "." "xpdf -fullscreen -remote %s -raise %o %(outpage)")
       ("^html?$" "." "netscape %o"))))
- '(ack-executable (executable-find "ack-grep"))
+ '(ack-executable (executable-find "ack"))
  '(add-log-keep-changes-together t)
  '(ange-ftp-ftp-program-args (quote ("-i" "-n" "-g" "-v" "-u")))
  '(apropos-do-all t)
  '(apropos-sort-by-scores t)
  '(auto-revert-check-vc-info nil)
+ '(auto-revert-interval 2)
  '(auto-save-interval 50)
  '(auto-save-timeout 5)
+ '(avy-background t)
+ '(avy-highlight-first t)
+ '(avy-keys (quote (97 115 100 102 103 104 106 107 108 59)))
+ '(avy-style (quote at-full))
  '(bbdb-complete-name-allow-cycling t)
  '(bbdb-dwim-net-address-allow-redundancy t)
  '(bbdb-send-mail-style (quote gnus))
@@ -72,6 +62,9 @@
  '(circe-format-self-say "<{nick}> {body}")
  '(column-number-mode t)
  '(company-idle-delay 0.3)
+ '(company-show-numbers t)
+ '(company-tooltip-align-annotations t)
+ '(company-tooltip-limit 20)
  '(compilation-ask-about-save nil)
  '(compilation-read-command t)
  '(compilation-scroll-output t)
@@ -79,6 +72,9 @@
  '(compile-command "make")
  '(cscope-do-not-update-database t)
  '(custom-file "~/.emacs-cust")
+ '(custom-safe-themes
+   (quote
+     ("8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" default)))
  '(default-justification (quote left))
  '(delete-active-region nil)
  '(diff-switches "-u")
@@ -161,7 +157,6 @@
       (t "/" ecb-toggle-compile-window-height)
       (t "," ecb-cycle-maximized-ecb-buffers)
       (t "." ecb-cycle-through-compilation-buffers))))
- '(ecb-layout-name "sigma")
  '(ecb-layout-window-sizes
    (quote
      (("sigma"
@@ -186,7 +181,8 @@
  '(edebug-trace t)
  '(ediff-custom-diff-options "-u")
  '(ediff-keep-variants t)
- '(enable-multibyte-characters t t)
+ '(elpy-rpc-backend nil)
+ '(elpy-test-runner (quote elpy-test-nose-runner))
  '(enable-recursive-minibuffers t)
  '(epa-file-select-keys nil)
  '(erc-bbdb-auto-create-on-whois-p t)
@@ -215,7 +211,7 @@
  '(flyspell-default-dictionary "en")
  '(flyspell-issue-welcome-flag nil)
  '(font-latex-fontify-sectioning (quote color))
- '(gc-cons-threshold 4000000)
+ '(gc-cons-threshold 20000000)
  '(gdb-all-registers t)
  '(gdb-many-windows t)
  '(gdb-same-frame nil)
@@ -224,11 +220,7 @@
  '(generic-extras-enable-list
    (quote
      (alias-generic-mode apache-conf-generic-mode apache-log-generic-mode bat-generic-mode etc-fstab-generic-mode etc-modules-conf-generic-mode etc-passwd-generic-mode etc-services-generic-mode etc-sudoers-generic-mode fvwm-generic-mode hosts-generic-mode inetd-conf-generic-mode inf-generic-mode ini-generic-mode java-manifest-generic-mode java-properties-generic-mode mailagent-rules-generic-mode mailrc-generic-mode named-boot-generic-mode named-database-generic-mode prototype-generic-mode rc-generic-mode reg-generic-mode resolve-conf-generic-mode samba-generic-mode show-tabs-generic-mode vrml-generic-mode x-resource-generic-mode)))
- '(gist-list-format
-   (quote
-     ((id "Id" 12 nil identity)
-      (created "Created" 10 nil "%D")
-      (description "Description" 0 nil identity))))
+ '(gist-multiple-files-mark "▶")
  '(glasses-face (quote bold))
  '(glasses-original-separator "")
  '(glasses-separate-parentheses-p nil)
@@ -291,6 +283,7 @@
  '(gnus-use-adaptive-scoring (quote (line)))
  '(gnus-use-correct-string-widths t)
  '(gnus-use-header-prefetch t)
+ '(go-oracle-command "/Users/hodiquey/Projects/go/bin/oracle")
  '(graphviz-dot-preview-extension "ps")
  '(hl-line-face (quote highlight))
  '(hl-line-hack-exceptions (quote ("*eshell*" "*Calendar*")))
@@ -386,6 +379,7 @@
  '(imenu-auto-rescan t)
  '(indent-region-mode t)
  '(indent-tabs-mode nil)
+ '(inhibit-startup-echo-area-message "hodiquey")
  '(inhibit-startup-screen t)
  '(initial-scratch-message nil)
  '(js2-basic-offset 4)
@@ -393,6 +387,7 @@
  '(js2-highlight-level 3)
  '(large-file-warning-threshold 1000000)
  '(line-move-visual nil)
+ '(load-prefer-newer t)
  '(log-edit-common-indent -7)
  '(lui-fill-column 100)
  '(magit-completing-read-function (quote magit-ido-completing-read))
@@ -434,13 +429,6 @@
  '(nnmail-split-fancy-match-partial-words t)
  '(nntp-authinfo-file "~/.authinfo.gpg")
  '(notmuch-fcc-dirs nil)
- '(notmuch-saved-searches
-   (quote
-     (("inbox" . "tag:new")
-      ("unread" . "tag:unread")
-      ("sent" . "tag:sent")
-      ("work mail today" . "date:today..today and tag:vmware and not tag:svs-status")
-      ("work mail this week" . "date:1w..today and tag:vmware and not tag:svs-status"))))
  '(ns-function-modifier (quote hyper))
  '(ns-right-alternate-modifier (quote alt))
  '(ns-right-control-modifier (quote left))
@@ -452,6 +440,7 @@
  '(org-agenda-skip-archived-trees nil)
  '(org-agenda-start-with-clockreport-mode nil)
  '(org-agenda-start-with-log-mode t)
+ '(org-catch-invisible-edits (quote smart))
  '(org-clock-into-drawer 2 t)
  '(org-crypt-disable-auto-save t)
  '(org-crypt-key "yann.hodique@gmail.com")
@@ -498,6 +487,34 @@
       ("\\.mm\\'" . default)
       ("\\.x?html?\\'" . default)
       ("\\.pdf\\'" . default))))
+ '(org-latex-classes
+   (quote
+     (("beamer" "\\documentclass[presentation]{beamer}"
+                ("\\section{%s}" . "\\section*{%s}")
+                ("\\subsection{%s}" . "\\subsection*{%s}")
+                ("\\subsubsection{%s}" . "\\subsubsection*{%s}"))
+      ("sigplanconf" "\\documentclass{sigplanconf}"
+                     ("\\section{%s}" . "\\section*{%s}")
+                     ("\\subsection{%s}" . "\\subsection*{%s}")
+                     ("\\subsubsection{%s}" . "\\subsubsection*{%s}"))
+      ("article" "\\documentclass[11pt]{article}"
+                 ("\\section{%s}" . "\\section*{%s}")
+                 ("\\subsection{%s}" . "\\subsection*{%s}")
+                 ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+                 ("\\paragraph{%s}" . "\\paragraph*{%s}")
+                 ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))
+      ("report" "\\documentclass[11pt]{report}"
+                ("\\part{%s}" . "\\part*{%s}")
+                ("\\chapter{%s}" . "\\chapter*{%s}")
+                ("\\section{%s}" . "\\section*{%s}")
+                ("\\subsection{%s}" . "\\subsection*{%s}")
+                ("\\subsubsection{%s}" . "\\subsubsection*{%s}"))
+      ("book" "\\documentclass[11pt]{book}"
+              ("\\part{%s}" . "\\part*{%s}")
+              ("\\chapter{%s}" . "\\chapter*{%s}")
+              ("\\section{%s}" . "\\section*{%s}")
+              ("\\subsection{%s}" . "\\subsection*{%s}")
+              ("\\subsubsection{%s}" . "\\subsubsection*{%s}")))))
  '(org-list-empty-line-terminates-plain-lists t)
  '(org-modules
    (quote
@@ -549,6 +566,7 @@
  '(prolog-system (quote swi))
  '(proof-assistants (quote (isar coq acl2)))
  '(ps-lpr-command "kprinter")
+ '(pyvenv-mode t)
  '(rcirc-buffer-maximum-lines 500)
  '(rcirc-fill-column 120)
  '(read-quoted-char-radix 16)
@@ -615,7 +633,6 @@
  '(server-use-tcp nil)
  '(set-mark-command-repeat-pop t)
  '(sh-shell-file "/bin/bash")
- '(show-paren-mode t)
  '(size-indication-mode t)
  '(slime-complete-symbol*-fancy t)
  '(slime-display-compilation-output nil)
@@ -669,7 +686,7 @@
  '(truncate-partial-width-windows nil)
  '(type-break-good-rest-interval 300)
  '(type-break-interval 5400)
- '(undo-tree-visualizer-spacing 2)
+ '(undo-tree-visualizer-spacing 2 t)
  '(uniquify-buffer-name-style (quote post-forward-angle-brackets) nil (uniquify))
  '(uniquify-strip-common-suffix t)
  '(vc-follow-symlinks t)
