@@ -26,8 +26,6 @@
 
 ;;; Code:
 
-(require 'go-flymake)
-
 (defun yh/go-mode-hook ()
   ;; Use goimports instead of go-fmt
   (setq gofmt-command "goimports")
@@ -40,9 +38,6 @@
       (set (make-local-variable 'compile-command)
            "go build -v && go test -v && go vet && golint"))
 
-  ;; Godef jump key binding
-  (local-set-key (kbd "M-.") 'godef-jump)
-
   ;; company-go
   (set (make-local-variable 'company-backends) '(company-go))
   (company-mode)
@@ -53,8 +48,21 @@
   (subword-mode 1)
   (glasses-mode 1))
 
-(eval-after-load 'go-mode
-  '(add-hook 'go-mode-hook 'yh/go-mode-hook))
+(use-package go-eldoc
+    :ensure t)
+
+(use-package company-go
+    :config (setq company-go-show-annotation t)
+    :ensure t)
+
+(use-package go-mode
+    :config (progn
+              (bind-key "M-." 'godef-jump go-mode-map)
+              (require 'go-flymake)
+              (require 'company-go)
+              (require 'go-eldoc)
+              (add-hook 'go-mode-hook 'yh/go-mode-hook))
+    :ensure t)
 
 (provide 'go-config)
 ;;; go-config.el ends here
